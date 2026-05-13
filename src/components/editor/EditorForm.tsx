@@ -24,6 +24,15 @@ export default function EditorForm({ data, onDataChange, onSave, template }: { d
     onDataChange(nextState);
   };
 
+  const handleMultipleFieldsChange = (fields: { [key: string]: any }) => {
+    const nextState = produce(data, (draft: any) => {
+      for (const field in fields) {
+        draft[field] = fields[field];
+      }
+    });
+    onDataChange(nextState);
+  };
+
   const handleImageUploaded = (url: string) => {
     const newImages = [...(data.galleryImages || []), url];
     handleFieldChange('galleryImages', newImages);
@@ -58,6 +67,7 @@ export default function EditorForm({ data, onDataChange, onSave, template }: { d
             data={data}
             template={template}
             onFieldChange={handleFieldChange}
+            onMultipleFieldsChange={handleMultipleFieldsChange}
           />
 
           <GallerySection

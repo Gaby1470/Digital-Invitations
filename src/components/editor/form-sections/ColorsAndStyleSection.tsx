@@ -10,12 +10,15 @@ type ColorsAndStyleSectionProps = {
   data: any;
   template: TemplateConfig;
   onFieldChange: (field: string, value: any) => void;
+  onMultipleFieldsChange: (fields: { [key: string]: any }) => void;
 };
 
-export default function ColorsAndStyleSection({ data, template, onFieldChange }: ColorsAndStyleSectionProps) {
+export default function ColorsAndStyleSection({ data, template, onFieldChange, onMultipleFieldsChange }: ColorsAndStyleSectionProps) {
   const handlePaletteSelect = (palette: { primary: string; text: string }) => {
-    onFieldChange('primaryColor', palette.primary);
-    onFieldChange('textColor', palette.text);
+    onMultipleFieldsChange({
+      primaryColor: palette.primary,
+      textColor: palette.text,
+    });
   };
 
   return (
