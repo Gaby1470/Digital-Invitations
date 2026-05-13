@@ -8,12 +8,12 @@ export default function Home() {
           <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
             Create Unforgettable Digital Invitations
           </h1>
-          <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+          <p className="mx-auto max-w-[700px] text-gray-800 md:text-xl dark:text-gray-300">
             Design and share beautiful, animated invitations for any occasion. Choose a template, customize it, and send it to your guests.
           </p>
           <Link
             href="/templates"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50"
+            className="inline-flex h-12 items-center justify-center rounded-full bg-indigo-600 px-10 text-lg font-medium text-white shadow transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-950"
           >
             Browse Templates
           </Link>

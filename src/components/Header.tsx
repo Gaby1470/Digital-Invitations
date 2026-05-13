@@ -40,44 +40,47 @@ export default function Header() {
   };
 
   return (
-    <header className="px-4 lg:px-6 h-16 flex items-center justify-between border-b bg-white w-full z-20">
+    <header className="px-4 lg:px-6 h-16 flex items-center justify-between border-b border-neutral-100 bg-white w-full z-20">
       <Link href="/" className="flex items-center justify-center">
-        <span className="text-2xl font-bold">Digital Invitations</span>
+        {/* Changed to text-neutral-900 for a solid black logo look */}
+        <span className="text-2xl font-bold text-neutral-900 tracking-tight">Digital Invitations</span>
       </Link>
-      <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-        <Link href="/templates" className="hover:underline underline-offset-4">
+      
+      <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-neutral-900">
+        <Link href="/templates" className="transition-colors hover:text-indigo-600">
           Templates
         </Link>
-        <Link href="/pricing" className="hover:underline underline-offset-4">
+        <Link href="/pricing" className="transition-colors hover:text-indigo-600">
           Pricing
         </Link>
       </nav>
+
       <div className="flex items-center gap-4">
         {loading ? (
-          <div className="h-9 w-20 animate-pulse bg-gray-200 rounded-md"></div>
+          <div className="h-9 w-20 animate-pulse bg-neutral-100 rounded-md"></div>
         ) : user ? (
           <>
             <Link
               href="/dashboard"
-              className="hidden sm:inline-flex h-9 items-center justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 transition-colors hover:bg-gray-200"
+              className="hidden sm:inline-flex h-9 items-center justify-center rounded-md bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-900 transition-colors hover:bg-neutral-200"
             >
               Dashboard
             </Link>
             <button
               onClick={handleSignOut}
-              className="text-sm font-medium hover:underline underline-offset-4"
+              className="text-sm font-semibold text-neutral-900 hover:underline underline-offset-4"
             >
               Sign Out
             </button>
           </>
         ) : (
           <>
-            <Link href="/auth/login" className="hidden sm:inline-flex text-sm font-medium hover:underline underline-offset-4">
+            <Link href="/auth/login" className="hidden sm:inline-flex text-sm font-semibold text-neutral-900 hover:underline underline-offset-4">
               Log In
             </Link>
             <Link
               href="/auth/signup"
-              className="inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90"
+              className="inline-flex h-9 items-center justify-center rounded-md bg-neutral-900 px-4 py-2 text-sm font-semibold text-white shadow transition-transform hover:scale-105 active:scale-95"
             >
               Sign Up
             </Link>

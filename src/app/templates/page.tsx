@@ -1,100 +1,111 @@
 "use client";
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { templateConfig } from '@/lib/templateConfig';
 import { TemplateConfig } from '@/lib/types';
+import { useState } from 'react';
 
-// Helper to group templates by category remains the same
-const groupTemplatesByCategory = (config: { [key: string]: TemplateConfig }) => {
+const groupTemplatesByNewCategories = (config: { [key: string]: TemplateConfig }) => {
   return Object.entries(config).reduce((acc, [id, template]) => {
-    const { category } = template;
-    if (!acc[category]) {
-      acc[category] = [];
+    let targetCategory = template.category;
+
+    // Custom Mapping Logic
+    if (targetCategory === 'Kids Birthday' || targetCategory === 'Baptism') {
+      targetCategory = 'Kids';
+    } else if (targetCategory === 'Baby Shower') {
+      targetCategory = 'Baby';
+    } else if (targetCategory === 'Corporate') {
+      // This ensures your CorporateTemplate.tsx appears under the new section
+      targetCategory = 'Professional Events';
     }
-    acc[category].push({ id, ...template });
+
+    if (!acc[targetCategory]) {
+      acc[targetCategory] = [];
+    }
+    acc[targetCategory].push({ id, ...template });
     return acc;
   }, {} as { [key: string]: (TemplateConfig & { id: string })[] });
 };
 
-// Animation variants for the container and items
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-    },
-  },
-};
-
 export default function TemplatesPage() {
-  const groupedTemplates = groupTemplatesByCategory(templateConfig);
+  const groupedTemplates = groupTemplatesByNewCategories(templateConfig);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const filteredTemplates = selectedCategory 
+    ? { [selectedCategory]: groupedTemplates[selectedCategory] }
+    : groupedTemplates;
+
+  // The specific navigation order you requested
+  const categoryOrder = ['Wedding', 'XV Years', 'Kids', 'Baby', 'Graduation', 'Professional Events'];
+  const availableCategories = ['All', ...categoryOrder.filter(cat => groupedTemplates[cat])];
 
   return (
-    <main className="flex-1">
-      <section className="w-full py-12 md:py-16">
-        <div className="container px-4 md:px-6">
-          <motion.h1 
-            className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12"
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
+    <main className="bg-white min-h-screen">
+      <section className="w-full py-12 md:py-20">
+        <div className="container px-4 md:px-6 mx-auto">
+          
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
           >
-            Choose Your Template
-          </motion.h1>
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl text-neutral-900">
+              Find Your Perfect Invitation
+            </h1>
+          </motion.div>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {Object.entries(groupedTemplates).map(([category, templates]) => (
-              <motion.div key={category} className="mb-16" variants={itemVariants}>
-                <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8 border-b pb-4">
-                  {category}
-                </h2>
-                <motion.div 
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-                  variants={containerVariants}
-                >
-                  {templates.map((template) => (
-                    <motion.div 
-                      key={template.id} 
-                      className="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow duration-300 hover:shadow-2xl"
-                      variants={itemVariants}
-                    >
-                      <div 
-                        className="h-56 bg-gray-200 bg-cover bg-center" 
-                        style={{ backgroundImage: `url(https://picsum.photos/seed/${template.id}/600/400)` }}
-                      ></div>
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold mb-1">{template.name}</h3>
-                        <p className="text-sm text-gray-600 mb-4">{template.description}</p>
-                        <Link
-                          href={`/templates/${template.id}`}
-                          className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950"
-                        >
-                          Preview
-                        </Link>
-                      </div>
-                    </motion.div>
-                  ))}
+          {/* This is the Category Navigation Menu */}
+          <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-md py-4 mb-10 border-b border-neutral-100">
+            <div className="flex flex-wrap justify-center gap-2">
+              {availableCategories.map((cat) => {
+                const isSelected = cat === 'All' ? !selectedCategory : selectedCategory === cat;
+                return (
+                  <button 
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat === 'All' ? null : cat)}
+                    className="relative px-5 py-1.5 text-sm font-medium transition-colors duration-300 rounded-full outline-none"
+                  >
+                    <span className={`relative z-10 ${isSelected ? 'text-white' : 'text-neutral-900'}`}>
+                      {cat}
+                    </span>
+                    {isSelected && (
+                      <motion.div 
+                        layoutId="activeTab"
+                        className="absolute inset-0 bg-neutral-900 rounded-full"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <motion.div layout className="space-y-12">
+            <AnimatePresence mode="popLayout">
+              {Object.entries(filteredTemplates).map(([category, templates]) => (
+                <motion.div key={category} layout className="space-y-6">
+                  <h2 className="text-xl font-bold text-neutral-900 border-l-4 border-neutral-900 pl-4">
+                    {category}
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {templates.map((template) => (
+                      <Link key={template.id} href={`/templates/${template.id}`} className="group">
+                        <div className="relative overflow-hidden rounded-lg aspect-video bg-neutral-100">
+                          <img 
+                            src={template.thumbnail || `https://picsum.photos/seed/${template.id}/600/338`} 
+                            alt={template.name}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                        </div>
+                        <h3 className="mt-3 text-base font-bold text-neutral-900">{template.name}</h3>
+                      </Link>
+                    ))}
+                  </div>
                 </motion.div>
-              </motion.div>
-            ))}
+              ))}
+            </AnimatePresence>
           </motion.div>
         </div>
       </section>

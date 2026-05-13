@@ -1,4 +1,3 @@
-// src/app/templates/[templateName]/page.tsx
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -9,13 +8,12 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase-client';
 import { User } from '@supabase/supabase-js';
 
-// Helper to safely parse JSON responses
 async function safeJsonParse(response: Response) {
   const text = await response.text();
   try {
     return JSON.parse(text);
   } catch (e) {
-    return null; // Return null if parsing fails
+    return null;
   }
 }
 
@@ -27,8 +25,10 @@ export default function TemplatePreviewPage() {
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false); // NEW: To track hydration
 
   useEffect(() => {
+    setHasMounted(true); // NEW: Confirm client-side mounting
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
@@ -72,11 +72,16 @@ export default function TemplatePreviewPage() {
     }
   };
 
+  // Prevent rendering interactive elements until mounted to fix Hydration Mismatch
+  if (!hasMounted) {
+    return <div className="min-h-screen bg-white" />; 
+  }
+
   if (!template) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-4xl font-bold">Template Not Found</h1>
-        <Link href="/templates">Back to Templates</Link>
+        <Link href="/templates" className="mt-4 text-blue-600 underline">Back to Templates</Link>
       </div>
     );
   }
@@ -93,7 +98,12 @@ export default function TemplatePreviewPage() {
         </button>
       </div>
       
-      <TemplateRenderer template={template} data={template.defaultData} />
+      {/* Ensure templateId is passed to help TemplateRenderer find the component */}
+      <TemplateRenderer 
+        templateId={templateName} 
+        template={template} 
+        data={template.defaultData} 
+      />
     </div>
   );
 }
