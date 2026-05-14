@@ -31,7 +31,13 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
   const invitationData = { ...defaultData, ...data };
 
   return (
-    <div className={`w-full bg-pink-50`}>
+    <div 
+      className="w-full"
+      style={{
+        backgroundColor: invitationData.backgroundColor || '#fdf2f8', // pink-50
+        color: invitationData.textColor || '#4b5563' // gray-600
+      }}
+    >
       {/* Hero Section */}
       <section 
         id="hero"
@@ -58,14 +64,14 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
       {/* Timeline Section */}
       <section id="timeline" className="py-20 px-4 max-w-4xl mx-auto">
         <AnimatedSection>
-          <h2 className="text-4xl font-bold text-center text-pink-800 mb-12">{invitationData.timelineTitle}</h2>
+          <h2 className="text-4xl font-bold text-center mb-12" style={{ color: invitationData.primaryColor }}>{invitationData.timelineTitle}</h2>
         </AnimatedSection>
         {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
           <AnimatedSection key={index}>
             <div className="text-center mb-8">
-              <p className="text-2xl text-pink-700 font-semibold">{item.time}</p>
-              <h3 className="text-3xl font-bold my-1">{item.title}</h3>
-              <p className="text-xl text-gray-600">{item.location}</p>
+              <p className="text-2xl font-semibold" style={{ color: invitationData.primaryColor }}>{item.time}</p>
+              <h3 className="text-3xl font-bold my-1" style={{ color: invitationData.textColor }}>{item.title}</h3>
+              <p className="text-xl" style={{ color: invitationData.textColor }}>{item.location}</p>
             </div>
           </AnimatedSection>
         ))}
@@ -73,16 +79,16 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
 
       {/* Court of Honor Section */}
       {features.courtOfHonor && invitationData.courtOfHonor?.length > 0 && (
-        <section id="court-of-honor" className="bg-white py-20 px-4">
+        <section id="court-of-honor" className="py-20 px-4" style={{ backgroundColor: invitationData.backgroundColor === '#fdf2f8' ? '#ffffff' : invitationData.backgroundColor }}>
           <AnimatedSection>
-            <h2 className="text-4xl font-bold text-center text-pink-800 mb-12">Court of Honor</h2>
+            <h2 className="text-4xl font-bold text-center mb-12" style={{ color: invitationData.primaryColor }}>Court of Honor</h2>
           </AnimatedSection>
           <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 text-center">
             {invitationData.courtOfHonor.map((member: CourtMember) => (
               <AnimatedSection key={member.name}>
                 <img src={member.photoUrl} alt={member.name} className="w-32 h-32 rounded-full mx-auto shadow-lg border-4 border-white" />
-                <h4 className="text-xl font-bold mt-4">{member.name}</h4>
-                <p className="text-md text-gray-500">{member.role}</p>
+                <h4 className="text-xl font-bold mt-4" style={{ color: invitationData.textColor }}>{member.name}</h4>
+                <p className="text-md" style={{ color: invitationData.textColor }}>{member.role}</p>
               </AnimatedSection>
             ))}
           </div>
@@ -93,8 +99,10 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
       {features.socialMediaWall && (
         <section id="social-media" className="py-20 px-4 text-center">
            <AnimatedSection>
-            <h2 className="text-4xl font-bold text-pink-800 mb-4">Share Your Photos!</h2>
-            <p className="text-2xl text-gray-600">Use the hashtag <span className="font-bold text-pink-600">#ValentinaXV</span></p>
+            <h2 className="text-4xl font-bold mb-4" style={{ color: invitationData.primaryColor }}>Share Your Photos!</h2>
+            <p className="text-2xl" style={{ color: invitationData.textColor }}>
+              Use the hashtag <span className="font-bold" style={{ color: invitationData.primaryColor }}>#ValentinaXV</span>
+            </p>
           </AnimatedSection>
         </section>
       )}

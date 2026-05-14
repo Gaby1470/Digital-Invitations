@@ -21,16 +21,17 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       heroNames: 'Gaby & Emilio',
       timelineTitle: 'Our Wedding Day',
       galleryTitle: 'Our Story',
-      dressCode: { title: 'Dress Code', description: 'Formal Attire' },
+      dressCode: { man: 'Formal', woman: 'Formal' },
       mainVenueAddress: "123 Main Street, Anytown, USA",
       galleryImages: [
         "https://picsum.photos/seed/gallery1/800/600",
         "https://picsum.photos/seed/gallery2/800/600",
         "https://picsum.photos/seed/gallery3/800/600",
       ],
-      lodgingAndTravel: [
+      recommendations: [
         { name: "The Grand Hotel", description: "5-star hotel near the venue.", link: "#" },
         { name: "City Center Inn", description: "Affordable option downtown.", link: "#" },
+        { name: "Local Eats", description: "A guide to the best local restaurants.", link: "#" },
       ],
       timelineItems: [
         { time: "3 PM", title: "Ceremony", location: "St. Mary's Church" },
@@ -41,7 +42,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     features: {
       multiEventSchedule: true,
       countdown: { type: 'flip-clock' },
-      lodgingAndTravel: true,
+      recommendations: true,
       digitalRegistry: { enabled: true, types: ['amazon', 'cash_fund'] },
       songRequests: true,
     },
@@ -65,6 +66,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       heroNames: 'Olivia & Liam',
       timelineTitle: 'The Celebration',
       galleryTitle: 'Moments',
+      dressCode: { man: 'Formal', woman: 'Formal' },
       mainVenueAddress: "The Modern Art Museum, New York",
       galleryImages: [
         "https://picsum.photos/seed/minimal-1/800/600",
@@ -79,7 +81,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
     features: {
       multiEventSchedule: true,
-      lodgingAndTravel: false,
+      recommendations: true,
     },
   },
   'romantic-wedding': {
@@ -101,6 +103,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       heroNames: 'Sophia & Noah',
       timelineTitle: 'Our Special Day',
       galleryTitle: 'Our Love Story',
+      dressCode: { man: 'Formal', woman: 'Formal' },
       mainVenueAddress: "The Botanical Gardens, San Francisco",
       galleryImages: [
         "https://picsum.photos/seed/romantic-1/800/600",
@@ -115,7 +118,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
     features: {
       multiEventSchedule: true,
-      lodgingAndTravel: true,
+      recommendations: true,
     },
   },
   'quinceanera-dream': {

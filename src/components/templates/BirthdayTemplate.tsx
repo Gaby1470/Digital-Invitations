@@ -56,10 +56,10 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
       pattern: 'opacity-10 bg-[url("https://www.transparenttextures.com/patterns/leaves.png")]'
     },
     default: {
-      bg: 'bg-[#6366F1]', // Indigo
-      card: 'bg-white',
-      text: 'text-neutral-900',
-      accent: 'text-indigo-600',
+      bg: invitationData.backgroundColor || '#6366F1',
+      card: '#ffffff',
+      text: invitationData.textColor || '#1f2937',
+      accent: invitationData.primaryColor || '#6366F1',
       pattern: 'opacity-10 bg-[url("https://www.transparenttextures.com/patterns/confetti.png")]'
     }
   };
@@ -67,7 +67,7 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
   const currentTheme = themeClasses[theme as keyof typeof themeClasses] || themeClasses.default;
 
   return (
-    <div className={`w-full min-h-screen overflow-hidden ${currentTheme.bg} ${font} relative`}>
+    <div className={`w-full min-h-screen overflow-hidden ${font} relative`} style={{ backgroundColor: currentTheme.bg }}>
       {/* Dynamic Background Pattern */}
       <div className={`absolute inset-0 pointer-events-none ${currentTheme.pattern}`} />
 
@@ -91,7 +91,7 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
               {invitationData.heroTitle || "You're Invited!"}
             </p>
           </div>
-          <h1 className={`text-6xl md:text-9xl font-black tracking-tighter drop-shadow-2xl ${theme === 'superhero' ? currentTheme.text : 'text-white'}`}>
+          <h1 className={`text-6xl md:text-9xl font-black tracking-tighter drop-shadow-2xl`} style={{ color: theme === 'superhero' ? currentTheme.text : 'white' }}>
             {invitationData.heroNames}
           </h1>
           <motion.div 
@@ -108,7 +108,7 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
       <section className="py-24 px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
           <PopIn>
-            <h2 className={`text-4xl md:text-5xl font-black text-center mb-16 uppercase italic ${theme === 'superhero' ? currentTheme.text : 'text-white'}`}>
+            <h2 className={`text-4xl md:text-5xl font-black text-center mb-16 uppercase italic`} style={{ color: theme === 'superhero' ? currentTheme.text : 'white' }}>
               {invitationData.timelineTitle}
             </h2>
           </PopIn>
@@ -116,9 +116,9 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
               <PopIn key={index} delay={index * 0.1}>
-                <div className={`${currentTheme.card} p-8 rounded-[2rem] shadow-2xl transform rotate-${index % 2 === 0 ? '1' : '-1'} hover:rotate-0 transition-transform duration-300 border-b-8 border-black/10`}>
-                  <p className={`text-3xl font-black mb-2 ${currentTheme.accent}`}>{item.time}</p>
-                  <h3 className={`text-2xl font-bold mb-2 ${currentTheme.text}`}>{item.title}</h3>
+                <div className={`p-8 rounded-[2rem] shadow-2xl transform rotate-${index % 2 === 0 ? '1' : '-1'} hover:rotate-0 transition-transform duration-300 border-b-8 border-black/10`} style={{ backgroundColor: currentTheme.card }}>
+                  <p className={`text-3xl font-black mb-2`} style={{ color: currentTheme.accent }}>{item.time}</p>
+                  <h3 className={`text-2xl font-bold mb-2`} style={{ color: currentTheme.text }}>{item.title}</h3>
                   <p className="text-neutral-500 font-medium">{item.location}</p>
                 </div>
               </PopIn>

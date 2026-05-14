@@ -38,7 +38,13 @@ export default function BabyShowerTemplate({ template, data }: BabyShowerTemplat
   };
 
   return (
-    <div className="w-full bg-[#fdfbff] text-slate-800 font-sans overflow-hidden">
+    <div 
+      className="w-full font-sans overflow-hidden"
+      style={{
+        backgroundColor: invitationData.backgroundColor || '#fdfbff',
+        color: invitationData.textColor || '#1e293b'
+      }}
+    >
       {/* Hero Section */}
       <section className="h-screen w-full flex flex-col justify-center items-center relative overflow-hidden">
         <motion.div 
@@ -56,10 +62,13 @@ export default function BabyShowerTemplate({ template, data }: BabyShowerTemplat
         </motion.div>
 
         <motion.div className="z-10 text-center px-4">
-          <span className="bg-white/90 text-blue-400 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] shadow-sm mb-6 inline-block">
+          <span 
+            className="bg-white/90 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] shadow-sm mb-6 inline-block"
+            style={{ color: invitationData.primaryColor }}
+          >
             {invitationData.heroTitle || "A Tiny Miracle is on the Way"}
           </span>
-          <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter" style={{ color: invitationData.textColor }}>
             {invitationData.heroNames}
           </h1>
         </motion.div>
@@ -71,7 +80,10 @@ export default function BabyShowerTemplate({ template, data }: BabyShowerTemplat
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <FadeIn>
               <div className="relative group">
-                <div className="absolute -inset-4 bg-blue-50 rounded-[3rem] rotate-3 group-hover:rotate-0 transition-transform duration-500" />
+                <div 
+                  className="absolute -inset-4 rounded-[3rem] rotate-3 group-hover:rotate-0 transition-transform duration-500" 
+                  style={{ backgroundColor: `${invitationData.primaryColor}1A` }} // 10% opacity
+                />
                 <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl border-[12px] border-white aspect-[4/5]">
                   <img 
                     src={invitationData.family_image_url || 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=80'} 
@@ -83,8 +95,8 @@ export default function BabyShowerTemplate({ template, data }: BabyShowerTemplat
             </FadeIn>
             <FadeIn delay={0.2}>
               <div className="space-y-6">
-                <h2 className="text-4xl md:text-5xl font-black text-slate-900 italic">Meet the Parents</h2>
-                <p className="text-xl text-slate-600 leading-relaxed font-light">
+                <h2 className="text-4xl md:text-5xl font-black italic" style={{ color: invitationData.textColor }}>Meet the Parents</h2>
+                <p className="text-xl leading-relaxed font-light" style={{ color: invitationData.textColor, opacity: 0.8 }}>
                   "We can't wait to share this journey with you all! Our hearts are already so full, 
                   and we are counting down the days until our little one arrives."
                 </p>
@@ -100,10 +112,10 @@ export default function BabyShowerTemplate({ template, data }: BabyShowerTemplat
       </section>
 
       {/* Details with Babyish Elements */}
-      <section className="py-32 px-6 bg-[#f0f7ff] rounded-[4rem] relative z-10">
+      <section className="py-32 px-6 rounded-[4rem] relative z-10" style={{ backgroundColor: `${invitationData.primaryColor}1A`}}>
         <div className="max-w-4xl mx-auto text-center">
           <FadeIn>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold mb-20" style={{ color: invitationData.textColor }}>
               {invitationData.timelineTitle || "The Baby Itinerary"}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -113,9 +125,9 @@ export default function BabyShowerTemplate({ template, data }: BabyShowerTemplat
                   <div className="absolute -top-4 -right-4 text-6xl opacity-10 group-hover:opacity-20 transition-opacity">
                     {index % 2 === 0 ? '🍼' : '🧼'}
                   </div>
-                  <p className="text-blue-400 font-black text-2xl mb-2">{item.time}</p>
-                  <h3 className="text-2xl font-bold text-slate-800 mb-2">{item.title}</h3>
-                  <p className="text-slate-500 italic">{item.location}</p>
+                  <p className="font-black text-2xl mb-2" style={{ color: invitationData.primaryColor }}>{item.time}</p>
+                  <h3 className="text-2xl font-bold mb-2" style={{ color: invitationData.textColor }}>{item.title}</h3>
+                  <p className="italic" style={{ color: invitationData.textColor, opacity: 0.7 }}>{item.location}</p>
                 </div>
               ))}
             </div>
@@ -128,8 +140,8 @@ export default function BabyShowerTemplate({ template, data }: BabyShowerTemplat
         <section className="py-32 px-6">
           <FadeIn>
             <div className="text-center mb-16">
-              <h2 className="text-5xl font-black text-slate-900 mb-4 italic">Team Boy or Team Girl?</h2>
-              <p className="text-xl text-slate-500">Pick a side to see your special mission!</p>
+              <h2 className="text-5xl font-black italic" style={{ color: invitationData.textColor }}>Team Boy or Team Girl?</h2>
+              <p className="text-xl" style={{ color: invitationData.textColor, opacity: 0.7 }}>Pick a side to see your special mission!</p>
             </div>
             
             <div className="max-w-5xl mx-auto">

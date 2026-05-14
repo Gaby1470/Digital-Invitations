@@ -12,9 +12,6 @@ type EventScheduleSectionProps = {
 export default function EventScheduleSection({ data, onFieldChange }: EventScheduleSectionProps) {
   return (
     <div className="p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-semibold text-gray-900">Event Schedule</h3>
-      </div>
       <ListEditor
         title="Event Schedule"
         addItemText="+ Add Event"

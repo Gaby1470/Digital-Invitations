@@ -25,6 +25,7 @@ export default function EditorPage() {
 
   const [invitationData, setInvitationData] = useState<any>(null);
   const [template, setTemplate] = useState<TemplateConfig | null>(null);
+  const [templateId, setTemplateId] = useState<string>(''); // State for the template ID
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,8 +44,12 @@ export default function EditorPage() {
         const templateConf = templateConfig[inv.template];
         if (!templateConf) { throw new Error('Template configuration not found.'); }
         
-        setInvitationData(inv.data);
+        // Ensure inv.data is an object
+        const data = inv.data || {};
+        
+        setInvitationData(data);
         setTemplate(templateConf);
+        setTemplateId(inv.template);
       } catch (e: any) {
         setError(e.message);
       } finally {
@@ -77,6 +82,10 @@ export default function EditorPage() {
   if (error) return <div className="flex items-center justify-center h-screen">Error: {error}</div>;
   if (!invitationData || !template) return <div className="flex items-center justify-center h-screen">Could not load invitation data.</div>;
 
+  // Create a key that changes when the data relevant to rendering changes.
+  const rendererKey = `${templateId}-${JSON.stringify(invitationData)}`;
+
+
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className="max-w-screen-2xl mx-auto md:grid md:grid-cols-3 lg:grid-cols-2 gap-8">
@@ -94,7 +103,12 @@ export default function EditorPage() {
           <div className="w-full max-w-md">
             <div className="aspect-[9/19.5] bg-white rounded-[40px] shadow-2xl p-2 overflow-hidden ring-4 ring-gray-300">
               <div className="h-full w-full overflow-y-auto rounded-[30px]">
-                <TemplateRenderer template={template} data={invitationData} />
+                <TemplateRenderer 
+                  key={rendererKey} // Force re-mount when data changes
+                  templateId={templateId} 
+                  template={template} 
+                  data={invitationData} 
+                />
               </div>
             </div>
           </div>

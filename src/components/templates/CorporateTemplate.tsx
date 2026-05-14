@@ -33,19 +33,25 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
   const invitationData = { ...defaultData, ...data };
 
   return (
-    <div className="w-full bg-[#050505] text-white font-sans selection:bg-blue-500">
+    <div 
+      className="w-full font-sans"
+      style={{
+        backgroundColor: invitationData.backgroundColor || '#050505',
+        color: invitationData.textColor || '#ffffff'
+      }}
+    >
       {/* Hero: The Keynote Entrance */}
-      <section className="relative h-[85vh] w-full flex items-center px-6 md:px-20 overflow-hidden border-b border-white/10">
+      <section className="relative h-[85vh] w-full flex items-center px-6 md:px-20 overflow-hidden border-b" style={{ borderColor: `${invitationData.textColor}1A` }}>
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))]" style={{'--tw-gradient-from': `${invitationData.primaryColor}33`, '--tw-gradient-to': 'transparent'} as any}/>
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
         </div>
 
         <div className="z-10 max-w-4xl">
           <SectionReveal>
             <div className="flex items-center gap-3 mb-6">
-              <div className="h-[2px] w-12 bg-blue-500" />
-              <p className="text-blue-400 text-sm font-bold tracking-[0.3em] uppercase">
+              <div className="h-[2px] w-12" style={{ backgroundColor: invitationData.primaryColor }} />
+              <p className="text-sm font-bold tracking-[0.3em] uppercase" style={{ color: invitationData.primaryColor }}>
                 {invitationData.heroTitle || "Professional Summit 2026"}
               </p>
             </div>
@@ -58,9 +64,9 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
           </SectionReveal>
 
           <SectionReveal delay={0.4}>
-            <div className="flex flex-wrap gap-10 mt-12 py-8 border-t border-white/10">
+            <div className="flex flex-wrap gap-10 mt-12 py-8 border-t" style={{ borderColor: `${invitationData.textColor}1A` }}>
               <div>
-                <p className="text-white/40 text-xs uppercase tracking-widest mb-1">Date</p>
+                <p className="text-xs uppercase tracking-widest mb-1" style={{ color: `${invitationData.textColor}66` }}>Date</p>
                 <p className="text-xl font-medium">
                   {invitationData.event_date && new Date(invitationData.event_date).toLocaleDateString('en-US', {
                     month: 'long', day: 'numeric', year: 'numeric'
@@ -68,7 +74,7 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
                 </p>
               </div>
               <div>
-                <p className="text-white/40 text-xs uppercase tracking-widest mb-1">Location</p>
+                <p className="text-xs uppercase tracking-widest mb-1" style={{ color: `${invitationData.textColor}66` }}>Location</p>
                 <p className="text-xl font-medium">{invitationData.venue_city || "San Francisco, CA"}</p>
               </div>
             </div>
@@ -83,7 +89,7 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
             <div className="lg:col-span-4">
               <SectionReveal>
                 <h2 className="text-4xl font-bold mb-6">Summit Agenda</h2>
-                <p className="text-white/50 leading-relaxed">
+                <p className="leading-relaxed" style={{ color: `${invitationData.textColor}80` }}>
                   Join industry leaders for a day of strategic insights and high-level networking.
                 </p>
               </SectionReveal>
@@ -92,15 +98,15 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
             <div className="lg:col-span-8 space-y-4">
               {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
                 <SectionReveal key={index} delay={index * 0.1}>
-                  <div className="group flex items-center justify-between p-6 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl transition-all duration-300">
+                  <div className="group flex items-center justify-between p-6 border rounded-xl transition-all duration-300" style={{ backgroundColor: `${invitationData.textColor}0D`, borderColor: `${invitationData.textColor}0D` }}>
                     <div className="flex gap-8 items-center">
-                      <span className="text-blue-500 font-mono font-bold text-lg">{item.time}</span>
+                      <span className="font-mono font-bold text-lg" style={{ color: invitationData.primaryColor }}>{item.time}</span>
                       <div>
                         <h3 className="text-xl font-bold group-hover:text-blue-400 transition-colors">{item.title}</h3>
-                        <p className="text-sm text-white/40">{item.location}</p>
+                        <p className="text-sm" style={{ color: `${invitationData.textColor}66` }}>{item.location}</p>
                       </div>
                     </div>
-                    <div className="h-2 w-2 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="h-2 w-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" style={{ backgroundColor: invitationData.primaryColor }} />
                   </div>
                 </SectionReveal>
               ))}
@@ -110,12 +116,12 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
       )}
 
       {/* Speakers/Sponsors: Professional Grid */}
-      <section className="py-32 px-6 md:px-20 bg-neutral-900/50">
+      <section className="py-32 px-6 md:px-20" style={{ backgroundColor: `${invitationData.textColor}08` }}>
         <SectionReveal>
           <div className="flex justify-between items-end mb-20">
             <h2 className="text-4xl font-bold">Featured Speakers</h2>
-            <div className="hidden md:block h-[1px] flex-1 mx-12 bg-white/10" />
-            <p className="text-blue-500 font-bold uppercase tracking-widest text-xs">Excellence in Leadership</p>
+            <div className="hidden md:block h-[1px] flex-1 mx-12" style={{ backgroundColor: `${invitationData.textColor}1A` }} />
+            <p className="font-bold uppercase tracking-widest text-xs" style={{ color: invitationData.primaryColor }}>Excellence in Leadership</p>
           </div>
         </SectionReveal>
 
@@ -123,7 +129,7 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
           {[1, 2, 3, 4].map((i) => (
             <SectionReveal key={i} delay={i * 0.1}>
               <div className="group cursor-pointer">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-800 mb-4 border border-white/5">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-800 mb-4 border" style={{ borderColor: `${invitationData.textColor}1A` }}>
                   <img 
                     src={`https://picsum.photos/seed/speaker${i}/600/800`} 
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
@@ -131,7 +137,7 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
                   />
                 </div>
                 <h4 className="text-lg font-bold">Executive Name</h4>
-                <p className="text-sm text-white/40 uppercase tracking-tighter">Chief Innovation Officer</p>
+                <p className="text-sm uppercase tracking-tighter" style={{ color: `${invitationData.textColor}66` }}>Chief Innovation Officer</p>
               </div>
             </SectionReveal>
           ))}
@@ -140,10 +146,16 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
 
       {/* Action Section: RSVP/Register */}
       <section className="py-40 text-center relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-blue-500 to-transparent" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b to-transparent" style={{ '--gradient-from': invitationData.primaryColor } as any} />
         <SectionReveal>
           <h2 className="text-4xl md:text-6xl font-black mb-10">Secure Your Presence</h2>
-          <button className="px-12 py-5 bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase tracking-widest rounded-full shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] transition-all hover:scale-105 active:scale-95">
+          <button 
+            className="px-12 py-5 text-white font-bold uppercase tracking-widest rounded-full transition-all hover:scale-105 active:scale-95"
+            style={{ 
+              backgroundColor: invitationData.primaryColor,
+              boxShadow: `0 0 40px -10px ${invitationData.primaryColor}80`
+            }}
+          >
             Register for Event
           </button>
         </SectionReveal>

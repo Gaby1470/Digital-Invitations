@@ -25,10 +25,10 @@ export default function TemplatePreviewPage() {
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [hasMounted, setHasMounted] = useState(false); // NEW: To track hydration
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    setHasMounted(true); // NEW: Confirm client-side mounting
+    setHasMounted(true);
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
@@ -72,7 +72,6 @@ export default function TemplatePreviewPage() {
     }
   };
 
-  // Prevent rendering interactive elements until mounted to fix Hydration Mismatch
   if (!hasMounted) {
     return <div className="min-h-screen bg-white" />; 
   }
@@ -98,7 +97,6 @@ export default function TemplatePreviewPage() {
         </button>
       </div>
       
-      {/* Ensure templateId is passed to help TemplateRenderer find the component */}
       <TemplateRenderer 
         templateId={templateName} 
         template={template} 

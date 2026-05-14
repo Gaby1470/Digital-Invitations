@@ -13,10 +13,36 @@ export type CourtMember = {
 };
 
 export type Godparent = {
-  name: string;
+  name:string;
   role: string;
   photoUrl: string;
 }
+
+// --- DRESS CODE TYPES ---
+export type DressCodeStyle = 'Casual' | 'Black Tie' | 'Formal' | 'Semi-Formal' | 'Cocktail' | 'Garden Attire';
+
+export type DressCode = {
+  man: DressCodeStyle;
+  woman: DressCodeStyle;
+  pinterestUrlMan?: string;
+  pinterestUrlWoman?: string;
+};
+
+export const dressCodeDescriptions: { [key in DressCodeStyle]: string } = {
+  'Casual': 'Informal and comfortable. Think sundresses, sandals, and casual button-downs.',
+  'Semi-Formal': 'A step above casual. Think cocktail dresses, dress shirts, and slacks.',
+  'Cocktail': 'Elegant and party-ready. Think suits, formal cocktail dresses, and heels.',
+  'Garden Attire': 'Light fabrics, floral prints, and comfortable but stylish shoes for outdoor terrain.',
+  'Formal': 'Tuxedos or dark suits and ties for men, and floor-length gowns or formal cocktail dresses for women.',
+  'Black Tie': 'The most formal dress code. Requires tuxedos for men and formal evening gowns for women.',
+};
+// --- END DRESS CODE TYPES ---
+
+export type RecommendationItem = {
+  name: string;
+  description: string;
+  link: string;
+};
 
 export type TemplateFeatures = {
   multiEventSchedule?: boolean;
@@ -24,6 +50,7 @@ export type TemplateFeatures = {
     type: 'flip-clock' | 'minimalist';
   };
   lodgingAndTravel?: boolean;
+  recommendations?: boolean;
   digitalRegistry?: {
     enabled: boolean;
     types: ('amazon' | 'zola' | 'cash_fund')[];
@@ -62,9 +89,10 @@ export type TemplateConfig = {
     timelineTitle: string;
     galleryTitle?: string;
     timelineItems: TimelineItem[];
+    recommendations?: RecommendationItem[];
     courtOfHonor?: CourtMember[];
     godparents?: Godparent[];
-    dressCode?: { title: string; description: string };
+        dressCode?: DressCode;
     [key: string]: any;
   };
   features: TemplateFeatures;

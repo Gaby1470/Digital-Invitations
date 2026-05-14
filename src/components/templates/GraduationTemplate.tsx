@@ -34,7 +34,13 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
   const [guestMessage, setGuestMessage] = useState("");
 
   return (
-    <div className="w-full bg-[#0a0a0a] text-white font-sans selection:bg-amber-200 selection:text-black">
+    <div 
+      className="w-full font-sans"
+      style={{
+        backgroundColor: invitationData.backgroundColor || '#0a0a0a',
+        color: invitationData.textColor || '#ffffff'
+      }}
+    >
       {/* Hero Section: The Achievement */}
       <section 
         className="h-screen w-full flex flex-col justify-center items-center text-center relative overflow-hidden"
@@ -55,7 +61,7 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
 
         <div className="z-10 px-6">
           <FadeIn delay={0.5}>
-            <p className="text-amber-400 text-sm tracking-[0.4em] uppercase font-bold mb-4">
+            <p className="text-sm tracking-[0.4em] uppercase font-bold mb-4" style={{ color: invitationData.primaryColor }}>
               {invitationData.heroTitle || "Class of 2026"}
             </p>
           </FadeIn>
@@ -66,7 +72,7 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
           </FadeIn>
           
           <FadeIn delay={1.1}>
-            <div className="inline-block border-y border-amber-400/30 py-4 px-12">
+            <div className="inline-block py-4 px-12" style={{ borderTop: `1px solid ${invitationData.primaryColor}4D`, borderBottom: `1px solid ${invitationData.primaryColor}4D`}}>
               <h2 className="text-2xl md:text-3xl font-light tracking-wide uppercase">
                 {invitationData.degreeType || "Bachelor of Science in Engineering"}
               </h2>
@@ -76,7 +82,7 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
       </section>
 
       {/* Modern Academic Timeline */}
-      <section className="py-32 px-6 bg-[#0a0a0a]">
+      <section className="py-32 px-6" style={{ backgroundColor: invitationData.backgroundColor || '#0a0a0a' }}>
         <div className="max-w-4xl mx-auto">
           <FadeIn>
             <h2 className="text-3xl md:text-5xl font-bold text-center mb-24 italic">
@@ -87,10 +93,16 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
               <FadeIn key={index} delay={index * 0.1}>
-                <div className="group p-8 bg-neutral-900/50 border border-neutral-800 rounded-2xl hover:border-amber-400/50 transition-colors duration-500">
-                  <p className="text-amber-400 font-mono text-lg mb-2">{item.time}</p>
+                <div 
+                  className="group p-8 rounded-2xl transition-colors duration-500"
+                  style={{
+                    backgroundColor: `${invitationData.textColor}0D`,
+                    border: `1px solid ${invitationData.textColor}1A`,
+                  }}
+                >
+                  <p className="font-mono text-lg mb-2" style={{ color: invitationData.primaryColor }}>{item.time}</p>
                   <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
-                  <p className="text-neutral-400 font-light italic">{item.location}</p>
+                  <p className="font-light italic" style={{ color: `${invitationData.textColor}66` }}>{item.location}</p>
                 </div>
               </FadeIn>
             ))}
@@ -108,13 +120,15 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
               
               <div className="space-y-4">
                 <textarea 
-                  className="w-full p-4 border border-neutral-200 rounded-md focus:ring-2 focus:ring-amber-400 focus:border-transparent outline-none transition-all min-h-[150px] text-neutral-700 font-serif italic"
+                  className="w-full p-4 border border-neutral-200 rounded-md focus:ring-2 focus:border-transparent outline-none transition-all min-h-[150px] text-neutral-700 font-serif italic"
+                  style={{ '--focus-ring-color': invitationData.primaryColor } as any}
                   placeholder="Write your message here..."
                   value={guestMessage}
                   onChange={(e) => setGuestMessage(e.target.value)}
                 />
                 <button 
-                  className="w-full py-4 bg-amber-400 text-white font-bold uppercase tracking-widest rounded-md hover:bg-amber-500 transition-colors shadow-lg"
+                  className="w-full py-4 text-white font-bold uppercase tracking-widest rounded-md hover:opacity-90 transition-opacity shadow-lg"
+                  style={{ backgroundColor: invitationData.primaryColor }}
                   onClick={() => alert("Thank you for your message!")}
                 >
                   Send Message
@@ -127,8 +141,8 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
 
       {/* Future Plans: "The Next Chapter" */}
       {features.futurePlans && invitationData.futurePlans && (
-        <section className="py-32 bg-amber-400 text-black">
-          <div className="max-w-4xl mx-auto px-6 text-center">
+        <section className="text-black" style={{ backgroundColor: invitationData.primaryColor }}>
+          <div className="max-w-4xl mx-auto px-6 py-32 text-center">
             <FadeIn>
               <span className="text-xs uppercase font-bold tracking-[0.3em] mb-4 block">The Next Chapter</span>
               <h2 className="text-4xl md:text-6xl font-black italic mb-8 uppercase tracking-tighter">

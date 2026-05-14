@@ -9,6 +9,8 @@ import MainDetailsSection from './form-sections/MainDetailsSection';
 import ColorsAndStyleSection from './form-sections/ColorsAndStyleSection';
 import GallerySection from './form-sections/GallerySection';
 import EventScheduleSection from './form-sections/EventScheduleSection';
+import DressCodeSection from './form-sections/DressCodeSection'; // Import the new component
+import RecommendationsSection from './form-sections/RecommendationsSection';
 
 import Modal from './shared/Modal';
 import ImageUploader from './shared/ImageUploader';
@@ -69,6 +71,18 @@ export default function EditorForm({ data, onDataChange, onSave, template }: { d
             onFieldChange={handleFieldChange}
             onMultipleFieldsChange={handleMultipleFieldsChange}
           />
+
+          <DressCodeSection 
+            data={data}
+            onFieldChange={handleFieldChange}
+          />
+
+          {template.features.recommendations && (
+            <RecommendationsSection
+              data={data}
+              onFieldChange={handleFieldChange}
+            />
+          )}
 
           <GallerySection
             data={data}
