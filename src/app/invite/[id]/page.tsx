@@ -1,5 +1,4 @@
 // src/app/invite/[id]/page.tsx
-import { createClient } from '@/lib/supabase-server';
 import { templateConfig } from '@/lib/templateConfig';
 import TemplateRenderer from '@/components/TemplateRenderer';
 import Link from 'next/link';
@@ -10,18 +9,29 @@ type InvitePageProps = {
   };
 };
 
+async function getInvitation(id: string) {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  
+  try {
+    const res = await fetch(`${appUrl}/api/invitations/${id}`, {
+      next: { revalidate: 3600 } // Revalidate data every hour
+    });
+
+    if (!res.ok) {
+      return null;
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Failed to fetch invitation ${id}:`, error);
+    return null;
+  }
+}
+
 export default async function InvitePage({ params }: InvitePageProps) {
   const { id } = params;
-  const supabase = createClient();
+  const invitation = await getInvitation(id);
 
-  // Fetch the invitation data from Supabase
-  const { data: invitation, error } = await supabase
-    .from('invitations')
-    .select('*')
-    .eq('id', id)
-    .single();
-
-  if (error || !invitation) {
+  if (!invitation) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <h1 className="text-4xl font-bold mb-4">Invitation Not Found</h1>

@@ -1,22 +1,28 @@
+// src/components/templates/BabyShowerTemplate.tsx
 "use client";
 
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { TemplateConfig, TimelineItem } from '@/lib/types';
+import React, { useRef } from 'react';
+import { TemplateConfig } from "@/lib/types";
+import { motion, useInView } from "framer-motion";
+import { RsvpSection } from "./shared/RsvpSection";
+import { Calendar, MapPin, Gift, Baby, Heart, PartyPopper, Utensils } from "lucide-react";
 
-/**
- * Enhanced FadeIn for organic baby-themed entries.
- */
-function FadeIn({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
+function FadeIn({
+  children,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px 0px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 0.8, delay, ease: 'easeOut' }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
@@ -28,177 +34,169 @@ type BabyShowerTemplateProps = {
   data: any;
 };
 
-export default function BabyShowerTemplate({ template, data }: BabyShowerTemplateProps) {
-  const { defaultData, features } = template;
+export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
+  template,
+  data,
+}) => {
+  const { defaultData } = template;
   const invitationData = { ...defaultData, ...data };
-  const [team, setTeam] = useState<'boy' | 'girl' | null>(null);
 
-  const handleVote = (selectedTeam: 'boy' | 'girl') => {
-    setTeam(selectedTeam);
-  };
+  const {
+    babyName,
+    parentsNames,
+    event_date,
+    locationName,
+    mainVenueAddress,
+    rsvpDeadline,
+    rsvpContact,
+    giftRegistryUrl,
+  } = invitationData;
+  
+  const date = event_date ? new Date(event_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+  const time = event_date ? new Date(event_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : '';
 
   return (
-    <div 
-      className="w-full font-sans overflow-hidden"
-      style={{
-        backgroundColor: invitationData.backgroundColor || '#fdfbff',
-        color: invitationData.textColor || '#1e293b'
-      }}
-    >
+    <div className="relative w-full min-h-screen bg-gradient-to-b from-[#E3F2FD] via-[#FFF9C4] to-[#E8F5E9] antialiased font-sans text-slate-700 overflow-hidden pb-12">
+      
+      {/* Safari Animals Sidebar Image */}
+      <div className="absolute top-0 left-0 h-full w-48 md:w-72 lg:w-80 pointer-events-none select-none z-0">
+        <img 
+          src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/animals-babyshower.png" 
+          alt="Safari Animals" 
+          className="w-full h-full object-cover sm:object-contain object-left-top opacity-85"
+        />
+      </div>
+
+      {/* Whimsical Decorative Background Elements */}
+      <div className="absolute top-4 left-4 md:left-1/4 text-2xl opacity-40 select-none animate-bounce" style={{ animationDuration: '4s' }}>🌙</div>
+      <div className="absolute top-12 right-6 text-3xl opacity-50 animate-pulse select-none">⭐</div>
+      <div className="absolute top-40 right-1/4 text-xl opacity-30 select-none">✨</div>
+      <div className="absolute top-64 right-8 text-2xl opacity-40 select-none animate-bounce" style={{ animationDuration: '5s' }}>🐝</div>
+      <div className="absolute top-1/2 left-8 md:left-1/3 text-3xl opacity-20 select-none">🧸</div>
+      <div className="absolute top-3/4 right-8 text-3xl opacity-30 select-none animate-pulse">🎈</div>
+      
       {/* Hero Section */}
-      <section className="h-screen w-full flex flex-col justify-center items-center relative overflow-hidden">
-        <motion.div 
-          className="absolute inset-0 z-0"
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5 }}
-        >
-          <img 
-            src={invitationData.hero_image_url || 'https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&q=80'} 
-            className="w-full h-full object-cover"
-            alt="Hero Background"
-          />
-          <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]" />
-        </motion.div>
-
-        <motion.div className="z-10 text-center px-4">
-          <span 
-            className="bg-white/90 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] shadow-sm mb-6 inline-block"
-            style={{ color: invitationData.primaryColor }}
-          >
-            {invitationData.heroTitle || "A Tiny Miracle is on the Way"}
-          </span>
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter" style={{ color: invitationData.textColor }}>
-            {invitationData.heroNames}
-          </h1>
-        </motion.div>
-      </section>
-
-      {/* Meet the Parents Section - NEW SECTION */}
-      <section className="py-24 px-6 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <FadeIn>
-              <div className="relative group">
-                <div 
-                  className="absolute -inset-4 rounded-[3rem] rotate-3 group-hover:rotate-0 transition-transform duration-500" 
-                  style={{ backgroundColor: `${invitationData.primaryColor}1A` }} // 10% opacity
-                />
-                <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl border-[12px] border-white aspect-[4/5]">
-                  <img 
-                    src={invitationData.family_image_url || 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=80'} 
-                    alt="The Happy Family"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.2}>
-              <div className="space-y-6">
-                <h2 className="text-4xl md:text-5xl font-black italic" style={{ color: invitationData.textColor }}>Meet the Parents</h2>
-                <p className="text-xl leading-relaxed font-light" style={{ color: invitationData.textColor, opacity: 0.8 }}>
-                  "We can't wait to share this journey with you all! Our hearts are already so full, 
-                  and we are counting down the days until our little one arrives."
-                </p>
-                <div className="flex gap-2">
-                  <span className="text-3xl">🧸</span>
-                  <span className="text-3xl">🤰</span>
-                  <span className="text-3xl">✨</span>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* Details with Babyish Elements */}
-      <section className="py-32 px-6 rounded-[4rem] relative z-10" style={{ backgroundColor: `${invitationData.primaryColor}1A`}}>
-        <div className="max-w-4xl mx-auto text-center">
-          <FadeIn>
-            <h2 className="text-4xl md:text-5xl font-bold mb-20" style={{ color: invitationData.textColor }}>
-              {invitationData.timelineTitle || "The Baby Itinerary"}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
-                <div key={index} className="bg-white p-10 rounded-[2.5rem] shadow-xl relative overflow-hidden group">
-                  {/* Decorative Babyish Icons */}
-                  <div className="absolute -top-4 -right-4 text-6xl opacity-10 group-hover:opacity-20 transition-opacity">
-                    {index % 2 === 0 ? '🍼' : '🧼'}
-                  </div>
-                  <p className="font-black text-2xl mb-2" style={{ color: invitationData.primaryColor }}>{item.time}</p>
-                  <h3 className="text-2xl font-bold mb-2" style={{ color: invitationData.textColor }}>{item.title}</h3>
-                  <p className="italic" style={{ color: invitationData.textColor, opacity: 0.7 }}>{item.location}</p>
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Creative Gender Betting Section */}
-      {features.genderBetting && (
-        <section className="py-32 px-6">
-          <FadeIn>
-            <div className="text-center mb-16">
-              <h2 className="text-5xl font-black italic" style={{ color: invitationData.textColor }}>Team Boy or Team Girl?</h2>
-              <p className="text-xl" style={{ color: invitationData.textColor, opacity: 0.7 }}>Pick a side to see your special mission!</p>
-            </div>
+      <section className="relative z-10 flex flex-col items-center justify-center text-center pt-20 pb-10 px-4 max-w-2xl mx-auto">
+        <FadeIn>
+          <div className="relative pt-12 pb-4 px-6 flex flex-col items-center">
+            {/* Floating Clouds */}
+            <div className="absolute -top-4 left-4 w-20 h-9 bg-white/80 rounded-full blur-[2px] shadow-sm animate-pulse" style={{ animationDuration: '6s' }}></div>
+            <div className="absolute top-6 -right-6 w-24 h-10 bg-white/70 rounded-full blur-[2px] shadow-sm animate-pulse" style={{ animationDuration: '8s' }}></div>
             
-            <div className="max-w-5xl mx-auto">
-              <AnimatePresence mode="wait">
-                {!team ? (
-                  <motion.div 
-                    key="selector"
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-8"
-                  >
-                    <button 
-                      onClick={() => handleVote('boy')}
-                      className="group relative h-72 rounded-[2.5rem] bg-blue-500 overflow-hidden shadow-2xl transition-transform hover:scale-105"
-                    >
-                      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20" />
-                      <div className="relative z-10 flex flex-col items-center justify-center h-full text-white">
-                        <span className="text-6xl mb-2">👶</span>
-                        <span className="text-3xl font-black uppercase tracking-tighter">Team Boy</span>
-                        <p className="text-xs mt-2 opacity-80">Mission: Diapers!</p>
-                      </div>
-                    </button>
+            <div className="bg-white/40 p-3 rounded-full mb-4 shadow-sm backdrop-blur-sm border border-white/60">
+              <Baby className="w-8 h-8 text-[#1E88E5]" />
+            </div>
 
-                    <button 
-                      onClick={() => handleVote('girl')}
-                      className="group relative h-72 rounded-[2.5rem] bg-pink-500 overflow-hidden shadow-2xl transition-transform hover:scale-105"
-                    >
-                      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/hearts-of-love.png')] opacity-20" />
-                      <div className="relative z-10 flex flex-col items-center justify-center h-full text-white">
-                        <span className="text-6xl mb-2">🌸</span>
-                        <span className="text-3xl font-black uppercase tracking-tighter">Team Girl</span>
-                        <p className="text-xs mt-2 opacity-80">Mission: Baby Towels!</p>
-                      </div>
-                    </button>
-                  </motion.div>
-                ) : (
-                  <motion.div 
-                    key="result"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`p-12 rounded-[3rem] text-center shadow-3xl ${team === 'boy' ? 'bg-blue-600' : 'bg-pink-600'} text-white`}
-                  >
-                    <div className="text-7xl mb-6">{team === 'boy' ? '🎖️' : '👑'}</div>
-                    <h3 className="text-4xl font-black mb-4">Welcome to {team === 'boy' ? 'Team Boy' : 'Team Girl'}!</h3>
-                    <p className="text-2xl opacity-90 max-w-2xl mx-auto leading-relaxed mb-10">
-                      Your goal: Please bring a pack of <span className="font-black underline mx-2">{team === 'boy' ? 'diapers' : 'baby towels'}</span>. 
-                      Thank you for your love!
-                    </p>
-                    <button onClick={() => setTeam(null)} className="text-xs font-bold uppercase tracking-widest bg-black/20 hover:bg-black/30 px-6 py-2 rounded-full">
-                      Wait, let me choose again!
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            <h1 className="text-5xl sm:text-7xl font-extrabold tracking-wide drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)] leading-tight">
+              <span className="text-[#1E88E5] font-serif">Baby</span>{' '}
+              <span className="text-[#F5B041] font-serif">Shower</span>
+            </h1>
+            
+            <p className="mt-6 text-xs font-bold uppercase tracking-widest text-[#479cd4] bg-white/50 px-3 py-1 rounded-full border border-white/40">
+              Celebramos la llegada de un nuevo miembro a la familia
+            </p>
+            
+            <h2 className="mt-4 text-3xl sm:text-4xl font-black text-[#1A5276] tracking-tight">
+              {babyName || "Little One"}
+            </h2>
+            
+            <p className="text-sm md:text-base font-medium text-slate-500 mt-2 max-w-sm mx-auto">
+              Para los orgullosos padres <span className="text-slate-800 font-semibold">{parentsNames}</span>
+            </p>
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* Activities Section */}
+      <section className="relative z-10 max-w-xl mx-auto px-4 mb-4">
+        <FadeIn delay={0.1}>
+          <div className="bg-white/60 backdrop-blur-md rounded-2xl p-6 border border-white/80 shadow-md text-center">
+            <div className="flex justify-center items-center gap-4 mb-3">
+              <div className="w-12 h-12 bg-[#FFF9C4] rounded-full flex items-center justify-center text-[#F5B041] shadow-sm">
+                <PartyPopper className="w-6 h-6" />
+              </div>
+              <div className="w-12 h-12 bg-[#FFF9C4] rounded-full flex items-center justify-center text-[#F5B041] shadow-sm">
+                <Utensils className="w-6 h-6" />
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-slate-800 mb-2 tracking-tight">¡Únete a la Diversión!</h3>
+            <p className="text-sm md:text-base font-medium text-slate-600">
+              Prepárate para una tarde llena de juegos divertidos, comida deliciosa y compañía maravillosa mientras celebramos la llegada del pequeño.
+            </p>
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* Details Section */}
+      <section className="relative z-10 py-6 px-4">
+        <div className="container mx-auto max-w-xl grid grid-cols-1 gap-6">
+          
+          {/* Date Card */}
+          <FadeIn delay={0.2}>
+            <div className="group bg-white/60 backdrop-blur-md rounded-2xl p-6 shadow-md border border-white/80 text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+              <div className="mx-auto w-10 h-10 bg-[#E8F5E9] rounded-xl flex items-center justify-center text-[#7CB342] mb-3 group-hover:scale-110 transition-transform">
+                <Calendar className="w-5 h-5" />
+              </div>
+              <div className="text-[#689F38] font-bold uppercase tracking-wider text-xs mb-1">
+                Cuándo
+              </div>
+              <div className="text-xl font-bold text-slate-800">{date}</div>
+              <div className="text-md font-medium text-slate-600 mt-0.5">{time}</div>
             </div>
           </FadeIn>
-        </section>
-      )}
+          
+          {/* Location Card */}
+          <FadeIn delay={0.3}>
+            <div className="group bg-white/60 backdrop-blur-md rounded-2xl p-6 shadow-md border border-white/80 text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+              <div className="mx-auto w-10 h-10 bg-[#E3F2FD] rounded-xl flex items-center justify-center text-[#0288D1] mb-3 group-hover:scale-110 transition-transform">
+                <MapPin className="w-5 h-5" />
+              </div>
+              <div className="text-[#0288D1] font-bold uppercase tracking-wider text-xs mb-1">
+                Dónde
+              </div>
+              <div className="text-xl font-bold text-slate-800">{locationName}</div>
+              <div className="text-sm text-slate-600 px-4 mt-1 break-words font-medium">{mainVenueAddress}</div>
+            </div>
+          </FadeIn>
+
+        </div>
+      </section>
+
+      {/* RSVP & Registry Section */}
+      <section className="relative z-10 py-6 px-4 max-w-xl mx-auto">
+        <FadeIn delay={0.4}>
+          <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border-2 border-white/80 p-6 sm:p-8 space-y-6">
+            
+            {/* Native Registry UI implementation */}
+            {giftRegistryUrl && (
+              <div className="pb-6 border-b border-slate-200/60 flex flex-col items-center">
+                <div className="flex items-center gap-2 text-[#E67E22] font-bold text-sm uppercase tracking-wider mb-3">
+                  <Gift className="w-4 h-4" /> ¿Podrás acompañarnos?
+                </div>
+              </div>
+            )}
+
+            {/* Managed RSVP Area */}
+            <div className="text-center">
+              <RsvpSection 
+                rsvpDeadline={rsvpDeadline} 
+                rsvpContact={rsvpContact} 
+              />
+            </div>
+
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* Footer */}
+      <footer className="relative z-10 mt-12 mx-4 max-w-xl sm:mx-auto bg-white/40 backdrop-blur-sm rounded-2xl py-6 border border-white/50 flex flex-col items-center justify-center gap-2 text-center shadow-sm">
+        <Heart className="w-5 h-5 text-red-400 fill-red-400 animate-pulse" />
+        <p className="text-sm text-slate-700 font-bold tracking-wide">
+          ¡No podemos esperar para celebrar contigo!
+        </p>
+      </footer>
     </div>
   );
-}
+};
+
+export default BabyShowerTemplate;

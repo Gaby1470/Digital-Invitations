@@ -1,5 +1,13 @@
 // src/lib/types.ts
 
+export type Rsvp = {
+  id: number;
+  invitation_id: string;
+  name: string;
+  status: "Confirmo" | "No asistirá" | "Tal vez";
+  created_at: string;
+};
+
 export type TimelineItem = {
   time: string;
   title: string;
@@ -8,18 +16,24 @@ export type TimelineItem = {
 
 export type CourtMember = {
   name: string;
-  role: 'Dama' | 'Chambelán';
+  role: "Dama" | "Chambelán";
   photoUrl: string;
 };
 
 export type Godparent = {
-  name:string;
+  name: string;
   role: string;
   photoUrl: string;
-}
+};
 
 // --- DRESS CODE TYPES ---
-export type DressCodeStyle = 'Casual' | 'Black Tie' | 'Formal' | 'Semi-Formal' | 'Cocktail' | 'Garden Attire';
+export type DressCodeStyle =
+  | "Casual"
+  | "Black Tie"
+  | "Formal"
+  | "Semi-Formal"
+  | "Cocktail"
+  | "Garden Attire";
 
 export type DressCode = {
   man: DressCodeStyle;
@@ -29,12 +43,18 @@ export type DressCode = {
 };
 
 export const dressCodeDescriptions: { [key in DressCodeStyle]: string } = {
-  'Casual': 'Informal and comfortable. Think sundresses, sandals, and casual button-downs.',
-  'Semi-Formal': 'A step above casual. Think cocktail dresses, dress shirts, and slacks.',
-  'Cocktail': 'Elegant and party-ready. Think suits, formal cocktail dresses, and heels.',
-  'Garden Attire': 'Light fabrics, floral prints, and comfortable but stylish shoes for outdoor terrain.',
-  'Formal': 'Tuxedos or dark suits and ties for men, and floor-length gowns or formal cocktail dresses for women.',
-  'Black Tie': 'The most formal dress code. Requires tuxedos for men and formal evening gowns for women.',
+  Casual:
+    "Informal y comodo. Piensa en vestidos de verano, camisas sin corbata y zapatos cómodos.",
+  "Semi-Formal":
+    "Un nivel por encima de lo casual. Piensa en vestidos de cóctel, camisas de vestir y pantalones elegantes.",
+  Cocktail:
+    "Elegante y listo para la fiesta. Piensa en trajes, vestidos de cóctel formales y tacones.",
+  "Garden Attire":
+    "Tejidos ligeros, estampados florales y zapatos cómodos pero elegantes para terrenos al aire libre.",
+  Formal:
+    "Esmoquin o trajes oscuros y corbatas para hombres, y vestidos largos para mujeres.",
+  "Black Tie":
+    "El código de vestimenta más formal. Requiere esmoquin para hombres y vestidos de noche formales para mujeres.",
 };
 // --- END DRESS CODE TYPES ---
 
@@ -47,19 +67,19 @@ export type RecommendationItem = {
 export type TemplateFeatures = {
   multiEventSchedule?: boolean;
   countdown?: {
-    type: 'flip-clock' | 'minimalist';
+    type: "flip-clock" | "minimalist";
   };
   lodgingAndTravel?: boolean;
   recommendations?: boolean;
   digitalRegistry?: {
     enabled: boolean;
-    types: ('amazon' | 'zola' | 'cash_fund')[];
+    types: ("amazon" | "zola" | "cash_fund")[];
   };
   songRequests?: boolean;
   courtOfHonor?: boolean;
   uniqueCeremonies?: boolean;
   socialMediaWall?: boolean;
-  ageSpecificThemes?: ('superhero' | 'boho' | 'minimalist')[];
+  ageSpecificThemes?: ("superhero" | "boho" | "minimalist")[];
   parentalNotes?: boolean;
   allergyTracker?: boolean;
   genderBetting?: boolean;
@@ -77,9 +97,18 @@ export type TemplateFeatures = {
 
 export type TemplateConfig = {
   name: string;
-  category: 'Wedding' | 'XV Years' | 'Birthday' | 'Baby Shower' | 'Graduation' | 'Baptism' | 'Corporate';
+  category:
+    | "Wedding"
+    | "XV Years"
+    | "Birthday"
+    | "Kids Birthday"
+    | "Baby Shower"
+    | "Graduation"
+    | "Baptism"
+    | "Corporate";
   description: string;
   font: string;
+  thumbnail?: string;
   fonts?: string[];
   defaultFont?: string;
   palettes?: { name: string; primary: string; text: string }[];
@@ -92,7 +121,7 @@ export type TemplateConfig = {
     recommendations?: RecommendationItem[];
     courtOfHonor?: CourtMember[];
     godparents?: Godparent[];
-        dressCode?: DressCode;
+    dressCode?: DressCode;
     [key: string]: any;
   };
   features: TemplateFeatures;

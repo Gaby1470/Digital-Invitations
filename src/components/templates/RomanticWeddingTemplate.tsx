@@ -1,21 +1,40 @@
 "use client";
 
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { TemplateConfig, TimelineItem, DressCode, dressCodeDescriptions, RecommendationItem } from '@/lib/types';
-import { DressCodePreview } from './shared/DressCodePreview';
-import { RsvpSection } from './shared/RsvpSection';
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
+import {
+  TemplateConfig,
+  TimelineItem,
+  DressCode,
+  RecommendationItem,
+} from "@/lib/types";
+import { DressCodePreview } from "./shared/DressCodePreview";
+import { RsvpSection } from "./shared/RsvpSection";
+import GiftSection from "./shared/GiftSection";
+import Countdown from "./shared/Countdown";
+import Lightbox from "./shared/Lightbox";
 
-function FadeIn({ children, delay = 0, direction = "up" }: { children: React.ReactNode, delay?: number, direction?: "up" | "down" | "none" }) {
+function FadeIn({
+  children,
+  delay = 0,
+  direction = "up",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  direction?: "up" | "down" | "none";
+}) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: direction === "none" ? 0 : direction === "up" ? 30 : -30 }}
+      initial={{
+        opacity: 0,
+        y: direction === "none" ? 0 : direction === "up" ? 25 : -25,
+      }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
@@ -27,200 +46,292 @@ type RomanticWeddingTemplateProps = {
   data: any;
 };
 
-export default function RomanticWeddingTemplate({ template, data }: RomanticWeddingTemplateProps) {
+export default function RomanticWeddingTemplate({
+  template,
+  data,
+}: RomanticWeddingTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   
-  const mapSrc = invitationData.mainVenueAddress 
+  // Mobile Lookbook State
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+
+  const mapSrc = invitationData.mainVenueAddress
     ? `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(invitationData.mainVenueAddress)}`
     : "";
 
   const dressCode: DressCode | undefined = invitationData.dressCode;
+  const gallery = invitationData.galleryImages || [];
+
+  const handleNextImage = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Don't trigger lightbox on stack tap
+    setCurrentImgIndex((prev) => (prev + 1) % gallery.length);
+  };
 
   return (
-    <div 
-      className="w-full font-serif" 
+    <div
+      className="w-full font-serif selection:bg-rose-100 selection:text-stone-800 antialiased overflow-x-hidden"
       style={{
-        backgroundColor: invitationData.backgroundColor || '#fffaf9',
-        color: invitationData.textColor || '#44403c'
+        backgroundColor: invitationData.backgroundColor || "#fffaf9",
+        color: invitationData.textColor || "#44403c",
       }}
     >
-      {/* Hero: The Ethereal Entrance */}
-      <section className="relative h-screen w-full flex flex-col justify-center items-center overflow-hidden">
-        <motion.div 
-          className="absolute inset-0 z-0 scale-110"
-          initial={{ scale: 1.2 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 10, ease: "linear" }}
-        >
-          <img 
-            src={invitationData.hero_image_url || 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2069&auto=format&fit=crop'} 
+      <Lightbox 
+        isOpen={!!selectedImage}
+        onClose={() => setSelectedImage(null)}
+        imageUrl={selectedImage}
+      />
+
+      {/* Hero Section: Mobile Optimized Height */}
+      <section className="relative h-[90vh] min-h-[600px] w-full flex flex-col justify-between items-center overflow-hidden px-4 py-12">
+        <div className="absolute inset-0 z-0">
+          <img
+            src={
+              invitationData.hero_image_url ||
+              "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2069&auto=format&fit=crop"
+            }
             className="w-full h-full object-cover"
             alt="Wedding Portrait"
           />
-          <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]" />
-        </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-b from-stone-900/20 via-white/40 to-[#fffaf9]" />
+        </div>
 
-        <div className="z-10 text-center max-w-4xl px-4">
-          <FadeIn delay={0.5}>
-            <p className="text-sm tracking-[0.4em] uppercase mb-8 font-sans font-light" style={{ color: invitationData.textColor }}>
+        {/* Top welcome */}
+        <div className="z-10 text-center mt-6">
+          <FadeIn delay={0.2}>
+            <p className="text-[10px] tracking-[0.3em] uppercase font-sans font-medium opacity-80">
               {invitationData.heroTitle || "Together with their families"}
             </p>
           </FadeIn>
-          <FadeIn delay={0.8} direction="none">
-            <h1 className="text-7xl md:text-9xl font-['Great_Vibes'] leading-tight" style={{ color: invitationData.primaryColor || '#44403c' }}>
+        </div>
+
+        {/* Core details glass card */}
+        <div className="z-10 text-center w-full max-w-sm backdrop-blur-md bg-white/60 p-6 rounded-[2rem] border border-white/60 shadow-xl shadow-stone-900/5 my-auto">
+          <FadeIn delay={0.4} direction="none">
+            <h1 className="text-4xl sm:text-5xl font-['Great_Vibes'] leading-tight" style={{ color: invitationData.primaryColor }}>
               {invitationData.heroNames}
             </h1>
           </FadeIn>
-          <FadeIn delay={1.1}>
-            <div className="mt-8 flex flex-col items-center gap-4">
-              <div className="h-px w-24" style={{ backgroundColor: invitationData.primaryColor }}/>
-              <p className="text-xl md:text-2xl italic tracking-wide" style={{ color: invitationData.textColor }}>
-                {invitationData.event_date && new Date(invitationData.event_date).toLocaleDateString('en-US', {
-                  year: 'numeric', month: 'long', day: 'numeric',
-                })}
-              </p>
+          
+          <FadeIn delay={0.6}>
+            <div className="my-4">
+              <Countdown 
+                targetDate={invitationData.event_date}
+                className="flex justify-center gap-4"
+                numberClassName="text-2xl font-sans font-light tracking-tight text-stone-800"
+                labelClassName="text-[9px] tracking-widest uppercase font-sans text-stone-500 block mt-0.5"
+              />
             </div>
+          </FadeIn>
+        </div>
+
+        {/* Bottom Date indicator */}
+        <div className="z-10 text-center">
+          <FadeIn delay={0.8}>
+            <p className="text-lg font-light tracking-wide italic">
+              {invitationData.event_date &&
+                new Date(invitationData.event_date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+            </p>
           </FadeIn>
         </div>
       </section>
 
-      {/* Narrative Section: The Schedule */}
-      {features.multiEventSchedule && (
-        <section className="py-32 px-6 bg-white flex flex-col items-center">
+      {/* GALLERY: The Mobile-First Story Stack */}
+      {gallery.length > 0 && (
+        <section className="py-20 px-6 overflow-hidden flex flex-col items-center justify-center" style={{ backgroundColor: "#F5F3F2" }}>
           <FadeIn>
-            <h2 className="text-5xl md:text-6xl font-['Great_Vibes'] text-center mb-24" style={{ color: invitationData.primaryColor }}>
-              {invitationData.timelineTitle}
+            <h2 className="text-4xl font-['Great_Vibes'] text-center mb-2" style={{ color: invitationData.primaryColor }}>
+              {invitationData.galleryTitle || "Our Story in Frames"}
             </h2>
+            <p className="text-center font-sans text-[10px] tracking-[0.2em] uppercase text-stone-400 mb-10">
+              Tap photo to shuffle • Double tap to expand
+            </p>
           </FadeIn>
-          
-          <div className="max-w-2xl w-full space-y-20 relative">
-            {/* Delicate Flowing Divider */}
-            <div className="absolute left-1/2 -top-10 bottom-0 w-px" style={{ background: `linear-gradient(to bottom, transparent, ${invitationData.primaryColor}20, transparent)` }} />
-            
-            {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
-              <FadeIn key={index} delay={index * 0.2}>
-                <div className="flex flex-col items-center text-center group">
-                  <div 
-                    className="relative z-10 w-3 h-3 rounded-full border-4 border-white shadow-sm mb-6 group-hover:scale-150 transition-transform duration-500" 
-                    style={{ backgroundColor: invitationData.primaryColor }}
-                  />
-                  <span className="text-xs tracking-[0.3em] uppercase text-stone-400 font-sans mb-2">{item.time}</span>
-                  <h3 className="text-3xl font-light mb-2" style={{ color: invitationData.textColor }}>{item.title}</h3>
-                  <p className="italic font-light" style={{ color: invitationData.textColor }}>{item.location}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </section>
-      )}
 
-      {/* Gallery: Floating Memory Wall */}
-      {invitationData.galleryImages?.length > 0 && (
-        <section className="py-32" style={{ backgroundColor: invitationData.backgroundColor || '#fffaf9' }}>
-          <FadeIn>
-            <h2 className="text-5xl font-['Great_Vibes'] text-center mb-20" style={{ color: invitationData.textColor }}>
-              {invitationData.galleryTitle || 'Our Story'}
-            </h2>
-          </FadeIn>
-          <div className="max-w-6xl mx-auto px-4 columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-            {invitationData.galleryImages.map((src: string, index: number) => (
-              <motion.div 
-                key={index}
-                whileHover={{ y: -10 }}
-                className="relative overflow-hidden rounded-2xl shadow-xl"
-                style={{ shadowColor: `${invitationData.primaryColor}20` }}
-              >
-                <img src={src} alt="" className="w-full h-auto object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700" />
-              </motion.div>
-            ))}
-          </div>
-        </section>
-      )}
+          {/* Interactive Card Deck Stack */}
+          <div className="relative w-full max-w-[300px] aspect-[3/4] flex items-center justify-center min-h-[400px]">
+            <AnimatePresence mode="popLayout">
+              {gallery.map((src: string, index: number) => {
+                // Only render the top 3 cards for DOM performance on mobile
+                const isVisible = (index >= currentImgIndex && index < currentImgIndex + 3) || 
+                                  (index + gallery.length >= currentImgIndex && index + gallery.length < currentImgIndex + 3);
+                
+                if (!isVisible) return null;
 
-      {/* Location: Artistic Focus */}
-      {mapSrc && (
-        <section className="py-32 px-6 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-              <FadeIn direction="none">
-                <div className="space-y-6">
-                  <h2 className="text-6xl font-['Great_Vibes']" style={{ color: invitationData.primaryColor, opacity: 0.7 }}>Location</h2>
-                  <p className="text-xl leading-relaxed italic" style={{ color: invitationData.textColor }}>
-                    "Where the journey begins..."
-                  </p>
-                  <p className="text-lg font-sans tracking-wide" style={{ color: invitationData.textColor }}>
-                    {invitationData.mainVenueAddress}
-                  </p>
-                  <button 
-                    className="mt-8 px-10 py-4 rounded-full hover:bg-rose-50 transition-colors duration-300 font-sans text-sm tracking-widest uppercase"
-                    style={{ 
-                      borderColor: invitationData.primaryColor, 
-                      color: invitationData.primaryColor,
-                      borderWidth: '1px'
+                // Calculate relative position in the active visible stack
+                let position = index - currentImgIndex;
+                if (position < 0) position += gallery.length;
+
+                const isTopCard = position === 0;
+
+                return (
+                  <motion.div
+                    key={src}
+                    style={{ zIndex: gallery.length - position, transformOrigin: "bottom center" }}
+                    className="absolute w-full h-full cursor-pointer"
+                    initial={{ opacity: 0, scale: 0.9, y: 15 }}
+                    animate={{
+                      opacity: 1 - position * 0.25,
+                      scale: 1 - position * 0.05,
+                      y: position * -12, // Cascade upwards gracefully
                     }}
+                    exit={{ opacity: 0, x: -200, rotate: -15, transition: { duration: 0.4 } }}
+                    onClick={isTopCard ? handleNextImage : undefined}
+                    onDoubleClick={() => setSelectedImage(src)}
                   >
-                    Get Directions
-                  </button>
+                    {/* Editorial Photo Frame matting */}
+                    <div className="w-full h-full p-3 bg-white border border-stone-100 rounded-2xl shadow-xl shadow-stone-300/50 flex flex-col justify-between">
+                      <div className="w-full h-[88%] overflow-hidden rounded-xl border border-stone-100">
+                        <img
+                          src={src}
+                          alt="Our memories"
+                          className="w-full h-full object-cover filter contrast-[96%] sepia-[3%]"
+                        />
+                      </div>
+                      <div className="h-[8%] flex items-center justify-between px-1 font-sans text-[9px] tracking-widest text-stone-400 uppercase italic">
+                        <span>{index + 1} / {gallery.length}</span>
+                        <span>Love Story</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        </section>
+      )}
+
+      {/* Narrative Section: Vertical Clean Mobile Timeline */}
+      {features.multiEventSchedule && (
+        <section className="py-20 px-6 bg-white relative">
+          <FadeIn>
+            <h2 className="text-4xl font-['Great_Vibes'] text-center mb-12" style={{ color: invitationData.primaryColor }}>
+              {invitationData.timelineTitle || "The Celebration"}
+            </h2>
+          </FadeIn>
+
+          <div className="max-w-md mx-auto space-y-8 relative pl-6">
+            {/* Elegant Side Anchor Line */}
+            <div
+              className="absolute left-1.5 top-2 bottom-2 w-[1px]"
+              style={{
+                background: `linear-gradient(to bottom, transparent, ${invitationData.primaryColor}40, transparent)`,
+              }}
+            />
+
+            {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
+              <FadeIn key={index} delay={index * 0.05}>
+                <div className="relative group text-left">
+                  {/* Custom Left Node Bullet */}
+                  <div 
+                    className="absolute -left-[22px] top-1.5 w-2.5 h-2.5 rounded-full bg-white border shadow-sm" 
+                    style={{ borderColor: invitationData.primaryColor }}
+                  />
+                  <span className="text-[10px] tracking-widest uppercase text-stone-400 font-sans block mb-0.5">
+                    {item.time}
+                  </span>
+                  <h3 className="text-xl font-light" style={{ color: invitationData.textColor }}>
+                    {item.title}
+                  </h3>
+                  <p className="text-sm italic font-light opacity-75" style={{ color: invitationData.textColor }}>
+                    {item.location}
+                  </p>
                 </div>
               </FadeIn>
-              <FadeIn>
-                <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl border-[12px] border-white" style={{ shadowColor: `${invitationData.primaryColor}30` }}>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Venue Section: Single Column Mobile Stack */}
+      {mapSrc && (
+        <section className="py-20 px-6 bg-white">
+          <div className="max-w-md mx-auto text-center space-y-6">
+            <FadeIn>
+              <h2 className="text-4xl font-['Great_Vibes']" style={{ color: invitationData.primaryColor }}>
+                The Venue
+              </h2>
+              <p className="text-base italic opacity-80">"Where our new chapter begins..."</p>
+              <p className="text-sm font-sans tracking-wide opacity-70 px-4 leading-relaxed">
+                {invitationData.mainVenueAddress}
+              </p>
+              <button
+                className="mt-2 px-8 py-3 rounded-full font-sans text-xs tracking-widest uppercase border active:bg-stone-50 transition-colors shadow-sm"
+                style={{ borderColor: invitationData.primaryColor, color: invitationData.primaryColor }}
+              >
+                Open in Maps
+              </button>
+            </FadeIn>
+            
+            <FadeIn>
+              <div className="p-2 bg-white rounded-2xl shadow-xl shadow-stone-200 border border-stone-100 max-w-sm mx-auto">
+                <div className="aspect-square rounded-xl overflow-hidden border border-stone-100">
                   <iframe
                     width="100%"
                     height="100%"
-                    style={{ border: 0, filter: "sepia(20%) contrast(90%)" }}
+                    style={{ border: 0, filter: "sepia(12%) contrast(94%)" }}
                     loading="lazy"
                     src={mapSrc}
                   />
                 </div>
-              </FadeIn>
-            </div>
+              </div>
+            </FadeIn>
           </div>
         </section>
       )}
 
       {/* Dress Code Section */}
       {dressCode && (
-        <section className="py-32" style={{ backgroundColor: invitationData.backgroundColor || '#fffaf9' }}>
-          <div className="max-w-xl mx-auto text-center px-6">
+        <section className="py-20 px-6" style={{ backgroundColor: "#F5F3F2" }}>
+          <div className="max-w-md mx-auto text-center">
             <FadeIn>
-              <h2 className="text-5xl md:text-6xl font-['Great_Vibes'] text-center mb-16" style={{ color: invitationData.primaryColor }}>
-                Attire
+              <h2 className="text-4xl font-['Great_Vibes'] mb-8" style={{ color: invitationData.primaryColor }}>
+                Dress Code
               </h2>
-              <DressCodePreview 
-                dressCode={dressCode} 
-                primaryColor={invitationData.primaryColor}
-                textColor={invitationData.textColor}
-              />
+              <div className="bg-white/70 p-6 rounded-2xl border border-white shadow-lg shadow-stone-100">
+                <DressCodePreview
+                  dressCode={dressCode}
+                  primaryColor={invitationData.primaryColor}
+                  textColor={invitationData.textColor}
+                />
+              </div>
             </FadeIn>
           </div>
         </section>
       )}
-      
-      {/* Recommendations Section */}
+
+      {/* Accommodations Mobile List */}
       {features.recommendations && invitationData.recommendations?.length > 0 && (
-        <section className="py-32 bg-white">
-          <div className="max-w-4xl mx-auto text-center px-6">
+        <section className="py-20 bg-white px-6">
+          <div className="max-w-md mx-auto">
             <FadeIn>
-              <h2 className="text-5xl md:text-6xl font-['Great_Vibes'] text-center mb-16" style={{ color: invitationData.primaryColor }}>
-                Guest Accommodations
+              <h2 className="text-4xl font-['Great_Vibes'] text-center mb-10" style={{ color: invitationData.primaryColor }}>
+                Accommodations
               </h2>
             </FadeIn>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="space-y-4">
               {invitationData.recommendations.map((item: RecommendationItem, index: number) => (
-                <FadeIn key={index} delay={index * 0.1}>
-                  <div className="p-8 rounded-2xl" style={{ backgroundColor: invitationData.backgroundColor || '#fffaf9' }}>
-                    <h3 className="text-2xl font-serif mb-3" style={{ color: invitationData.primaryColor }}>{item.name}</h3>
-                    <p className="text-sm mb-4" style={{ color: invitationData.textColor, opacity: 0.8 }}>{item.description}</p>
-                    <a 
-                      href={item.link} 
-                      target="_blank" 
+                <FadeIn key={index}>
+                  <div className="p-6 rounded-2xl bg-stone-50/60 border border-stone-100 flex flex-col justify-between text-center">
+                    <h3 className="text-lg font-medium mb-1" style={{ color: invitationData.primaryColor }}>
+                      {item.name}
+                    </h3>
+                    <p className="text-xs leading-relaxed mb-4 opacity-80" style={{ color: invitationData.textColor }}>
+                      {item.description}
+                    </p>
+                    <a
+                      href={item.link}
+                      target="_blank"
                       rel="noopener noreferrer"
-                      className="font-sans text-xs tracking-widest uppercase"
-                      style={{ color: invitationData.primaryColor }}
+                      className="font-sans text-[10px] tracking-widest uppercase border-b pb-0.5 mx-auto text-stone-500"
+                      style={{ borderColor: invitationData.primaryColor }}
                     >
-                      Learn More
+                      View Details
                     </a>
                   </div>
                 </FadeIn>
@@ -230,18 +341,27 @@ export default function RomanticWeddingTemplate({ template, data }: RomanticWedd
         </section>
       )}
 
-      {/* RSVP SECTION */}
-      <section className="py-32 px-6 bg-white">
-        <div className="max-w-xl mx-auto">
+      {/* Gift Section */}
+      <GiftSection 
+        giftRegistryUrl={invitationData.giftRegistryUrl}
+        primaryColor={invitationData.primaryColor}
+        textColor={invitationData.textColor}
+      />
+
+      {/* RSVP Section */}
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-md mx-auto">
           <FadeIn>
-            <h2 className="text-5xl md:text-6xl font-['Great_Vibes'] text-center mb-12" style={{ color: invitationData.primaryColor }}>
+            <h2 className="text-4xl font-['Great_Vibes'] text-center mb-8" style={{ color: invitationData.primaryColor }}>
               RSVP
             </h2>
-            <RsvpSection 
-              invitationId={invitationData.id} 
-              primaryColor={invitationData.primaryColor}
-              textColor={invitationData.textColor}
-            />
+            <div className="bg-stone-50/80 p-6 rounded-2xl border border-stone-100">
+              <RsvpSection
+                invitationId={invitationData.id}
+                primaryColor={invitationData.primaryColor}
+                textColor={invitationData.textColor}
+              />
+            </div>
           </FadeIn>
         </div>
       </section>

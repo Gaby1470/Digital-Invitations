@@ -1,27 +1,20 @@
 "use client";
 
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { useRef, useEffect } from 'react';
 import { TemplateConfig, TimelineItem } from '@/lib/types';
+import confetti from 'canvas-confetti';
 
-/**
- * Playful "Pop" animation for sections
- */
 function PopIn({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-30px" });
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.8, rotate: -2 }}
-      animate={isInView ? { opacity: 1, scale: 1, rotate: 0 } : {}}
-      transition={{ 
-        type: "spring", 
-        stiffness: 260, 
-        damping: 20, 
-        delay 
-      }}
+      initial={{ opacity: 0, scale: 0.92, y: 15 }}
+      animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
+      transition={{ type: "spring", stiffness: 200, damping: 18, delay }}
     >
       {children}
     </motion.div>
@@ -33,108 +26,222 @@ type BirthdayTemplateProps = {
   data: any;
 };
 
+function formatTimelineTime(rawTime?: string) {
+  if (!rawTime) return "";
+  const value = rawTime.trim();
+
+  const amPmMatch = value.match(/^(\d{1,2})(?::(\d{2}))?\s*([AaPp][Mm])$/);
+  if (amPmMatch) {
+    const hour = parseInt(amPmMatch[1], 10);
+    const minutes = amPmMatch[2] ?? "00";
+    const suffix = amPmMatch[3].toUpperCase();
+    if (hour >= 1 && hour <= 12) {
+      return `${hour}:${minutes} ${suffix}`;
+    }
+  }
+
+  const twentyFourHourMatch = value.match(/^(\d{1,2}):(\d{2})$/);
+  if (twentyFourHourMatch) {
+    const hour24 = parseInt(twentyFourHourMatch[1], 10);
+    const minutes = twentyFourHourMatch[2];
+    if (hour24 >= 0 && hour24 <= 23) {
+      const suffix = hour24 >= 12 ? "PM" : "AM";
+      const hour12 = hour24 % 12 || 12;
+      return `${hour12}:${minutes} ${suffix}`;
+    }
+  }
+  return value;
+}
+
 export default function BirthdayTemplate({ template, data }: BirthdayTemplateProps) {
   const { defaultData, features, font } = template;
   const invitationData = { ...defaultData, ...data };
-  
   const theme = invitationData.theme || 'default';
+
+  useEffect(() => {
+    // Left burst closer to top corner
+    confetti({
+      particleCount: 50,
+      angle: 60,
+      spread: 60,
+      origin: { x: -0.05, y: 0.1 }
+    });
+    // Right burst closer to top corner
+    confetti({
+      particleCount: 50,
+      angle: 120,
+      spread: 60,
+      origin: { x: 1.05, y: 0.1 }
+    });
+  }, []);
   
-  // Enhanced theme system with playful UI properties
   const themeClasses = {
     superhero: {
-      bg: 'bg-[#FF0000]', // Action Red
-      card: 'bg-[#0051FF]', // Hero Blue
-      text: 'text-[#FFDE00]', // Comic Yellow
-      accent: 'text-white',
-      pattern: 'opacity-20 bg-[url("https://www.transparenttextures.com/patterns/pow-star.png")]'
+      bg: '#E11D48', // deep vibrant red
+      card: '#1E40AF', // royal superhero blue
+      text: '#FDE047', // bright comic yellow
+      accent: '#FFFFFF',
+      pattern: 'opacity-15 bg-[url("https://www.transparenttextures.com/patterns/pow-star.png")]'
     },
     boho: {
-      bg: 'bg-[#FDF5E6]', 
-      card: 'bg-[#E9DCC9]',
-      text: 'text-[#8B4513]',
-      accent: 'text-[#556B2F]',
+      bg: '#F5EBE6', 
+      card: '#E4D4C8',
+      text: '#6B4423',
+      accent: '#4A5D4E',
       pattern: 'opacity-10 bg-[url("https://www.transparenttextures.com/patterns/leaves.png")]'
     },
     default: {
-      bg: invitationData.backgroundColor || '#6366F1',
-      card: '#ffffff',
-      text: invitationData.textColor || '#1f2937',
-      accent: invitationData.primaryColor || '#6366F1',
+      bg: invitationData.backgroundColor || '#4F46E5',
+      card: '#FFFFFF',
+      text: invitationData.textColor || '#1F2937',
+      accent: invitationData.primaryColor || '#4F46E5',
       pattern: 'opacity-10 bg-[url("https://www.transparenttextures.com/patterns/confetti.png")]'
     }
   };
   
   const currentTheme = themeClasses[theme as keyof typeof themeClasses] || themeClasses.default;
+  const gallery = invitationData.galleryImages || [];
 
   return (
-    <div className={`w-full min-h-screen overflow-hidden ${font} relative`} style={{ backgroundColor: currentTheme.bg }}>
-      {/* Dynamic Background Pattern */}
+    <div className={`w-full min-h-screen overflow-x-hidden ${font} relative pb-16`} style={{ backgroundColor: currentTheme.bg }}>
       <div className={`absolute inset-0 pointer-events-none ${currentTheme.pattern}`} />
 
-      {/* Hero Section: The Big Announcement */}
-      <section className="relative h-screen w-full flex flex-col justify-center items-center px-4">
-        {/* Floating Background Circles for depth */}
+      {/* Hero Section: Stabilized mobile height */}
+      <section className="relative h-[65vh] min-h-[440px] w-full flex flex-col justify-center items-center px-6 text-center">
         <motion.div 
-          animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-20 left-10 w-32 h-32 rounded-full bg-white/10 blur-xl"
-        />
-        
-        <motion.div 
-          className="z-10 text-center"
-          initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ type: "spring", bounce: 0.5, duration: 1 }}
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 120, delay: 0.15 }}
+          className="w-full max-w-sm"
         >
-          <div className="inline-block px-6 py-2 rounded-full bg-white/20 backdrop-blur-md mb-6 border border-white/30">
-            <p className="text-white font-bold tracking-widest uppercase text-sm">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md mb-5 border border-white/20 shadow-sm">
+            <p className="text-white font-bold tracking-[0.15em] uppercase text-xs">
               {invitationData.heroTitle || "You're Invited!"}
             </p>
           </div>
-          <h1 className={`text-6xl md:text-9xl font-black tracking-tighter drop-shadow-2xl`} style={{ color: theme === 'superhero' ? currentTheme.text : 'white' }}>
+          
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight drop-shadow-md break-words uppercase leading-none" style={{ color: theme === 'superhero' ? currentTheme.text : 'white' }}>
             {invitationData.heroNames}
           </h1>
+          
           <motion.div 
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="mt-4 text-2xl md:text-4xl font-bold text-white/90 italic"
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            className="mt-4 text-lg sm:text-2xl font-bold text-white/95 italic tracking-wide"
           >
-            is turning {invitationData.age || '!!'}!
+            Ven a divertirte conmigo!!!
           </motion.div>
         </motion.div>
       </section>
 
-      {/* Details Section: "The Party Plan" */}
-      <section className="py-24 px-6 relative z-10">
-        <div className="max-w-5xl mx-auto">
+      {/* Birthday Kid Photo Gallery: Structured Swipe Tray */}
+      {gallery.length > 0 && (
+        <section className="py-4 px-4 relative z-10 max-w-md mx-auto -mt-8">
           <PopIn>
-            <h2 className={`text-4xl md:text-5xl font-black text-center mb-16 uppercase italic`} style={{ color: theme === 'superhero' ? currentTheme.text : 'white' }}>
-              {invitationData.timelineTitle}
-            </h2>
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-6 px-4">
+              {gallery.map((src: string, index: number) => (
+                <motion.div
+                  key={index}
+                  className="flex-none w-[65vw] max-w-[210px] snap-center bg-white p-2.5 pb-6 rounded-2xl shadow-lg border border-neutral-200/40"
+                  style={{ rotate: index % 2 === 0 ? '-1.5deg' : '1.5deg' }}
+                  whileTap={{ rotate: 0, scale: 0.98 }}
+                >
+                  <div className="aspect-square w-full overflow-hidden rounded-xl bg-neutral-50">
+                    <img 
+                      src={src} 
+                      alt={`Birthday portrait memory ${index + 1}`} 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                  <div className="mt-3 text-center font-mono text-[9px] text-neutral-400 uppercase tracking-widest font-bold">
+                    🎉 Recuerdos {index + 1}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </PopIn>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
-              <PopIn key={index} delay={index * 0.1}>
-                <div className={`p-8 rounded-[2rem] shadow-2xl transform rotate-${index % 2 === 0 ? '1' : '-1'} hover:rotate-0 transition-transform duration-300 border-b-8 border-black/10`} style={{ backgroundColor: currentTheme.card }}>
-                  <p className={`text-3xl font-black mb-2`} style={{ color: currentTheme.accent }}>{item.time}</p>
-                  <h3 className={`text-2xl font-bold mb-2`} style={{ color: currentTheme.text }}>{item.title}</h3>
-                  <p className="text-neutral-500 font-medium">{item.location}</p>
+        </section>
+      )}
+
+      {/* Date Block: Modular Visual Calendar Card */}
+      {invitationData.event_date && (
+        <section className="py-6 px-6 relative z-10 max-w-sm mx-auto">
+          <PopIn>
+            <div className="w-full bg-white/10 backdrop-blur-md p-6 rounded-[2rem] border border-white/20 shadow-md text-center">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4 text-white/70">
+                ¿Cuándo y Dónde?
+              </p>
+              
+              {/* Split layout block for date display */}
+              <div className="flex items-center justify-center gap-4 text-white mb-4">
+                <div className="text-right flex-1">
+                  <p className="text-xs uppercase font-bold opacity-75">
+                    {new Date(invitationData.event_date).toLocaleDateString('en-US', { weekday: 'short' })}
+                  </p>
+                  <p className="text-sm font-medium opacity-90">
+                    {new Date(invitationData.event_date).toLocaleDateString('en-US', { month: 'short' })}
+                  </p>
                 </div>
-              </PopIn>
-            ))}
-          </div>
+                <div className="h-10 w-[1px] bg-white/30" />
+                <div className="text-4xl font-black tracking-tighter">
+                  {new Date(invitationData.event_date).toLocaleDateString('en-US', { day: '2-digit' })}
+                </div>
+                <div className="h-10 w-[1px] bg-white/30" />
+                <div className="text-left flex-1">
+                  <p className="text-xs uppercase font-bold opacity-75">Year</p>
+                  <p className="text-sm font-medium opacity-90">
+                    {new Date(invitationData.event_date).toLocaleDateString('en-US', { year: 'numeric' })}
+                  </p>
+                </div>
+              </div>
+
+              <div className="h-[1px] w-12 bg-white/20 mx-auto my-3" />
+              
+              <p className="text-base font-bold tracking-tight text-white px-2">
+                {invitationData.location || 'TBA'}
+              </p>
+              
+              {invitationData.dateSubtitle && (
+                <p className="mt-2 text-xs font-medium italic text-white/80">
+                  {invitationData.dateSubtitle}
+                </p>
+              )}
+            </div>
+          </PopIn>
+        </section>
+      )}
+
+      {/* Details Section: Adaptive 1-Column Stack */}
+      <section className="py-8 px-6 relative z-10 max-w-sm mx-auto">
+        <PopIn>
+          <h2 className="text-2xl font-black text-center mb-8 uppercase tracking-wide italic" style={{ color: theme === 'superhero' ? currentTheme.text : 'white' }}>
+            {invitationData.timelineTitle || "Party Schedule"}
+          </h2>
+        </PopIn>
+        
+        <div className="space-y-4">
+          {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
+            <PopIn key={index} delay={index * 0.05}>
+              <div className="w-full p-5 flex flex-col justify-center items-center text-center rounded-2xl shadow-md border-b-4 border-black/10 transition-transform" 
+                   style={{ backgroundColor: currentTheme.card }}>
+                <p className="text-2xl font-black mb-0.5" style={{ color: currentTheme.accent }}>
+                  {formatTimelineTime(item.time)}
+                </p>
+                <h3 className="text-base font-bold" style={{ color: currentTheme.text }}>{item.title}</h3>
+                <p className="text-[11px] text-neutral-400 font-bold uppercase tracking-wider mt-0.5">{item.location}</p>
+              </div>
+            </PopIn>
+          ))}
         </div>
       </section>
 
-      {/* Parental Notes: Post-it Note Style */}
+      {/* Parental Notes */}
       {features.parentalNotes && invitationData.parentalNotes && (
-        <section className="py-16 px-6">
+        <section className="pb-8 px-6 max-w-sm mx-auto">
           <PopIn>
-            <div className="max-w-2xl mx-auto bg-yellow-200 p-10 rounded-lg shadow-xl transform -rotate-2 relative">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-8 bg-white/40 backdrop-blur-sm rounded-sm" />
-              <h3 className="text-2xl font-black text-yellow-900 mb-4 uppercase tracking-tight">Note for Parents!</h3>
-              <p className="text-xl text-yellow-800 font-medium leading-relaxed">
+            <div className="bg-amber-100 p-5 rounded-2xl shadow-sm border-b-4 border-black/5">
+              <h3 className="text-[9px] font-black text-amber-800/60 mb-1 uppercase tracking-wider">Note for Parents</h3>
+              <p className="text-sm text-amber-900 font-bold leading-relaxed">
                 {invitationData.parentalNotes}
               </p>
             </div>
@@ -142,43 +249,19 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
         </section>
       )}
 
-      {/* Allergy Tracker: Alert Bubble */}
+      {/* Allergy Tracker */}
       {features.allergyTracker && (
-        <section className="py-24 px-6 text-center">
+        <section className="pb-4 px-6 text-center max-w-sm mx-auto">
            <PopIn>
-            <div className="inline-block bg-white/10 backdrop-blur-md p-10 rounded-[3rem] border-2 border-dashed border-white/30">
-              <h2 className="text-3xl font-black text-white mb-4">Hungry? 🍕</h2>
-              <p className="text-xl text-white/80 max-w-md mx-auto">
-                Please let us know about any food allergies when you RSVP so we can keep the snacks safe for everyone!
+            <div className="w-full bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-sm">
+              <h2 className="text-lg font-black text-white mb-1">¿Hambriento? 🍕</h2>
+              <p className="text-xs text-white/80 max-w-[240px] mx-auto font-medium">
+                ¡Háznos saber sobre cualquier alergia cuando confirmes tu asistencia!
               </p>
             </div>
           </PopIn>
         </section>
       )}
-
-      {/* Decorative Confetti Elements */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-4 h-4 rounded-sm bg-white/20"
-            style={{ 
-              top: `${Math.random() * 100}%`, 
-              left: `${Math.random() * 100}%` 
-            }}
-            animate={{ 
-              y: [0, 100, 0], 
-              rotate: [0, 180, 360],
-              opacity: [0.1, 0.4, 0.1]
-            }}
-            transition={{ 
-              duration: 10 + Math.random() * 10, 
-              repeat: Infinity, 
-              ease: "linear" 
-            }}
-          />
-        ))}
-      </div>
     </div>
   );
 }

@@ -48,10 +48,10 @@ export default function Header() {
       
       <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-neutral-900">
         <Link href="/templates" className="transition-colors hover:text-indigo-600">
-          Templates
+          Plantillas
         </Link>
         <Link href="/pricing" className="transition-colors hover:text-indigo-600">
-          Pricing
+          Precios
         </Link>
       </nav>
 
@@ -64,25 +64,25 @@ export default function Header() {
               href="/dashboard"
               className="hidden sm:inline-flex h-9 items-center justify-center rounded-md bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-900 transition-colors hover:bg-neutral-200"
             >
-              Dashboard
+              Panel de Control
             </Link>
             <button
               onClick={handleSignOut}
               className="text-sm font-semibold text-neutral-900 hover:underline underline-offset-4"
             >
-              Sign Out
+              Cerrar Sesión
             </button>
           </>
         ) : (
           <>
             <Link href="/auth/login" className="hidden sm:inline-flex text-sm font-semibold text-neutral-900 hover:underline underline-offset-4">
-              Log In
+              Iniciar Sesión
             </Link>
             <Link
               href="/auth/signup"
               className="inline-flex h-9 items-center justify-center rounded-md bg-neutral-900 px-4 py-2 text-sm font-semibold text-white shadow transition-transform hover:scale-105 active:scale-95"
             >
-              Sign Up
+              Registrarse
             </Link>
           </>
         )}

@@ -3,14 +3,21 @@
 
 import { useState } from 'react';
 
-export function RsvpSection({ invitationId, primaryColor, textColor }: { invitationId: string, primaryColor: string, textColor: string }) {
+export function RsvpSection({ invitationId, primaryColor, textColor }: { invitationId?: string, primaryColor?: string, textColor?: string }) {
   const [name, setName] = useState('');
   const [status, setStatus] = useState<'ATTENDING' | 'DECLINED' | null>(null);
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const effectivePrimaryColor = primaryColor || '#000000';
+  const effectiveTextColor = textColor || '#000000';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!invitationId) {
+      setErrorMessage('RSVP is not available in preview mode.');
+      return;
+    }
     if (!name || !status) {
       setErrorMessage('Please provide your name and a response.');
       return;
@@ -38,8 +45,8 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
   if (formState === 'submitted') {
     return (
       <div className="text-center p-8">
-        <h3 className="text-3xl font-serif italic mb-4" style={{ color: primaryColor }}>Thank You!</h3>
-        <p style={{ color: textColor }}>Your response has been recorded.</p>
+        <h3 className="text-3xl font-serif italic mb-4" style={{ color: effectivePrimaryColor }}>¡Gracias!</h3>
+        <p style={{ color: effectiveTextColor }}>Tu respuesta ha sido registrada.</p>
       </div>
     );
   }
@@ -47,53 +54,61 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium" style={{ color: textColor }}>Full Name</label>
+        <label htmlFor="name" className="block text-sm font-medium" style={{ color: effectiveTextColor }}>Nombre completo</label>
         <input
           type="text"
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2"
-          style={{ '--focus-ring-color': primaryColor } as any}
+          style={{ '--focus-ring-color': effectivePrimaryColor } as any}
         />
       </div>
       <div>
-        <span className="block text-sm font-medium" style={{ color: textColor }}>Will you attend?</span>
+        <span className="block text-sm font-medium" style={{ color: effectiveTextColor }}>¿Podrás acompañarnos?</span>
         <div className="mt-2 flex gap-4">
           <button
             type="button"
             onClick={() => setStatus('ATTENDING')}
-            className={`w-full py-3 text-sm font-bold uppercase tracking-widest rounded-md transition-all ${status === 'ATTENDING' ? 'ring-2 ring-offset-2' : ''}`}
+            className={`w-full py-3 text-sm font-bold uppercase tracking-widest rounded-md transition-all ${
+              status === 'ATTENDING'
+                ? 'ring-2 ring-offset-2'
+                : 'bg-gray-100'
+            }`}
             style={{ 
-              backgroundColor: status === 'ATTENDING' ? primaryColor : '#f3f4f6', 
-              color: status === 'ATTENDING' ? 'white' : textColor,
-              '--ring-color': primaryColor
+              backgroundColor: status === 'ATTENDING' ? effectivePrimaryColor : undefined, 
+              color: status === 'ATTENDING' ? 'white' : effectiveTextColor,
+              '--ring-color': effectivePrimaryColor
             } as any}
           >
-            Accept
+            Si
           </button>
           <button
             type="button"
             onClick={() => setStatus('DECLINED')}
-            className={`w-full py-3 text-sm font-bold uppercase tracking-widest rounded-md transition-all ${status === 'DECLINED' ? 'ring-2 ring-offset-2' : ''}`}
+            className={`w-full py-3 text-sm font-bold uppercase tracking-widest rounded-md transition-all ${
+              status === 'DECLINED'
+                ? 'ring-2 ring-offset-2'
+                : 'bg-gray-100'
+            }`}
             style={{ 
-              backgroundColor: status === 'DECLINED' ? primaryColor : '#f3f4f6', 
-              color: status === 'DECLINED' ? 'white' : textColor,
-              '--ring-color': primaryColor
+              backgroundColor: status === 'DECLINED' ? effectivePrimaryColor : undefined, 
+              color: status === 'DECLINED' ? 'white' : effectiveTextColor,
+              '--ring-color': effectivePrimaryColor
             } as any}
           >
-            Decline
+            No
           </button>
         </div>
       </div>
       {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
       <button
         type="submit"
-        disabled={formState === 'submitting'}
+        disabled={formState === 'submitting' || !invitationId}
         className="w-full py-4 text-white font-bold uppercase tracking-widest rounded-md transition-opacity disabled:opacity-50"
-        style={{ backgroundColor: primaryColor }}
+        style={{ backgroundColor: effectivePrimaryColor }}
       >
-        {formState === 'submitting' ? 'Submitting...' : 'RSVP'}
+        {formState === 'submitting' ? 'Enviando...' : (!invitationId ? 'RSVP Not Available in Preview' : 'RSVP')}
       </button>
     </form>
   );

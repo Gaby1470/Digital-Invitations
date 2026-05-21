@@ -10,12 +10,12 @@ type DressCodePreviewProps = {
 
 const illustrations = {
   'Formal': {
-    male: 'https://storage.googleapis.com/gemini-generative-ai/outfit-illustrations/formal_male.svg',
-    female: 'https://storage.googleapis.com/gemini-generative-ai/outfit-illustrations/formal_female.svg'
+    male: 'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Attire/blacktie-man.png',
+    female: 'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Attire/blacktie-female.png'
   },
   'Semi-Formal': {
-    male: 'https://storage.googleapis.com/gemini-generative-ai/outfit-illustrations/semi_formal_male.svg',
-    female: 'https://storage.googleapis.com/gemini-generative-ai/outfit-illustrations/semi_formal_female.svg'
+    male: 'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Attire/formal-man.png',
+    female: 'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Attire/formal-female.png'
   },
   'Cocktail': {
     male: 'https://storage.googleapis.com/gemini-generative-ai/outfit-illustrations/cocktail_male.svg',
@@ -85,16 +85,16 @@ export function DressCodePreview({ dressCode, primaryColor, textColor }: DressCo
       <div className="flex justify-center items-start gap-8 md:gap-16">
         <div className="text-center flex-1">
           <img src={manIllustration.male} alt="Male attire illustration" className="h-48 md:h-64 mx-auto mb-4" />
-          <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>{dressCode.man}</h3>
+          <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>Hombres</h3>
           <p className="text-md max-w-xs mx-auto" style={{ color: textColor, opacity: 0.8 }}>
-            {dressCodeDescriptions[dressCode.man]}
+            {dressCode.man}
           </p>
         </div>
         <div className="text-center flex-1">
           <img src={womanIllustration.female} alt="Female attire illustration" className="h-48 md:h-64 mx-auto mb-4" />
-          <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>{dressCode.woman}</h3>
+          <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>Mujeres</h3>
           <p className="text-md max-w-xs mx-auto" style={{ color: textColor, opacity: 0.8 }}>
-            {dressCodeDescriptions[dressCode.woman]}
+            {dressCode.woman}
           </p>
         </div>
       </div>

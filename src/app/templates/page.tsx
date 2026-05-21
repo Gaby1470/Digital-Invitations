@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 const groupTemplatesByNewCategories = (config: { [key: string]: TemplateConfig }) => {
   return Object.entries(config).reduce((acc, [id, template]) => {
-    let targetCategory = template.category;
+    let targetCategory: string = template.category;
 
     // Custom Mapping Logic
     if (targetCategory === 'Kids Birthday' || targetCategory === 'Baptism') {
@@ -51,8 +51,12 @@ export default function TemplatesPage() {
             animate={{ opacity: 1, y: 0 }}
           >
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl text-neutral-900">
-              Find Your Perfect Invitation
+              Encuentra la plantilla perfecta para tu evento
             </h1>
+            <p className="mt-4 text-lg text-neutral-600">
+              Explora nuestra colección de plantillas personalizables para bodas, cumpleaños, eventos corporativos y más. 
+              Contáctanos para una solución personalizada.
+            </p>
           </motion.div>
 
           {/* This is the Category Navigation Menu */}
@@ -93,8 +97,14 @@ export default function TemplatesPage() {
                     {templates.map((template) => (
                       <Link key={template.id} href={`/templates/${template.id}`} className="group">
                         <div className="relative overflow-hidden rounded-lg aspect-video bg-neutral-100">
+                          {/** Prefer an explicit thumbnail, then the hero image, then the first gallery image. */}
                           <img 
-                            src={template.thumbnail || `https://picsum.photos/seed/${template.id}/600/338`} 
+                            src={
+                              template.thumbnail ||
+                              template.defaultData.hero_image_url ||
+                              template.defaultData.galleryImages?.[0] ||
+                              `https://picsum.photos/seed/${template.id}/600/338`
+                            }
                             alt={template.name}
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                           />

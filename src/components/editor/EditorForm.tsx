@@ -1,33 +1,50 @@
 // src/components/editor/EditorForm.tsx
 "use client";
 
-import { TemplateConfig } from '@/lib/types';
-import { produce } from 'immer';
 import { useState } from 'react';
+import { produce } from 'immer';
+import { Smartphone, Monitor, Save } from 'lucide-react';
+import { TemplateConfig } from '@/lib/types';
 
 import MainDetailsSection from './form-sections/MainDetailsSection';
 import ColorsAndStyleSection from './form-sections/ColorsAndStyleSection';
+import DressCodeSection from './form-sections/DressCodeSection';
 import GallerySection from './form-sections/GallerySection';
 import EventScheduleSection from './form-sections/EventScheduleSection';
-import DressCodeSection from './form-sections/DressCodeSection'; // Import the new component
-import RecommendationsSection from './form-sections/RecommendationsSection';
+import GiftSection from './form-sections/GiftSection';
 
+import ParentalNotesSection from './form-sections/ParentalNotesSection';
+import RecommendationsSection from './form-sections/RecommendationsSection';
+import CollapsibleSection from './shared/CollapsibleSection';
 import Modal from './shared/Modal';
 import ImageUploader from './shared/ImageUploader';
 
-export default function EditorForm({ data, onDataChange, onSave, template }: { data: any, onDataChange: (data: any) => void, onSave: () => void, template: TemplateConfig }) {
-  
-  const [isModalOpen, setIsModalOpen] = useState(false);
+type EditorData = TemplateConfig['defaultData'] & Record<string, unknown>;
 
-  const handleFieldChange = (field: string, value: any) => {
-    const nextState = produce(data, (draft: any) => {
+export default function EditorForm({ 
+  data, 
+  onDataChange, 
+  onSave, 
+  template 
+}: { 
+  data: EditorData,
+  onDataChange: (data: EditorData) => void,
+  onSave: () => void, 
+  template: TemplateConfig 
+}) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'mobile' | 'desktop'>('mobile');
+  const [activeSection, setActiveSection] = useState<string | null>("Main Details");
+
+  const handleFieldChange = (field: string, value: unknown) => {
+    const nextState = produce(data, (draft: EditorData) => {
       draft[field] = value;
     });
     onDataChange(nextState);
   };
 
-  const handleMultipleFieldsChange = (fields: { [key: string]: any }) => {
-    const nextState = produce(data, (draft: any) => {
+  const handleMultipleFieldsChange = (fields: Record<string, unknown>) => {
+    const nextState = produce(data, (draft: EditorData) => {
       for (const field in fields) {
         draft[field] = fields[field];
       }
@@ -40,64 +57,146 @@ export default function EditorForm({ data, onDataChange, onSave, template }: { d
     handleFieldChange('galleryImages', newImages);
     setIsModalOpen(false);
   };
-  
+
   return (
-    <>
+    <div className="flex flex-col h-full bg-slate-50 border-r border-slate-200">
+      {/* Header with Preview Toggles */}
+      <div className="flex justify-between items-center p-4 bg-white border-b sticky top-0 z-30">
+        <div className="flex items-center gap-4">
+          <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+            <button 
+              onClick={() => setViewMode('mobile')}
+              className={`p-2 rounded-lg transition-all ${viewMode === 'mobile' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700'}`}
+              title="Mobile View"
+            >
+              <Smartphone size={18} />
+            </button>
+            <button 
+              onClick={() => setViewMode('desktop')}
+              className={`p-2 rounded-lg transition-all ${viewMode === 'desktop' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700'}`}
+              title="Desktop View"
+            >
+              <Monitor size={18} />
+            </button>
+          </div>
+        </div>
+        <button 
+          onClick={onSave}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-full font-bold text-sm flex items-center gap-2 transition-transform active:scale-95 shadow-md"
+        >
+          <Save size={16} /> Save Changes
+        </button>
+      </div>
+
       <Modal title="Upload Image" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ImageUploader onImageUploaded={handleImageUploaded} />
       </Modal>
 
-      <div className="bg-white h-full">
-        <div className="flex justify-between items-center p-6 sticky top-0 bg-white/80 backdrop-blur-lg z-10 border-b">
-          <h2 className="text-2xl font-bold text-gray-800">Personalize Invitation</h2>
-          <button 
-            onClick={onSave}
-            className="bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-indigo-700 transition-colors shadow-md"
-          >
-            Save
-          </button>
-        </div>
-        
-        <div className="divide-y divide-gray-200">
-          <MainDetailsSection
-            data={data}
-            templateFeatures={template.features}
-            onFieldChange={handleFieldChange}
-          />
+      {/* Editor Body */}
+      <div className="flex-1 overflow-y-auto pb-10">
+        <div className="divide-y divide-slate-100">
           
-          <ColorsAndStyleSection
-            data={data}
-            template={template}
-            onFieldChange={handleFieldChange}
-            onMultipleFieldsChange={handleMultipleFieldsChange}
-          />
-
-          <DressCodeSection 
-            data={data}
-            onFieldChange={handleFieldChange}
-          />
-
-          {template.features.recommendations && (
-            <RecommendationsSection
+          <CollapsibleSection 
+            title="Main Details" 
+            isOpen={activeSection === "Main Details"}
+            onToggle={() => setActiveSection(activeSection === "Main Details" ? null : "Main Details")}
+          >
+            <MainDetailsSection
               data={data}
+              templateFeatures={template.features}
               onFieldChange={handleFieldChange}
             />
+          </CollapsibleSection>
+          
+          <CollapsibleSection 
+            title="Design & Style" 
+            isOpen={activeSection === "Design"}
+            onToggle={() => setActiveSection(activeSection === "Design" ? null : "Design")}
+          >
+            <ColorsAndStyleSection
+              data={data}
+              template={template}
+              onFieldChange={handleFieldChange}
+              onMultipleFieldsChange={handleMultipleFieldsChange}
+            />
+          </CollapsibleSection>
+
+          {data.dressCode && (
+            <CollapsibleSection
+              title="Attire"
+              isOpen={activeSection === "DressCode"}
+              onToggle={() => setActiveSection(activeSection === "DressCode" ? null : "DressCode")}
+            >
+              <DressCodeSection
+                data={data}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
           )}
 
-          <GallerySection
-            data={data}
-            onFieldChange={handleFieldChange}
-            onOpenModal={() => setIsModalOpen(true)}
-          />
+          {template.features.recommendations && (
+            <CollapsibleSection 
+              title="Accommodations" 
+              isOpen={activeSection === "Travel"}
+              onToggle={() => setActiveSection(activeSection === "Travel" ? null : "Travel")}
+            >
+              <RecommendationsSection
+                data={data}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
+          )}
 
-          {template.features.multiEventSchedule && (
+          <CollapsibleSection 
+            title="Photo Gallery" 
+            isOpen={activeSection === "Gallery"}
+            onToggle={() => setActiveSection(activeSection === "Gallery" ? null : "Gallery")}
+          >
+            <GallerySection
+              data={data}
+              onFieldChange={handleFieldChange}
+              onOpenModal={() => setIsModalOpen(true)}
+            />
+          </CollapsibleSection>
+
+          <CollapsibleSection 
+            title="Event Schedule" 
+            isOpen={activeSection === "Schedule"}
+            onToggle={() => setActiveSection(activeSection === "Schedule" ? null : "Schedule")}
+          >
             <EventScheduleSection
               data={data}
               onFieldChange={handleFieldChange}
             />
+          </CollapsibleSection>
+
+          {data.giftRegistryUrl !== undefined && (
+            <CollapsibleSection 
+              title="Gift Registry" 
+              isOpen={activeSection === "Gifts"}
+              onToggle={() => setActiveSection(activeSection === "Gifts" ? null : "Gifts")}
+            >
+              <GiftSection
+                data={data}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
+          )}
+
+          {template.name === 'Kids Birthday Bash' && (
+            <CollapsibleSection 
+              title="Note for Parents"
+              isOpen={activeSection === "ParentalNotes"}
+              onToggle={() => setActiveSection(activeSection === "ParentalNotes" ? null : "ParentalNotes")}
+            >
+              <ParentalNotesSection
+                data={data}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

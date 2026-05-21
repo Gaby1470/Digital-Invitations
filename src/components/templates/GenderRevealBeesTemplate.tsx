@@ -1,0 +1,307 @@
+// src/components/templates/GenderRevealBeesTemplate.tsx
+"use client";
+
+import React, { useRef, useState } from 'react';
+import { TemplateConfig } from "@/lib/types";
+import { motion, useInView } from "framer-motion";
+import { RsvpSection } from "./shared/RsvpSection";
+import { Calendar, MapPin, Gift, Clock, Sparkles, CheckCircle, XCircle } from "lucide-react";
+import Image from 'next/image';
+
+function FadeIn({
+  children,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+type GenderRevealBeesTemplateProps = {
+  template: TemplateConfig;
+  data: any;
+};
+
+const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
+  template,
+  data,
+}) => {
+  const { defaultData } = template;
+  const invitationData = { ...defaultData, ...data };
+
+  const [vote, setVote] = useState<'boy' | 'girl' | null>(null);
+  const [isFlipped, setIsFlipped] = useState<'boy' | 'girl' | null>(null);
+
+  const handleVote = (selection: 'boy' | 'girl') => {
+    setVote(selection);
+    setIsFlipped(selection);
+  };
+
+  const {
+    parentsNames,
+    event_date,
+    timeRange,
+    timeSubtitle,
+    locationName,
+    mainVenueAddress,
+    giftRegistryUrl,
+    rsvpDeadline,
+    primaryColor,
+    backgroundColor,
+    textColor,
+    heroTitle,
+    heroSubtitle,
+  } = invitationData;
+  
+  const date = event_date ? new Date(event_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) : '';
+
+  const FlipCard = ({
+    selection,
+    frontContent,
+    backContent,
+    bgColor,
+    textColor: cardTextColor,
+    unselectedTextColor,
+    borderColor,
+    hoverBgColor,
+  }: {
+    selection: 'boy' | 'girl';
+    frontContent: React.ReactNode;
+    backContent: React.ReactNode;
+    bgColor: string;
+    textColor: string;
+    unselectedTextColor: string;
+    borderColor: string;
+    hoverBgColor: string;
+  }) => {
+    const isCardFlipped = isFlipped === selection;
+
+    return (
+      <div
+        className="w-full h-24 [perspective:1000px]"
+        onClick={() => handleVote(selection)}
+      >
+        <motion.div
+          className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700"
+          initial={{ rotateY: 0 }}
+          animate={{ rotateY: isCardFlipped ? 180 : 0 }}
+        >
+          {/* Front */}
+          <div
+            className={`absolute w-full h-full [backface-visibility:hidden] flex items-center justify-center gap-2 rounded-xl p-4 font-bold text-lg border-2 transition-all duration-300 ${
+              vote === selection
+                ? `${bgColor} ${cardTextColor} ${borderColor} scale-105 shadow-lg`
+                : `${hoverBgColor} ${unselectedTextColor} ${borderColor.replace('500','200')} hover:${hoverBgColor}`
+            }`}
+          >
+            {frontContent}
+          </div>
+          {/* Back */}
+          <div
+            className={`absolute w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] flex items-center justify-center rounded-xl p-4 font-bold text-lg border-2 ${bgColor} ${cardTextColor} ${borderColor}`}
+          >
+            <div className="text-center">
+              {backContent}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    );
+  };
+
+  return (
+    <div 
+      className="relative w-full min-h-screen antialiased font-sans overflow-hidden pb-20"
+      style={{ backgroundColor: backgroundColor, color: textColor }}
+    >
+      {/* Decorative Bee Elements */}
+      <div className="absolute top-1/4 left-4 w-8 h-8 opacity-80 animate-fly">
+        <Image src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/bee.png" alt="Bee" width={32} height={32} />
+      </div>
+      <div className="absolute top-1/2 right-4 w-12 h-12 opacity-70 animate-fly-reverse" style={{ animationDuration: '12s' }}>
+        <Image src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/bee.png" alt="Bee" width={48} height={48} />
+      </div>
+       <div className="absolute bottom-1/4 left-10 w-6 h-6 opacity-90 animate-fly" style={{ animationDuration: '8s' }}>
+        <Image src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/bee.png" alt="Bee" width={24} height={24} />
+      </div>
+      <div className="absolute top-10 right-10 w-10 h-10 opacity-60 animate-fly" style={{ animationDuration: '15s' }}>
+        <Image src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/bee.png" alt="Bee" width={40} height={40} />
+      </div>
+      <div className="absolute bottom-10 right-1/4 w-8 h-8 opacity-75 animate-fly-reverse" style={{ animationDuration: '9s' }}>
+        <Image src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/bee.png" alt="Bee" width={32} height={32} />
+      </div>
+      <div className="absolute top-1/3 left-1/3 w-5 h-5 opacity-85 animate-fly" style={{ animationDuration: '7s' }}>
+        <Image src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/bee.png" alt="Bee" width={20} height={20} />
+      </div>
+      <div className="absolute bottom-2/3 right-1/3 w-7 h-7 opacity-80 animate-fly-reverse" style={{ animationDuration: '11s' }}>
+        <Image src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/bee.png" alt="Bee" width={28} height={28} />
+      </div>
+      <div className="absolute bottom-1/2 left-1/2 w-9 h-9 opacity-70 animate-fly" style={{ animationDuration: '13s' }}>
+        <Image src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/bee.png" alt="Bee" width={36} height={36} />
+      </div>
+
+      {/* Header Section */}
+      <header className="relative z-10 text-center pt-24 pb-16 px-4 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-48 bg-yellow-300/80" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%)' }}></div>
+        <div className="absolute top-0 left-0 w-full h-48 bg-yellow-400/80" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%)', transform: 'translateY(10px) scale(1.02)' }}></div>
+
+        <FadeIn>
+          <div className="relative max-w-2xl mx-auto">
+            <h2 className="text-xl font-bold tracking-widest uppercase text-yellow-900/80" style={{ color: textColor }}>
+              {parentsNames}
+            </h2>
+            <h1 
+              className="text-6xl md:text-8xl font-extrabold tracking-tight mt-2 text-white" 
+              style={{
+                fontFamily: "'Fredoka One', cursive",
+                textShadow: `2px 2px 0px ${primaryColor}, 4px 4px 0px rgba(0,0,0,0.1)`
+              }}
+            >
+              {heroTitle}
+            </h1>
+            <p className="mt-6 text-lg font-medium max-w-md mx-auto" style={{ color: textColor }}>
+              {heroSubtitle}
+            </p>
+          </div>
+        </FadeIn>
+      </header>
+      
+      {/* Details Grid */}
+      <main className="relative z-10 max-w-3xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 -mt-8">
+        
+        {/* Date & Time Card */}
+        <FadeIn delay={0.1}>
+          <div className="h-full bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg border-2 border-yellow-300/50 text-center transform transition-transform hover:scale-105">
+            <div className="mx-auto w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-md">
+              <Calendar className="w-8 h-8 text-yellow-800" />
+            </div>
+            <h3 className="text-lg font-bold text-yellow-900 uppercase tracking-wider">{date}</h3>
+            <div className="w-24 h-px bg-yellow-300 mx-auto my-3"></div>
+            <p className="text-2xl font-bold" style={{ color: textColor }}>{timeRange}</p>
+            <p className="text-sm font-medium text-yellow-800 mt-1">{timeSubtitle}</p>
+          </div>
+        </FadeIn>
+        
+        {/* Location Card */}
+        <FadeIn delay={0.2}>
+          <div className="h-full bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg border-2 border-yellow-300/50 text-center transform transition-transform hover:scale-105">
+            <div className="mx-auto w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-md">
+              <MapPin className="w-8 h-8 text-yellow-800" />
+            </div>
+            <h3 className="text-2xl font-bold text-yellow-900">{locationName}</h3>
+            <p className="text-sm font-medium mt-1 px-4 break-words" style={{ color: textColor }}>{mainVenueAddress}</p>
+          </div>
+        </FadeIn>
+      </main>
+
+      {/* Gender Voting Section */}
+      <section className="relative z-10 max-w-xl mx-auto px-4 mt-12">
+        <FadeIn delay={0.3}>
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-yellow-300/60">
+            <div className="text-center">
+              <Sparkles className="mx-auto w-8 h-8 text-yellow-500 mb-2" />
+              <h3 className="text-2xl font-bold tracking-tight" style={{ color: textColor }}>
+                Equipo rosa o equipo azul? ¡No olvides traer el regalo sorpresa!
+              </h3>
+              <p className="mt-2 text-sm font-medium max-w-md mx-auto" style={{ color: textColor }}>
+                Vota y ayudanos a revelar el gran secreto. ¡No olvides traer tu mejor consejo para los futuros padres!
+              </p>
+              
+              <div className="mt-6 grid grid-cols-2 gap-4 max-w-sm mx-auto">
+                <FlipCard
+                  selection="girl"
+                  frontContent={<>
+                    {vote === 'girl' ? <CheckCircle /> : null} Girl
+                  </>}
+                  backContent="Bring Diapers"
+                  bgColor="bg-pink-400"
+                  textColor="text-white"
+                  unselectedTextColor="text-pink-700"
+                  borderColor="border-pink-500"
+                  hoverBgColor="bg-pink-100"
+                />
+                <FlipCard
+                  selection="boy"
+                  frontContent={<>
+                    {vote === 'boy' ? <CheckCircle /> : null} Boy
+                  </>}
+                  backContent="Bring towels"
+                  bgColor="bg-blue-400"
+                  textColor="text-white"
+                  unselectedTextColor="text-blue-700"
+                  borderColor="border-blue-500"
+                  hoverBgColor="bg-blue-100"
+                />
+              </div>
+              {vote && (
+                <p className="mt-4 text-sm font-semibold text-yellow-700 animate-pulse">Thanks for voting!</p>
+              )}
+            </div>
+          </div>
+        </FadeIn>
+      </section>
+      
+      {/* RSVP Section */}
+      <section className="relative z-10 py-6 px-4 max-w-xl mx-auto mt-8">
+        <FadeIn delay={0.4}>
+          <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-lg border border-yellow-200/50 p-6 sm:p-8">
+            <RsvpSection 
+              primaryColor={primaryColor}
+              textColor={textColor}
+            />
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* Footer */}
+      <footer className="relative z-10 mt-12 text-center px-4">
+        <p className="font-semibold text-lg" style={{ color: textColor }}>¡Los esperamos!</p>
+        <p className="text-sm font-medium mt-1" style={{ color: textColor }}>Con cariño, {parentsNames}</p>
+      </footer>
+
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;700&display=swap');
+        
+        .font-sans {
+          font-family: 'Quicksand', sans-serif;
+        }
+
+        @keyframes fly {
+          0% { transform: translateX(0) translateY(0) rotate(0deg); }
+          50% { transform: translateX(20px) translateY(-30px) rotate(15deg); }
+          100% { transform: translateX(0) translateY(0) rotate(0deg); }
+        }
+
+        @keyframes fly-reverse {
+          0% { transform: translateX(0) translateY(0) rotate(0deg); }
+          50% { transform: translateX(-25px) translateY(20px) rotate(-20deg); }
+          100% { transform: translateX(0) translateY(0) rotate(0deg); }
+        }
+        
+        .animate-fly {
+          animation: fly 10s ease-in-out infinite;
+        }
+
+        .animate-fly-reverse {
+          animation: fly-reverse 10s ease-in-out infinite;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+
+export default GenderRevealBeesTemplate;

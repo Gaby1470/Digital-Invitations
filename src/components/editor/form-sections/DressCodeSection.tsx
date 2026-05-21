@@ -1,137 +1,104 @@
 // src/components/editor/form-sections/DressCodeSection.tsx
 "use client";
+
 import { useState } from 'react';
 import { DressCode, DressCodeStyle, dressCodeDescriptions } from '@/lib/types';
-import { produce } from 'immer';
-
-type DressCodeSectionProps = {
-  data: {
-    dressCode?: DressCode;
-  };
-  onFieldChange: (field: string, value: any) => void;
-};
+import { Link as LinkIcon, Sparkles } from 'lucide-react';
 
 const dressCodeOptions: DressCodeStyle[] = ['Formal', 'Semi-Formal', 'Cocktail', 'Garden Attire', 'Casual', 'Black Tie'];
 
+type DressCodeSectionProps = {
+  data: { dressCode?: DressCode };
+  onFieldChange: (field: string, value: DressCode) => void;
+};
+
 export default function DressCodeSection({ data, onFieldChange }: DressCodeSectionProps) {
-  const [isPinterest, setIsPinterest] = useState(!!(data.dressCode?.pinterestUrlMan || data.dressCode?.pinterestUrlWoman));
-  const currentDressCode = data.dressCode || { man: 'Formal', woman: 'Formal' };
+  const hasPinterestBoards = !!data.dressCode?.pinterestUrlMan || !!data.dressCode?.pinterestUrlWoman;
+  const [isPinterest, setIsPinterest] = useState(hasPinterestBoards);
+  const currentDressCode: DressCode = data.dressCode || { man: 'Formal', woman: 'Formal' };
 
-  const handleStyleChange = (gender: 'man' | 'woman', newStyle: DressCodeStyle) => {
-    const nextState = produce(currentDressCode, (draft) => {
-      draft[gender] = newStyle;
+  const handleStyleSelect = (style: DressCodeStyle) => {
+    onFieldChange('dressCode', {
+      ...currentDressCode,
+      man: style,
+      woman: style,
+      pinterestUrlMan: undefined,
+      pinterestUrlWoman: undefined,
     });
-    onFieldChange('dressCode', nextState);
   };
 
-  const handlePinterestUrlChange = (gender: 'man' | 'woman', url: string) => {
-    const nextState = produce(currentDressCode, (draft) => {
-      if (gender === 'man') {
-        draft.pinterestUrlMan = url;
-      } else {
-        draft.pinterestUrlWoman = url;
-      }
-    });
-    onFieldChange('dressCode', nextState);
+  const handlePinterestChange = (field: 'pinterestUrlMan' | 'pinterestUrlWoman', url: string) => {
+    onFieldChange('dressCode', { ...currentDressCode, [field]: url });
   };
 
-  const toggleInputMethod = () => {
-    setIsPinterest(!isPinterest);
-    const nextState = produce(currentDressCode, (draft) => {
-      if (isPinterest) {
-        delete draft.pinterestUrlMan;
-        delete draft.pinterestUrlWoman;
-      } else {
-        draft.man = 'Formal';
-        draft.woman = 'Formal';
-      }
-    });
-    onFieldChange('dressCode', nextState);
-  };
-  
   return (
-    <div className="p-6">
-      <div className='flex justify-between items-center'>
-        <h3 className="text-xl font-semibold text-gray-900 mb-6">Dress Code</h3>
+    <div className="p-6 bg-white space-y-6">
+      <div className="flex bg-slate-100 p-1 rounded-lg">
         <button
-          onClick={toggleInputMethod}
-          className="text-sm font-medium text-indigo-600 hover:text-indigo-500 mb-6"
+          onClick={() => setIsPinterest(false)}
+          className={`flex-1 py-2 text-xs font-bold rounded-md transition-all ${!isPinterest ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500'}`}
         >
-          {isPinterest ? 'Use Predefined Styles' : 'Use Pinterest Board'}
+          Preset Styles
+        </button>
+        <button
+          onClick={() => setIsPinterest(true)}
+          className={`flex-1 py-2 text-xs font-bold rounded-md transition-all ${isPinterest ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500'}`}
+        >
+          Pinterest Board
         </button>
       </div>
 
-      <div className="space-y-6">
-        {isPinterest ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="pinterest-url-man" className="block text-sm font-medium text-gray-700 mb-2">
-                Men's Pinterest Board
-              </label>
-              <input
-                type="url"
-                id="pinterest-url-man"
-                placeholder="https://pinterest.com/board/..."
-                value={currentDressCode.pinterestUrlMan || ''}
-                onChange={(e) => handlePinterestUrlChange('man', e.target.value)}
-                className="block w-full border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow"
-              />
-            </div>
-            <div>
-              <label htmlFor="pinterest-url-woman" className="block text-sm font-medium text-gray-700 mb-2">
-                Women's Pinterest Board
-              </label>
-              <input
-                type="url"
-                id="pinterest-url-woman"
-                placeholder="https://pinterest.com/board/..."
-                value={currentDressCode.pinterestUrlWoman || ''}
-                onChange={(e) => handlePinterestUrlChange('woman', e.target.value)}
-                className="block w-full border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow"
-              />
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="dress-code-man" className="block text-sm font-medium text-gray-700 mb-2">
-                Men's Attire
-              </label>
-              <select
-                id="dress-code-man"
-                value={currentDressCode.man}
-                onChange={(e) => handleStyleChange('man', e.target.value as DressCodeStyle)}
-                className="block w-full border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow"
-              >
-                {dressCodeOptions.map(option => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-              <p className="text-xs text-gray-500 mt-2">
-                {dressCodeDescriptions[currentDressCode.man]}
+      {!isPinterest ? (
+        <div className="grid grid-cols-2 gap-3">
+          {dressCodeOptions.map((option) => (
+            <button
+              key={option}
+              onClick={() => handleStyleSelect(option)}
+              className={`p-3 text-left rounded-xl border-2 transition-all ${
+                currentDressCode.man === option && currentDressCode.woman === option
+                ? 'border-indigo-600 bg-indigo-50' 
+                : 'border-slate-100 hover:border-slate-200'
+              }`}
+            >
+              <p className={`text-sm font-bold ${currentDressCode.man === option && currentDressCode.woman === option ? 'text-indigo-600' : 'text-slate-700'}`}>
+                {option}
               </p>
-            </div>
-            <div>
-              <label htmlFor="dress-code-woman" className="block text-sm font-medium text-gray-700 mb-2">
-                Women's Attire
-              </label>
-              <select
-                id="dress-code-woman"
-                value={currentDressCode.woman}
-                onChange={(e) => handleStyleChange('woman', e.target.value as DressCodeStyle)}
-                className="block w-full border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow"
-              >
-                {dressCodeOptions.map(option => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-              <p className="text-xs text-gray-500 mt-2">
-                {dressCodeDescriptions[currentDressCode.woman]}
+              <p className="text-[10px] text-slate-400 mt-1 line-clamp-1 italic">
+                {dressCodeDescriptions[option]}
               </p>
-            </div>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
+          <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-xl flex gap-3">
+            <Sparkles className="text-indigo-600 shrink-0" size={18} />
+            <p className="text-xs text-indigo-800 leading-relaxed">
+              Paste Pinterest board URLs to show guests visual inspiration for both looks.
+            </p>
           </div>
-        )}
-      </div>
+          <div className="relative">
+            <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+            <input
+              type="url"
+              placeholder="Men's board: https://pinterest.com/..."
+              value={currentDressCode.pinterestUrlMan || ''}
+              onChange={(e) => handlePinterestChange('pinterestUrlMan', e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+            />
+          </div>
+          <div className="relative">
+            <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+            <input
+              type="url"
+              placeholder="Women's board: https://pinterest.com/..."
+              value={currentDressCode.pinterestUrlWoman || ''}
+              onChange={(e) => handlePinterestChange('pinterestUrlWoman', e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

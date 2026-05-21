@@ -65,7 +65,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   // If ownership is verified, proceed with the update
   const updatedRecord = {
     data: body.data,
-    updated_at: new Date().toISOString(),
   };
 
   const { data, error } = await supabase

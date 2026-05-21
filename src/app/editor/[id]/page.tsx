@@ -2,11 +2,13 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { templateConfig } from '@/lib/templateConfig';
 import TemplateRenderer from '@/components/TemplateRenderer';
 import { TemplateConfig } from '@/lib/types';
 import EditorForm from '@/components/editor/EditorForm';
+import { EyeIcon, PencilSquareIcon, CheckCircleIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 // Helper to safely parse JSON responses
 async function safeJsonParse(response: Response) {
@@ -21,6 +23,7 @@ async function safeJsonParse(response: Response) {
 
 export default function EditorPage() {
   const params = useParams();
+  const router = useRouter();
   const id = params.id as string;
 
   const [invitationData, setInvitationData] = useState<any>(null);
@@ -28,6 +31,10 @@ export default function EditorPage() {
   const [templateId, setTemplateId] = useState<string>(''); // State for the template ID
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'editor' | 'preview'>('editor');
+  const [isShareModalOpen, setShareModalOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+
 
   useEffect(() => {
     if (!id) return;
@@ -44,7 +51,6 @@ export default function EditorPage() {
         const templateConf = templateConfig[inv.template];
         if (!templateConf) { throw new Error('Template configuration not found.'); }
         
-        // Ensure inv.data is an object
         const data = inv.data || {};
         
         setInvitationData(data);
@@ -72,48 +78,104 @@ export default function EditorPage() {
         const errorData = await safeJsonParse(response);
         throw new Error(errorData?.details || 'Failed to save invitation.');
       }
-      alert('Saved successfully!');
+      setShareModalOpen(true);
     } catch (e: any) {
       alert(`Error saving: ${e.message}`);
     }
+  };
+
+  const handleCopyLink = () => {
+    const link = `${window.location.origin}/invite/${id}`;
+    navigator.clipboard.writeText(link).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+    });
   };
 
   if (loading) return <div className="flex items-center justify-center h-screen">Loading Editor...</div>;
   if (error) return <div className="flex items-center justify-center h-screen">Error: {error}</div>;
   if (!invitationData || !template) return <div className="flex items-center justify-center h-screen">Could not load invitation data.</div>;
 
-  // Create a key that changes when the data relevant to rendering changes.
   const rendererKey = `${templateId}-${JSON.stringify(invitationData)}`;
 
-
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="max-w-screen-2xl mx-auto md:grid md:grid-cols-3 lg:grid-cols-2 gap-8">
-        <div className="md:col-span-1 lg:col-span-1 md:sticky md:top-0 h-screen">
-          <div className="h-full overflow-y-auto bg-white shadow-lg">
-            <EditorForm 
-              data={invitationData}
-              onDataChange={setInvitationData}
-              onSave={handleSave}
-              template={template}
-            />
-          </div>
+    <>
+      <div className="bg-gray-100 min-h-screen">
+        {/* Mobile view toggle */}
+        <div className="md:hidden fixed bottom-4 right-4 z-20 flex gap-2">
+          <button
+            onClick={() => setViewMode('editor')}
+            className={`p-4 rounded-full shadow-lg ${viewMode === 'editor' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700'}`}
+          >
+            <PencilSquareIcon className="w-6 h-6" />
+          </button>
+          <button
+            onClick={() => setViewMode('preview')}
+            className={`p-4 rounded-full shadow-lg ${viewMode === 'preview' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700'}`}
+          >
+            <EyeIcon className="w-6 h-6" />
+          </button>
         </div>
-        <div className="md:col-span-2 lg:col-span-1 py-12 flex justify-center">
-          <div className="w-full max-w-md">
-            <div className="aspect-[9/19.5] bg-white rounded-[40px] shadow-2xl p-2 overflow-hidden ring-4 ring-gray-300">
-              <div className="h-full w-full overflow-y-auto rounded-[30px]">
-                <TemplateRenderer 
-                  key={rendererKey} // Force re-mount when data changes
-                  templateId={templateId} 
-                  template={template} 
-                  data={invitationData} 
-                />
+
+        <div className="max-w-screen-2xl mx-auto md:grid md:grid-cols-3 lg:grid-cols-2 gap-8">
+          <div className={`md:col-span-1 lg:col-span-1 md:sticky md:top-0 h-screen ${viewMode !== 'editor' && 'hidden md:block'}`}>
+            <div className="h-full overflow-y-auto bg-white shadow-lg">
+              <EditorForm 
+                data={invitationData}
+                onDataChange={setInvitationData}
+                onSave={handleSave}
+                template={template}
+              />
+            </div>
+          </div>
+          <div className={`md:col-span-2 lg:col-span-1 py-12 flex justify-center ${viewMode !== 'preview' && 'hidden md:flex'}`}>
+            <div className="w-full max-w-md">
+              <div className="aspect-[9/19.5] bg-white rounded-[40px] shadow-2xl p-2 overflow-hidden ring-4 ring-gray-300">
+                <div className="h-full w-full overflow-y-auto rounded-[30px]">
+                  <TemplateRenderer 
+                    key={rendererKey}
+                    templateId={templateId} 
+                    template={template} 
+                    data={invitationData} 
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      {isShareModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-lg w-full text-center">
+            <CheckCircleIcon className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Saved Successfully!</h2>
+            <p className="text-gray-500 mb-6">Your invitation is ready to be shared.</p>
+            
+            <div className="flex items-center bg-gray-100 border border-gray-200 rounded-lg p-2 mb-6">
+              <input 
+                type="text" 
+                readOnly 
+                value={`${window.location.origin}/invite/${id}`}
+                className="bg-transparent flex-grow text-gray-700 focus:outline-none"
+              />
+              <button 
+                onClick={handleCopyLink}
+                className="bg-indigo-600 text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-indigo-700 transition-colors flex items-center gap-2"
+              >
+                <ClipboardDocumentIcon className="w-5 h-5" />
+                {copied ? 'Copied!' : 'Copy'}
+              </button>
+            </div>
+            
+            <button 
+              onClick={() => router.push('/dashboard')}
+              className="w-full bg-gray-800 text-white py-3 rounded-lg font-semibold hover:bg-gray-900 transition-colors"
+            >
+              Go to Dashboard
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
