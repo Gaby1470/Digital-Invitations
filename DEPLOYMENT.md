@@ -12,7 +12,7 @@ This guide will walk you through the process of deploying your Next.js applicati
 
 ### Step 1: Create a New Vercel Project
 
-1.  Go to your Vercel dashboard.
+1.  Go to your Vercel dashboard.s
 2.  Click the "**Add New...**" button and select "**Project**".
 3.  In the "**Import Git Repository**" section, connect Vercel to your Git provider and select the repository for this project.
 
