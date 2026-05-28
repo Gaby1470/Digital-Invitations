@@ -1,12 +1,2 @@
-import { loadStripe, Stripe } from '@stripe/stripe-js';
-
-let stripePromise: Promise<Stripe | null>;
-
-export const getStripe = () => {
-  if (!stripePromise) {
-    stripePromise = loadStripe(
-      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-    );
-  }
-  return stripePromise;
-};
+// This file is temporarily disabled to allow for deployment without Stripe.
+// To re-enable, uncomment the code in this file and in the other Stripe-related files.

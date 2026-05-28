@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { usePlan } from '@/hooks/use-plan'; // Import the new hook
 
 export function RsvpSection({ invitationId, primaryColor, textColor }: { invitationId?: string, primaryColor?: string, textColor?: string }) {
   const [name, setName] = useState('');
@@ -9,8 +8,6 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
   const [message, setMessage] = useState('');
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-
-  const { plan, isLoading } = usePlan();
 
   const effectivePrimaryColor = primaryColor || '#000000';
   const effectiveTextColor = textColor || '#000000';
@@ -160,19 +157,6 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
       >
         {formState === 'submitting' ? 'Enviando...' : (!invitationId ? 'RSVP Not Available in Preview' : 'Enviar Respuesta')}
       </button>
-
-      {!isLoading && plan !== 'price_pro_tier_placeholder' && (
-        <div className="text-center mt-6">
-          <a
-            href="https://digital-invitations.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            Powered by Digital Invitations
-          </a>
-        </div>
-      )}
     </form>
   );
 }

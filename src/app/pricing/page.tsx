@@ -1,11 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { getStripe } from '@/lib/stripe-client';
+// import { getStripe } from '@/lib/stripe-client';
 
 export default function PricingPage() {
-  const [loading, setLoading] = useState(false);
-
   // IMPORTANT: Replace these with your actual Price IDs from your Stripe dashboard
   const tiers = [
     {
@@ -38,13 +35,14 @@ export default function PricingPage() {
     },
   ];
 
+  /*
   const handleCheckout = async (priceId: string) => {
     if (priceId === 'contact') {
       window.location.href = 'mailto:sales@digital-invitations.com';
       return;
     }
 
-    setLoading(true);
+    // setLoading(true);
     try {
       const res = await fetch('/api/stripe/checkout-session', {
         method: 'POST',
@@ -69,9 +67,10 @@ export default function PricingPage() {
       console.error(error);
       alert('An error occurred. Please try again.');
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
+  */
 
   return (
     <div className="w-full py-12 md:py-24">
@@ -130,15 +129,19 @@ export default function PricingPage() {
                 ))}
               </ul>
               <button
-                onClick={() => handleCheckout(tier.priceId)}
-                disabled={loading}
+                onClick={() => {
+                  if (tier.priceId === 'contact') {
+                    window.location.href = 'mailto:sales@digital-invitations.com';
+                  }
+                }}
+                disabled={tier.priceId !== 'contact'}
                 className={`mt-10 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                   tier.primary
                     ? 'bg-white text-gray-900 hover:bg-gray-100 focus-visible:outline-white'
                     : 'bg-gray-900 text-white hover:bg-gray-800 focus-visible:outline-gray-900'
                 } disabled:opacity-50`}
               >
-                {loading ? 'Processing...' : tier.cta}
+                {tier.priceId === 'contact' ? tier.cta : 'Coming Soon'}
               </button>
             </div>
           ))}
