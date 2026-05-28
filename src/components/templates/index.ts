@@ -11,6 +11,8 @@ import TimelineTemplate from "./TimelineTemplate";
 import BabyShowerTemplate from "./BabyShowerTemplate";
 import GenderRevealBeesTemplate from "./GenderRevealBeesTemplate";
 
+import ScrapbookGraduationTemplate from "./ScrapbookGraduationTemplate";
+
 // This map MUST use the same keys as defined in 'src/lib/templateConfig.ts'
 export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<any> } = {
   'timeline-wedding': TimelineTemplate,
@@ -24,4 +26,5 @@ export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<any> } = 
   'corporate-summit': CorporateTemplate,
   'baby-shower-whimsical': BabyShowerTemplate,
   'gender-reveal-bees': GenderRevealBeesTemplate,
+  'scrapbook-graduation': ScrapbookGraduationTemplate,
 };

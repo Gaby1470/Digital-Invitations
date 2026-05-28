@@ -1,51 +1,77 @@
-import Link from 'next/link';
+'use client';
+
+import { useState } from 'react';
+import { getStripe } from '@/lib/stripe-client';
 
 export default function PricingPage() {
+  const [loading, setLoading] = useState(false);
+
+  // IMPORTANT: Replace these with your actual Price IDs from your Stripe dashboard
   const tiers = [
     {
-      name: 'Basic',
-      price: 'Free',
-      description: 'Perfect for small, personal events.',
+      name: 'Template',
+      priceId: 'price_template_tier_placeholder', // This is a placeholder
+      price: '$899 MXN',
+      description: 'Choose one of our beautiful templates and customize it to your liking.',
       features: [
-        'Up to 20 guests',
-        'Access to standard templates',
-        'Includes "Digital Invitations" branding',
-      ],
-      cta: 'Get Started',
-      href: '/auth/signup',
-      primary: false,
-    },
-    {
-      name: 'Pro',
-      price: '$19',
-      description: 'For larger events and professional use.',
-      features: [
+        'Access to all templates',
         'Up to 150 guests',
-        'Access to all premium templates',
         'Remove branding',
         'Advanced analytics',
-        'Custom domain support',
       ],
-      cta: 'Go Pro',
-      href: '/auth/signup',
+      cta: 'Get Started',
       primary: true,
     },
     {
-      name: 'Enterprise',
-      price: 'Custom',
-      description: 'For businesses and large-scale events.',
+      name: 'Custom',
+      priceId: 'contact', // Special case for contact
+      price: '$1499 MXN',
+      description: 'A unique design tailored to your event. We will work with you to create a one-of-a-kind invitation.',
       features: [
-        'Unlimited guests',
-        'White-labeling & custom branding',
-        'API access',
+        'Everything in Template, plus:',
+        'Custom design',
         'Dedicated support',
-        'Custom feature development',
+        'Unlimited revisions',
       ],
       cta: 'Contact Us',
-      href: 'mailto:sales@digital-invitations.com',
       primary: false,
     },
   ];
+
+  const handleCheckout = async (priceId: string) => {
+    if (priceId === 'contact') {
+      window.location.href = 'mailto:sales@digital-invitations.com';
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/stripe/checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ priceId }),
+      });
+
+      const { sessionId } = await res.json();
+      if (!sessionId) {
+        throw new Error('Could not create checkout session');
+      }
+
+      const stripe = await getStripe();
+      if (!stripe) {
+        throw new Error('Could not connect to Stripe');
+      }
+
+      await stripe.redirectToCheckout({ sessionId });
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="w-full py-12 md:py-24">
@@ -55,10 +81,10 @@ export default function PricingPage() {
             Choose the perfect plan for your event
           </h1>
           <p className="mt-6 text-lg text-gray-600">
-            From small gatherings to large-scale professional events, we've got you covered.
+            Simple and transparent pricing.
           </p>
         </div>
-        <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 max-w-4xl mx-auto">
           {tiers.map((tier) => (
             <div
               key={tier.name}
@@ -75,7 +101,6 @@ export default function PricingPage() {
                 <span className="text-4xl font-bold tracking-tight">
                   {tier.price}
                 </span>
-                {tier.name === 'Pro' && <span className="text-sm font-semibold">/event</span>}
               </p>
               <p className={`mt-6 text-sm ${tier.primary ? 'text-gray-300' : 'text-gray-600'}`}>
                 {tier.description}
@@ -104,16 +129,17 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Link
-                href={tier.href}
-                className={`mt-10 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+              <button
+                onClick={() => handleCheckout(tier.priceId)}
+                disabled={loading}
+                className={`mt-10 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                   tier.primary
                     ? 'bg-white text-gray-900 hover:bg-gray-100 focus-visible:outline-white'
                     : 'bg-gray-900 text-white hover:bg-gray-800 focus-visible:outline-gray-900'
-                }`}
+                } disabled:opacity-50`}
               >
-                {tier.cta}
-              </Link>
+                {loading ? 'Processing...' : tier.cta}
+              </button>
             </div>
           ))}
         </div>

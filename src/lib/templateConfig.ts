@@ -19,14 +19,19 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultData: {
       primaryColor: "#8F9779",
       textColor: "#374151",
-      backgroundColor: "#F7F5F0",
+      backgroundColor: "#e7dfd6",
       hero_image_url:
-        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-timeline.png",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Timeline/timeline-portada.jpg",
       heroTitle: "La Boda De",
       heroNames: "Andrea & Jhon",
       timelineTitle: "Nuestro dia de boda",
       galleryTitle: "Nuestra Historia",
-      dressCode: { man: "Formal", woman: "Formal" },
+      dressCode: {
+        man: "Formal",
+        woman: "Formal",
+        pinterestUrlMan: "https://pin.it/5hSkwuONE",
+        pinterestUrlWoman: "https://pin.it/57zbcpMb7",
+      },
       mainVenueAddress: "123 Calle Principal, Ciudad, MX",
       event_date: "2026-10-27T18:00:00",
       giftRegistryUrl: "https://www.amazon.com",
@@ -108,7 +113,12 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       heroNames: "Olivia & Liam",
       timelineTitle: "La Celebración",
       galleryTitle: "Nuestra Historia",
-      dressCode: { man: "Formal", woman: "Formal" },
+      dressCode: {
+        man: "Formal",
+        woman: "Formal",
+        pinterestUrlMan: "https://pin.it/5hSkwuONE",
+        pinterestUrlWoman: "https://pin.it/57zbcpMb7",
+      },
       mainVenueAddress: "The Modern Art Museum, New York",
       event_date: "2026-10-27T18:00:00",
       giftRegistryUrl: "https://www.google.com",
@@ -161,7 +171,12 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       heroNames: "Sophia & Noah",
       timelineTitle: "Nuestro Día Especial",
       galleryTitle: "Nuestra Historia de Amor",
-      dressCode: { man: "Formal", woman: "Formal" },
+      dressCode: {
+        man: "Formal",
+        woman: "Formal",
+        pinterestUrlMan: "https://pin.it/5hSkwuONE",
+        pinterestUrlWoman: "https://pin.it/57zbcpMb7",
+      },
       mainVenueAddress: "The Botanical Gardens, San Francisco",
       event_date: "2026-10-27T18:00:00",
       giftRegistryUrl: "https://www.zola.com",
@@ -205,13 +220,13 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     fonts: ["Dancing Script", "Great Vibes", "Parisienne", "Alex Brush"],
     palettes: [
       { name: "Pink Dream", primary: "#db2777", text: "#374151" },
-      { name: "Royal Gold", primary: "#ca8a04", text: "#4b5563" },
+      { name: "Royal Gold", primary: "#ca8a04", text: "#46dfd2" },
       { name: "Lilac", primary: "#8b5cf6", text: "#f9fafb" },
     ],
     defaultData: {
-      primaryColor: "#db2777",
-      textColor: "#374151",
-      backgroundColor: "#fdf2f8",
+      primaryColor: "#e61875",
+      textColor: "#f0f0f0",
+      backgroundColor: "#f4f1e7",
       hero_image_url:
         "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Quince/quince-1.jpg",
       heroTitle: "Estás invitado a los XV de",
@@ -222,12 +237,22 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
         {
           name: "Mateo",
           role: "Chambelán",
-          photoUrl: "https://i.pravatar.cc/150?u=mateo",
+          photoUrl: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Quince/chambe.png",
         },
         {
           name: "Sofia",
           role: "Dama",
-          photoUrl: "https://i.pravatar.cc/150?u=sofia",
+          photoUrl: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Quince/friend1.png",
+        },
+        {
+          name: "Dani",
+          role: "Dama",
+          photoUrl: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Quince/friend2.png",
+        },
+         {
+          name: "Andrea",
+          role: "Dama",
+          photoUrl: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Quince/friend3.png",
         },
       ],
       timelineItems: [
@@ -344,7 +369,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
   },
   "gender-reveal-party": {
-    name: "Fiesta de Revelación de Género",
+    name: "Revelación de Género - Clásica",
     thumbnail:
       "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-gender.png",
     category: "Baby Shower",
@@ -393,7 +418,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   "graduation-celebration": {
     name: "Celebración de Graduación",
     thumbnail:
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=600&auto=format&fit=crop",
+      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-graduation-formal.png",
     category: "Graduation",
     description: "Una celebración de logros y nuevos comienzos.",
     font: "font-sans",
@@ -411,19 +436,19 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       hero_image_url:
         "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
       heroTitle: "Celebrando la Graduación de",
-      heroNames: "Alex Doe",
-      degreeType: "Licenciatura en Ciencias",
+      heroNames: "Gabriela Alcaraz",
+      degreeType: "Ingeniería en Ciencias Computacionales",
       timelineTitle: "Programa del Evento",
       timelineItems: [
         {
           time: "6 PM",
-          title: "Cena y Brindis",
-          location: "Casa del Graduado",
+          title: "Ceremonia de Graduación",
+          location: "Universidad",
         },
-        { time: "8 PM", title: "Fiesta", location: "Casa del Graduado" },
+        { time: "8 PM", title: "Cena", location: "Restaurante" },
       ],
       tribute: "Un agradecimiento sincero a mi familia y amigos.",
-      futurePlans: "Próximo destino: Universidad Tecnológica!",
+      futurePlans: "Próximo destino: Maestría!",
     },
     features: {
       tributeSection: true,
@@ -433,7 +458,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   "corporate-summit": {
     name: "Cumbre Ejecutiva",
     thumbnail:
-      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=600&auto=format&fit=crop",
+      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-coorporate.png",
     category: "Corporate",
     description: "A high-end dark mode design for professional events.",
     font: "font-sans",
@@ -453,13 +478,21 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       heroNames: "Future of Tech",
       venue_city: "San Francisco, CA",
       timelineTitle: "Summit Agenda",
+      speakerImages: [
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Business/speaker-1.jpg",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Business/speaker-2.jpg",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Business/speaker-3.jpg",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Business/speaker-4.jpg",
+      ],
       timelineItems: [
         { time: "09:00 AM", title: "Keynote Speech", location: "Main Hall" },
+        { time: "11:00 AM", title: "How to Upgrade Your Skills", location: "Main Hall" },
         {
           time: "01:00 PM",
           title: "Networking Lunch",
           location: "Skyline Lounge",
         },
+        { time: "03:00 PM", title: "Networking Session", location: "Main Hall" },
       ],
     },
     features: {
@@ -528,6 +561,38 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
     features: {
       // This template has unique features like voting, handled in the component.
+    },
+  },
+  "scrapbook-graduation": {
+    name: "Graduación - Moderno",
+    thumbnail: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-grad-cool.png",
+    category: "Graduation",
+    description: "A fun, scrapbook-style invitation for graduates.",
+    font: "font-mono",
+    defaultFont: "Permanent Marker",
+    fonts: ["Permanent Marker", "Caveat", "Courier Prime"],
+    palettes: [
+      { name: "Pink & Black", primary: "#FF1493", text: "#1A1A1A" },
+    ],
+    defaultData: {
+      primaryColor: "#FF1493",
+      textColor: "#1A1A1A",
+      backgroundColor: "#F4EFE6",
+      heroTitle: "¡Por fin terminé!\nMe encantaría invitarte a ser parte\nde mi graduación y festejar conmigo",
+      mainImage: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad-profile.png",
+      guestbookPolaroidImage: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/graduation-cover.jpg",
+      discoBallImage: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/discoball.png",
+      starBalloonImage: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/star.png",
+      date: "06 MARZO 2026",
+      time: "7:00 p.m.",
+      location: "Av. Colombia # 2 - 72, La pizzería estelar",
+      timelineItems: [
+        { time: "7:00 PM", title: "Ceremonia", location: "Auditorio Principal" },
+        { time: "9:00 PM", title: "Fiesta", location: "Salón de eventos" },
+      ],
+    },
+    features: {
+      multiEventSchedule: true,
     },
   },
 };

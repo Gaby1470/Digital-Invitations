@@ -33,7 +33,7 @@ export default function MainDetailsSection({ data, templateFeatures, onFieldChan
           <User size={14} /> Subject Name(s)
         </label>
         <TextInput 
-          placeholder="e.g., Gaby & Emilio"
+          placeholder="e.g., Alguien & Alguien"
           value={data.heroNames} 
           onChange={(val) => onFieldChange('heroNames', val)} 
         />

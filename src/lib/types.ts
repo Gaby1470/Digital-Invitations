@@ -4,7 +4,9 @@ export type Rsvp = {
   id: number;
   invitation_id: string;
   name: string;
-  status: "Confirmo" | "No asistirá" | "Tal vez";
+  status: 'ATTENDING' | 'DECLINED';
+  plus_ones: number;
+  message: string | null;
   created_at: string;
 };
 

@@ -4,17 +4,17 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { TemplateConfig, TimelineItem, CourtMember } from "@/lib/types";
 
-// Mobile-optimized trigger boundary
+// Helper for animations
 function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px 0px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px 0px" });
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 25 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
@@ -26,84 +26,106 @@ type QuinceaneraTemplateProps = {
   data: any;
 };
 
+// New "Ethereal Gala" Theme Component
 export default function QuinceaneraTemplate({ template, data }: QuinceaneraTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
 
-  // Sample or dynamic photo drop target link
+  // --- "Ethereal Gala" Color Palette ---
+  const colors = {
+    background: invitationData.backgroundColor || "#1a1a2e", // Deep Midnight Blue
+    text: invitationData.textColor || "#f0f0f0", // Soft Off-White
+    primary: invitationData.primaryColor || "#c06c84", // Electric Lavender
+    highlight: invitationData.secondaryColor || "#FFD700" // Shimmering Gold
+  };
+  
   const photoDropUrl = invitationData.photoSharingUrl || "https://shared-album.google.com";
+  const timelineTextColor = "#1f2937";
+  const courtOfHonorCardColor = "#DBC4B4";
+  
+  // New Hero Image reflecting the theme
+  const heroImageUrl = invitationData.hero_image_url || "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop";
 
   return (
     <div 
-      className="w-full font-sans antialiased overflow-x-hidden selection:bg-rose-200"
+      className="w-full antialiased overflow-x-hidden"
       style={{
-        backgroundColor: invitationData.backgroundColor || "#fff1f2", // rose-50 base
-        color: invitationData.textColor || "#1f2937" 
+        backgroundColor: colors.background,
+        color: colors.text,
+        fontFamily: 'var(--font-montserrat)',
       }}
     >
-      {/* Hero Section: Fixed height to prevent mobile browser search bar jumping */}
+      {/* Hero Section */}
       <section 
         id="hero"
-        className="relative h-[92vh] min-h-[540px] w-full flex flex-col justify-end items-center px-6 pb-16 overflow-hidden"
+        className="relative h-[95vh] min-h-[600px] w-full flex flex-col justify-center items-center px-6 text-center"
       >
         <div className="absolute inset-0 z-0">
           <img 
-            src={invitationData.hero_image_url || "https://images.unsplash.com/photo-1549417229-aa67d3263c09?q=80&w=2070&auto=format&fit=crop"} 
+            src={heroImageUrl} 
             className="w-full h-full object-cover"
-            alt="Celebration Snapshot"
+            alt="Ethereal celebration background"
           />
-          {/* Custom warm, modern vignette drop */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-stone-900/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-[#1a1a2e]/60 to-transparent" />
         </div>
 
-        <div className="z-10 text-center text-white w-full max-w-sm">
+        <div className="z-10 w-full max-w-md">
           <motion.p 
-            initial={{ opacity: 0, tracking: "0.1em" }}
-            animate={{ opacity: 1, tracking: "0.3em" }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-[10px] uppercase font-bold tracking-[0.3em] mb-3 text-rose-300"
+            initial={{ opacity: 0, letterSpacing: "0.1em" }}
+            animate={{ opacity: 1, letterSpacing: "0.3em" }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="text-[11px] uppercase font-light tracking-[0.3em] mb-4"
+            style={{ color: colors.primary }}
           >
-            {invitationData.heroTitle || "You're Invited"}
+            {invitationData.heroTitle || "Join us for a celestial night"}
           </motion.p>
           <motion.h1 
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.4 }}
-            className="text-5xl font-extrabold tracking-tight lowercase leading-none mb-6"
+            transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="text-6xl md:text-7xl font-bold leading-none mb-6"
+            style={{ fontFamily: 'var(--font-playfair-display)', textShadow: `0 2px 20px ${colors.primary}40` }}
           >
-            {invitationData.heroNames || "mis xv"}
+            {invitationData.heroNames || "Valentina's XV"}
           </motion.h1>
           
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="w-8 h-[2px] bg-white/40 mx-auto rounded-full"
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="w-12 h-[2px] mx-auto rounded-full"
+            style={{ backgroundColor: colors.primary }}
           />
         </div>
       </section>
 
-      {/* DATE BREAKOUT CAPSULE */}
+      {/* Date Capsule: Glassmorphism */}
       {invitationData.event_date && (
-        <section id="date-card" className="relative -mt-10 z-20 px-6 max-w-md mx-auto">
+        <section id="date-card" className="relative -mt-16 z-20 px-6 max-w-md mx-auto">
           <AnimatedSection>
-            <div className="bg-white/90 backdrop-blur-md p-6 rounded-3xl border border-white shadow-xl shadow-stone-900/5 text-center flex items-center justify-around">
-              <div className="text-left">
-                <p className="text-[10px] tracking-widest uppercase font-bold text-stone-400">Month</p>
-                <p className="text-xl font-bold uppercase tracking-tight text-stone-800">
+            <div 
+              className="backdrop-blur-xl p-6 rounded-3xl border text-center flex items-center justify-around"
+              style={{
+                backgroundColor: '#8debb340', // Semi-transparent darker midnight
+                borderColor: `${colors.primary}30`
+              }}
+            >
+              <div>
+                <p className="text-[10px] tracking-widest uppercase font-bold opacity-60">Month</p>
+                <p className="text-xl font-bold uppercase tracking-tight">
                   {new Date(invitationData.event_date).toLocaleDateString('en-US', { month: 'short' })}
                 </p>
               </div>
-              <div className="w-[1px] h-10 bg-stone-200" />
+              <div className="w-[1px] h-10" style={{ backgroundColor: `${colors.primary}30` }} />
               <div>
-                <p className="text-3xl font-black tracking-tighter text-rose-500">
+                <p className="text-4xl font-black tracking-tighter" style={{ color: colors.primary }}>
                   {new Date(invitationData.event_date).toLocaleDateString('en-US', { day: '2-digit' })}
                 </p>
               </div>
-              <div className="w-[1px] h-10 bg-stone-200" />
-              <div className="text-right">
-                <p className="text-[10px] tracking-widest uppercase font-bold text-stone-400">Day</p>
-                <p className="text-xl font-bold uppercase tracking-tight text-stone-800">
+              <div className="w-[1px] h-10" style={{ backgroundColor: `${colors.primary}30` }} />
+              <div>
+                <p className="text-[10px] tracking-widest uppercase font-bold opacity-60">Day</p>
+                <p className="text-xl font-bold uppercase tracking-tight">
                   {new Date(invitationData.event_date).toLocaleDateString('en-US', { weekday: 'short' })}
                 </p>
               </div>
@@ -112,58 +134,76 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
         </section>
       )}
 
-      {/* Timeline Itinerary Section: Left-Anchored Mobile Timeline */}
-      <section id="timeline" className="py-20 px-6 max-w-md mx-auto">
+      {/* Timeline Itinerary Section */}
+      <section id="timeline" className="py-24 px-6 max-w-md mx-auto">
         <AnimatedSection>
-          <h2 className="text-xs tracking-[0.4em] uppercase font-black text-center mb-12" style={{ color: invitationData.primaryColor || "#f43f5e" }}>
+          <h2 className="text-xs tracking-[0.4em] uppercase font-bold text-center mb-16" style={{ color: colors.primary }}>
             {invitationData.timelineTitle || "The Itinerary"}
           </h2>
         </AnimatedSection>
 
-        <div className="relative pl-6 space-y-8">
-          {/* Subtle Accent Axis Vector Line */}
+        <div className="relative pl-8 space-y-10">
           <div 
-            className="absolute left-1 top-2 bottom-2 w-[1px]" 
-            style={{ background: `linear-gradient(to bottom, transparent, ${invitationData.primaryColor || '#f43f5e'}40, transparent)` }} 
+            className="absolute left-2 top-2 bottom-2 w-0.5" 
+            style={{ background: `linear-gradient(to bottom, transparent, ${colors.primary}40, transparent)` }} 
           />
 
           {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
-            <AnimatedSection key={index} delay={index * 0.05}>
-              <div className="relative text-left group">
+            <AnimatedSection key={index} delay={index * 0.1}>
+              <div className="relative text-left">
                 <div 
-                  className="absolute -left-[23px] top-1.5 w-2.5 h-2.5 rounded-full bg-white border-2 shadow-sm"
-                  style={{ borderColor: invitationData.primaryColor || "#f43f5e" }} 
-                />
-                <span className="font-mono text-[11px] font-bold tracking-wider opacity-60 block mb-0.5" style={{ color: invitationData.primaryColor }}>
+                  className="absolute -left-[30px] top-1.5 w-3 h-3 rounded-full border-2 flex items-center justify-center"
+                  style={{ borderColor: colors.primary }} 
+                >
+                  <div className="w-1 h-1 rounded-full" style={{ backgroundColor: colors.primary }} />
+                </div>
+                <span className="font-mono text-xs font-bold tracking-wider opacity-80 block mb-1" style={{ color: colors.primary }}>
                   {item.time}
                 </span>
-                <h3 className="text-xl font-bold tracking-tight text-stone-800">{item.title}</h3>
-                <p className="text-xs tracking-wide text-stone-500 mt-0.5">{item.location}</p>
+                <h3
+                  className="text-2xl font-bold tracking-tight"
+                  style={{
+                    fontFamily: 'var(--font-playfair-display)',
+                    color: timelineTextColor,
+                  }}
+                >
+                  {item.title}
+                </h3>
+                <p className="text-sm tracking-wide opacity-70 mt-1" style={{ color: timelineTextColor }}>
+                  {item.location}
+                </p>
               </div>
             </AnimatedSection>
           ))}
         </div>
       </section>
 
-      {/* Court of Honor Section: Horizontal Swiping Polaroid Cards */}
+      {/* Court of Honor Section */}
       {features.courtOfHonor && invitationData.courtOfHonor?.length > 0 && (
-        <section id="court-of-honor" className="py-16 bg-white border-y border-stone-100">
+        <section id="court-of-honor" className="py-20" style={{ backgroundColor: '#e7dfd6' }}>
           <AnimatedSection>
-            <h2 className="text-xs tracking-[0.4em] uppercase font-black text-center mb-10" style={{ color: invitationData.primaryColor || "#f43f5e" }}>
-              The Court
+            <h2 className="text-xs tracking-[0.4em] uppercase font-bold text-center mb-12" style={{ color: colors.primary }}>
+              The Court of Honor
             </h2>
           </AnimatedSection>
           
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-6 no-scrollbar pb-4">
+          <div className="flex justify-center items-stretch gap-6 overflow-x-auto snap-x snap-mandatory px-6 no-scrollbar pb-6">
             {invitationData.courtOfHonor.map((member: CourtMember, idx: number) => (
-              <div key={member.name} className="flex-none w-[65vw] max-w-[220px] snap-center">
-                <AnimatedSection delay={idx * 0.05}>
-                  <div className="p-3 bg-stone-50 border border-stone-200/60 rounded-2xl text-center shadow-sm">
-                    <div className="aspect-square w-full overflow-hidden rounded-xl bg-stone-200">
-                      <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover filter contrast-[102%]" />
+              <div key={member.name} className="flex-none w-[70vw] max-w-[260px] snap-center">
+                <AnimatedSection delay={idx * 0.08}>
+                  <div
+                    className="flex flex-col items-center border p-3 rounded-2xl text-center transition-all duration-300"
+                    style={{
+                      backgroundColor: courtOfHonorCardColor,
+                      color: "#1f2937",
+                      borderColor: "rgba(31, 41, 55, 0.12)",
+                    }}
+                  >
+                    <div className="aspect-[4/5] w-full overflow-hidden rounded-xl bg-stone-800">
+                      <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                     </div>
-                    <h4 className="text-base font-bold mt-3 tracking-tight text-stone-800">{member.name}</h4>
-                    <p className="text-xs text-stone-500 tracking-wide mt-0.5">{member.role}</p>
+                    <h4 className="text-lg font-bold mt-4 tracking-tight">{member.name}</h4>
+                    <p className="text-xs opacity-60 tracking-wide mt-1">{member.role}</p>
                   </div>
                 </AnimatedSection>
               </div>
@@ -172,24 +212,35 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
         </section>
       )}
 
-      {/* Shared Interactive Photo Dump Block */}
+      {/* Social Media Section */}
       {features.socialMediaWall && (
-        <section id="social-media" className="py-20 px-6 max-w-sm mx-auto text-center">
+        <section id="social-media" className="py-24 px-6 max-w-md mx-auto text-center">
           <AnimatedSection>
-            <div className="bg-gradient-to-br from-rose-500 to-pink-600 p-8 rounded-[2.5rem] text-white shadow-xl shadow-rose-500/10">
-              <h2 className="text-2xl font-black tracking-tight mb-2">Live Photo Dump 📸</h2>
-              <p className="text-xs text-rose-100 font-light leading-relaxed mb-6 max-w-[240px] mx-auto">
-                Don't let your pictures sit in your camera roll! Tap below to drop your snaps directly into our shared album.
+            <div 
+              className="p-10 rounded-[2.5rem] text-white shadow-2xl"
+              style={{
+                background: `linear-gradient(135deg, #2c2c44, #3c2c44)`,
+                boxShadow: `0 10px 30px -10px ${colors.primary}30`
+              }}
+            >
+              <h2 className="text-3xl font-bold mb-2" style={{ fontFamily: 'var(--font-playfair-display)'}}>Capture the Night</h2>
+              <p className="text-sm font-light leading-relaxed opacity-80 mb-6 max-w-xs mx-auto">
+                Help us collect memories from this unforgettable night. Share your photos and videos in our collective album.
               </p>
               <a 
                 href={photoDropUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3.5 px-6 bg-white text-rose-600 font-bold font-sans text-xs tracking-widest uppercase rounded-2xl shadow-md inline-block active:scale-95 transition-transform"
+                className="w-full py-4 px-6 font-bold text-xs tracking-widest uppercase rounded-2xl shadow-lg inline-block active:scale-95 transition-transform"
+                style={{
+                  backgroundColor: colors.primary,
+                  color: '#fff',
+                  boxShadow: `0 4px 15px -2px ${colors.primary}50`
+                }}
               >
-                Upload Your Photos
+                Share Your Photos
               </a>
-              <div className="mt-4 text-[10px] tracking-widest uppercase text-rose-200/80 font-medium">
+              <div className="mt-5 text-[10px] tracking-widest uppercase opacity-50 font-medium">
                 #ValentinaXV
               </div>
             </div>

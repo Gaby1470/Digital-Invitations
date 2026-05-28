@@ -126,12 +126,12 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
         </SectionReveal>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[1, 2, 3, 4].map((i) => (
+          {(invitationData.speakerImages || []).map((src: string, i: number) => (
             <SectionReveal key={i} delay={i * 0.1}>
               <div className="group cursor-pointer">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-800 mb-4 border" style={{ borderColor: `${invitationData.textColor}1A` }}>
                   <img 
-                    src={`https://picsum.photos/seed/speaker${i}/600/800`} 
+                    src={src} 
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                     alt="Speaker"
                   />

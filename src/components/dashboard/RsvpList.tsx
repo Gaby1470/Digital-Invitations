@@ -2,6 +2,8 @@
 "use client";
 
 import { Rsvp } from '@/lib/types';
+import { ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
 
 type RsvpListProps = {
   rsvps: Rsvp[];
@@ -10,18 +12,18 @@ type RsvpListProps = {
 
 const getStatusClasses = (status: Rsvp['status']) => {
   switch (status) {
-    case 'attending':
+    case 'ATTENDING':
       return 'bg-green-100 text-green-800';
-    case 'not_attending':
+    case 'DECLINED':
       return 'bg-red-100 text-red-800';
-    case 'maybe':
-      return 'bg-yellow-100 text-yellow-800';
     default:
       return 'bg-gray-100 text-gray-800';
   }
 };
 
 export default function RsvpList({ rsvps, isLoading }: RsvpListProps) {
+  const [expandedMessageId, setExpandedMessageId] = useState<number | null>(null);
+
   if (isLoading) {
     return <p className="text-center py-10">Loading RSVPs...</p>;
   }
@@ -30,24 +32,26 @@ export default function RsvpList({ rsvps, isLoading }: RsvpListProps) {
     return <p className="text-center text-gray-500 py-10">No one has responded yet.</p>;
   }
 
-  const attendingCount = rsvps.filter(r => r.status === 'attending').length;
-  const notAttendingCount = rsvps.filter(r => r.status === 'not_attending').length;
-  const maybeCount = rsvps.filter(r => r.status === 'maybe').length;
+  const attendingRsvps = rsvps.filter(r => r.status === 'ATTENDING');
+  const attendingCount = attendingRsvps.length;
+  const plusOnesCount = attendingRsvps.reduce((sum, r) => sum + r.plus_ones, 0);
+  const totalGuests = attendingCount + plusOnesCount;
+  const notAttendingCount = rsvps.filter(r => r.status === 'DECLINED').length;
 
   return (
     <div>
       <div className="grid grid-cols-3 gap-4 mb-6 text-center">
         <div className="bg-green-50 p-4 rounded-lg">
-          <p className="text-2xl font-bold text-green-700">{attendingCount}</p>
-          <p className="text-sm font-medium text-green-600">Attending</p>
+          <p className="text-2xl font-bold text-green-700">{totalGuests}</p>
+          <p className="text-sm font-medium text-green-600">Total Guests</p>
+        </div>
+        <div className="bg-blue-50 p-4 rounded-lg">
+          <p className="text-2xl font-bold text-blue-700">{attendingCount}</p>
+          <p className="text-sm font-medium text-blue-600">Attending</p>
         </div>
         <div className="bg-red-50 p-4 rounded-lg">
           <p className="text-2xl font-bold text-red-700">{notAttendingCount}</p>
           <p className="text-sm font-medium text-red-600">Not Attending</p>
-        </div>
-        <div className="bg-yellow-50 p-4 rounded-lg">
-          <p className="text-2xl font-bold text-yellow-700">{maybeCount}</p>
-          <p className="text-sm font-medium text-yellow-600">Maybe</p>
         </div>
       </div>
 
@@ -62,6 +66,12 @@ export default function RsvpList({ rsvps, isLoading }: RsvpListProps) {
                 Status
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Guests
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Message
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Responded On
               </th>
             </tr>
@@ -72,8 +82,29 @@ export default function RsvpList({ rsvps, isLoading }: RsvpListProps) {
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{rsvp.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(rsvp.status)}`}>
-                    {rsvp.status.replace('_', ' ')}
+                    {rsvp.status}
                   </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                  {rsvp.plus_ones > 0 ? `+${rsvp.plus_ones}`: ''}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {rsvp.message && (
+                     <div className="relative">
+                      <button 
+                        onMouseEnter={() => setExpandedMessageId(rsvp.id)}
+                        onMouseLeave={() => setExpandedMessageId(null)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
+                        <ChatBubbleLeftIcon className="h-5 w-5" />
+                      </button>
+                      {expandedMessageId === rsvp.id && (
+                        <div className="absolute z-10 w-48 p-2 text-sm font-light text-gray-600 bg-white border border-gray-200 rounded-lg shadow-lg -top-8 -right-48">
+                          {rsvp.message}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {new Date(rsvp.created_at).toLocaleString()}

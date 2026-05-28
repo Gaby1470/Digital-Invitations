@@ -74,7 +74,7 @@ export default function DressCodeSection({ data, onFieldChange }: DressCodeSecti
           <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-xl flex gap-3">
             <Sparkles className="text-indigo-600 shrink-0" size={18} />
             <p className="text-xs text-indigo-800 leading-relaxed">
-              Paste Pinterest board URLs to show guests visual inspiration for both looks.
+              Pega el link de tus tableros de Pinterest para hombres y mujeres (opcional) y los invitados podrán ver ejemplos visuales del estilo de vestimenta que deseas para tu evento. ¡Hazlo divertido y fácil para todos!
             </p>
           </div>
           <div className="relative">

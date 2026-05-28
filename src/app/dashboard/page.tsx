@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase-client';
 import { User } from '@supabase/supabase-js';
 import { Rsvp } from '@/lib/types';
+import { TrashIcon, DocumentDuplicateIcon, EyeIcon, PencilIcon, TicketIcon } from '@heroicons/react/24/outline';
 import RsvpList from '@/components/dashboard/RsvpList';
 
 export default function DashboardPage() {
@@ -83,6 +84,21 @@ export default function DashboardPage() {
     });
   };
 
+  const handleDelete = async (invitationId: string) => {
+    if (window.confirm('Are you sure you want to delete this invitation? This action cannot be undone.')) {
+      try {
+        const response = await fetch(`/api/invitations/${invitationId}`, { method: 'DELETE' });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to delete invitation.');
+        }
+        setInvitations(invitations.filter(inv => inv.id !== invitationId));
+      } catch (error: any) {
+        alert(`Error: ${error.message}`);
+      }
+    }
+  };
+
   const selectedInvitation = invitations.find(inv => inv.id === selectedInvitationId);
 
   if (loading) {
@@ -120,20 +136,39 @@ export default function DashboardPage() {
                     <div className="flex items-center gap-4">
                       <button
                         onClick={() => handleCopyLink(inv.id)}
-                        className="text-sm font-medium text-purple-600 hover:underline disabled:text-gray-400"
+                        className="text-sm font-medium text-purple-600 hover:underline disabled:text-gray-400 flex items-center gap-1"
                         disabled={copiedId === inv.id}
                       >
+                        <DocumentDuplicateIcon className="w-4 h-4" />
                         {copiedId === inv.id ? 'Copied!' : 'Copy Link'}
                       </button>
-                      <Link href={`/invite/${inv.id}`} target="_blank" className="text-sm font-medium text-blue-600 hover:underline">
+                      <Link href={`/invite/${inv.id}`} target="_blank" className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:underline">
+                        <EyeIcon className="w-4 h-4" />
                         View
                       </Link>
-                      <Link href={`/editor/${inv.id}`} className="text-sm font-medium text-indigo-600 hover:underline">
+                      <Link href={`/editor/${inv.id}`} className="flex items-center gap-1 text-sm font-medium text-indigo-600 hover:underline">
+                        <PencilIcon className="w-4 h-4" />
                         Edit
                       </Link>
-                      <button onClick={() => handleViewRsvps(inv.id)} className="text-sm font-medium text-green-600 hover:underline">
-                        View RSVPs
+                      <button onClick={() => handleViewRsvps(inv.id)} className="flex items-center gap-1 text-sm font-medium text-green-600 hover:underline">
+                        <TicketIcon className="w-4 h-4" />
+                        RSVPs
                       </button>
+                      <div className="relative group">
+                        <button
+                          onClick={() => handleDelete(inv.id)}
+                          className="flex items-center gap-1 text-sm font-medium text-red-600 hover:underline disabled:text-gray-400 disabled:cursor-not-allowed"
+                          disabled={inv.is_published}
+                        >
+                          <TrashIcon className="w-4 h-4" />
+                          Delete
+                        </button>
+                        {inv.is_published && (
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-gray-800 text-white text-xs rounded py-1 px-2 text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            Cannot delete a published invitation.
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </li>
                 ))}
@@ -173,3 +208,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

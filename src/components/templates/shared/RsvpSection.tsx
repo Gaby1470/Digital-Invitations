@@ -1,13 +1,16 @@
-// src/components/templates/shared/RsvpSection.tsx
-"use client";
-
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { usePlan } from '@/hooks/use-plan'; // Import the new hook
 
 export function RsvpSection({ invitationId, primaryColor, textColor }: { invitationId?: string, primaryColor?: string, textColor?: string }) {
   const [name, setName] = useState('');
   const [status, setStatus] = useState<'ATTENDING' | 'DECLINED' | null>(null);
+  const [plusOnes, setPlusOnes] = useState(0);
+  const [message, setMessage] = useState('');
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const { plan, isLoading } = usePlan();
 
   const effectivePrimaryColor = primaryColor || '#000000';
   const effectiveTextColor = textColor || '#000000';
@@ -29,7 +32,12 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
       const response = await fetch(`/api/invitations/${invitationId}/rsvp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, status }),
+        body: JSON.stringify({
+          name,
+          status,
+          plus_ones: status === 'ATTENDING' ? plusOnes : 0,
+          message,
+        }),
       });
 
       if (!response.ok) {
@@ -53,6 +61,7 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Form fields... */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium" style={{ color: effectiveTextColor }}>Nombre completo</label>
         <input
@@ -85,7 +94,10 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
           </button>
           <button
             type="button"
-            onClick={() => setStatus('DECLINED')}
+            onClick={() => {
+              setStatus('DECLINED');
+              setPlusOnes(0); // Reset plus ones if declining
+            }}
             className={`w-full py-3 text-sm font-bold uppercase tracking-widest rounded-md transition-all ${
               status === 'DECLINED'
                 ? 'ring-2 ring-offset-2'
@@ -101,15 +113,66 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
           </button>
         </div>
       </div>
+
+      <AnimatePresence>
+        {status === 'ATTENDING' && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="space-y-4 overflow-hidden"
+          >
+            <div>
+              <label htmlFor="plusOnes" className="block text-sm font-medium" style={{ color: effectiveTextColor }}>Invitados adicionales</label>
+              <input
+                type="number"
+                id="plusOnes"
+                value={plusOnes}
+                onChange={(e) => setPlusOnes(parseInt(e.target.value, 10))}
+                min="0"
+                max="10"
+                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2"
+                style={{ '--focus-ring-color': effectivePrimaryColor } as any}
+              />
+            </div>
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium" style={{ color: effectiveTextColor }}>Mensaje (opcional)</label>
+              <textarea
+                id="message"
+                rows={3}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2"
+                style={{ '--focus-ring-color': effectivePrimaryColor } as any}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
+      
       <button
         type="submit"
-        disabled={formState === 'submitting' || !invitationId}
+        disabled={formState === 'submitting' || !invitationId || !status}
         className="w-full py-4 text-white font-bold uppercase tracking-widest rounded-md transition-opacity disabled:opacity-50"
         style={{ backgroundColor: effectivePrimaryColor }}
       >
-        {formState === 'submitting' ? 'Enviando...' : (!invitationId ? 'RSVP Not Available in Preview' : 'RSVP')}
+        {formState === 'submitting' ? 'Enviando...' : (!invitationId ? 'RSVP Not Available in Preview' : 'Enviar Respuesta')}
       </button>
+
+      {!isLoading && plan !== 'price_pro_tier_placeholder' && (
+        <div className="text-center mt-6">
+          <a
+            href="https://digital-invitations.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            Powered by Digital Invitations
+          </a>
+        </div>
+      )}
     </form>
   );
 }

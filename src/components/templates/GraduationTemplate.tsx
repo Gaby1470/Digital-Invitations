@@ -1,259 +1,205 @@
 "use client";
 
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { TemplateConfig, TimelineItem } from '@/lib/types';
+import { Feather } from 'lucide-react';
+import Image from 'next/image';
 
-/**
- * Enhanced FadeIn for organic baby-themed entries.
- */
-function FadeIn({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
+// Smooth, organic fade-in utility
+function GentleFade({ children, delay = 0, yOffset = 20 }: { children: React.ReactNode, delay?: number, yOffset?: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px 0px" });
+  const isInView = useInView(ref, { once: true, margin: "-10%" });
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: yOffset }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay, ease: 'easeOut' }}
+      transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
   );
 }
 
-type BabyShowerTemplateProps = {
+type GraduationTemplateProps = {
   template: TemplateConfig;
   data: any;
 };
 
-export default function BabyShowerTemplate({ template, data }: BabyShowerTemplateProps) {
+export default function GraduationTemplate({ template, data }: GraduationTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
-  const [team, setTeam] = useState<'boy' | 'girl' | null>(null);
-
-  // Floating animation configuration for the balloons
-  const floatAnimation = (yValue: number, duration: number) => ({
-    y: [0, yValue, 0],
-    rotate: [-1, 1, -1],
-    transition: {
-      duration: duration,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  });
+  const [guestMessage, setGuestMessage] = useState("");
 
   return (
     <div 
-      className="w-full font-sans overflow-x-hidden min-h-screen relative selection:bg-amber-100"
+      className="w-full font-serif text-[#4A4B4D] selection:bg-[#E5E0D8]"
       style={{
-        backgroundColor: invitationData.backgroundColor || '#FFF9F5', // Warm sunset-cream background
-        color: invitationData.textColor || '#3c2f2f'
+        backgroundColor: '#F9F8F6',
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E")`
       }}
     >
-      {/* Whimsical Sunset Background Elements */}
-      <div className="absolute top-0 left-0 right-0 h-[100vh] bg-gradient-to-b from-[#FAD0C4] via-[#FFD1FF] to-[#FFF9F5] opacity-40 pointer-events-none z-0" />
+      {/* Added the paper texture overlay via background-image combined with the off-white base */}
       
-      {/* Hero Section with Floating Balloons */}
-      <section className="min-h-[85vh] sm:h-screen w-full flex flex-col justify-center items-center relative overflow-hidden px-4 py-12 bg-gradient-to-b from-[#FFF0FA] via-[#F4FAFF] to-[#FFF9F5]">
-        
-        {/* Balloon Layer */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          {/* Left Side - Pastel Pink / Rose Balloons */}
-          <motion.div 
-            animate={floatAnimation(-15, 6)}
-            className="absolute top-12 left-[-20px] sm:left-10 w-28 h-36 sm:w-40 sm:h-52 bg-gradient-to-br from-[#FFD1E8] to-[#FBA7D3] rounded-full opacity-80 blur-[0.5px] shadow-[inset_-8px_-12px_20px_rgba(0,0,0,0.06)]"
-            style={{ borderRadius: '50% 50% 50% 50% / 40% 40% 60% 60%' }}
+      {/* Hero Section - Poetic & Minimal */}
+      <section className="min-h-[90vh] w-full flex flex-col justify-center items-center text-center relative px-6 py-20">
+        <div className="z-10 max-w-3xl flex flex-col items-center">
+          
+          {/* Graduation Cap - Moved to the very top */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-8 opacity-80"
           >
-            <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[8px] border-b-[#FBA7D3]" />
-          </motion.div>
-          <motion.div 
-            animate={floatAnimation(-25, 7)}
-            className="absolute top-36 left-12 sm:left-32 w-20 h-26 sm:w-28 sm:h-36 bg-gradient-to-br from-[#FFE3F1] to-[#FFAED8] rounded-full opacity-60 blur-[1px]"
-            style={{ borderRadius: '50% 50% 50% 50% / 40% 40% 60% 60%' }}
-          >
-            <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[7px] border-b-[#FFAED8]" />
+            <Image 
+              src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/graduation-cap.png" 
+              alt="Graduation Cap" 
+              width={150} 
+              height={150} 
+            />
           </motion.div>
 
-          {/* Right Side - Baby Blue / Sky Balloons */}
-          <motion.div 
-            animate={floatAnimation(-18, 6.5)}
-            className="absolute top-8 right-[-20px] sm:right-10 w-28 h-36 sm:w-40 sm:h-52 bg-gradient-to-br from-[#D2E9FF] to-[#99CDFF] rounded-full opacity-80 blur-[0.5px] shadow-[inset_-8px_-12px_20px_rgba(0,0,0,0.06)]"
-            style={{ borderRadius: '50% 50% 50% 50% / 40% 40% 60% 60%' }}
+          {/* Subtitle / Intro Text */}
+          <motion.span 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 1.5 }}
+            className="text-sm md:text-base tracking-[0.25em] uppercase text-[#6B6B6B] mb-8 font-serif"
           >
-            <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[8px] border-b-[#99CDFF]" />
-          </motion.div>
-          <motion.div 
-            animate={floatAnimation(-22, 5.8)}
-            className="absolute top-40 right-10 sm:right-36 w-20 h-26 sm:w-28 sm:h-36 bg-gradient-to-br from-[#E6F3FF] to-[#B3DAFF] rounded-full opacity-60 blur-[1px]"
-            style={{ borderRadius: '50% 50% 50% 50% / 40% 40% 60% 60%' }}
-          >
-            <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[7px] border-b-[#B3DAFF]" />
-          </motion.div>
+            {invitationData.heroTitle || "Celebrando la Graduación de"}
+          </motion.span>
           
-          {/* Subtle Confetti Dots */}
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-pink-200 rounded-full opacity-40 animate-ping" />
-          <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-sky-200 rounded-full opacity-40 animate-pulse" />
-        </div>
-
-        {/* Hero Content */}
-        <motion.div 
-          className="z-10 text-center max-w-xl mx-auto flex flex-col items-center justify-center pt-8"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <span 
-            className="bg-white/80 backdrop-blur-md px-5 py-2 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] shadow-sm mb-6 inline-block text-amber-800/80 border border-amber-100/60"
+          {/* Main Name - Script/Cursive look */}
+          <motion.h1 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-6xl md:text-8xl lg:text-9xl tracking-normal mb-8 leading-tight text-[#3A3B3C]"
+            style={{ fontFamily: "'Great Vibes', 'Alex Brush', cursive" }} 
           >
-            {invitationData.heroTitle || "¿Niño o Niña? • Gender Reveal"}
-          </span>
-          
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif font-black tracking-tight px-2 leading-tight drop-shadow-sm text-[#4A3E3D]">
             {invitationData.heroNames}
-          </h1>
+          </motion.h1>
+
+          {/* Class Of / Degree Details */}
+          <motion.h2 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 1.5 }}
+            className="text-sm md:text-base tracking-[0.2em] uppercase text-[#6B6B6B] font-serif"
+          >
+            {invitationData.degreeType || "Clase de 2026"}
+          </motion.h2>
           
-          <div className="w-16 h-[2px] bg-gradient-to-r from-pink-300 via-amber-200 to-sky-300 my-6 rounded-full" />
-          
-          <p className="text-sm sm:text-base font-medium opacity-70 max-w-xs sm:max-w-md italic px-4">
-            Join us to find out if our little lupine meadow is welcoming a prince or a princess!
-          </p>
-        </motion.div>
+          <motion.div 
+            initial={{ height: 0 }}
+            animate={{ height: '50px' }}
+            transition={{ delay: 1, duration: 1 }}
+            className="w-[1px] bg-[#D4CEC4] mt-10"
+          />
+        </div>
       </section>
 
-      {/* Meet the Parents Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 relative z-10 bg-white/60 backdrop-blur-sm">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <FadeIn>
-              <div className="relative mx-auto max-w-xs sm:max-w-sm md:max-w-none group">
-                <div className="absolute -inset-3 rounded-[2.5rem] rotate-2 bg-gradient-to-tr from-pink-200/50 via-amber-100/50 to-sky-200/50 group-hover:rotate-0 transition-transform duration-500" />
-                <div className="relative overflow-hidden rounded-[2rem] shadow-xl border-8 border-white aspect-[4/5]">
-                  <img 
-                    src={invitationData.family_image_url || 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=80'} 
-                    alt="The Happy Family"
-                    className="w-full h-full object-cover"
-                  />
+      {/* Timeline Section - Mobile Optimized */}
+      <section className="py-24 px-6 md:px-12 relative">
+        <div className="max-w-3xl mx-auto">
+          <GentleFade>
+            <h2 className="text-3xl md:text-4xl font-light text-center mb-20 tracking-wide">
+              Horario de la Ceremonia
+            </h2>
+          </GentleFade>
+          
+          <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 md:before:mx-auto before:-translate-x-px md:before:translate-x-0 before:h-full before:w-[1px] before:bg-gradient-to-b before:from-transparent before:via-[#D4CEC4] before:to-transparent">
+            {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
+              <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                
+                {/* Timeline Node */}
+                <div className="flex items-center justify-center w-10 h-10 rounded-full border border-[#E5E0D8] bg-[#F9F8F6] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                  <div className="w-2 h-2 bg-[#8B8682] rounded-full" />
+                </div>
+
+                {/* Timeline Content */}
+                <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-4 rounded-xl transition-all">
+                  <GentleFade delay={index * 0.1}>
+                    <div className="flex flex-col md:group-odd:text-right">
+                      <span className="font-sans text-xl font-medium tracking-[0.15em] text-[#8B8682] uppercase mb-2">
+                        {item.time}
+                      </span>
+                      <h3 className="text-2xl font-normal text-[#4A4B4D] mb-1">{item.title}</h3>
+                      <p className="text-[#8B8682] text-lg font-serif italic">{item.location}</p>
+                    </div>
+                  </GentleFade>
                 </div>
               </div>
-            </FadeIn>
-            
-            <FadeIn delay={0.1}>
-              <div className="space-y-5 text-center md:text-left px-2">
-                <h2 className="text-3xl sm:text-4xl font-black italic text-[#4A3E3D]">Meet the Parents</h2>
-                <p className="text-base sm:text-lg leading-relaxed font-light opacity-90">
-                  "Our hearts are caught somewhere between soft pink sunsets and crystal blue skies. 
-                  We can't wait to share this magical revelation with the people we love most!"
-                </p>
-                <div className="flex justify-center md:justify-start gap-3 pt-2">
-                  <span className="text-2xl animate-pulse">🌅</span>
-                  <span className="text-2xl">🤰</span>
-                  <span className="text-2xl">✨</span>
-                </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Photo Gallery - Horizontal Scroll for Mobile */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <GentleFade>
+            <h2 className="text-3xl md:text-4xl font-light text-center mb-16 tracking-wide">Captured Moments</h2>
+          </GentleFade>
+          <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-4 gap-6 pb-8 md:pb-0 hide-scrollbar">
+            {invitationData.galleryImages?.slice(0, 4).map((image: string, index: number) => (
+              <div key={index} className="min-w-[80vw] md:min-w-0 snap-center shrink-0">
+                <GentleFade delay={index * 0.15}>
+                  <div className="aspect-[4/5] relative rounded-lg overflow-hidden bg-[#E5E0D8] shadow-sm">
+                    <Image src={image} alt={`Gallery image ${index + 1}`} layout="fill" objectFit="cover" className="hover:scale-105 transition-transform duration-700 ease-out" />
+                  </div>
+                </GentleFade>
               </div>
-            </FadeIn>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Details / Itinerary Section */}
-      <section className="py-20 px-4 sm:px-6 rounded-t-[3rem] sm:rounded-t-[4rem] relative z-10 bg-gradient-to-b from-[#FFF2EC] to-[#FFF9F5]">
-        <div className="max-w-3xl mx-auto text-center">
-          <FadeIn>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-[#4A3E3D]">
-              {invitationData.timelineTitle || "The Big Day Itinerary"}
-            </h2>
-            <div className="space-y-4 max-w-md mx-auto">
-              {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
-                <div key={index} className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-orange-50/50 relative overflow-hidden group text-left flex flex-col justify-center">
-                  <div className="absolute top-3 right-4 text-3xl opacity-15">
-                    {index % 2 === 0 ? '🌸' : '🌾'}
-                  </div>
-                  <p className="font-bold text-xs sm:text-sm tracking-wider uppercase text-amber-700/80 mb-1">{item.time}</p>
-                  <h3 className="text-lg font-bold text-[#4A3E3D] break-words [overflow-wrap:anywhere] whitespace-normal pr-6">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm italic opacity-70 mt-1">{item.location}</p>
+      {/* Guestbook Section - Soft & Welcoming */}
+      <section className="py-24 px-6">
+        <div className="max-w-2xl mx-auto">
+          <GentleFade>
+            <div className="bg-white/40 backdrop-blur-sm border border-[#E5E0D8] p-8 md:p-14 rounded-2xl shadow-sm">
+              <div className="flex flex-col items-center justify-center gap-4 mb-10">
+                <Feather className="text-[#8B8682]" size={28} strokeWidth={1} />
+                <h2 className="text-2xl md:text-3xl font-light text-center">Palabras de inspiración para el graduado</h2>
+              </div>
+              
+              <div className="space-y-6 font-sans">
+                <textarea 
+                  className="w-full p-5 bg-transparent border-b border-[#D4CEC4] focus:border-[#8B8682] outline-none transition-all min-h-[140px] text-[#4A4B4D] placeholder:text-[#A39B8E] resize-none"
+                  placeholder="Escribe tus mejores deseos, consejos o recuerdos para el graduado..."
+                  value={guestMessage}
+                  onChange={(e) => setGuestMessage(e.target.value)}
+                />
+                <div className="flex justify-center">
+                  <button 
+                    className="px-10 py-4 text-[#4A4B4D] border border-[#4A4B4D] text-xs font-medium uppercase tracking-[0.2em] rounded hover:bg-[#4A4B4D] hover:text-white transition-colors duration-300"
+                    onClick={() => alert("¡Gracias por tu mensaje!")}
+                  >
+                    Compartir Mensaje
+                  </button>
                 </div>
-              ))}
+              </div>
             </div>
-          </FadeIn>
+          </GentleFade>
         </div>
       </section>
-
-      {/* Creative Gender Betting Section */}
-      {features.genderBetting && (
-        <section className="py-20 px-4 sm:px-6 bg-gradient-to-b from-[#FFF9F5] via-[#FFF0FA] to-[#F5FCFF] rounded-b-[3rem]">
-          <FadeIn>
-            <div className="text-center mb-10">
-              <h2 className="text-3xl sm:text-4xl font-black italic text-[#4A3E3D]">¿Niño o Niña?</h2>
-              <p className="text-sm sm:text-base opacity-70 mt-2">Cast your vote and discover your special party mission!</p>
-            </div>
-            
-            <div className="max-w-2xl mx-auto">
-              <AnimatePresence mode="wait">
-                {!team ? (
-                  <motion.div 
-                    key="selector"
-                    exit={{ opacity: 0, y: -10 }}
-                    className="grid grid-cols-2 gap-4 sm:gap-6"
-                  >
-                    {/* Team Boy Button */}
-                    <button 
-                      onClick={() => setTeam('boy')}
-                      className="group relative h-48 sm:h-60 rounded-3xl bg-gradient-to-br from-[#A1C4FD] to-[#C2E9FB] overflow-hidden shadow-md active:scale-98 transition-transform text-slate-800 border border-sky-100"
-                    >
-                      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-                      <div className="relative z-10 flex flex-col items-center justify-center h-full p-3 text-center">
-                        <span className="text-4xl sm:text-5xl mb-2 drop-shadow-sm">👦</span>
-                        <span className="text-lg sm:text-xl font-bold tracking-tight text-sky-900">Team Boy</span>
-                        <p className="text-[10px] sm:text-xs mt-1 text-sky-800/80 italic font-medium">Mission: Diapers!</p>
-                      </div>
-                    </button>
-
-                    {/* Team Girl Button */}
-                    <button 
-                      onClick={() => setTeam('girl')}
-                      className="group relative h-48 sm:h-60 rounded-3xl bg-gradient-to-br from-[#FBC2EB] to-[#A6C1EE] overflow-hidden shadow-md active:scale-98 transition-transform text-slate-800 border border-pink-100"
-                    >
-                      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/hearts-of-love.png')] opacity-10" />
-                      <div className="relative z-10 flex flex-col items-center justify-center h-full p-3 text-center">
-                        <span className="text-4xl sm:text-5xl mb-2 drop-shadow-sm">🌸</span>
-                        <span className="text-lg sm:text-xl font-bold tracking-tight text-pink-900">Team Girl</span>
-                        <p className="text-[10px] sm:text-xs mt-1 text-pink-800/80 italic font-medium">Mission: Towels!</p>
-                      </div>
-                    </button>
-                  </motion.div>
-                ) : (
-                  <motion.div 
-                    key="result"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className={`p-8 sm:p-12 rounded-3xl text-center shadow-lg border ${
-                      team === 'boy' 
-                        ? 'bg-gradient-to-br from-[#D4F1F9] to-[#A9E2F3] text-sky-950 border-sky-200' 
-                        : 'bg-gradient-to-br from-[#FCE2F3] to-[#F5C3E6] text-pink-950 border-pink-200'
-                    }`}
-                  >
-                    <div className="text-5xl sm:text-6xl mb-4 animate-bounce">{team === 'boy' ? '🎖️' : '👑'}</div>
-                    <h3 className="text-2xl sm:text-3xl font-black mb-2">
-                      Welcome to {team === 'boy' ? 'Team Boy' : 'Team Girl'}!
-                    </h3>
-                    <p className="text-sm sm:text-base opacity-90 max-w-md mx-auto leading-relaxed mb-8">
-                      Your celebratory goal: Please bring a pack of <span className="font-bold underline">{team === 'boy' ? 'diapers' : 'baby towels'}</span> to the party. Thank you for your love!
-                    </p>
-                    <button 
-                      onClick={() => setTeam(null)} 
-                      className="text-[10px] font-bold uppercase tracking-widest bg-white/60 hover:bg-white/80 active:bg-white/40 px-5 py-2.5 rounded-full shadow-sm transition-colors"
-                    >
-                      Change Choice
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </FadeIn>
+      
+      {/* Future Plans Section - Grounded Footer */}
+      {features.futurePlans && invitationData.futurePlans && (
+        <section className="border-t border-[#D4CEC4]">
+          <div className="max-w-3xl mx-auto px-6 py-24 text-center">
+            <GentleFade>
+              <h2 className="text-xs uppercase tracking-[0.25em] text-[#8B8682] mb-6 font-sans">Planes Futuros</h2>
+              <p className="text-xl md:text-2xl font-light leading-relaxed italic text-[#4A4B4D] opacity-90">
+                "{invitationData.futurePlans}"
+              </p>
+            </GentleFade>
+          </div>
         </section>
       )}
     </div>

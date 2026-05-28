@@ -90,6 +90,17 @@ export default function EditorPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
     });
+
+    // Mark as published on first share
+    if (!invitationData.is_published) {
+      fetch(`/api/invitations/${id}/publish`, { method: 'POST' })
+        .then(res => {
+          if (res.ok) {
+            setInvitationData({ ...invitationData, is_published: true });
+            console.log('Invitation marked as published');
+          }
+        });
+    }
   };
 
   if (loading) return <div className="flex items-center justify-center h-screen">Loading Editor...</div>;
