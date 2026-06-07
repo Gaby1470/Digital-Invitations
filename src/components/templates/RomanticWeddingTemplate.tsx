@@ -58,7 +58,7 @@ export default function RomanticWeddingTemplate({
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   const mapSrc = invitationData.mainVenueAddress
-    ? `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(invitationData.mainVenueAddress)}`
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(invitationData.mainVenueAddress)}&t=&z=13&ie=UTF8&iwloc=&output=embed`
     : "";
 
   const dressCode: DressCode | undefined = invitationData.dressCode;
@@ -84,7 +84,7 @@ export default function RomanticWeddingTemplate({
       />
 
       {/* Hero Section: Mobile Optimized Height */}
-      <section className="relative h-[90vh] min-h-[600px] w-full flex flex-col justify-between items-center overflow-hidden px-4 py-12">
+      <section className="relative h-[100dvh] min-h-[600px] w-full flex flex-col justify-between items-center overflow-hidden px-4 py-12">
         <div className="absolute inset-0 z-0">
           <img
             src={
@@ -157,13 +157,11 @@ export default function RomanticWeddingTemplate({
           <div className="relative w-full max-w-[300px] aspect-[3/4] flex items-center justify-center min-h-[400px]">
             <AnimatePresence mode="popLayout">
               {gallery.map((src: string, index: number) => {
-                // Only render the top 3 cards for DOM performance on mobile
                 const isVisible = (index >= currentImgIndex && index < currentImgIndex + 3) || 
                                   (index + gallery.length >= currentImgIndex && index + gallery.length < currentImgIndex + 3);
                 
                 if (!isVisible) return null;
 
-                // Calculate relative position in the active visible stack
                 let position = index - currentImgIndex;
                 if (position < 0) position += gallery.length;
 
@@ -178,13 +176,12 @@ export default function RomanticWeddingTemplate({
                     animate={{
                       opacity: 1 - position * 0.25,
                       scale: 1 - position * 0.05,
-                      y: position * -12, // Cascade upwards gracefully
+                      y: position * -12, 
                     }}
                     exit={{ opacity: 0, x: -200, rotate: -15, transition: { duration: 0.4 } }}
                     onClick={isTopCard ? handleNextImage : undefined}
                     onDoubleClick={() => setSelectedImage(src)}
                   >
-                    {/* Editorial Photo Frame matting */}
                     <div className="w-full h-full p-3 bg-white border border-stone-100 rounded-2xl shadow-xl shadow-stone-300/50 flex flex-col justify-between">
                       <div className="w-full h-[88%] overflow-hidden rounded-xl border border-stone-100">
                         <img
@@ -216,7 +213,6 @@ export default function RomanticWeddingTemplate({
           </FadeIn>
 
           <div className="max-w-md mx-auto space-y-8 relative pl-6">
-            {/* Elegant Side Anchor Line */}
             <div
               className="absolute left-1.5 top-2 bottom-2 w-[1px]"
               style={{
@@ -227,7 +223,6 @@ export default function RomanticWeddingTemplate({
             {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
               <FadeIn key={index} delay={index * 0.05}>
                 <div className="relative group text-left">
-                  {/* Custom Left Node Bullet */}
                   <div 
                     className="absolute -left-[22px] top-1.5 w-2.5 h-2.5 rounded-full bg-white border shadow-sm" 
                     style={{ borderColor: invitationData.primaryColor }}
@@ -261,7 +256,7 @@ export default function RomanticWeddingTemplate({
                 {invitationData.mainVenueAddress}
               </p>
               <button
-                className="mt-2 px-8 py-3 rounded-full font-sans text-xs tracking-widest uppercase border active:bg-stone-50 transition-colors shadow-sm"
+                className="mt-4 px-8 py-3 rounded-full font-sans text-xs tracking-widest uppercase border active:bg-stone-50 transition-colors shadow-sm"
                 style={{ borderColor: invitationData.primaryColor, color: invitationData.primaryColor }}
               >
                 Open in Maps
@@ -285,15 +280,21 @@ export default function RomanticWeddingTemplate({
         </section>
       )}
 
-      {/* Dress Code Section */}
+      {/* Dress Code Section - Tightened spacing & refined romantic UI */}
       {dressCode && (
-        <section className="py-20 px-6" style={{ backgroundColor: "#F5F3F2" }}>
+        <section className="pt-16 pb-8 px-6" style={{ backgroundColor: "#F5F3F2" }}>
           <div className="max-w-md mx-auto text-center">
             <FadeIn>
-              <h2 className="text-4xl font-['Great_Vibes'] mb-8" style={{ color: invitationData.primaryColor }}>
-                Dress Code
-              </h2>
-              <div className="bg-white/70 p-6 rounded-2xl border border-white shadow-lg shadow-stone-100">
+              <div className="relative p-8 rounded-[2rem] border border-white/80 bg-white/40 shadow-sm backdrop-blur-sm">
+                <div 
+                  className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xl bg-[#F5F3F2] px-2 rounded-full" 
+                  style={{ color: invitationData.primaryColor }}
+                >
+                  ✧
+                </div>
+                <h2 className="text-4xl font-['Great_Vibes'] mb-4" style={{ color: invitationData.primaryColor }}>
+                  Dress Code
+                </h2>
                 <DressCodePreview
                   dressCode={dressCode}
                   primaryColor={invitationData.primaryColor}
@@ -305,19 +306,19 @@ export default function RomanticWeddingTemplate({
         </section>
       )}
 
-      {/* Accommodations Mobile List */}
+      {/* Accommodations Mobile List - Tightened padding to bridge gap to Gifts */}
       {features.recommendations && invitationData.recommendations?.length > 0 && (
-        <section className="py-20 bg-white px-6">
+        <section className="py-8 bg-white px-6">
           <div className="max-w-md mx-auto">
             <FadeIn>
-              <h2 className="text-4xl font-['Great_Vibes'] text-center mb-10" style={{ color: invitationData.primaryColor }}>
+              <h2 className="text-3xl font-['Great_Vibes'] text-center mb-8" style={{ color: invitationData.primaryColor }}>
                 Accommodations
               </h2>
             </FadeIn>
             <div className="space-y-4">
               {invitationData.recommendations.map((item: RecommendationItem, index: number) => (
                 <FadeIn key={index}>
-                  <div className="p-6 rounded-2xl bg-stone-50/60 border border-stone-100 flex flex-col justify-between text-center">
+                  <div className="p-5 rounded-2xl bg-stone-50/60 border border-stone-100 flex flex-col justify-between text-center">
                     <h3 className="text-lg font-medium mb-1" style={{ color: invitationData.primaryColor }}>
                       {item.name}
                     </h3>
@@ -328,7 +329,7 @@ export default function RomanticWeddingTemplate({
                       href={item.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-sans text-[10px] tracking-widest uppercase border-b pb-0.5 mx-auto text-stone-500"
+                      className="font-sans text-[10px] tracking-widest uppercase border-b pb-0.5 mx-auto text-stone-500 py-2 inline-block"
                       style={{ borderColor: invitationData.primaryColor }}
                     >
                       View Details

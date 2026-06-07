@@ -53,7 +53,7 @@ export function DressCodePreview({ dressCode, primaryColor, textColor }: DressCo
             onMouseOver={(e) => e.currentTarget.style.backgroundColor = primaryColor ? `${primaryColor}10` : '#f0f0f0'}
             onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            Men's Inspiration
+            Inspiracion para Hombres
           </a>
         )}
         {dressCode.pinterestUrlWoman && (
@@ -70,7 +70,7 @@ export function DressCodePreview({ dressCode, primaryColor, textColor }: DressCo
             onMouseOver={(e) => e.currentTarget.style.backgroundColor = primaryColor ? `${primaryColor}10` : '#f0f0f0'}
             onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            Women's Inspiration
+            Inspiracion para Mujeres
           </a>
         )}
       </div>

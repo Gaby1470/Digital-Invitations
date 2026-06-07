@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase-server';
 
-// GET a single invitation by ID (publicly accessible)
+// GET a single invitation by ID (publicly accessible, but unpublished are owner-only)
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const cookieStore = cookies();
@@ -13,6 +13,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: 'Invitation ID is required.' }, { status: 400 });
   }
 
+  // First, get the current user
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Fetch the invitation
   const { data, error } = await supabase
     .from('invitations')
     .select('*')
@@ -20,8 +24,16 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     .single();
 
   if (error) {
-    console.error(`Supabase error fetching invitation ${id}:`, error);
+    console.error(`Supabase error fetching invitation ${id}:`, error.message);
     return NextResponse.json({ error: 'Invitation not found.' }, { status: 404 });
+  }
+
+  // If the invitation isn't published, only the owner can see it
+  if (!data.is_published) {
+    if (!user || user.id !== data.user_id) {
+      console.error(`Unauthorized access attempt for unpublished invitation ${id}`);
+      return NextResponse.json({ error: 'This invitation has not been published yet.' }, { status: 403 });
+    }
   }
 
   return NextResponse.json(data);
@@ -65,6 +77,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   // If ownership is verified, proceed with the update
   const updatedRecord = {
     data: body.data,
+    is_published: true,
   };
 
   const { data, error } = await supabase

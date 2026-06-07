@@ -57,7 +57,7 @@ export default function MainDetailsSection({ data, templateFeatures, onFieldChan
           <MapPin size={14} /> Location
         </label>
         <TextInput
-          placeholder="e.g., My House"
+          placeholder="e.g., Mi Casa  Blvd 123, Ciudad, Estado"
           value={data.location}
           onChange={(val) => onFieldChange('location', val)}
         />
@@ -70,7 +70,7 @@ export default function MainDetailsSection({ data, templateFeatures, onFieldChan
             <Type size={14} /> Date Section Subtitle
           </label>
           <TextInput
-            placeholder="e.g., We can't wait to see you!"
+            placeholder="e.g., ¡No podemos esperar a verte!"
             value={data.dateSubtitle}
             onChange={(val) => onFieldChange('dateSubtitle', val)}
           />
@@ -84,7 +84,7 @@ export default function MainDetailsSection({ data, templateFeatures, onFieldChan
             <GraduationCap size={14} /> Academic Degree
           </label>
           <TextInput 
-            placeholder="e.g., BS in Civil Engineering"
+            placeholder="e.g., Licenciatura en Ingeniería Civil"
             value={data.degreeType} 
             onChange={(val) => onFieldChange('degreeType', val)} 
           />
@@ -95,7 +95,7 @@ export default function MainDetailsSection({ data, templateFeatures, onFieldChan
       {templateFeatures.ageSpecificThemes && (
         <div className="space-y-2">
           <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-            <Calendar size={14} /> Age Celebrating
+            <Calendar size={14} /> Edad a Celebrar  
           </label>
           <TextInput 
             placeholder="e.g., 5"

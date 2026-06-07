@@ -40,52 +40,62 @@ export default function Header() {
   };
 
   return (
-    <header className="px-4 lg:px-6 h-16 flex items-center justify-between border-b border-neutral-100 bg-white w-full z-20">
-      <Link href="/" className="flex items-center justify-center">
-        {/* Changed to text-neutral-900 for a solid black logo look */}
-        <span className="text-2xl font-bold text-neutral-900 tracking-tight">Digital Invitations</span>
-      </Link>
-      
-      <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-neutral-900">
-        <Link href="/templates" className="transition-colors hover:text-indigo-600">
-          Plantillas
+    <header className="sticky top-0 backdrop-blur-md bg-white/80 dark:bg-gray-950/80 px-4 lg:px-8 h-20 flex items-center justify-between border-b border-gray-100 dark:border-gray-900 w-full z-50 transition-all">
+      <div className="container mx-auto flex items-center justify-between w-full">
+        
+        {/* Logo Section */}
+        <Link href="/" className="flex items-center gap-2 group">
+          <span className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">
+            Festia<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500 group-hover:animate-pulse">.</span>
+          </span>
         </Link>
-        <Link href="/pricing" className="transition-colors hover:text-indigo-600">
-          Precios
-        </Link>
-      </nav>
 
-      <div className="flex items-center gap-4">
-        {loading ? (
-          <div className="h-9 w-20 animate-pulse bg-neutral-100 rounded-md"></div>
-        ) : user ? (
-          <>
-            <Link
-              href="/dashboard"
-              className="hidden sm:inline-flex h-9 items-center justify-center rounded-md bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-900 transition-colors hover:bg-neutral-200"
-            >
-              Panel de Control
-            </Link>
-            <button
-              onClick={handleSignOut}
-              className="text-sm font-semibold text-neutral-900 hover:underline underline-offset-4"
-            >
-              Cerrar Sesión
-            </button>
-          </>
-        ) : (
-          <>
-            <Link href="/auth/login" className="hidden sm:inline-flex text-sm font-semibold text-neutral-900 hover:underline underline-offset-4">
-              Iniciar Sesión
-            </Link>
-            <Link
-              href="/auth/signup"
-              className="inline-flex h-9 items-center justify-center rounded-md bg-neutral-900 px-4 py-2 text-sm font-semibold text-white shadow transition-transform hover:scale-105 active:scale-95"
-            >
-              Registrarse
-            </Link>
-          </>
-        )}
+        {/* Center Navigation Links */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-600 dark:text-gray-300">
+          <Link href="/templates" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full">
+            Plantillas
+          </Link>
+          <Link href="/pricing" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full">
+            Precios
+          </Link>
+        </nav>
+
+        {/* Right Side Controls */}
+        <div className="flex items-center gap-4">
+          {loading ? (
+            <div className="h-10 w-24 animate-pulse bg-gray-100 dark:bg-gray-800 rounded-full"></div>
+          ) : user ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="hidden sm:inline-flex h-10 items-center justify-center rounded-full bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100 px-5 text-sm font-semibold transition-all hover:bg-gray-200 dark:hover:bg-gray-700"
+              >
+                Panel de Control
+              </Link>
+              <button
+                onClick={handleSignOut}
+                className="text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+              >
+                Cerrar Sesión
+              </button>
+            </>
+          ) : (
+            <>
+              <Link 
+                href="/auth/login" 
+                className="hidden sm:inline-flex text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+              >
+                Iniciar Sesión
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="inline-flex h-11 items-center justify-center rounded-full bg-indigo-600 px-6 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/30 hover:-translate-y-0.5 active:translate-y-0"
+              >
+                Registrarse
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );

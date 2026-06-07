@@ -32,6 +32,8 @@ const calculateTimeLeft = (targetDate: string) => {
   return timeLeft;
 };
 
+const initialTimeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+
 export default function Countdown({ 
   targetDate, 
   className, 
@@ -39,9 +41,12 @@ export default function Countdown({
   numberClassName,
   labelClassName
 }: CountdownProps) {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetDate));
+  const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
 
   useEffect(() => {
+    // Set initial time on client mount
+    setTimeLeft(calculateTimeLeft(targetDate));
+    
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft(targetDate));
     }, 1000);

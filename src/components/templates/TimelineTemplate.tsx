@@ -21,7 +21,6 @@ function AnimatedSection({
   delay?: number;
 }) {
   const ref = useRef(null);
-  // Adjusted margin boundary specifically for seamless mobile scroll triggers
   const isInView = useInView(ref, { once: true, margin: "-40px 0px" });
 
   return (
@@ -62,8 +61,8 @@ export default function TimelineTemplate({
         color: invitationData.textColor || "#171717",
       }}
     >
-      {/* Hero Section: Height stabilized for browser chrome bars */}
-      <section className="relative h-[92vh] min-h-[560px] w-full flex flex-col justify-center items-center overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative h-[100dvh] min-h-[560px] w-full flex flex-col justify-center items-center overflow-hidden">
         <motion.div
           initial={{ scale: 1.05, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -120,7 +119,7 @@ export default function TimelineTemplate({
         </div>
       </section>
 
-      {/* Timeline Section: Refactored Axis for Mobile Reading */}
+      {/* Timeline Section */}
       {features.multiEventSchedule && (
         <section className="py-20 px-6 bg-white overflow-hidden">
           <div className="max-w-xl mx-auto">
@@ -133,7 +132,6 @@ export default function TimelineTemplate({
               </h2>
             </AnimatedSection>
 
-            {/* Main Axis Line (Anchored left on mobile, center on desktop) */}
             <div className="relative pl-6 md:pl-0 space-y-12 md:space-y-24">
               <div
                 className="absolute left-1.5 md:left-1/2 top-2 bottom-2 w-[1px] -translate-x-1/2"
@@ -146,7 +144,6 @@ export default function TimelineTemplate({
                     key={index}
                     className={`flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
                   >
-                    {/* Content Card */}
                     <div className="flex-1 w-full text-left">
                       <AnimatedSection delay={index * 0.05}>
                         <div
@@ -179,7 +176,6 @@ export default function TimelineTemplate({
                       </AnimatedSection>
                     </div>
 
-                    {/* Timeline Tracker Node (Repositioned for precise left alignment on phones) */}
                     <div
                       className="absolute left-0 md:static z-10 w-3 h-3 md:w-4 md:h-4 rounded-full border-[3px] md:border-4 border-white shadow-sm mt-7 md:mt-0 -translate-x-1/2 md:translate-x-0"
                       style={{ backgroundColor: invitationData.primaryColor }}
@@ -193,7 +189,7 @@ export default function TimelineTemplate({
         </section>
       )}
 
-      {/* GALLERY: Linear Mobile Filmstrip to Prevent Edge Shaking */}
+      {/* GALLERY */}
       {invitationData.galleryImages?.length > 0 && (
         <section
           className="py-20 overflow-hidden"
@@ -208,7 +204,6 @@ export default function TimelineTemplate({
             </h2>
           </AnimatedSection>
 
-          {/* Clean containment blocks tailored for thumb swiping */}
           <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory px-6 md:px-[20vw] no-scrollbar pb-6 items-center">
             {invitationData.galleryImages.map((src: string, index: number) => (
               <motion.div
@@ -218,7 +213,6 @@ export default function TimelineTemplate({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-20px" }}
               >
-                {/* Clean, Flat Matte Border to maximize portrait space */}
                 <div className="bg-white p-2.5 pb-8 shadow-md shadow-stone-900/5 border border-stone-200/50 rounded-sm">
                   <div className="relative aspect-[3/4] overflow-hidden rounded-xs bg-stone-50">
                     <img
@@ -236,31 +230,21 @@ export default function TimelineTemplate({
               </motion.div>
             ))}
           </div>
-
-          <div className="flex justify-center gap-1.5 mt-2">
-            {invitationData.galleryImages.map((_: any, i: number) => (
-              <div 
-                key={i} 
-                className="w-1 h-1 rounded-full transition-colors duration-300" 
-                style={{ backgroundColor: i === 0 ? invitationData.primaryColor : '#d6d3d1' }}
-              />
-            ))}
-          </div>
         </section>
       )}
 
-      {/* Dress Code Section */}
+      {/* Dress Code Section - Redesigned as an editorial block */}
       {dressCode && (
-        <section className="py-20 px-6" style={{ backgroundColor: invitationData.backgroundColor || "#fdfdfc" }}>
-          <div className="max-w-md mx-auto text-center">
+        <section className="pt-16 pb-8 px-6" style={{ backgroundColor: invitationData.backgroundColor || "#fdfdfc" }}>
+          <div className="max-w-md mx-auto text-center border-y py-10" style={{ borderColor: `${invitationData.textColor}15` }}>
             <AnimatedSection>
+              <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-stone-400 mb-3 font-sans">
+                Dress Code
+              </p>
               <h2 className="text-3xl font-serif text-center mb-6 italic" style={{ color: invitationData.textColor }}>
                 Vestimenta
               </h2>
-              <div
-                className="p-6 rounded-2xl border border-dashed bg-white/50"
-                style={{ borderColor: `${invitationData.primaryColor}30` }}
-              >
+              <div className="w-full px-4">
                 <DressCodePreview
                   dressCode={dressCode}
                   primaryColor={invitationData.primaryColor}
@@ -272,13 +256,13 @@ export default function TimelineTemplate({
         </section>
       )}
 
-      {/* Accommodations Block */}
+      {/* Accommodations Block - Tightened spacing */}
       {features.recommendations &&
         invitationData.recommendations?.length > 0 && (
-          <section className="py-20 px-6">
+          <section className="py-10 px-6">
             <div className="max-w-md mx-auto">
               <AnimatedSection>
-                <h2 className="text-3xl font-serif text-center mb-10 italic" style={{ color: invitationData.textColor }}>
+                <h2 className="text-2xl font-serif text-center mb-8 italic" style={{ color: invitationData.textColor }}>
                   Hospedaje y Recomendaciones
                 </h2>
               </AnimatedSection>
@@ -303,7 +287,7 @@ export default function TimelineTemplate({
                             href={item.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[10px] uppercase tracking-widest font-bold border-b pb-0.5 w-fit mx-auto sm:mx-0 transition-opacity hover:opacity-60"
+                            className="text-[10px] uppercase tracking-widest font-bold border-b pb-0.5 w-fit mx-auto sm:mx-0 transition-opacity hover:opacity-60 py-2 inline-block"
                             style={{ color: invitationData.primaryColor, borderColor: `${invitationData.primaryColor}30` }}
                           >
                             Visit Website
@@ -318,7 +302,7 @@ export default function TimelineTemplate({
           </section>
         )}
 
-      {/* Map Section: Clean layout split to show labels below viewports */}
+      {/* Map Section */}
       {mapSrc && (
         <section className="w-full bg-white border-t border-stone-100 flex flex-col">
           <div className="h-[45vh] w-full min-h-[320px] relative grayscale">
@@ -331,7 +315,7 @@ export default function TimelineTemplate({
             />
           </div>
           <div className="p-6 bg-stone-50 border-b border-stone-100 text-center">
-            <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-stone-400 mb-1">Ubicación</p>
+            <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-stone-400 mb-1 font-sans">Ubicación</p>
             <p className="text-xs tracking-wide text-stone-600 font-sans max-w-xs mx-auto leading-relaxed">
               {invitationData.mainVenueAddress}
             </p>
@@ -347,7 +331,7 @@ export default function TimelineTemplate({
       />
 
       {/* RSVP Section */}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-20 px-6 bg-white">
         <div className="max-w-md mx-auto">
           <AnimatedSection>
             <h2 className="text-3xl font-serif text-center mb-8 italic" style={{ color: invitationData.textColor }}>

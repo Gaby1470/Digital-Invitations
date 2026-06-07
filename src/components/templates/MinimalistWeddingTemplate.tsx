@@ -90,7 +90,7 @@ export default function MinimalistWeddingTemplate({
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative h-[90vh] min-h-[580px] w-full flex flex-col justify-between items-center overflow-hidden px-6 py-12"
+        className="relative h-[100dvh] min-h-[580px] w-full flex flex-col justify-between items-center overflow-hidden px-6 py-12"
       >
         <motion.div
           className="absolute inset-0 z-0"
@@ -172,7 +172,7 @@ export default function MinimalistWeddingTemplate({
 
       {/* Timeline Section */}
       {features.multiEventSchedule && (
-        <section className="py-20 md:py-36 px-6 border-b border-neutral-100">
+        <section className="py-16 md:py-28 px-6 border-b border-neutral-100">
           <div className="max-w-4xl mx-auto">
             <FadeIn>
               <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-neutral-400 mb-12 text-center">
@@ -215,15 +215,15 @@ export default function MinimalistWeddingTemplate({
             </p>
           </FadeIn>
 
-          {/* Fixed mobile horizontal presentation with an exact card layout */}
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-6 md:px-[25vw] no-scrollbar pb-6">
+          {/* Fixed mobile horizontal presentation with mask gradient */}
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-6 md:px-[25vw] no-scrollbar pb-6 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
             {invitationData.galleryImages.map((src: string, index: number) => (
               <div
                 key={index}
                 className="flex-none w-[80vw] max-w-[320px] md:max-w-[420px] snap-center cursor-pointer"
                 onClick={() => setSelectedImage(src)}
               >
-                <div className="relative aspect-[3/4] overflow-hidden bg-white p-2 border border-neutral-200/60 shadow-sm rounded-sm">
+                <div className="relative aspect-[3/4] overflow-hidden bg-white p-2.5 border border-neutral-200/60 shadow-sm rounded-md">
                   <img
                     src={src}
                     alt="Gallery split"
@@ -258,7 +258,7 @@ export default function MinimalistWeddingTemplate({
             </FadeIn>
             
             <FadeIn delay={0.2}>
-              <div className="w-full aspect-[4/3] sm:aspect-[16/9] bg-neutral-100 filter grayscale border border-neutral-200 p-1 rounded-sm">
+              <div className="w-full aspect-[4/3] sm:aspect-[16/9] bg-neutral-100 filter grayscale border border-neutral-200 p-1 rounded-lg">
                 <iframe
                   width="100%"
                   height="100%"
@@ -274,19 +274,24 @@ export default function MinimalistWeddingTemplate({
 
       {/* Dress Code Section */}
       {dressCode && (
-        <section className="py-20 px-6 bg-neutral-50 border-t border-b border-neutral-100">
-          <div className="max-w-md mx-auto text-center">
+        <section className="py-24 px-6 bg-white">
+          <div className="max-w-md mx-auto flex flex-col items-center text-center">
             <FadeIn>
+              <span className="block w-[1px] h-16 bg-neutral-200 mx-auto mb-8" /> 
+              
               <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-neutral-400 mb-6">
-                Attire
+                Dress Code
               </p>
-              <div className="bg-white p-6 border border-neutral-200/60 rounded-sm shadow-sm">
+              
+              <div className="w-full px-4">
                 <DressCodePreview
                   dressCode={dressCode}
                   primaryColor={invitationData.primaryColor}
                   textColor={invitationData.textColor}
                 />
               </div>
+              
+              <span className="block w-[1px] h-16 bg-neutral-200 mx-auto mt-12" />
             </FadeIn>
           </div>
         </section>
@@ -307,7 +312,7 @@ export default function MinimalistWeddingTemplate({
                 {invitationData.recommendations.map(
                   (item: RecommendationItem, index: number) => (
                     <FadeIn key={index}>
-                      <div className="p-6 rounded-sm bg-white border border-neutral-200/80 shadow-sm flex flex-col justify-between">
+                      <div className="p-6 rounded-lg bg-white border border-neutral-200/80 shadow-sm flex flex-col justify-between">
                         <div>
                           <h3 className="text-base font-semibold mb-1 tracking-tight">
                             {item.name}
@@ -321,7 +326,7 @@ export default function MinimalistWeddingTemplate({
                             href={item.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[10px] font-bold tracking-widest uppercase border-b w-fit pb-0.5"
+                            className="text-[10px] font-bold tracking-widest uppercase border-b w-fit pb-0.5 py-2 inline-block"
                             style={{
                               color: invitationData.primaryColor || "#171717",
                               borderColor: `${invitationData.primaryColor || "#171717"}40`,
@@ -353,7 +358,7 @@ export default function MinimalistWeddingTemplate({
             <h2 className="text-2xl font-light tracking-tight text-center mb-8">
               Will you be joining us?
             </h2>
-            <div className="bg-white p-6 border border-neutral-200/60 rounded-sm shadow-sm">
+            <div className="bg-white p-6 border border-neutral-200/60 rounded-lg shadow-sm">
               <RsvpSection
                 invitationId={invitationData.id}
                 primaryColor={invitationData.primaryColor}

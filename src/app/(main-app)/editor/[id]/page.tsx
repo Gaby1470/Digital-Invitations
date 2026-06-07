@@ -76,11 +76,14 @@ export default function EditorPage() {
 
       if (!response.ok) {
         const errorData = await safeJsonParse(response);
-        throw new Error(errorData?.details || 'Failed to save invitation.');
+        throw new Error(errorData?.details || 'Failed to save and publish invitation.');
       }
+      
+      // Update local state and open modal
+      setInvitationData({ ...invitationData, is_published: true });
       setShareModalOpen(true);
     } catch (e: any) {
-      alert(`Error saving: ${e.message}`);
+      alert(`Error: ${e.message}`);
     }
   };
 
