@@ -21,12 +21,18 @@ async function safeJsonParse(response: Response) {
   }
 }
 
+type InvitationData = {
+  is_published?: boolean;
+  slug?: string;
+  [key: string]: any;
+};
+
 export default function EditorPage() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
 
-  const [invitationData, setInvitationData] = useState<any>(null);
+  const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
   const [template, setTemplate] = useState<TemplateConfig | null>(null);
   const [templateId, setTemplateId] = useState<string>(''); // State for the template ID
   const [loading, setLoading] = useState(true);
@@ -53,7 +59,7 @@ export default function EditorPage() {
         
         const data = inv.data || {};
         
-        setInvitationData(data);
+        setInvitationData({ ...data, slug: inv.slug });
         setTemplate(templateConf);
         setTemplateId(inv.template);
       } catch (e: any) {
@@ -71,7 +77,7 @@ export default function EditorPage() {
       const response = await fetch(`/api/invitations/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: invitationData }),
+        body: JSON.stringify({ data: invitationData, slug: invitationData?.slug }),
       });
 
       if (!response.ok) {
@@ -79,8 +85,10 @@ export default function EditorPage() {
         throw new Error(errorData?.details || 'Failed to save and publish invitation.');
       }
       
+      const updatedInvitation = await safeJsonParse(response);
+      
       // Update local state and open modal
-      setInvitationData({ ...invitationData, is_published: true });
+      setInvitationData({ ...invitationData, ...updatedInvitation });
       setShareModalOpen(true);
     } catch (e: any) {
       alert(`Error: ${e.message}`);
@@ -88,14 +96,14 @@ export default function EditorPage() {
   };
 
   const handleCopyLink = () => {
-    const link = `${window.location.origin}/invite/${id}`;
+    const link = `${window.location.origin}/invite/${invitationData?.slug || id}`;
     navigator.clipboard.writeText(link).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
     });
 
     // Mark as published on first share
-    if (!invitationData.is_published) {
+    if (!invitationData?.is_published) {
       fetch(`/api/invitations/${id}/publish`, { method: 'POST' })
         .then(res => {
           if (res.ok) {
@@ -139,6 +147,8 @@ export default function EditorPage() {
                 onDataChange={setInvitationData}
                 onSave={handleSave}
                 template={template}
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
               />
             </div>
           </div>
@@ -169,7 +179,7 @@ export default function EditorPage() {
               <input 
                 type="text" 
                 readOnly 
-                value={`${window.location.origin}/invite/${id}`}
+                value={`${window.location.origin}/invite/${invitationData?.slug || id}`}
                 className="bg-transparent flex-grow text-gray-700 focus:outline-none"
               />
               <button 

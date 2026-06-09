@@ -54,6 +54,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   }
 
   const body = await request.json();
+  const { data: invitationData, slug } = body;
 
   if (!id) {
     return NextResponse.json({ error: 'Invitation ID is required.' }, { status: 400 });
@@ -74,11 +75,33 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: 'You do not have permission to edit this invitation.' }, { status: 403 });
   }
 
+  const sanitizedSlug = slug ? sanitizeSlug(slug) : null;
+
+  if (sanitizedSlug) {
+    const { data: slugConflict, error: slugError } = await supabase
+      .from('invitations')
+      .select('id')
+      .eq('slug', sanitizedSlug)
+      .not('id', 'eq', id)
+      .single();
+
+    if (slugError && slugError.code !== 'PGRST116') { // PGRST116 = no rows found
+      return NextResponse.json({ error: 'Error checking slug uniqueness.', details: slugError.message }, { status: 500 });
+    }
+    if (slugConflict) {
+      return NextResponse.json({ error: 'This custom link is already in use. Please choose another.' }, { status: 409 });
+    }
+  }
+
   // If ownership is verified, proceed with the update
-  const updatedRecord = {
-    data: body.data,
+  const updatedRecord: { data: any; is_published: boolean; slug?: string } = {
+    data: invitationData,
     is_published: true,
   };
+
+  if (sanitizedSlug) {
+    updatedRecord.slug = sanitizedSlug;
+  }
 
   const { data, error } = await supabase
     .from('invitations')
@@ -89,10 +112,21 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
   if (error) {
     console.error(`Supabase error updating invitation ${id}:`, error);
+    if (error.code === '23505') { // Unique constraint violation
+      return NextResponse.json({ error: 'This custom link is already in use. Please choose another.' }, { status: 409 });
+    }
     return NextResponse.json({ error: 'Failed to update invitation.', details: error.message }, { status: 500 });
   }
 
   return NextResponse.json(data);
+}
+
+function sanitizeSlug(slug: string): string {
+  return slug
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .slice(0, 50);
 }
 
 // DELETE an invitation by ID (protected)

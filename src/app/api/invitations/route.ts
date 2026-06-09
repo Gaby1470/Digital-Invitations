@@ -16,21 +16,41 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
+  const { template, slug } = body;
 
-  if (!body.template) {
+  if (!template) {
     return NextResponse.json({ error: 'A template name is required.' }, { status: 400 });
   }
 
-  const selectedTemplate = templateConfig[body.template];
+
+  const selectedTemplate = templateConfig[template];
 
   if (!selectedTemplate) {
-    return NextResponse.json({ error: `Template "${body.template}" not found.` }, { status: 404 });
+    return NextResponse.json({ error: `Template "${template}" not found.` }, { status: 404 });
+  }
+
+  const sanitizedSlug = slug ? sanitizeSlug(slug) : null;
+
+  if (sanitizedSlug) {
+    const { data: slugConflict, error: slugError } = await supabase
+      .from('invitations')
+      .select('id')
+      .eq('slug', sanitizedSlug)
+      .single();
+
+    if (slugError && slugError.code !== 'PGRST116') { // PGRST116 = no rows found
+      return NextResponse.json({ error: 'Error checking slug uniqueness.', details: slugError.message }, { status: 500 });
+    }
+    if (slugConflict) {
+      return NextResponse.json({ error: 'This custom link is already in use. Please choose another.' }, { status: 409 });
+    }
   }
 
   const newInvitationRecord = {
     user_id: user.id,
-    template: body.template,
-    data: selectedTemplate.defaultData, 
+    template: template,
+    data: selectedTemplate.defaultData,
+    slug: sanitizedSlug,
   };
 
   const { data, error } = await supabase
@@ -41,8 +61,19 @@ export async function POST(request: Request) {
 
   if (error) {
     console.error('Supabase error creating invitation:', error);
+    if (error.code === '23505') { // Unique constraint violation on slug
+      return NextResponse.json({ error: 'This custom link is already in use. Please choose another.' }, { status: 409 });
+    }
     return NextResponse.json({ error: 'Failed to create invitation in database.', details: error.message }, { status: 500 });
   }
 
   return NextResponse.json({ success: true, invitation: { id: data.id } });
+}
+
+function sanitizeSlug(slug: string): string {
+  return slug
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .slice(0, 50);
 }

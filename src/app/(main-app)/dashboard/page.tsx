@@ -70,8 +70,8 @@ export default function DashboardPage() {
     }
   };
 
-  const handleCopyLink = (invitationId: string) => {
-    const link = `${window.location.origin}/invite/${invitationId}`;
+  const handleCopyLink = (invitationId: string, slug?: string) => {
+    const link = `${window.location.origin}/invite/${slug || invitationId}`;
     navigator.clipboard.writeText(link).then(() => {
       setCopiedId(invitationId);
       setTimeout(() => setCopiedId(null), 2000);
@@ -208,7 +208,7 @@ export default function DashboardPage() {
                           {/* Secondary Actions */}
                           <div className="flex gap-1">
                             <button
-                              onClick={() => handleCopyLink(inv.id)}
+                              onClick={() => handleCopyLink(inv.id, inv.slug)}
                               className="p-2 rounded-full text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white transition-colors relative group/btn"
                             >
                               <DocumentDuplicateIcon className={`w-5 h-5 ${copiedId === inv.id ? 'text-green-500' : ''}`} />
@@ -218,7 +218,7 @@ export default function DashboardPage() {
                             </button>
 
                             <Link 
-                              href={`/invite/${inv.id}`} 
+                              href={`/invite/${inv.slug || inv.id}`} 
                               target="_blank" 
                               className="p-2 rounded-full text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white transition-colors relative group/btn"
                             >

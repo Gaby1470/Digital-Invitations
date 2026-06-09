@@ -18,8 +18,9 @@ import RecommendationsSection from './form-sections/RecommendationsSection';
 import CollapsibleSection from './shared/CollapsibleSection';
 import Modal from './shared/Modal';
 import ImageUploader from './shared/ImageUploader';
+import TextInput from './shared/TextInput';
 
-type EditorData = TemplateConfig['defaultData'] & Record<string, unknown>;
+type EditorData = TemplateConfig['defaultData'] & { slug?: string } & Record<string, unknown>;
 
 type EditorFormProps = {
   data: EditorData;
@@ -114,6 +115,25 @@ export default function EditorForm({
               templateFeatures={template.features}
               onFieldChange={handleFieldChange}
             />
+          </CollapsibleSection>
+
+          <CollapsibleSection
+            title="Invitation Link"
+            isOpen={activeSection === "Link"}
+            onToggle={() => setActiveSection(activeSection === "Link" ? null : "Link")}
+          >
+            <div className="p-4 space-y-4">
+              <TextInput
+                label="Custom Link"
+                value={data.slug || ''}
+                onChange={(value) => handleFieldChange('slug', value)}
+                placeholder="your-event-name"
+              />
+              <p className="text-sm text-gray-500">
+                Customize the link to your invitation. Use only lowercase letters, numbers, and hyphens.
+                Example: <strong>{`https://yourapp.com/invite/sarah-and-toms-wedding`}</strong>
+              </p>
+            </div>
           </CollapsibleSection>
           
           <CollapsibleSection 

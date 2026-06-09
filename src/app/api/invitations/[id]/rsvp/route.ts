@@ -1,16 +1,25 @@
 // src/app/api/invitations/[id]/rsvp/route.ts
 
-import { createClient } from '@/lib/supabase-server';
+import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const invitationId = params.id;
+  // Use the service role key to bypass RLS for guest RSVP submissions.
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      auth: {
+        // In server-side environments, it's recommended to disable session persistence
+        // when using the service role key, as it's not tied to a user session.
+        persistSession: false,
+      },
+    }
+  );
+  const { id: invitationId } = await params;
   
   // 1. Get the RSVP data from the request body
   let rsvpData;

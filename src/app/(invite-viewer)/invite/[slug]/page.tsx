@@ -1,35 +1,46 @@
-// src/app/invite/[id]/page.tsx
+// src/app/(invite-viewer)/invite/[slug]/page.tsx
 import { templateConfig } from '@/lib/templateConfig';
 import TemplateRenderer from '@/components/TemplateRenderer';
 import Link from 'next/link';
 
 type InvitePageProps = {
   params: {
-    id: string;
+    slug: string;
   };
 };
 
-async function getInvitation(id: string) {
+async function getInvitation(slugOrId: string) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  
+
   try {
-    const res = await fetch(`${appUrl}/api/invitations/${id}`, {
+    // First, try to fetch by slug
+    const slugUrl = `${appUrl}/api/invitations/by-slug/${slugOrId}`;
+    let res = await fetch(slugUrl, {
       next: { revalidate: 3600 } // Revalidate data every hour
     });
+
+    // If that fails (e.g. 404), try fetching by ID
+    if (!res.ok) {
+      const idUrl = `${appUrl}/api/invitations/${slugOrId}`;
+      res = await fetch(idUrl, {
+        next: { revalidate: 3600 }
+      });
+    }
 
     if (!res.ok) {
       return null;
     }
-    return res.json();
+    const data = await res.json();
+    return data;
   } catch (error) {
-    console.error(`Failed to fetch invitation ${id}:`, error);
+    console.error(`[getInvitation] Failed to fetch invitation ${slugOrId}:`, error);
     return null;
   }
 }
 
-export default async function InvitePage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const invitation = await getInvitation(id);
+export default async function InvitePage({ params }: InvitePageProps) {
+  const { slug } = await params;
+  const invitation = await getInvitation(slug);
 
   if (!invitation || invitation.error) {
     let title = "Invitation Not Found";
@@ -64,5 +75,8 @@ export default async function InvitePage({ params }: { params: Promise<{ id: str
   }
 
   // The 'data' field from Supabase contains all the personalized content
-  return <TemplateRenderer templateId={invitation.template} template={template} data={invitation.data} />;
+  // We also pass the top-level ID down so the RSVP section can use it.
+  const rendererData = { ...invitation.data, id: invitation.id };
+  
+  return <TemplateRenderer templateId={invitation.template} template={template} data={rendererData} />;
 }
