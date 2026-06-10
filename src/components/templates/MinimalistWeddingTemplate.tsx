@@ -135,7 +135,7 @@ export default function MinimalistWeddingTemplate({
                 ))}
             </h1>
           </FadeIn>
-          
+
           <FadeIn delay={0.7}>
             <div className="mt-8">
               <Countdown
@@ -194,7 +194,7 @@ export default function MinimalistWeddingTemplate({
                       <h3 className="text-base font-medium mb-1 tracking-tight">
                         {item.title}
                       </h3>
-                      <p className="text-xs text-neutral-500 tracking-wide">
+                      <p className="text-sm text-neutral-500 tracking-wide">
                         {item.location}
                       </p>
                     </div>
@@ -249,14 +249,14 @@ export default function MinimalistWeddingTemplate({
                   Ubicación
                 </p>
                 <h2 className="text-3xl font-light tracking-tight mb-2">
-                  The Venue
+                  {invitationData.locationName}
                 </h2>
-                <p className="text-xs tracking-wider text-neutral-500 max-w-xs mx-auto leading-relaxed">
+                <p className="text-sm tracking-wider text-neutral-500 max-w-xs mx-auto leading-relaxed">
                   {invitationData.mainVenueAddress}
                 </p>
               </div>
             </FadeIn>
-            
+
             <FadeIn delay={0.2}>
               <div className="w-full aspect-[4/3] sm:aspect-[16/9] bg-neutral-100 filter grayscale border border-neutral-200 p-1 rounded-lg">
                 <iframe
@@ -278,11 +278,11 @@ export default function MinimalistWeddingTemplate({
           <div className="max-w-md mx-auto flex flex-col items-center text-center">
             <FadeIn>
               <span className="block w-[1px] h-16 bg-neutral-200 mx-auto mb-8" /> 
-              
+
               <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-neutral-400 mb-6">
                 Dress Code
               </p>
-              
+
               <div className="w-full px-4">
                 <DressCodePreview
                   dressCode={dressCode}
@@ -290,7 +290,7 @@ export default function MinimalistWeddingTemplate({
                   textColor={invitationData.textColor}
                 />
               </div>
-              
+
               <span className="block w-[1px] h-16 bg-neutral-200 mx-auto mt-12" />
             </FadeIn>
           </div>
@@ -317,7 +317,7 @@ export default function MinimalistWeddingTemplate({
                           <h3 className="text-base font-semibold mb-1 tracking-tight">
                             {item.name}
                           </h3>
-                          <p className="text-xs text-neutral-500 leading-relaxed mb-4">
+                          <p className="text-lg text-neutral-500 leading-relaxed mb-4">
                             {item.description}
                           </p>
                         </div>

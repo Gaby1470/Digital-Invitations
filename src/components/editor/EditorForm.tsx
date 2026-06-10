@@ -12,7 +12,7 @@ import DressCodeSection from './form-sections/DressCodeSection';
 import GallerySection from './form-sections/GallerySection';
 import EventScheduleSection from './form-sections/EventScheduleSection';
 import GiftSection from './form-sections/GiftSection';
-
+import GodparentsSection from './form-sections/GodparentsSection';
 import ParentalNotesSection from './form-sections/ParentalNotesSection';
 import RecommendationsSection from './form-sections/RecommendationsSection';
 import CollapsibleSection from './shared/CollapsibleSection';
@@ -104,7 +104,7 @@ export default function EditorForm({
       {/* Editor Body */}
       <div className="flex-1 overflow-y-auto pb-10 custom-scrollbar">
         <div className="divide-y divide-slate-100">
-          
+
           <CollapsibleSection 
             title="Main Details" 
             isOpen={activeSection === "Main Details"}
@@ -112,7 +112,7 @@ export default function EditorForm({
           >
             <MainDetailsSection
               data={data}
-              templateFeatures={template.features}
+              template={template}
               onFieldChange={handleFieldChange}
             />
           </CollapsibleSection>
@@ -135,7 +135,7 @@ export default function EditorForm({
               </p>
             </div>
           </CollapsibleSection>
-          
+
           <CollapsibleSection 
             title="Design & Style" 
             isOpen={activeSection === "Design"}
@@ -175,17 +175,19 @@ export default function EditorForm({
             </CollapsibleSection>
           )}
 
-          <CollapsibleSection 
-            title="Photo Gallery" 
-            isOpen={activeSection === "Gallery"}
-            onToggle={() => setActiveSection(activeSection === "Gallery" ? null : "Gallery")}
-          >
-            <GallerySection
-              data={data}
-              onFieldChange={handleFieldChange}
-              onOpenModal={() => setIsModalOpen(true)}
-            />
-          </CollapsibleSection>
+          {template.features.gallery && (
+            <CollapsibleSection 
+              title="Photo Gallery" 
+              isOpen={activeSection === "Gallery"}
+              onToggle={() => setActiveSection(activeSection === "Gallery" ? null : "Gallery")}
+            >
+              <GallerySection
+                data={data}
+                onFieldChange={handleFieldChange}
+                onOpenModal={() => setIsModalOpen(true)}
+              />
+            </CollapsibleSection>
+          )}
 
           <CollapsibleSection 
             title="Event Schedule" 
@@ -197,6 +199,19 @@ export default function EditorForm({
               onFieldChange={handleFieldChange}
             />
           </CollapsibleSection>
+
+          {template.features.hasGodparents && (
+            <CollapsibleSection
+              title="Godparents"
+              isOpen={activeSection === "Godparents"}
+              onToggle={() => setActiveSection(activeSection === "Godparents" ? null : "Godparents")}
+            >
+              <GodparentsSection
+                data={data}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
+          )}
 
           {data.giftRegistryUrl !== undefined && (
             <CollapsibleSection 

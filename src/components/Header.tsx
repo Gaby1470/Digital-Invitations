@@ -55,8 +55,14 @@ export default function Header() {
           <Link href="/templates" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full">
             Plantillas
           </Link>
+          <Link href="/how-it-works" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full">
+            How It Works
+          </Link>
           <Link href="/pricing" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full">
             Precios
+          </Link>
+          <Link href="/contact" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full">
+            Contact
           </Link>
         </nav>
 

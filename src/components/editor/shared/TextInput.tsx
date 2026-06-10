@@ -9,7 +9,7 @@ export default function TextInput({ label, value, onChange, placeholder }: { lab
         type="text"
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow"
+        className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow text-slate-900"
         placeholder={placeholder}
       />
     </div>

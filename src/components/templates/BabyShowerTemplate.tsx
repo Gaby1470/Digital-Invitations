@@ -2,10 +2,10 @@
 "use client";
 
 import React, { useRef } from 'react';
-import { TemplateConfig } from "@/lib/types";
+import { TemplateConfig, TimelineItem } from "@/lib/types";
 import { motion, useInView } from "framer-motion";
 import { RsvpSection } from "./shared/RsvpSection";
-import { Calendar, MapPin, Gift, Baby, Heart, PartyPopper, Utensils } from "lucide-react";
+import { Calendar, MapPin, Gift, Baby, Heart, PartyPopper, Utensils, Clock } from "lucide-react";
 
 function FadeIn({
   children,
@@ -50,13 +50,21 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
     rsvpDeadline,
     rsvpContact,
     giftRegistryUrl,
+    timelineItems,
+    heroTitle,
+    backgroundColor,
+    primaryColor,
+    textColor,
   } = invitationData;
   
   const date = event_date ? new Date(event_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
   const time = event_date ? new Date(event_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : '';
 
   return (
-    <div className="relative w-full min-h-screen bg-gradient-to-b from-[#E3F2FD] via-[#FFF9C4] to-[#E8F5E9] antialiased font-sans text-slate-700 overflow-hidden pb-12">
+    <div 
+      className="relative w-full min-h-screen antialiased font-sans overflow-hidden pb-12"
+      style={{ backgroundColor: backgroundColor, color: textColor }}
+    >
       
       {/* Safari Animals Sidebar Image */}
       <div className="absolute top-0 left-0 h-full w-48 md:w-72 lg:w-80 pointer-events-none select-none z-0">
@@ -84,24 +92,24 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
             <div className="absolute top-6 -right-6 w-24 h-10 bg-white/70 rounded-full blur-[2px] shadow-sm animate-pulse" style={{ animationDuration: '8s' }}></div>
             
             <div className="bg-white/40 p-3 rounded-full mb-4 shadow-sm backdrop-blur-sm border border-white/60">
-              <Baby className="w-8 h-8 text-[#1E88E5]" />
+              <Baby className="w-8 h-8" style={{ color: primaryColor }} />
             </div>
 
             <h1 className="text-5xl sm:text-7xl font-extrabold tracking-wide drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)] leading-tight">
-              <span className="text-[#1E88E5] font-serif">Baby</span>{' '}
+              <span style={{ color: primaryColor }} className="font-serif">Baby</span>{' '}
               <span className="text-[#F5B041] font-serif">Shower</span>
             </h1>
             
-            <p className="mt-6 text-xs font-bold uppercase tracking-widest text-[#479cd4] bg-white/50 px-3 py-1 rounded-full border border-white/40">
-              Celebramos la llegada de un nuevo miembro a la familia
+            <p className="mt-6 text-xs font-bold uppercase tracking-widest bg-white/50 px-3 py-1 rounded-full border border-white/40" style={{ color: primaryColor }}>
+              {heroTitle || "Celebramos la llegada de un nuevo miembro a la familia"}
             </p>
             
-            <h2 className="mt-4 text-3xl sm:text-4xl font-black text-[#1A5276] tracking-tight">
+            <h2 className="mt-4 text-3xl sm:text-4xl font-black tracking-tight" style={{ color: textColor }}>
               {babyName || "Little One"}
             </h2>
             
-            <p className="text-sm md:text-base font-medium text-slate-500 mt-2 max-w-sm mx-auto">
-              Para los orgullosos padres <span className="text-slate-800 font-semibold">{parentsNames}</span>
+            <p className="text-sm md:text-base font-medium mt-2 max-w-sm mx-auto">
+              Para los orgullosos padres <span className="font-semibold" style={{ color: textColor }}>{parentsNames}</span>
             </p>
           </div>
         </FadeIn>
@@ -119,8 +127,8 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
                 <Utensils className="w-6 h-6" />
               </div>
             </div>
-            <h3 className="text-xl font-bold text-slate-800 mb-2 tracking-tight">¡Únete a la Diversión!</h3>
-            <p className="text-sm md:text-base font-medium text-slate-600">
+            <h3 className="text-xl font-bold mb-2 tracking-tight" style={{ color: textColor }}>¡Únete a la Diversión!</h3>
+            <p className="text-sm md:text-base font-medium">
               Prepárate para una tarde llena de juegos divertidos, comida deliciosa y compañía maravillosa mientras celebramos la llegada del pequeño.
             </p>
           </div>
@@ -131,19 +139,52 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
       <section className="relative z-10 py-6 px-4">
         <div className="container mx-auto max-w-xl grid grid-cols-1 gap-6">
           
-          {/* Date Card */}
-          <FadeIn delay={0.2}>
-            <div className="group bg-white/60 backdrop-blur-md rounded-2xl p-6 shadow-md border border-white/80 text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
-              <div className="mx-auto w-10 h-10 bg-[#E8F5E9] rounded-xl flex items-center justify-center text-[#7CB342] mb-3 group-hover:scale-110 transition-transform">
-                <Calendar className="w-5 h-5" />
+          {(!timelineItems || timelineItems.length === 0) && (
+            <>
+              {/* Date Card */}
+              <FadeIn delay={0.2}>
+                <div className="group bg-white/60 backdrop-blur-md rounded-2xl p-6 shadow-md border border-white/80 text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+                  <div className="mx-auto w-10 h-10 bg-[#E8F5E9] rounded-xl flex items-center justify-center text-[#7CB342] mb-3 group-hover:scale-110 transition-transform">
+                    <Calendar className="w-5 h-5" />
+                  </div>
+                  <div className="text-[#689F38] font-bold uppercase tracking-wider text-xs mb-1">
+                    Cuándo
+                  </div>
+                  <div className="text-xl font-bold" style={{ color: textColor }}>{date}</div>
+                  <div className="text-md font-medium mt-0.5">{time}</div>
+                </div>
+              </FadeIn>
+            </>
+          )}
+
+          {/* Schedule Card */}
+          {timelineItems && timelineItems.length > 0 && (
+            <FadeIn delay={0.2}>
+              <div className="bg-white/60 backdrop-blur-md rounded-2xl p-6 shadow-md border border-white/80 transition-all duration-300 hover:shadow-lg">
+                <div className="flex justify-center mb-4">
+                  <div className="mx-auto w-10 h-10 bg-[#E8F5E9] rounded-xl flex items-center justify-center text-[#7CB342]">
+                    <Calendar className="w-5 h-5" />
+                  </div>
+                </div>
+                <div className="text-center text-[#689F38] font-bold uppercase tracking-wider text-xs mb-4">
+                  Programa
+                </div>
+                <div className="space-y-4">
+                  {timelineItems.map((item: TimelineItem, index: number) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <div className="flex-shrink-0 bg-white/80 rounded-lg p-2">
+                         <Clock className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="font-bold" style={{ color: textColor }}>{item.title}</p>
+                        <p className="text-sm">{item.time} - {item.location}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="text-[#689F38] font-bold uppercase tracking-wider text-xs mb-1">
-                Cuándo
-              </div>
-              <div className="text-xl font-bold text-slate-800">{date}</div>
-              <div className="text-md font-medium text-slate-600 mt-0.5">{time}</div>
-            </div>
-          </FadeIn>
+            </FadeIn>
+          )}
           
           {/* Location Card */}
           <FadeIn delay={0.3}>
@@ -154,8 +195,8 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
               <div className="text-[#0288D1] font-bold uppercase tracking-wider text-xs mb-1">
                 Dónde
               </div>
-              <div className="text-xl font-bold text-slate-800">{locationName}</div>
-              <div className="text-sm text-slate-600 px-4 mt-1 break-words font-medium">{mainVenueAddress}</div>
+              <div className="text-xl font-bold" style={{ color: textColor }}>{locationName}</div>
+              <div className="text-sm px-4 mt-1 break-words font-medium">{mainVenueAddress}</div>
             </div>
           </FadeIn>
 
@@ -191,7 +232,7 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
       {/* Footer */}
       <footer className="relative z-10 mt-12 mx-4 max-w-xl sm:mx-auto bg-white/40 backdrop-blur-sm rounded-2xl py-6 border border-white/50 flex flex-col items-center justify-center gap-2 text-center shadow-sm">
         <Heart className="w-5 h-5 text-red-400 fill-red-400 animate-pulse" />
-        <p className="text-sm text-slate-700 font-bold tracking-wide">
+        <p className="text-sm font-bold tracking-wide" style={{ color: textColor }}>
           ¡No podemos esperar para celebrar contigo!
         </p>
       </footer>

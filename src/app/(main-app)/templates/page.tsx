@@ -104,7 +104,7 @@ export default function TemplatesPage() {
                         transition={{ delay: idx * 0.05 }}
                       >
                         <Link href={`/templates/${template.id}`} className="group block">
-                          <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-2 border border-gray-100 dark:border-gray-800">
+                          <div className="relative aspect-square overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-2 border border-gray-100 dark:border-gray-800">
                             <img 
                               src={
                                 template.thumbnail ||

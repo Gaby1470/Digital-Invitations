@@ -249,7 +249,7 @@ export default function RomanticWeddingTemplate({
           <div className="max-w-md mx-auto text-center space-y-6">
             <FadeIn>
               <h2 className="text-4xl font-['Great_Vibes']" style={{ color: invitationData.primaryColor }}>
-                The Venue
+                {invitationData.locationName}
               </h2>
               <p className="text-base italic opacity-80">"Where our new chapter begins..."</p>
               <p className="text-sm font-sans tracking-wide opacity-70 px-4 leading-relaxed">
@@ -322,7 +322,7 @@ export default function RomanticWeddingTemplate({
                     <h3 className="text-lg font-medium mb-1" style={{ color: invitationData.primaryColor }}>
                       {item.name}
                     </h3>
-                    <p className="text-xs leading-relaxed mb-4 opacity-80" style={{ color: invitationData.textColor }}>
+                    <p className="text-base leading-relaxed mb-4 opacity-80" style={{ color: invitationData.textColor }}>
                       {item.description}
                     </p>
                     <a

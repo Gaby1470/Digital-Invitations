@@ -314,8 +314,9 @@ export default function TimelineTemplate({
               src={mapSrc}
             />
           </div>
-          <div className="p-6 bg-stone-50 border-b border-stone-100 text-center">
-            <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-stone-400 mb-1 font-sans">Ubicación</p>
+          <div className="p-8 bg-stone-50 border-b border-stone-100 text-center">
+            <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-stone-400 mb-2 font-sans">Ubicación</p>
+            {invitationData.locationName && <p className="text-xl font-serif italic mb-2">{invitationData.locationName}</p>}
             <p className="text-xs tracking-wide text-stone-600 font-sans max-w-xs mx-auto leading-relaxed">
               {invitationData.mainVenueAddress}
             </p>

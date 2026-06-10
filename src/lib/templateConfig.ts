@@ -32,6 +32,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
         pinterestUrlMan: "https://pin.it/5hSkwuONE",
         pinterestUrlWoman: "https://pin.it/57zbcpMb7",
       },
+      locationName: "The Grand Hall",
       mainVenueAddress: "123 Calle Principal, Ciudad, MX",
       event_date: "2026-10-27T18:00:00",
       giftRegistryUrl: "https://www.amazon.com",
@@ -87,6 +88,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       recommendations: true,
       digitalRegistry: { enabled: true, types: ["amazon", "cash_fund"] },
       songRequests: true,
+      gallery: true,
     },
   },
   "minimalist-wedding": {
@@ -119,6 +121,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
         pinterestUrlMan: "https://pin.it/5hSkwuONE",
         pinterestUrlWoman: "https://pin.it/57zbcpMb7",
       },
+      locationName: "The Modern",
       mainVenueAddress: "The Modern Art Museum, New York",
       event_date: "2026-10-27T18:00:00",
       giftRegistryUrl: "https://www.google.com",
@@ -145,6 +148,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     features: {
       multiEventSchedule: true,
       recommendations: true,
+      gallery: true,
     },
   },
   "romantic-wedding": {
@@ -177,6 +181,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
         pinterestUrlMan: "https://pin.it/5hSkwuONE",
         pinterestUrlWoman: "https://pin.it/57zbcpMb7",
       },
+      locationName: "The Gardens",
       mainVenueAddress: "The Botanical Gardens, San Francisco",
       event_date: "2026-10-27T18:00:00",
       giftRegistryUrl: "https://www.zola.com",
@@ -206,6 +211,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     features: {
       multiEventSchedule: true,
       recommendations: true,
+      gallery: true,
     },
   },
   "quinceanera-dream": {
@@ -327,6 +333,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       ageSpecificThemes: ["superhero", "boho"],
       parentalNotes: true,
       allergyTracker: true,
+      gallery: true,
     },
   },
   "baptism-ethereal": {
@@ -339,18 +346,17 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Cormorant Garamond",
     fonts: ["Cormorant Garamond", "Lora", "Playfair Display"],
     palettes: [
-      { name: "Sacred White", primary: "#fcfbf7", text: "#292524" },
+      { name: "Sacred White", primary: "#d1a36a", text: "#a27b5c" },
       { name: "Divine Gold", primary: "#d4d4d8", text: "#71717a" },
     ],
     defaultData: {
-      primaryColor: "#fcfbf7",
-      textColor: "#292524",
-      backgroundColor: "#fefdfb",
-      hero_image_url:
-        "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2069&auto=format&fit=crop",
+      primaryColor: "#d1a36a",
+      textColor: "#a27b5c",
+      backgroundColor: "#fcfbf7",
       heroTitle: "Una Celebración Sagrada",
       heroNames: "Benjamin James",
       timelineTitle: "El Orden Bendecido",
+      event_date: "2026-04-25T11:00:00",
       timelineItems: [
         {
           time: "11 AM",
@@ -363,9 +369,19 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
           location: "El Conservatorio",
         },
       ],
+      locationName: "Catedral de la Gracia",
+      mainVenueAddress: "123 Grace Ave, City",
+      godparents: [
+        { role: 'Madrina', name: 'Elizabeth Montgomery' },
+        { role: 'Padrino', name: 'Christopher Rhodes' },
+      ],
+      receptionTitle: 'Recepción',
+      receptionText: '"Después de la bendición sagrada, acompáñanos a celebrar con un brindis especial en honor a Sofía."',
+      receptionPlace: 'Lugar: Jardín de los Rosales Conservatorio',
     },
     features: {
       multiEventSchedule: true,
+      hasGodparents: true,
     },
   },
   "gender-reveal-party": {
@@ -387,11 +403,14 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       primaryColor: "#3b82f6",
       textColor: "#ec4899",
       backgroundColor: "#fef3f4",
-      hero_image_url:
-        "https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&q=80",
+      family_image_url: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/gender-1.jpg",
       heroTitle: "¡Niño o Niña?",
-      heroNames: "Baby ...",
+      heroNames: "Sofi",
+      parentsDescription: `"Nuestros corazones están atrapados entre suaves atardeceres rosados y cielos azules cristalinos. ¡No podemos esperar para compartir esta mágica revelación con las personas que más amamos!"`,
       timelineTitle: "Detalles de la Fiesta",
+      locationName: "Nuestra Casa",
+      mainVenueAddress: "123 Calle Principal, Ciudad, MX",
+      event_date: "2026-07-20T15:00:00",
       timelineItems: [
         {
           time: "2 PM",
@@ -421,20 +440,16 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-graduation-formal.png",
     category: "Graduation",
     description: "Una celebración de logros y nuevos comienzos.",
-    font: "font-sans",
-    defaultFont: "Roboto Slab",
+    font: "font-serif",
+    defaultFont: "Great Vibes",
     fonts: ["Roboto Slab", "Oswald", "Anton", "Bebas Neue"],
     palettes: [
-      { name: "Classic", primary: "#ca8a04", text: "#f9fafb" },
-      { name: "Modern", primary: "#4f46e5", text: "#e5e7eb" },
-      { name: "Bold", primary: "#be123c", text: "#f1f5f9" },
+      { name: "Muted Earth", primary: "#8B8682", text: "#4A4B4D" },
     ],
     defaultData: {
-      primaryColor: "#ca8a04",
-      textColor: "#f9fafb",
-      backgroundColor: "#fef3c7",
-      hero_image_url:
-        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
+      primaryColor: "#8B8682",
+      textColor: "#4A4B4D",
+      backgroundColor: "#F9F8F6",
       heroTitle: "Celebrando la Graduación de",
       heroNames: "Gabriela Alcaraz",
       degreeType: "Ingeniería en Ciencias Computacionales",
@@ -443,9 +458,8 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
         {
           time: "6 PM",
           title: "Ceremonia de Graduación",
-          location: "Universidad",
         },
-        { time: "8 PM", title: "Cena", location: "Restaurante" },
+        { time: "8 PM", title: "Cena" },
       ],
       tribute: "Un agradecimiento sincero a mi familia y amigos.",
       futurePlans: "Próximo destino: Maestría!",
@@ -579,13 +593,12 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       textColor: "#1A1A1A",
       backgroundColor: "#F4EFE6",
       heroTitle: "¡Por fin terminé!\nMe encantaría invitarte a ser parte\nde mi graduación y festejar conmigo",
-      mainImage: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad-profile.png",
+      heroNames: "Samantha Baker",
+      hero_image_url: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad-profile.png",
       guestbookPolaroidImage: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/graduation-cover.jpg",
       discoBallImage: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/discoball.png",
       starBalloonImage: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/star.png",
-      date: "06 MARZO 2026",
-      time: "7:00 p.m.",
-      location: "Av. Colombia # 2 - 72, La pizzería estelar",
+      event_date: "2026-03-06T19:00:00",
       timelineItems: [
         { time: "7:00 PM", title: "Ceremonia", location: "Auditorio Principal" },
         { time: "9:00 PM", title: "Fiesta", location: "Salón de eventos" },

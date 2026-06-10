@@ -62,8 +62,8 @@ function PopIn({
 const ransomLetters = [
   {
     char: "G",
-    bg: "bg-[#1A1A1A]",
-    text: "text-white",
+    bg: "bg-[var(--text-color)]",
+    text: "text-[var(--background-color)]",
     font: "font-sans font-black",
     rotate: "-rotate-6",
     padding: "p-2",
@@ -71,7 +71,7 @@ const ransomLetters = [
   {
     char: "r",
     bg: "bg-[#E5E5E5]",
-    text: "text-[#1A1A1A]",
+    text: "text-[var(--text-color)]",
     font: "font-serif font-bold",
     rotate: "rotate-3",
     padding: "p-1",
@@ -79,15 +79,15 @@ const ransomLetters = [
   {
     char: "a",
     bg: "bg-transparent",
-    text: "text-[#1A1A1A]",
+    text: "text-[var(--text-color)]",
     font: "font-mono font-bold",
     rotate: "-rotate-2",
     padding: "p-1",
   },
   {
     char: "D",
-    bg: "bg-[#1A1A1A]",
-    text: "text-white",
+    bg: "bg-[var(--text-color)]",
+    text: "text-[var(--background-color)]",
     font: "font-serif font-black",
     rotate: "rotate-6",
     padding: "p-2",
@@ -95,7 +95,7 @@ const ransomLetters = [
   {
     char: "u",
     bg: "bg-[#E5E5E5]",
-    text: "text-[#1A1A1A]",
+    text: "text-[var(--text-color)]",
     font: "font-sans font-medium",
     rotate: "-rotate-3",
     padding: "p-1 md:p-2",
@@ -103,7 +103,7 @@ const ransomLetters = [
   {
     char: "a",
     bg: "bg-transparent",
-    text: "text-[#1A1A1A]",
+    text: "text-[var(--text-color)]",
     font: "font-serif font-black",
     rotate: "rotate-12",
     padding: "p-1",
@@ -111,15 +111,15 @@ const ransomLetters = [
   {
     char: "c",
     bg: "bg-[#E5E5E5]",
-    text: "text-[#1A1A1A]",
+    text: "text-[var(--text-color)]",
     font: "font-mono font-bold",
     rotate: "-rotate-6",
     padding: "p-2",
   },
   {
     char: "i",
-    bg: "bg-[#1A1A1A]",
-    text: "text-white",
+    bg: "bg-[var(--text-color)]",
+    text: "text-[var(--background-color)]",
     font: "font-sans font-light",
     rotate: "rotate-2",
     padding: "p-2",
@@ -127,15 +127,15 @@ const ransomLetters = [
   {
     char: "o",
     bg: "bg-transparent",
-    text: "text-[#1A1A1A]",
+    text: "text-[var(--text-color)]",
     font: "font-serif font-bold",
     rotate: "-rotate-12",
     padding: "p-1",
   },
   {
     char: "N",
-    bg: "bg-[#1A1A1A]",
-    text: "text-white",
+    bg: "bg-[var(--text-color)]",
+    text: "text-[var(--background-color)]",
     font: "font-sans font-black",
     rotate: "rotate-6",
     padding: "p-2",
@@ -155,11 +155,37 @@ export default function ScrapbookGraduationTemplate({
   const invitationData = { ...defaultData, ...data };
   const [guestMessage, setGuestMessage] = useState("");
 
+  const colorPalette = {
+    "--background-color": invitationData.backgroundColor || "#F4EFE6",
+    "--text-color": invitationData.textColor || "#1A1A1A",
+    "--primary-color": invitationData.primaryColor || "#FF1493",
+  };
+
+  const formattedDate = (dateString: string | undefined) => {
+    if (!dateString) return "06 MARZO 2026";
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = date.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  }
+
+  const formattedTime = (dateString: string | undefined) => {
+    if (!dateString) return "7:00 p.m.";
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    }).toLowerCase();
+  }
+
   return (
     <div
-      className="w-full min-h-screen text-[#1A1A1A] overflow-hidden selection:bg-[#FF69B4] selection:text-white"
+      className="w-full min-h-screen text-[var(--text-color)] overflow-hidden selection:bg-[var(--primary-color)] selection:text-white"
       style={{
-        backgroundColor: "#F4EFE6", // Warmer, sandier cream base
+        ...colorPalette,
+        backgroundColor: "var(--background-color)",
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E")`,
       }}
     >
@@ -215,7 +241,7 @@ export default function ScrapbookGraduationTemplate({
               <div className="absolute inset-0 bg-black/10 translate-x-2 translate-y-2 blur-sm" />
               <Image
                 src={
-                  invitationData.mainImage ||
+                  invitationData.hero_image_url ||
                   "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad-profile.png"
                 }
                 alt="Graduate"
@@ -224,6 +250,15 @@ export default function ScrapbookGraduationTemplate({
                 className="relative z-10 filter grayscale contrast-125"
               />
             </div>
+          </PopIn>
+          
+          <PopIn delay={0.5}>
+            <h1 
+              className="text-5xl md:text-6xl text-center mb-6 transform -rotate-3"
+              style={{ fontFamily: "'Permanent Marker', 'Caveat', cursive", color: 'var(--primary-color)' }}
+            >
+              {invitationData.heroNames}
+            </h1>
           </PopIn>
 
           {/* Ransom Note "GRADUATION" */}
@@ -242,16 +277,12 @@ export default function ScrapbookGraduationTemplate({
 
           {/* Event Details - Typewriter Style */}
           <PopIn delay={0.8}>
-            <div className="flex flex-col items-center space-y-4 font-mono font-bold text-center z-30 bg-[#F4EFE6]/80 backdrop-blur-sm p-4 rounded-xl">
-              <p className="text-2xl md:text-3xl tracking-widest uppercase text-black">
-                {invitationData.date || "06 MARZO 2026"}
+            <div className="flex flex-col items-center space-y-4 font-mono font-bold text-center z-30 bg-[var(--background-color)]/80 backdrop-blur-sm p-4 rounded-xl">
+              <p className="text-2xl md:text-3xl tracking-widest uppercase text-[var(--text-color)]">
+                {formattedDate(invitationData.event_date)}
               </p>
-              <p className="text-3xl md:text-4xl text-[#FF1493] tracking-widest">
-                {invitationData.time || "7:00 p.m."}
-              </p>
-              <p className="text-sm md:text-base mt-4 text-black max-w-[250px] leading-relaxed">
-                {invitationData.location ||
-                  "Av. Colombia # 2 - 72, La pizzería estelar"}
+              <p className="text-3xl md:text-4xl text-[var(--primary-color)] tracking-widest">
+                {formattedTime(invitationData.event_date)}
               </p>
             </div>
           </PopIn>
@@ -283,7 +314,7 @@ export default function ScrapbookGraduationTemplate({
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 backdrop-blur-md border border-white/60 shadow-sm rotate-2" />
 
                     <div className="flex-1 font-mono">
-                      <span className="inline-block bg-[#FF1493] text-white px-2 py-1 text-xs font-bold mb-2">
+                      <span className="inline-block bg-[var(--primary-color)] text-white px-2 py-1 text-xs font-bold mb-2">
                         {item.time}
                       </span>
                       <h3 className="text-xl font-bold uppercase tracking-tight mb-1">
@@ -322,7 +353,7 @@ export default function ScrapbookGraduationTemplate({
                 <Image
                   src={
                     invitationData.guestbookPolaroidImage ||
-                    invitationData.mainImage ||
+                    invitationData.hero_image_url ||
                     "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/graduation-cover.jpg"
                   }
                   alt="Guestbook polaroid"
@@ -342,13 +373,13 @@ export default function ScrapbookGraduationTemplate({
               </FloatingSticker>
               <div className="space-y-4 font-mono">
                 <textarea
-                  className="w-full p-3 bg-transparent border-b-2 border-dashed border-black/30 focus:border-[#FF1493] outline-none transition-all min-h-[100px] resize-none"
+                  className="w-full p-3 bg-transparent border-b-2 border-dashed border-black/30 focus:border-[var(--primary-color)] outline-none transition-all min-h-[100px] resize-none"
                   placeholder="Escribe un deseo para el graduado..."
                   value={guestMessage}
                   onChange={(e) => setGuestMessage(e.target.value)}
                 />
                 <button
-                  className="w-full py-4 bg-black text-white font-bold uppercase tracking-widest hover:bg-[#FF1493] transition-colors"
+                  className="w-full py-4 bg-black text-white font-bold uppercase tracking-widest hover:bg-[var(--primary-color)] transition-colors"
                   onClick={() => alert("¡Gracias por tu mensaje!")}
                 >
                   Enviar

@@ -33,21 +33,34 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
   const invitationData = { ...defaultData, ...data };
   const [guestMessage, setGuestMessage] = useState("");
 
+  const eventDate = new Date(invitationData.event_date).toLocaleDateString('es-ES', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  const colorPalette = {
+    '--background': invitationData.backgroundColor || '#F9F8F6',
+    '--text': invitationData.textColor || '#4A4B4D',
+    '--primary': invitationData.primaryColor || '#8B8682',
+    '--border': invitationData.borderColor || '#D4CEC4',
+    '--selection': invitationData.selectionColor || '#E5E0D8',
+    '--hero-subtitle': '#6B6B6B',
+    '--hero-title': '#3A3B3C',
+    '--placeholder': '#A39B8E',
+  };
+
   return (
     <div 
-      className="w-full font-serif text-[#4A4B4D] selection:bg-[#E5E0D8]"
+      className="w-full font-serif text-[var(--text)] selection:bg-[var(--selection)]"
       style={{
-        backgroundColor: '#F9F8F6',
+        ...colorPalette,
+        backgroundColor: 'var(--background)',
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E")`
       }}
     >
-      {/* Added the paper texture overlay via background-image combined with the off-white base */}
-      
       {/* Hero Section - Poetic & Minimal */}
       <section className="min-h-[90vh] w-full flex flex-col justify-center items-center text-center relative px-6 py-20">
         <div className="z-10 max-w-3xl flex flex-col items-center">
           
-          {/* Graduation Cap - Moved to the very top */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -62,33 +75,30 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
             />
           </motion.div>
 
-          {/* Subtitle / Intro Text */}
           <motion.span 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 1.5 }}
-            className="text-sm md:text-base tracking-[0.25em] uppercase text-[#6B6B6B] mb-8 font-serif"
+            className="text-sm md:text-base tracking-[0.25em] uppercase text-[var(--hero-subtitle)] mb-8 font-serif"
           >
             {invitationData.heroTitle || "Celebrando la Graduación de"}
           </motion.span>
           
-          {/* Main Name - Script/Cursive look */}
           <motion.h1 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-6xl md:text-8xl lg:text-9xl tracking-normal mb-8 leading-tight text-[#3A3B3C]"
+            className="text-6xl md:text-8xl lg:text-9xl tracking-normal mb-8 leading-tight text-[var(--hero-title)]"
             style={{ fontFamily: "'Great Vibes', 'Alex Brush', cursive" }} 
           >
             {invitationData.heroNames}
           </motion.h1>
 
-          {/* Class Of / Degree Details */}
           <motion.h2 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 1.5 }}
-            className="text-sm md:text-base tracking-[0.2em] uppercase text-[#6B6B6B] font-serif"
+            className="text-sm md:text-base tracking-[0.2em] uppercase text-[var(--hero-subtitle)] font-serif"
           >
             {invitationData.degreeType || "Clase de 2026"}
           </motion.h2>
@@ -97,7 +107,7 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
             initial={{ height: 0 }}
             animate={{ height: '50px' }}
             transition={{ delay: 1, duration: 1 }}
-            className="w-[1px] bg-[#D4CEC4] mt-10"
+            className="w-[1px] bg-[var(--border)] mt-10"
           />
         </div>
       </section>
@@ -111,24 +121,21 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
             </h2>
           </GentleFade>
           
-          <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 md:before:mx-auto before:-translate-x-px md:before:translate-x-0 before:h-full before:w-[1px] before:bg-gradient-to-b before:from-transparent before:via-[#D4CEC4] before:to-transparent">
+          <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 md:before:mx-auto before:-translate-x-px md:before:translate-x-0 before:h-full before:w-[1px] before:bg-gradient-to-b before:from-transparent before:via-[var(--border)] before:to-transparent">
             {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
               <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
                 
-                {/* Timeline Node */}
-                <div className="flex items-center justify-center w-10 h-10 rounded-full border border-[#E5E0D8] bg-[#F9F8F6] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-                  <div className="w-2 h-2 bg-[#8B8682] rounded-full" />
+                <div className="flex items-center justify-center w-10 h-10 rounded-full border border-[var(--selection)] bg-[var(--background)] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                  <div className="w-2 h-2 bg-[var(--primary)] rounded-full" />
                 </div>
 
-                {/* Timeline Content */}
                 <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-4 rounded-xl transition-all">
                   <GentleFade delay={index * 0.1}>
                     <div className="flex flex-col md:group-odd:text-right">
-                      <span className="font-sans text-xl font-medium tracking-[0.15em] text-[#8B8682] uppercase mb-2">
+                      <span className="font-sans text-xl font-medium tracking-[0.15em] text-[var(--primary)] uppercase mb-2">
                         {item.time}
                       </span>
-                      <h3 className="text-2xl font-normal text-[#4A4B4D] mb-1">{item.title}</h3>
-                      <p className="text-[#8B8682] text-lg font-serif italic">{item.location}</p>
+                      <h3 className="text-2xl font-normal text-[var(--text)] mb-1">{item.title}</h3>
                     </div>
                   </GentleFade>
                 </div>
@@ -142,13 +149,14 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-6">
           <GentleFade>
-            <h2 className="text-3xl md:text-4xl font-light text-center mb-16 tracking-wide">Captured Moments</h2>
+            <h2 className="text-3xl md:text-4xl font-light text-center mb-4 tracking-wide">Captured Moments</h2>
+             <p className="text-center text-lg text-[var(--primary)] mb-12">{eventDate}</p>
           </GentleFade>
           <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-4 gap-6 pb-8 md:pb-0 hide-scrollbar">
             {invitationData.galleryImages?.slice(0, 4).map((image: string, index: number) => (
               <div key={index} className="min-w-[80vw] md:min-w-0 snap-center shrink-0">
                 <GentleFade delay={index * 0.15}>
-                  <div className="aspect-[4/5] relative rounded-lg overflow-hidden bg-[#E5E0D8] shadow-sm">
+                  <div className="aspect-[4/5] relative rounded-lg overflow-hidden bg-[var(--selection)] shadow-sm">
                     <Image src={image} alt={`Gallery image ${index + 1}`} layout="fill" objectFit="cover" className="hover:scale-105 transition-transform duration-700 ease-out" />
                   </div>
                 </GentleFade>
@@ -162,22 +170,22 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
       <section className="py-24 px-6">
         <div className="max-w-2xl mx-auto">
           <GentleFade>
-            <div className="bg-white/40 backdrop-blur-sm border border-[#E5E0D8] p-8 md:p-14 rounded-2xl shadow-sm">
+            <div className="bg-white/40 backdrop-blur-sm border border-[var(--selection)] p-8 md:p-14 rounded-2xl shadow-sm">
               <div className="flex flex-col items-center justify-center gap-4 mb-10">
-                <Feather className="text-[#8B8682]" size={28} strokeWidth={1} />
+                <Feather className="text-[var(--primary)]" size={28} strokeWidth={1} />
                 <h2 className="text-2xl md:text-3xl font-light text-center">Palabras de inspiración para el graduado</h2>
               </div>
               
               <div className="space-y-6 font-sans">
                 <textarea 
-                  className="w-full p-5 bg-transparent border-b border-[#D4CEC4] focus:border-[#8B8682] outline-none transition-all min-h-[140px] text-[#4A4B4D] placeholder:text-[#A39B8E] resize-none"
+                  className="w-full p-5 bg-transparent border-b border-[var(--border)] focus:border-[var(--primary)] outline-none transition-all min-h-[140px] text-[var(--text)] placeholder:text-[var(--placeholder)] resize-none"
                   placeholder="Escribe tus mejores deseos, consejos o recuerdos para el graduado..."
                   value={guestMessage}
                   onChange={(e) => setGuestMessage(e.target.value)}
                 />
                 <div className="flex justify-center">
                   <button 
-                    className="px-10 py-4 text-[#4A4B4D] border border-[#4A4B4D] text-xs font-medium uppercase tracking-[0.2em] rounded hover:bg-[#4A4B4D] hover:text-white transition-colors duration-300"
+                    className="px-10 py-4 text-[var(--text)] border border-[var(--text)] text-xs font-medium uppercase tracking-[0.2em] rounded hover:bg-[var(--text)] hover:text-white transition-colors duration-300"
                     onClick={() => alert("¡Gracias por tu mensaje!")}
                   >
                     Compartir Mensaje
@@ -191,11 +199,11 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
       
       {/* Future Plans Section - Grounded Footer */}
       {features.futurePlans && invitationData.futurePlans && (
-        <section className="border-t border-[#D4CEC4]">
+        <section className="border-t border-[var(--border)]">
           <div className="max-w-3xl mx-auto px-6 py-24 text-center">
             <GentleFade>
-              <h2 className="text-xs uppercase tracking-[0.25em] text-[#8B8682] mb-6 font-sans">Planes Futuros</h2>
-              <p className="text-xl md:text-2xl font-light leading-relaxed italic text-[#4A4B4D] opacity-90">
+              <h2 className="text-xs uppercase tracking-[0.25em] text-[var(--primary)] mb-6 font-sans">Planes Futuros</h2>
+              <p className="text-xl md:text-2xl font-light leading-relaxed italic text-[var(--text)] opacity-90">
                 "{invitationData.futurePlans}"
               </p>
             </GentleFade>
