@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react';
 import { TemplateConfig } from "@/lib/types";
 import { motion, useInView } from "framer-motion";
 import { RsvpSection } from "./shared/RsvpSection";
-import { Calendar, MapPin, Gift, Clock, Sparkles, CheckCircle, XCircle } from "lucide-react";
+import { Calendar, MapPin, Gift, Clock, Sparkles, CheckCircle, XCircle, ExternalLink } from "lucide-react";
 import Image from 'next/image';
 
 function FadeIn({
@@ -24,6 +24,7 @@ function FadeIn({
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      className="h-full"
     >
       {children}
     </motion.div>
@@ -91,7 +92,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
 
     return (
       <div
-        className="w-full h-24 [perspective:1000px]"
+        className="w-full h-24 [perspective:1000px] cursor-pointer"
         onClick={() => handleVote(selection)}
       >
         <motion.div
@@ -104,7 +105,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
             className={`absolute w-full h-full [backface-visibility:hidden] flex items-center justify-center gap-2 rounded-xl p-4 font-bold text-lg border-2 transition-all duration-300 ${
               vote === selection
                 ? `${bgColor} ${cardTextColor} ${borderColor} scale-105 shadow-lg`
-                : `${hoverBgColor} ${unselectedTextColor} ${borderColor.replace('500','200')} hover:${hoverBgColor}`
+                : `${hoverBgColor} ${unselectedTextColor} ${borderColor.replace('500','200')} hover:${hoverBgColor} hover:scale-105`
             }`}
           >
             {frontContent}
@@ -180,29 +181,35 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
       </header>
       
       {/* Details Grid */}
-      <main className="relative z-10 max-w-3xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 -mt-8">
+      <main className="relative z-10 max-w-3xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 -mt-8 items-stretch">
         
         {/* Date & Time Card */}
         <FadeIn delay={0.1}>
-          <div className="h-full bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg border-2 border-yellow-300/50 text-center transform transition-transform hover:scale-105">
-            <div className="mx-auto w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-md">
+          <div className="h-full flex flex-col justify-center items-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-2 border-yellow-300/50 text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+            <div className="mx-auto w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center mb-6 border-4 border-white shadow-md">
               <Calendar className="w-8 h-8 text-yellow-800" />
             </div>
             <h3 className="text-lg font-bold text-yellow-900 uppercase tracking-wider">{date}</h3>
-            <div className="w-24 h-px bg-yellow-300 mx-auto my-3"></div>
-            <p className="text-2xl font-bold" style={{ color: textColor }}>{timeRange}</p>
-            <p className="text-sm font-medium text-yellow-800 mt-1">{timeSubtitle}</p>
+            <div className="w-24 h-px bg-yellow-300 mx-auto my-4"></div>
+            <p className="text-3xl font-extrabold" style={{ color: textColor }}>{timeRange}</p>
+            <p className="text-sm font-semibold text-yellow-800 mt-2">{timeSubtitle}</p>
           </div>
         </FadeIn>
         
         {/* Location Card */}
         <FadeIn delay={0.2}>
-          <div className="h-full bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg border-2 border-yellow-300/50 text-center transform transition-transform hover:scale-105">
-            <div className="mx-auto w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-md">
+          <div className="h-full flex flex-col justify-center items-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-2 border-yellow-300/50 text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+            <div className="mx-auto w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center mb-6 border-4 border-white shadow-md">
               <MapPin className="w-8 h-8 text-yellow-800" />
             </div>
-            <h3 className="text-2xl font-bold text-yellow-900">{locationName}</h3>
-            <p className="text-sm font-medium mt-1 px-4 break-words" style={{ color: textColor }}>{mainVenueAddress}</p>
+            {/* Tag Name (Big) */}
+            <h3 className="text-3xl font-extrabold text-yellow-900 mb-3 leading-tight">
+              {locationName}
+            </h3>
+            {/* Full Address (Smaller) */}
+            <p className="text-sm md:text-base font-medium px-2 break-words leading-relaxed opacity-80" style={{ color: textColor }}>
+              {mainVenueAddress}
+            </p>
           </div>
         </FadeIn>
       </main>
@@ -212,52 +219,83 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
         <FadeIn delay={0.3}>
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-yellow-300/60">
             <div className="text-center">
-              <Sparkles className="mx-auto w-8 h-8 text-yellow-500 mb-2" />
-              <h3 className="text-2xl font-bold tracking-tight" style={{ color: textColor }}>
-                Equipo rosa o equipo azul? ¡No olvides traer el regalo sorpresa!
+              <Sparkles className="mx-auto w-8 h-8 text-yellow-500 mb-4" />
+              <h3 className="text-2xl font-bold tracking-tight mb-2" style={{ color: textColor }}>
+                ¿Equipo rosa o equipo azul?
               </h3>
-              <p className="mt-2 text-sm font-medium max-w-md mx-auto" style={{ color: textColor }}>
-                Vota y ayudanos a revelar el gran secreto. ¡No olvides traer tu mejor consejo para los futuros padres!
+              <p className="text-sm font-medium max-w-md mx-auto opacity-80" style={{ color: textColor }}>
+                Vota y ayúdanos a revelar el gran secreto. ¡No olvides traer tu mejor consejo para los futuros padres!
               </p>
               
-              <div className="mt-6 grid grid-cols-2 gap-4 max-w-sm mx-auto">
+              <div className="mt-8 grid grid-cols-2 gap-6 max-w-sm mx-auto">
                 <FlipCard
                   selection="girl"
                   frontContent={<>
-                    {vote === 'girl' ? <CheckCircle /> : null} Girl
+                    {vote === 'girl' ? <CheckCircle /> : null} ¡Niña!
                   </>}
-                  backContent="Bring Diapers"
+                  backContent={invitationData.teamGirlProduct || 'toallas para bebé'}
                   bgColor="bg-pink-400"
                   textColor="text-white"
                   unselectedTextColor="text-pink-700"
                   borderColor="border-pink-500"
-                  hoverBgColor="bg-pink-100"
+                  hoverBgColor="bg-pink-50"
                 />
                 <FlipCard
                   selection="boy"
                   frontContent={<>
-                    {vote === 'boy' ? <CheckCircle /> : null} Boy
+                    {vote === 'boy' ? <CheckCircle /> : null} ¡Niño!
                   </>}
-                  backContent="Bring towels"
+                  backContent={invitationData.teamBoyProduct || 'pañales'}
                   bgColor="bg-blue-400"
                   textColor="text-white"
                   unselectedTextColor="text-blue-700"
                   borderColor="border-blue-500"
-                  hoverBgColor="bg-blue-100"
+                  hoverBgColor="bg-blue-50"
                 />
               </div>
               {vote && (
-                <p className="mt-4 text-sm font-semibold text-yellow-700 animate-pulse">Thanks for voting!</p>
+                <div className="mt-6 text-center">
+                    <p className="text-sm font-bold text-yellow-600 animate-pulse">¡Gracias por tu voto!</p>
+                    <p className="text-sm font-medium max-w-md mx-auto opacity-80 mt-2" style={{ color: textColor }}>
+                        Tu objetivo de celebración: Por favor trae un paquete de <span className="font-bold underline">{vote === 'boy' ? (invitationData.teamBoyProduct || 'pañales') : (invitationData.teamGirlProduct || 'toallas para bebé')}</span> a la fiesta. ¡Gracias por tu amor!
+                    </p>
+                </div>
               )}
             </div>
           </div>
         </FadeIn>
       </section>
+
+      {/* Gift Registry Section */}
+      {giftRegistryUrl && (
+        <section className="relative z-10 max-w-xl mx-auto px-4 mt-8">
+          <FadeIn delay={0.35}>
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-2 border-yellow-300/60 text-center flex flex-col items-center">
+              <div className="mx-auto w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                <Gift className="w-7 h-7 text-yellow-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-yellow-900 mb-3">Mesa de Regalos</h3>
+              <p className="text-sm md:text-base font-medium mb-6 opacity-80 max-w-md" style={{ color: textColor }}>
+                Tu presencia es nuestro mejor regalo, pero si deseas tener un detalle con nuestro bebé, puedes ver nuestras sugerencias aquí:
+              </p>
+              <a
+                href={giftRegistryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+              >
+                Ver Mesa de Regalos
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          </FadeIn>
+        </section>
+      )}
       
       {/* RSVP Section */}
-      <section className="relative z-10 py-6 px-4 max-w-xl mx-auto mt-8">
+      <section className="relative z-10 py-6 px-4 max-w-xl mx-auto mt-4">
         <FadeIn delay={0.4}>
-          <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-lg border border-yellow-200/50 p-6 sm:p-8">
+          <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-yellow-200/50 p-6 sm:p-8">
             <RsvpSection 
               primaryColor={primaryColor}
               textColor={textColor}
@@ -267,13 +305,13 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 mt-12 text-center px-4">
-        <p className="font-semibold text-lg" style={{ color: textColor }}>¡Los esperamos!</p>
-        <p className="text-sm font-medium mt-1" style={{ color: textColor }}>Con cariño, {parentsNames}</p>
+      <footer className="relative z-10 mt-12 mb-8 text-center px-4">
+        <p className="font-bold text-2xl" style={{ color: textColor }}>¡Los esperamos!</p>
+        <p className="text-base font-medium mt-2 opacity-80" style={{ color: textColor }}>Con cariño, {parentsNames}</p>
       </footer>
 
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;600;700&display=swap');
         
         .font-sans {
           font-family: 'Quicksand', sans-serif;
@@ -302,6 +340,5 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
     </div>
   );
 };
-
 
 export default GenderRevealBeesTemplate;

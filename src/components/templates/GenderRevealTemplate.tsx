@@ -325,7 +325,7 @@ export default function GenderRevealTemplate({ template, data }: GenderRevealTem
                       Bienvenidos a {team === 'boy' ? 'Team Boy' : 'Team Girl'}!
                     </h3>
                     <p className="text-sm sm:text-base opacity-90 max-w-md mx-auto leading-relaxed mb-8">
-                      Tu objetivo de celebración: Por favor trae un paquete de <span className="font-bold underline">{team === 'boy' ? 'pañales' : 'toallas para bebé'}</span> a la fiesta. ¡Gracias por tu amor!
+                      Tu objetivo de celebración: Por favor trae un paquete de <span className="font-bold underline">{team === 'boy' ? (invitationData.teamBoyProduct || 'pañales') : (invitationData.teamGirlProduct || 'toallas para bebé')}</span> a la fiesta. ¡Gracias por tu amor!
                     </p>
                     <button 
                       onClick={() => setTeam(null)} 

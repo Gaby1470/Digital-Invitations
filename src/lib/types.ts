@@ -25,7 +25,7 @@ export type CourtMember = {
 export type Godparent = {
   name: string;
   role: string;
-  photoUrl: string;
+  photoUrl?: string;
 };
 
 // --- DRESS CODE TYPES ---
@@ -38,25 +38,10 @@ export type DressCodeStyle =
   | "Garden Attire";
 
 export type DressCode = {
-  man: DressCodeStyle;
-  woman: DressCodeStyle;
+  man?: DressCodeStyle;
+  woman?: DressCodeStyle;
   pinterestUrlMan?: string;
   pinterestUrlWoman?: string;
-};
-
-export const dressCodeDescriptions: { [key in DressCodeStyle]: string } = {
-  Casual:
-    "Informal y comodo. Piensa en vestidos de verano, camisas sin corbata y zapatos cómodos.",
-  "Semi-Formal":
-    "Un nivel por encima de lo casual. Piensa en vestidos de cóctel, camisas de vestir y pantalones elegantes.",
-  Cocktail:
-    "Elegante y listo para la fiesta. Piensa en trajes, vestidos de cóctel formales y tacones.",
-  "Garden Attire":
-    "Tejidos ligeros, estampados florales y zapatos cómodos pero elegantes para terrenos al aire libre.",
-  Formal:
-    "Esmoquin o trajes oscuros y corbatas para hombres, y vestidos largos para mujeres.",
-  "Black Tie":
-    "El código de vestimenta más formal. Requiere esmoquin para hombres y vestidos de noche formales para mujeres.",
 };
 // --- END DRESS CODE TYPES ---
 

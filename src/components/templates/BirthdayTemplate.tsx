@@ -240,7 +240,7 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
         <section className="pb-8 px-6 max-w-sm mx-auto">
           <PopIn>
             <div className="bg-amber-100 p-5 rounded-2xl shadow-sm border-b-4 border-black/5">
-              <h3 className="text-[9px] font-black text-amber-800/60 mb-1 uppercase tracking-wider">Note for Parents</h3>
+              <h3 className="text-[9px] font-black text-amber-800/60 mb-1 uppercase tracking-wider">{invitationData.parentalNotesTitle || 'Note for Parents'}</h3>
               <p className="text-sm text-amber-900 font-bold leading-relaxed">
                 {invitationData.parentalNotes}
               </p>
@@ -254,9 +254,9 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
         <section className="pb-4 px-6 text-center max-w-sm mx-auto">
            <PopIn>
             <div className="w-full bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-sm">
-              <h2 className="text-lg font-black text-white mb-1">¿Hambriento? 🍕</h2>
+              <h2 className="text-lg font-black text-white mb-1">{invitationData.allergyTrackerTitle || '¿Hambriento? 🍕'}</h2>
               <p className="text-xs text-white/80 max-w-[240px] mx-auto font-medium">
-                ¡Háznos saber sobre cualquier alergia cuando confirmes tu asistencia!
+                {invitationData.allergyTrackerText || '¡Háznos saber sobre cualquier alergia cuando confirmes tu asistencia!'}
               </p>
             </div>
           </PopIn>

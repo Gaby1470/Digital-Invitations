@@ -60,86 +60,16 @@ function PopIn({
 
 // Hardcoded pattern to avoid hydration mismatch while looking random
 const ransomLetters = [
-  {
-    char: "G",
-    bg: "bg-[var(--text-color)]",
-    text: "text-[var(--background-color)]",
-    font: "font-sans font-black",
-    rotate: "-rotate-6",
-    padding: "p-2",
-  },
-  {
-    char: "r",
-    bg: "bg-[#E5E5E5]",
-    text: "text-[var(--text-color)]",
-    font: "font-serif font-bold",
-    rotate: "rotate-3",
-    padding: "p-1",
-  },
-  {
-    char: "a",
-    bg: "bg-transparent",
-    text: "text-[var(--text-color)]",
-    font: "font-mono font-bold",
-    rotate: "-rotate-2",
-    padding: "p-1",
-  },
-  {
-    char: "D",
-    bg: "bg-[var(--text-color)]",
-    text: "text-[var(--background-color)]",
-    font: "font-serif font-black",
-    rotate: "rotate-6",
-    padding: "p-2",
-  },
-  {
-    char: "u",
-    bg: "bg-[#E5E5E5]",
-    text: "text-[var(--text-color)]",
-    font: "font-sans font-medium",
-    rotate: "-rotate-3",
-    padding: "p-1 md:p-2",
-  },
-  {
-    char: "a",
-    bg: "bg-transparent",
-    text: "text-[var(--text-color)]",
-    font: "font-serif font-black",
-    rotate: "rotate-12",
-    padding: "p-1",
-  },
-  {
-    char: "c",
-    bg: "bg-[#E5E5E5]",
-    text: "text-[var(--text-color)]",
-    font: "font-mono font-bold",
-    rotate: "-rotate-6",
-    padding: "p-2",
-  },
-  {
-    char: "i",
-    bg: "bg-[var(--text-color)]",
-    text: "text-[var(--background-color)]",
-    font: "font-sans font-light",
-    rotate: "rotate-2",
-    padding: "p-2",
-  },
-  {
-    char: "o",
-    bg: "bg-transparent",
-    text: "text-[var(--text-color)]",
-    font: "font-serif font-bold",
-    rotate: "-rotate-12",
-    padding: "p-1",
-  },
-  {
-    char: "N",
-    bg: "bg-[var(--text-color)]",
-    text: "text-[var(--background-color)]",
-    font: "font-sans font-black",
-    rotate: "rotate-6",
-    padding: "p-2",
-  },
+  { char: "G", bg: "bg-[var(--text-color)]", text: "text-[var(--background-color)]", font: "font-sans font-black", rotate: "-rotate-6", padding: "p-2" },
+  { char: "r", bg: "bg-[#E5E5E5]", text: "text-[var(--text-color)]", font: "font-serif font-bold", rotate: "rotate-3", padding: "p-1" },
+  { char: "a", bg: "bg-transparent", text: "text-[var(--text-color)]", font: "font-mono font-bold", rotate: "-rotate-2", padding: "p-1" },
+  { char: "D", bg: "bg-[var(--text-color)]", text: "text-[var(--background-color)]", font: "font-serif font-black", rotate: "rotate-6", padding: "p-2" },
+  { char: "u", bg: "bg-[#E5E5E5]", text: "text-[var(--text-color)]", font: "font-sans font-medium", rotate: "-rotate-3", padding: "p-1 md:p-2" },
+  { char: "a", bg: "bg-transparent", text: "text-[var(--text-color)]", font: "font-serif font-black", rotate: "rotate-12", padding: "p-1" },
+  { char: "c", bg: "bg-[#E5E5E5]", text: "text-[var(--text-color)]", font: "font-mono font-bold", rotate: "-rotate-6", padding: "p-2" },
+  { char: "i", bg: "bg-[var(--text-color)]", text: "text-[var(--background-color)]", font: "font-sans font-light", rotate: "rotate-2", padding: "p-2" },
+  { char: "o", bg: "bg-transparent", text: "text-[var(--text-color)]", font: "font-serif font-bold", rotate: "-rotate-12", padding: "p-1" },
+  { char: "N", bg: "bg-[var(--text-color)]", text: "text-[var(--background-color)]", font: "font-sans font-black", rotate: "rotate-6", padding: "p-2" },
 ];
 
 type GraduationTemplateProps = {
@@ -180,6 +110,8 @@ export default function ScrapbookGraduationTemplate({
     }).toLowerCase();
   }
 
+  const mapQueryAddress = invitationData.mainVenueAddress || "Times Square, New York";
+
   return (
     <div
       className="w-full min-h-screen text-[var(--text-color)] overflow-hidden selection:bg-[var(--primary-color)] selection:text-white"
@@ -192,31 +124,18 @@ export default function ScrapbookGraduationTemplate({
       {/* Hero Collage Section */}
       <section className="relative min-h-[95vh] w-full flex flex-col items-center pt-8 md:pt-20 pb-10 px-4">
         {/* Background Decorative Stickers */}
-        <FloatingSticker
-          className="top-2 left-2 md:top-10 md:left-[10%] w-20 h-20 md:w-28 md:h-28 opacity-90 z-10"
-          duration={5}
-        >
+        <FloatingSticker className="top-2 left-2 md:top-10 md:left-[10%] w-20 h-20 md:w-28 md:h-28 opacity-90 z-10" duration={5}>
           <Image
-            src={
-              invitationData.discoBallImage ||
-              "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/discoball.png"
-            }
+            src={invitationData.discoBallImage || "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/discoball.png"}
             alt="Disco Ball"
             layout="fill"
             objectFit="contain"
           />
         </FloatingSticker>
 
-        <FloatingSticker
-          className="top-2 right-2 md:top-4 md:right-[5%] w-15 h-15 md:w-30 md:h-30 opacity-90 z-10"
-          delay={1}
-          duration={3}
-        >
+        <FloatingSticker className="top-2 right-2 md:top-4 md:right-[5%] w-15 h-15 md:w-30 md:h-30 opacity-90 z-10" delay={1} duration={3}>
           <Image
-            src={
-              invitationData.starBalloonImage ||
-              "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/star.png"
-            }
+            src={invitationData.starBalloonImage || "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/star.png"}
             alt="Star Balloon"
             layout="fill"
             objectFit="contain"
@@ -230,8 +149,7 @@ export default function ScrapbookGraduationTemplate({
               className="text-center text-lg md:text-2xl leading-relaxed mb-8 transform -rotate-2 px-2"
               style={{ fontFamily: "'Permanent Marker', 'Caveat', cursive" }}
             >
-              {invitationData.heroTitle ||
-                "¡Por fin terminé! Me encantaría invitarte a ser parte de mi graduación y festejar conmigo"}
+              {invitationData.heroTitle || "¡Por fin terminé! Me encantaría invitarte a ser parte de mi graduación y festejar conmigo"}
             </p>
           </PopIn>
 
@@ -240,10 +158,7 @@ export default function ScrapbookGraduationTemplate({
             <div className="relative w-[280px] h-[320px] md:w-[350px] md:h-[400px] mb-6">
               <div className="absolute inset-0 bg-black/10 translate-x-2 translate-y-2 blur-sm" />
               <Image
-                src={
-                  invitationData.hero_image_url ||
-                  "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad-profile.png"
-                }
+                src={invitationData.hero_image_url || "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad-profile.png"}
                 alt="Graduate"
                 layout="fill"
                 objectFit="contain"
@@ -265,10 +180,7 @@ export default function ScrapbookGraduationTemplate({
           <PopIn delay={0.6}>
             <div className="flex justify-center items-center flex-wrap gap-1 mb-12">
               {ransomLetters.map((letter, i) => (
-                <span
-                  key={i}
-                  className={`inline-block text-3xl md:text-3xl ${letter.bg} ${letter.text} ${letter.font} ${letter.rotate} ${letter.padding} shadow-sm border border-black/10`}
-                >
+                <span key={i} className={`inline-block text-3xl md:text-3xl ${letter.bg} ${letter.text} ${letter.font} ${letter.rotate} ${letter.padding} shadow-sm border border-black/10`}>
                   {letter.char}
                 </span>
               ))}
@@ -305,42 +217,90 @@ export default function ScrapbookGraduationTemplate({
           </PopIn>
 
           <div className="space-y-8">
-            {invitationData.timelineItems?.map(
-              (item: TimelineItem, index: number) => (
-                <PopIn delay={index * 0.15} key={index}>
-                  <div
-                    className={`relative flex items-center p-4 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${index % 2 === 0 ? "rotate-1" : "-rotate-1"} hover:rotate-0 transition-transform`}
-                  >
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 backdrop-blur-md border border-white/60 shadow-sm rotate-2" />
+            {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
+              <PopIn delay={index * 0.15} key={index}>
+                <div className={`relative flex items-center p-4 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${index % 2 === 0 ? "rotate-1" : "-rotate-1"} hover:rotate-0 transition-transform`}>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 backdrop-blur-md border border-white/60 shadow-sm rotate-2" />
 
-                    <div className="flex-1 font-mono">
-                      <span className="inline-block bg-[var(--primary-color)] text-white px-2 py-1 text-xs font-bold mb-2">
-                        {item.time}
-                      </span>
-                      <h3 className="text-xl font-bold uppercase tracking-tight mb-1">
-                        {item.title}
-                      </h3>
-                      <p className="text-black/70 text-sm">{item.location}</p>
-                    </div>
+                  <div className="flex-1 font-mono">
+                    <span className="inline-block bg-[var(--primary-color)] text-white px-2 py-1 text-xs font-bold mb-2">
+                      {item.time}
+                    </span>
+                    <h3 className="text-xl font-bold uppercase tracking-tight mb-1">
+                      {item.title}
+                    </h3>
+                    <p className="text-black/70 text-sm">{item.location}</p>
                   </div>
-                </PopIn>
-              ),
-            )}
+                </div>
+              </PopIn>
+            ))}
           </div>
-          <FloatingSticker
-            className="top-10 left-[-5%] md:left-[70%] w-32 h-32 opacity-90 z-10"
-            duration={5}
-          >
-            <Image
-              src={
-                invitationData.discoBallImage ||
-                "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/discoball.png"
-              }
-              alt="Disco Ball"
-              layout="fill"
-              objectFit="contain"
-            />
+          
+          <FloatingSticker className="top-10 left-[-5%] md:left-[70%] w-32 h-32 opacity-90 z-10" duration={5}>
+            <Image src={invitationData.discoBallImage || "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/discoball.png"} alt="Disco Ball" layout="fill" objectFit="contain" />
           </FloatingSticker>
+        </div>
+      </section>
+
+      {/* Visual Address / Location Section */}
+      <section className="py-16 px-6 relative flex justify-center">
+        <div className="max-w-2xl w-full">
+          <PopIn>
+            <div className="relative bg-[#FAFAFA] border-2 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-6 md:p-10 transform -rotate-1">
+              {/* Masking Tape effect */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-[#EAE6D7]/80 backdrop-blur-md border border-black/10 shadow-sm rotate-2 mix-blend-multiply" />
+              
+              <h2
+                className="text-3xl md:text-4xl text-center mb-8"
+                style={{ fontFamily: "'Permanent Marker', 'Caveat', cursive" }}
+              >
+                ¿Dónde es la fiesta?
+              </h2>
+
+              <div className="flex flex-col md:flex-row gap-6 items-center">
+                {/* Visual Map Embedded Iframe */}
+                <div className="w-full md:w-1/2 h-48 bg-[#E5E5E5] border-2 border-black relative overflow-hidden flex items-center justify-center group">
+                  <div 
+                    className="absolute inset-0 opacity-40 z-0" 
+                    style={{ backgroundImage: 'radial-gradient(var(--text-color) 1px, transparent 1px)', backgroundSize: '12px 12px' }}
+                  />
+                  <iframe
+                    title="Map Location"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(mapQueryAddress)}&output=embed`}
+                    className="absolute inset-0 z-10 grayscale contrast-125 opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                  ></iframe>
+                </div>
+
+                {/* Address Details & CTA */}
+                <div className="w-full md:w-1/2 flex flex-col space-y-6 font-mono text-center md:text-left">
+                  <div>
+                    <h3 className="text-xl font-black uppercase tracking-tight mb-2">Ubicación</h3>
+                    <p className="text-lg font-bold text-[var(--primary-color)]">
+                      {invitationData.mainVenueName || "Recepción Principal"}
+                    </p>
+                    <p className="text-black/80 mt-2 text-sm leading-relaxed">
+                      {invitationData.mainVenueAddress || "123 Graduation Lane, Scholar City"}
+                    </p>
+                  </div>
+
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQueryAddress)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block text-center w-full py-3 bg-[var(--text-color)] text-[var(--background-color)] font-bold uppercase tracking-widest hover:bg-[var(--primary-color)] transition-colors border-2 border-transparent hover:border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  >
+                    Abrir en Maps
+                  </a>
+                </div>
+              </div>
+            </div>
+          </PopIn>
         </div>
       </section>
 
@@ -351,11 +311,7 @@ export default function ScrapbookGraduationTemplate({
             <div className="bg-white p-4 pb-16 border border-gray-200 shadow-2xl transform rotate-2">
               <div className="bg-black/5 w-full h-48 mb-6 border border-black/10 relative overflow-hidden">
                 <Image
-                  src={
-                    invitationData.guestbookPolaroidImage ||
-                    invitationData.hero_image_url ||
-                    "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/graduation-cover.jpg"
-                  }
+                  src={invitationData.guestbookPolaroidImage || invitationData.hero_image_url || "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/graduation-cover.jpg"}
                   alt="Guestbook polaroid"
                   fill
                   className="object-cover"

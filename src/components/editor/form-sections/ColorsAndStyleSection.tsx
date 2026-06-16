@@ -32,13 +32,7 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
         {data.backgroundColor !== undefined && (
           <ColorInput label="Background Color" value={data.backgroundColor} onChange={(val) => onFieldChange('backgroundColor', val)} />
         )}
-        {template.fonts && (
-          <FontSelection
-            fonts={template.fonts}
-            selectedFont={data.font || template.defaultFont}
-            onFontChange={(val) => onFieldChange('font', val)}
-          />
-        )}
+
       </div>
     </div>
   );

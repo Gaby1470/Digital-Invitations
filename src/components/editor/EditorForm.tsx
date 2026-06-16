@@ -13,7 +13,10 @@ import GallerySection from './form-sections/GallerySection';
 import EventScheduleSection from './form-sections/EventScheduleSection';
 import GiftSection from './form-sections/GiftSection';
 import GodparentsSection from './form-sections/GodparentsSection';
+import CourtOfHonorSection from './form-sections/CourtOfHonorSection';
 import ParentalNotesSection from './form-sections/ParentalNotesSection';
+import AllergyTrackerSection from './form-sections/AllergyTrackerSection';
+import GenderBettingSection from './form-sections/GenderBettingSection';
 import RecommendationsSection from './form-sections/RecommendationsSection';
 import CollapsibleSection from './shared/CollapsibleSection';
 import Modal from './shared/Modal';
@@ -68,35 +71,6 @@ export default function EditorForm({
 
   return (
     <div className="flex flex-col h-full bg-slate-50 border-r border-slate-200">
-      {/* Header with Preview Toggles */}
-      <div className="flex justify-between items-center p-4 bg-white border-b sticky top-0 z-30">
-        <div className="flex items-center gap-4">
-          <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
-            <button 
-              onClick={() => onViewModeChange('mobile')}
-              className={`p-2 rounded-lg transition-all ${viewMode === 'mobile' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700'}`}
-              title="Mobile View"
-            >
-              <Smartphone size={18} />
-            </button>
-            <button 
-              onClick={() => onViewModeChange('desktop')}
-              className={`p-2 rounded-lg transition-all ${viewMode === 'desktop' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700'}`}
-              title="Desktop View"
-            >
-              <Monitor size={18} />
-            </button>
-          </div>
-        </div>
-        <button 
-          onClick={onSave}
-          disabled={isSaving}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-full font-bold text-sm flex items-center gap-2 transition-transform active:scale-95 shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
-        >
-          <Save size={16} /> {isSaving ? 'Saving...' : 'Save Changes'}
-        </button>
-      </div>
-
       <Modal title="Upload Image" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ImageUploader onImageUploaded={handleImageUploaded} />
       </Modal>
@@ -106,7 +80,7 @@ export default function EditorForm({
         <div className="divide-y divide-slate-100">
 
           <CollapsibleSection 
-            title="Main Details" 
+            title="Datos Principales" 
             isOpen={activeSection === "Main Details"}
             onToggle={() => setActiveSection(activeSection === "Main Details" ? null : "Main Details")}
           >
@@ -118,26 +92,26 @@ export default function EditorForm({
           </CollapsibleSection>
 
           <CollapsibleSection
-            title="Invitation Link"
+            title="Enlace de Invitación"
             isOpen={activeSection === "Link"}
             onToggle={() => setActiveSection(activeSection === "Link" ? null : "Link")}
           >
             <div className="p-4 space-y-4">
               <TextInput
-                label="Custom Link"
+                label="Enlace Personalizado"
                 value={data.slug || ''}
                 onChange={(value) => handleFieldChange('slug', value)}
-                placeholder="your-event-name"
+                placeholder="nombre-de-tu-evento"
               />
               <p className="text-sm text-gray-500">
-                Customize the link to your invitation. Use only lowercase letters, numbers, and hyphens.
-                Example: <strong>{`https://yourapp.com/invite/sarah-and-toms-wedding`}</strong>
+                Personaliza el enlace de tu invitación. Usa solo letras minúsculas, números y guiones.
+                Ejemplo: <strong>{`https://yourapp.com/invite/sarah-and-toms-wedding`}</strong>
               </p>
             </div>
           </CollapsibleSection>
 
           <CollapsibleSection 
-            title="Design & Style" 
+            title="Diseño y Estilo" 
             isOpen={activeSection === "Design"}
             onToggle={() => setActiveSection(activeSection === "Design" ? null : "Design")}
           >
@@ -151,7 +125,7 @@ export default function EditorForm({
 
           {data.dressCode && (
             <CollapsibleSection
-              title="Attire"
+              title="Código de Vestimenta"
               isOpen={activeSection === "DressCode"}
               onToggle={() => setActiveSection(activeSection === "DressCode" ? null : "DressCode")}
             >
@@ -164,7 +138,7 @@ export default function EditorForm({
 
           {template.features.recommendations && (
             <CollapsibleSection 
-              title="Accommodations" 
+              title="Alojamientos y Recomendaciones" 
               isOpen={activeSection === "Travel"}
               onToggle={() => setActiveSection(activeSection === "Travel" ? null : "Travel")}
             >
@@ -177,7 +151,7 @@ export default function EditorForm({
 
           {template.features.gallery && (
             <CollapsibleSection 
-              title="Photo Gallery" 
+              title="Galería de Fotos" 
               isOpen={activeSection === "Gallery"}
               onToggle={() => setActiveSection(activeSection === "Gallery" ? null : "Gallery")}
             >
@@ -190,7 +164,7 @@ export default function EditorForm({
           )}
 
           <CollapsibleSection 
-            title="Event Schedule" 
+            title="Horario del Evento" 
             isOpen={activeSection === "Schedule"}
             onToggle={() => setActiveSection(activeSection === "Schedule" ? null : "Schedule")}
           >
@@ -200,9 +174,42 @@ export default function EditorForm({
             />
           </CollapsibleSection>
 
+          {template.features.courtOfHonor && (
+            <CollapsibleSection
+              title="Amigas"
+              isOpen={activeSection === "CourtOfHonor"}
+              onToggle={() => setActiveSection(activeSection === "CourtOfHonor" ? null : "CourtOfHonor")}
+            >
+              <CourtOfHonorSection
+                data={data}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
+          )}
+
+          {template.features.socialMediaWall && (
+            <CollapsibleSection
+                title="Muro de Redes Sociales"
+                isOpen={activeSection === "SocialMedia"}
+                onToggle={() => setActiveSection(activeSection === "SocialMedia" ? null : "SocialMedia")}
+            >
+                <div className="p-6">
+                    <TextInput
+                        label="URL para Compartir Fotos"
+                        value={data.photoSharingUrl || ''}
+                        onChange={(value) => handleFieldChange('photoSharingUrl', value)}
+                        placeholder="https://youraalbum.com/..."
+                    />
+                    <p className="text-sm text-gray-500 mt-2">
+                        El enlace donde los invitados pueden subir y ver fotos del evento.
+                    </p>
+                </div>
+            </CollapsibleSection>
+          )}
+
           {template.features.hasGodparents && (
             <CollapsibleSection
-              title="Godparents"
+              title="Padrinos"
               isOpen={activeSection === "Godparents"}
               onToggle={() => setActiveSection(activeSection === "Godparents" ? null : "Godparents")}
             >
@@ -215,7 +222,7 @@ export default function EditorForm({
 
           {data.giftRegistryUrl !== undefined && (
             <CollapsibleSection 
-              title="Gift Registry" 
+              title="Registro de Regalos" 
               isOpen={activeSection === "Gifts"}
               onToggle={() => setActiveSection(activeSection === "Gifts" ? null : "Gifts")}
             >
@@ -226,9 +233,9 @@ export default function EditorForm({
             </CollapsibleSection>
           )}
 
-          {template.name === 'Kids Birthday Bash' && (
+          {template.name === 'Fiesta de Cumpleaños Infantil' && (
             <CollapsibleSection 
-              title="Note for Parents"
+              title="Nota para los Padres"
               isOpen={activeSection === "ParentalNotes"}
               onToggle={() => setActiveSection(activeSection === "ParentalNotes" ? null : "ParentalNotes")}
             >
@@ -238,7 +245,44 @@ export default function EditorForm({
               />
             </CollapsibleSection>
           )}
+
+          {template.features.allergyTracker && (
+            <CollapsibleSection 
+              title="Alergias"
+              isOpen={activeSection === "AllergyTracker"}
+              onToggle={() => setActiveSection(activeSection === "AllergyTracker" ? null : "AllergyTracker")}
+            >
+              <AllergyTrackerSection
+                data={data}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
+          )}
+
+          {template.features.genderBetting && (
+            <CollapsibleSection
+              title="Juego de Revelación"
+              isOpen={activeSection === "GenderBetting"}
+              onToggle={() => setActiveSection(activeSection === "GenderBetting" ? null : "GenderBetting")}
+            >
+              <GenderBettingSection
+                data={data}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
+          )}
         </div>
+      </div>
+      {/* Fixed Save Button Footer */}
+      <div className="p-4 bg-white/90 backdrop-blur-sm border-t border-slate-200 flex justify-end">
+        <button
+          onClick={onSave}
+          disabled={isSaving}
+          className="inline-flex h-14 items-center justify-center rounded-full bg-indigo-600 px-8 text-lg font-medium text-white shadow-lg shadow-indigo-500/30 transition-all gap-3 hover:bg-indigo-700 hover:shadow-indigo-500/50 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 disabled:bg-indigo-400 disabled:shadow-none disabled:cursor-not-allowed disabled:translate-y-0"
+        >
+          <Save size={20} />
+          {isSaving ? 'Saving...' : 'Save Changes'}
+        </button>
       </div>
     </div>
   );

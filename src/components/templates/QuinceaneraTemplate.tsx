@@ -107,9 +107,19 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
       {/* --- TIMELINE SECTION (Centered Editorial Style) --- */}
       <section id="timeline" className="py-24 px-8 max-w-md mx-auto">
         <AnimatedSection>
-          <h2 className="text-sm tracking-[0.3em] uppercase font-bold text-center mb-16" style={{ color: invitationData.primaryColor }}>
+          <h2 className="text-sm tracking-[0.3em] uppercase font-bold text-center mb-8" style={{ color: invitationData.primaryColor }}>
             {invitationData.timelineTitle || "La Celebración"}
           </h2>
+          {invitationData.event_date && (
+            <div className="text-center mb-16">
+              <p className="text-2xl" style={{ color: invitationData.textColor, fontFamily: 'var(--font-playfair-display), serif' }}>
+                {new Date(invitationData.event_date).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+              </p>
+              <p className="text-lg mt-2" style={{ color: invitationData.textColor, opacity: 0.8 }}>
+                {new Date(invitationData.event_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
+              </p>
+            </div>
+          )}
         </AnimatedSection>
 
         <div className="space-y-12">
@@ -187,10 +197,10 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
                 className="text-3xl font-bold mb-4" 
                 style={{ fontFamily: 'var(--font-playfair-display), serif', color: invitationData.textColor }}
               >
-                Capture the Night
+                Comparte tus momentos favoritos de la noche
               </h2>
-              <p className="text-sm leading-relaxed mb-8 max-w-[250px] mx-auto opacity-70" style={{ color: invitationData.textColor }}>
-                Help us collect memories from this unforgettable night. Upload your photos to our shared gallery.
+              <p className="text-sm leading-relaxed mb-6 max-w-[250px] mx-auto opacity-70" style={{ color: invitationData.textColor }}>
+                Ayúdanos a recopilar recuerdos de esta noche inolvidable. Sube tus fotos a nuestra galería compartida.
               </p>
 
               <a 
@@ -204,11 +214,11 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
                   boxShadow: `0 8px 20px -5px ${invitationData.primaryColor}50`
                 }}
               >
-                Share Photos
+                Comparte tus fotos
               </a>
 
               <div className="mt-8 text-[11px] tracking-widest uppercase font-semibold opacity-40" style={{ color: invitationData.textColor }}>
-                #ValentinaSweet16
+                Gracias
               </div>
             </div>
           </AnimatedSection>

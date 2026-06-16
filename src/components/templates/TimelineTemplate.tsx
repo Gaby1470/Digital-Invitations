@@ -266,38 +266,53 @@ export default function TimelineTemplate({
                   Hospedaje y Recomendaciones
                 </h2>
               </AnimatedSection>
-              <div className="space-y-4">
+              <motion.div
+                className="space-y-4"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={{
+                  visible: {
+                    opacity: 1,
+                    transition: { staggerChildren: 0.1 },
+                  },
+                  hidden: { opacity: 0 },
+                }}
+              >
                 {invitationData.recommendations.map(
                   (item: RecommendationItem, index: number) => (
-                    <AnimatedSection key={index} delay={index * 0.05}>
-                      <div
-                        className="p-6 rounded-2xl bg-white shadow-sm flex flex-col justify-between border w-full text-center sm:text-left"
-                        style={{ borderColor: `${invitationData.textColor}0A` }}
-                      >
-                        <div>
-                          <h3 className="text-xl font-serif mb-2" style={{ color: invitationData.primaryColor }}>
-                            {item.name}
-                          </h3>
-                          <p className="text-xs font-light leading-relaxed mb-4 opacity-80" style={{ color: invitationData.textColor }}>
-                            {item.description}
-                          </p>
-                        </div>
-                        {item.link && (
-                          <a
-                            href={item.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[10px] uppercase tracking-widest font-bold border-b pb-0.5 w-fit mx-auto sm:mx-0 transition-opacity hover:opacity-60 py-2 inline-block"
-                            style={{ color: invitationData.primaryColor, borderColor: `${invitationData.primaryColor}30` }}
-                          >
-                            Visit Website
-                          </a>
-                        )}
+                    <motion.div
+                      key={index}
+                      variants={{
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: [0.21, 0.45, 0.32, 0.9] } },
+                        hidden: { opacity: 0, y: 20 },
+                      }}
+                      className="p-6 rounded-2xl bg-white shadow-sm flex flex-col justify-between border w-full text-center sm:text-left"
+                      style={{ borderColor: `${invitationData.textColor}0A` }}
+                    >
+                      <div>
+                        <h3 className="text-xl font-serif mb-2" style={{ color: invitationData.primaryColor }}>
+                          {item.name}
+                        </h3>
+                        <p className="text-xs font-light leading-relaxed mb-4 opacity-80" style={{ color: invitationData.textColor }}>
+                          {item.description}
+                        </p>
                       </div>
-                    </AnimatedSection>
+                      {item.link && (
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[10px] uppercase tracking-widest font-bold border-b pb-0.5 w-fit mx-auto sm:mx-0 transition-opacity hover:opacity-60 py-2 inline-block"
+                          style={{ color: invitationData.primaryColor, borderColor: `${invitationData.primaryColor}30` }}
+                        >
+                          Visit Website
+                        </a>
+                      )}
+                    </motion.div>
                   ),
                 )}
-              </div>
+              </motion.div>
             </div>
           </section>
         )}

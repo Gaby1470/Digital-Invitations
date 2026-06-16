@@ -45,22 +45,22 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
         {
           name: "The Grand Hotel",
           description: "Hotel 5-estrellas cerca de la fiesta.",
-          link: "#",
+          link: "",
         },
         {
           name: "City Center Inn",
           description: "Opción en el centro.",
-          link: "#",
+          link: "",
         },
         {
           name: "Comida",
           description: "Guía de los mejores restaurantes locales.",
-          link: "#",
+          link: "",
         },
         {
           name: "Lugares para Visitar",
           description: "Guía de los mejores lugares para visitar.",
-          link: "#",
+          link: "",
         },
       ],
       timelineItems: [
@@ -231,7 +231,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     ],
     defaultData: {
       primaryColor: "#e61875",
-      textColor: "#f0f0f0",
+      textColor: "#242222",
       backgroundColor: "#f4f1e7",
       hero_image_url:
         "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Quince/quince-1.jpg",
@@ -292,8 +292,8 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     fonts: ["Nunito", "Quicksand", "Comfortaa", "Fredoka One"],
     palettes: [
       { name: "Superhéroe", primary: "#2563eb", text: "#1f2937" },
-      { name: "Dinosaurio", primary: "#16a34a", text: "#f9fafb" },
-      { name: "Unicornio", primary: "#ec4899", text: "#fdf4ff" },
+      { name: "Dinosaurio", primary: "#16a34a", text: "#ffa12e" },
+      { name: "Unicornio", primary: "#ec4899", text: "#e3b1ee" },
     ],
     defaultData: {
       primaryColor: "#2563eb",
@@ -355,7 +355,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       backgroundColor: "#fcfbf7",
       heroTitle: "Una Celebración Sagrada",
       heroNames: "Benjamin James",
-      timelineTitle: "El Orden Bendecido",
+      timelineTitle: "Detalles del Evento",
       event_date: "2026-04-25T11:00:00",
       timelineItems: [
         {
@@ -396,8 +396,8 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     fonts: ["Montserrat", "Poppins", "Lato", "Open Sans"],
     palettes: [
       { name: "Blue & Pink", primary: "#3b82f6", text: "#ec4899" },
-      { name: "Pastel", primary: "#a78bfa", text: "#fde68a" },
-      { name: "Mint & Gold", primary: "#10b981", text: "#f59e0b" },
+      { name: "Pastel", primary: "#ffc0f7", text: "#a2cdf5" }, 
+      { name: "Sunshine", primary: "#f4df73", text: "#ff8262" },
     ],
     defaultData: {
       primaryColor: "#3b82f6",
@@ -405,7 +405,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       backgroundColor: "#fef3f4",
       family_image_url: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/gender-1.jpg",
       heroTitle: "¡Niño o Niña?",
-      heroNames: "Sofi",
+      heroNames: "Acompáñanos a descubrirlo",
       parentsDescription: `"Nuestros corazones están atrapados entre suaves atardeceres rosados y cielos azules cristalinos. ¡No podemos esperar para compartir esta mágica revelación con las personas que más amamos!"`,
       timelineTitle: "Detalles de la Fiesta",
       locationName: "Nuestra Casa",
@@ -432,6 +432,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     features: {
       genderBetting: true,
       diaperRaffle: false,
+      multiEventSchedule: true,
     },
   },
   "graduation-celebration": {
@@ -574,7 +575,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       timelineItems: [],
     },
     features: {
-      // This template has unique features like voting, handled in the component.
+      genderBetting: true,
     },
   },
   "scrapbook-graduation": {
@@ -606,6 +607,43 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
     features: {
       multiEventSchedule: true,
+    },
+  },
+  "modern-event": {
+    name: "Modern Event",
+    thumbnail: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/general.png", 
+    category: "General",
+    description: "A clean and modern design for any occasion, from parties to get-togethers.",
+    font: "font-sans",
+    defaultFont: "Inter",
+    fonts: ["Inter", "Poppins", "Lexend", "Space Grotesk"],
+    palettes: [
+      { name: "Indigo & Pink", primary: "#4f46e5", secondary: "#ec4899", background: "#f8fafc", text: "#1e293b" },
+      { name: "Teal & Lime", primary: "#0d9488", secondary: "#84cc16", background: "#f0fdfa", text: "#1e293b" },
+      { name: "Slate & Amber", primary: "#475569", secondary: "#f59e0b", background: "#f8fafc", text: "#1e293b" },
+    ],
+    defaultData: {
+      primaryColor: "#4f46e5",
+      secondaryColor: "#ec4899",
+      backgroundColor: "#f8fafc",
+      textColor: "#1e293b",
+      buttonTextColor: "#ffffff",
+      mainTitle: "You're Invited To",
+      eventName: "A Celebration",
+      eventDescription: "Join us for a special get-together filled with joy, laughter, and unforgettable moments.",
+      eventDate: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
+      venueName: "The Central Loft",
+      venueAddress: "123 Main Street, Downtown",
+      rsvpDeadline: new Date(new Date().setDate(new Date().getDate() + 23)).toISOString(),
+      hostNames: "The Hosts",
+      timelineItems: [
+        { time: "7:00 PM", title: "Arrival & Welcome Drinks", location: "Main Hall" },
+        { time: "8:00 PM", title: "Dinner is Served", location: "Dining Area" },
+        { time: "9:30 PM", title: "Music & Mingling", location: "Lounge" },
+      ],
+    },
+    features: {
+      eventSchedule: true,
     },
   },
 };

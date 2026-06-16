@@ -36,7 +36,7 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
     <div 
       className="w-full font-sans"
       style={{
-        backgroundColor: invitationData.backgroundColor || '#b64747',
+        backgroundColor: invitationData.backgroundColor || '#050505',
         color: invitationData.textColor || '#ffffff'
       }}
     >

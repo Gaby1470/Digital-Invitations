@@ -217,15 +217,6 @@ export default function DashboardPage() {
                               </span>
                             </button>
 
-                            <Link 
-                              href={`/invite/${inv.slug || inv.id}`} 
-                              target="_blank" 
-                              className="p-2 rounded-full text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white transition-colors relative group/btn"
-                            >
-                              <EyeIcon className="w-5 h-5" />
-                              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">Preview</span>
-                            </Link>
-
                             <div className="relative group/delete">
                               <button
                                 onClick={() => handleDelete(inv.id)}

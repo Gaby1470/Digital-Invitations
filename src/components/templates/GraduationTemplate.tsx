@@ -136,6 +136,7 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
                         {item.time}
                       </span>
                       <h3 className="text-2xl font-normal text-[var(--text)] mb-1">{item.title}</h3>
+                      <p className="text-base font-sans">{item.location}</p>
                     </div>
                   </GentleFade>
                 </div>

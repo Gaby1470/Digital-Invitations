@@ -1,6 +1,5 @@
-// src/components/templates/shared/DressCodePreview.tsx
 "use client";
-import { DressCode, dressCodeDescriptions } from "@/lib/types";
+import { DressCode } from "@/lib/types";
 
 type DressCodePreviewProps = {
   dressCode: DressCode;
@@ -77,27 +76,33 @@ export function DressCodePreview({ dressCode, primaryColor, textColor }: DressCo
     );
   }
 
-  const manIllustration = illustrations[dressCode.man];
-  const womanIllustration = illustrations[dressCode.woman];
+  if (dressCode.man && dressCode.woman) {
+    const manIllustration = illustrations[dressCode.man];
+    const womanIllustration = illustrations[dressCode.woman];
 
-  return (
-    <div className="text-center">
-      <div className="flex justify-center items-start gap-8 md:gap-16">
-        <div className="text-center flex-1">
-          <img src={manIllustration.male} alt="Male attire illustration" className="h-48 md:h-64 mx-auto mb-4" />
-          <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>Hombres</h3>
-          <p className="text-md max-w-xs mx-auto" style={{ color: textColor, opacity: 0.8 }}>
-            {dressCode.man}
-          </p>
+    if (manIllustration && womanIllustration) {
+      return (
+        <div className="text-center">
+          <div className="flex justify-center items-start gap-8 md:gap-16">
+            <div className="text-center flex-1">
+              <img src={manIllustration.male} alt="Male attire illustration" className="h-48 md:h-64 mx-auto mb-4" />
+              <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>Hombres</h3>
+              <p className="text-md max-w-xs mx-auto" style={{ color: textColor, opacity: 0.8 }}>
+                {dressCode.man}
+              </p>
+            </div>
+            <div className="text-center flex-1">
+              <img src={womanIllustration.female} alt="Female attire illustration" className="h-48 md:h-64 mx-auto mb-4" />
+              <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>Mujeres</h3>
+              <p className="text-md max-w-xs mx-auto" style={{ color: textColor, opacity: 0.8 }}>
+                {dressCode.woman}
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="text-center flex-1">
-          <img src={womanIllustration.female} alt="Female attire illustration" className="h-48 md:h-64 mx-auto mb-4" />
-          <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>Mujeres</h3>
-          <p className="text-md max-w-xs mx-auto" style={{ color: textColor, opacity: 0.8 }}>
-            {dressCode.woman}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+      );
+    }
+  }
+
+  return null;
 }

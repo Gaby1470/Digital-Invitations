@@ -10,6 +10,7 @@ import CorporateTemplate from "./CorporateTemplate";
 import TimelineTemplate from "./TimelineTemplate";
 import BabyShowerTemplate from "./BabyShowerTemplate";
 import GenderRevealBeesTemplate from "./GenderRevealBeesTemplate";
+import ModernEventTemplate from "./ModernEventTemplate";
 
 import ScrapbookGraduationTemplate from "./ScrapbookGraduationTemplate";
 
@@ -27,4 +28,5 @@ export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<any> } = 
   'baby-shower-whimsical': BabyShowerTemplate,
   'gender-reveal-bees': GenderRevealBeesTemplate,
   'scrapbook-graduation': ScrapbookGraduationTemplate,
+  'modern-event': ModernEventTemplate,
 };

@@ -5,7 +5,8 @@ import React, { useRef } from 'react';
 import { TemplateConfig, TimelineItem } from "@/lib/types";
 import { motion, useInView } from "framer-motion";
 import { RsvpSection } from "./shared/RsvpSection";
-import { Calendar, MapPin, Gift, Baby, Heart, PartyPopper, Utensils, Clock } from "lucide-react";
+import { Calendar, MapPin, Baby, Heart, PartyPopper, Utensils, Clock } from "lucide-react";
+import GiftSection from './shared/GiftSection';
 
 function FadeIn({
   children,
@@ -203,20 +204,26 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
         </div>
       </section>
 
-      {/* RSVP & Registry Section */}
-      <section className="relative z-10 py-6 px-4 max-w-xl mx-auto">
-        <FadeIn delay={0.4}>
-          <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border-2 border-white/80 p-6 sm:p-8 space-y-6">
-            
-            {/* Native Registry UI implementation */}
-            {giftRegistryUrl && (
-              <div className="pb-6 border-b border-slate-200/60 flex flex-col items-center">
-                <div className="flex items-center gap-2 text-[#E67E22] font-bold text-sm uppercase tracking-wider mb-3">
-                  <Gift className="w-4 h-4" /> ¿Podrás acompañarnos?
-                </div>
-              </div>
-            )}
+      {/* Separate Gift Registry Section */}
+      {giftRegistryUrl && (
+        <section className="relative z-10 py-2 px-4  max-w-xl mx-auto">
+          <FadeIn delay={0.35}>
+            {/* Removed the extra background, border, and padding wrapper to avoid the double box effect */}
+            <div className="transition-all duration-300 hover:-translate-y-1">
+              <GiftSection 
+                giftRegistryUrl={giftRegistryUrl}
+                primaryColor={primaryColor}
+                textColor={textColor}
+              />
+            </div>
+          </FadeIn>
+        </section>
+      )}
 
+      {/* RSVP Section */}
+      <section className="relative z-10 py-4 px-4 max-w-xl mx-auto">
+        <FadeIn delay={0.4}>
+          <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border-2 border-white/80 p-6 sm:p-8">
             {/* Managed RSVP Area */}
             <div className="text-center">
               <RsvpSection 
@@ -224,7 +231,6 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
                 rsvpContact={rsvpContact} 
               />
             </div>
-
           </div>
         </FadeIn>
       </section>
