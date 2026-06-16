@@ -113,3 +113,5 @@ export type TemplateConfig = {
   };
   features: TemplateFeatures;
 };
+
+export type EditorData = TemplateConfig['defaultData'] & { is_published?: boolean; slug?: string; };

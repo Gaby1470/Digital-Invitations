@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { templateConfig } from '@/lib/templateConfig';
 import TemplateRenderer from '@/components/TemplateRenderer';
-import { TemplateConfig } from '@/lib/types';
+import { TemplateConfig, EditorData } from '@/lib/types';
 import EditorForm from '@/components/editor/EditorForm';
 import { EyeIcon, PencilSquareIcon, CheckCircleIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -21,18 +21,12 @@ async function safeJsonParse(response: Response) {
   }
 }
 
-type InvitationData = {
-  is_published?: boolean;
-  slug?: string;
-  [key: string]: any;
-};
-
 export default function EditorPage() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
 
-  const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
+  const [invitationData, setInvitationData] = useState<EditorData | null>(null);
   const [template, setTemplate] = useState<TemplateConfig | null>(null);
   const [templateId, setTemplateId] = useState<string>(''); // State for the template ID
   const [loading, setLoading] = useState(true);

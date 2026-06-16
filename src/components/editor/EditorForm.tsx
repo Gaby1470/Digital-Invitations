@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { produce } from 'immer';
 import { Smartphone, Monitor, Save } from 'lucide-react';
-import { TemplateConfig } from '@/lib/types';
+import { TemplateConfig, EditorData } from '@/lib/types';
 
 import MainDetailsSection from './form-sections/MainDetailsSection';
 import ColorsAndStyleSection from './form-sections/ColorsAndStyleSection';
@@ -23,15 +23,13 @@ import Modal from './shared/Modal';
 import ImageUploader from './shared/ImageUploader';
 import TextInput from './shared/TextInput';
 
-type EditorData = TemplateConfig['defaultData'] & { slug?: string } & Record<string, unknown>;
-
 type EditorFormProps = {
   data: EditorData;
   onDataChange: (data: EditorData) => void;
   onSave: () => void;
   template: TemplateConfig;
-  viewMode: 'mobile' | 'desktop';
-  onViewModeChange: (mode: 'mobile' | 'desktop') => void;
+  viewMode: 'editor' | 'preview';
+  onViewModeChange: (mode: 'editor' | 'preview') => void;
   isSaving?: boolean;
 };
 
