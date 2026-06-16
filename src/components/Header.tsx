@@ -40,15 +40,16 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 backdrop-blur-md bg-white/80 dark:bg-gray-950/80 px-4 lg:px-8 h-20 flex items-center justify-between border-b border-gray-100 dark:border-gray-900 w-full z-50 transition-all">
-      <div className="container mx-auto flex items-center justify-between w-full">
-        
+    <header className="sticky top-0 backdrop-blur-md bg-white/80 dark:bg-gray-950/80 h-20 flex items-center border-b border-gray-100 dark:border-gray-900 w-full z-50 transition-all">
+      <div className="max-w-screen-2xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center w-full px-4 lg:px-8">
         {/* Logo Section */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <span className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">
-            Festia<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500 group-hover:animate-pulse">.</span>
-          </span>
-        </Link>
+        <div className="flex items-center">
+          <Link href="/" className="flex items-center gap-2 group">
+            <span className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">
+              Tap to Invite<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500 group-hover:animate-pulse">.</span>
+            </span>
+          </Link>
+        </div>
 
         {/* Center Navigation Links */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-600 dark:text-gray-300">
@@ -56,18 +57,18 @@ export default function Header() {
             Plantillas
           </Link>
           <Link href="/how-it-works" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full">
-            How It Works
+            Como funciona
           </Link>
           <Link href="/pricing" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full">
             Precios
           </Link>
           <Link href="/contact" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full">
-            Contact
+            Contacto
           </Link>
         </nav>
 
         {/* Right Side Controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-end gap-4">
           {loading ? (
             <div className="h-10 w-24 animate-pulse bg-gray-100 dark:bg-gray-800 rounded-full"></div>
           ) : user ? (

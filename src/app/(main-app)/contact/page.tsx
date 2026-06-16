@@ -46,10 +46,10 @@ export default function ContactPage() {
           
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl mb-6 text-gray-900 dark:text-white">
-              Let's <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">Connect</span>
+              Contáctanos <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">Te ayudamos</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400">
-              Whether you need technical support, have a question about pricing, or want a completely custom invitation design, we're here to help.
+              Ya sea que necesites ayuda, tengas preguntas o quieras compartir tu experiencia, estamos aquí para escucharte. Completa el formulario a continuación o contáctanos directamente por correo electrónico. ¡Esperamos saber de ti!
             </p>
           </div>
 
@@ -58,23 +58,23 @@ export default function ContactPage() {
             {/* Left Column: Contact Info & Upsell */}
             <div className="lg:col-span-2 space-y-8">
               <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-sm border border-gray-100 dark:border-gray-800">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Contact Information</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Información de Contacto</h3>
                 
                 <div className="space-y-6">
                   <div className="flex items-start gap-4 text-gray-600 dark:text-gray-400">
                     <EnvelopeIcon className="w-6 h-6 text-indigo-500 shrink-0 mt-1" />
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Email Us</p>
-                      <a href="mailto:hello@festia.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">hello@festia.com</a>
+                      <p className="font-medium text-gray-900 dark:text-white">Correo Electrónico</p>
+                      <a href="mailto:hello@taptoinvite.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">hello@taptoinvite.com</a>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-4 text-gray-600 dark:text-gray-400">
                     <ChatBubbleLeftRightIcon className="w-6 h-6 text-pink-500 shrink-0 mt-1" />
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Support Hours</p>
-                      <p>Monday - Friday</p>
-                      <p>9:00 AM - 6:00 PM (EST)</p>
+                      <p className="font-medium text-gray-900 dark:text-white">Horario de Soporte</p>
+                      <p>Lunes - Viernes</p>
+                      <p>7:00 AM - 6:00 PM (EST)</p>
                     </div>
                   </div>
                 </div>
@@ -85,15 +85,15 @@ export default function ContactPage() {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl transform group-hover:scale-150 transition-transform duration-700"></div>
                 
                 <SparklesIcon className="w-8 h-8 text-pink-400 mb-4" />
-                <h3 className="text-xl font-bold mb-2">Bespoke Design Service</h3>
+                <h3 className="text-xl font-bold mb-2">Servicio de Diseño Personalizado</h3>
                 <p className="text-gray-300 text-sm leading-relaxed mb-6">
-                  Want an interactive experience built from scratch? Select "Bespoke Design" in the form, tell us your vision, and our design team will craft a unique invitation tailored exclusively for your event.
+                 Buscas un diseño completamente personalizado para tu invitación? Nuestro equipo de diseñadores expertos puede crear una experiencia interactiva única, adaptada a tu visión y estilo. Desde conceptos hasta animaciones, haremos que tu invitación sea verdaderamente inolvidable.
                 </p>
                 <button 
                   onClick={() => setFormData({ ...formData, subject: 'Bespoke Design Inquiry' })}
                   className="text-sm font-semibold text-pink-400 hover:text-pink-300 transition-colors flex items-center gap-1"
                 >
-                  Select this subject &rarr;
+                  Selecciona este asunto &rarr;
                 </button>
               </div>
             </div>
@@ -107,22 +107,22 @@ export default function ContactPage() {
                     <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-6">
                       <CheckCircleIcon className="w-10 h-10 text-green-600 dark:text-green-400" />
                     </div>
-                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Message Sent!</h3>
+                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">¡Mensaje Enviado!</h3>
                     <p className="text-gray-600 dark:text-gray-400 max-w-md">
-                      Thank you for reaching out. Our team will review your message and get back to you within 24-48 hours.
+                      Gracias por contactarnos. Nuestro equipo revisará tu mensaje y se pondrá en contacto contigo dentro de 24-48 horas.
                     </p>
                     <button 
                       onClick={() => setIsSubmitted(false)}
                       className="mt-8 text-indigo-600 dark:text-indigo-400 font-medium hover:underline"
                     >
-                      Send another message
+                      Enviar otro mensaje
                     </button>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-gray-300">Your Name</label>
+                        <label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-gray-300">Tu Nombre</label>
                         <input
                           type="text"
                           id="name"
@@ -135,7 +135,7 @@ export default function ContactPage() {
                         />
                       </div>
                       <div className="space-y-2">
-                        <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
+                        <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">Correo Electrónico</label>
                         <input
                           type="email"
                           id="email"
@@ -150,7 +150,7 @@ export default function ContactPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="subject" className="text-sm font-medium text-gray-700 dark:text-gray-300">Subject</label>
+                      <label htmlFor="subject" className="text-sm font-medium text-gray-700 dark:text-gray-300">Asunto</label>
                       <select
                         id="subject"
                         name="subject"
@@ -158,15 +158,15 @@ export default function ContactPage() {
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none appearance-none"
                       >
-                        <option value="General Inquiry">General Inquiry</option>
-                        <option value="Technical Support">Technical Support</option>
-                        <option value="Billing Question">Billing Question</option>
-                        <option value="Bespoke Design Inquiry">Bespoke Design Inquiry ✨</option>
+                        <option value="General Inquiry">Consulta General</option>
+                        <option value="Technical Support">Soporte Técnico</option>
+                        <option value="Billing Question">Pregunta de Facturación</option>
+                        <option value="Bespoke Design Inquiry">Consulta de Diseño Personalizado ✨</option>
                       </select>
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="message" className="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+                      <label htmlFor="message" className="text-sm font-medium text-gray-700 dark:text-gray-300">Mensaje</label>
                       <textarea
                         id="message"
                         name="message"
@@ -175,7 +175,7 @@ export default function ContactPage() {
                         value={formData.message}
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none resize-none"
-                        placeholder="How can we help you?"
+                        placeholder="¿Cómo podemos ayudarte?"
                       />
                     </div>
 
@@ -187,10 +187,10 @@ export default function ContactPage() {
                       {isSubmitting ? (
                         <>
                           <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                          Sending...
+                          Enviando...
                         </>
                       ) : (
-                        'Send Message'
+                        'Enviar Mensaje'
                       )}
                     </button>
                   </form>

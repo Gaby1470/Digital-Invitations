@@ -79,12 +79,12 @@ export default function DashboardPage() {
   };
 
   const handleDelete = async (invitationId: string) => {
-    if (window.confirm('Are you sure you want to delete this invitation? This action cannot be undone.')) {
+    if (window.confirm('¿Estás seguro de que deseas eliminar esta invitación? Esta acción no se puede deshacer.')) {
       try {
         const response = await fetch(`/api/invitations/${invitationId}`, { method: 'DELETE' });
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to delete invitation.');
+          throw new Error(errorData.error || 'No se pudo eliminar la invitación.');
         }
         setInvitations(invitations.filter(inv => inv.id !== invitationId));
       } catch (error: any) {
@@ -128,16 +128,16 @@ export default function DashboardPage() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12">
             <div>
               <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-                My <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">Invitations</span>
+                Mis <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">Invitaciones</span>
               </h1>
-              <p className="mt-2 text-gray-600 dark:text-gray-400">Manage your events, track RSVPs, and update details.</p>
+              <p className="mt-2 text-gray-600 dark:text-gray-400">Gestiona tus eventos, realiza un seguimiento de los RSVPs y actualiza los detalles.</p>
             </div>
             <Link
               href="/templates"
               className="inline-flex h-12 items-center justify-center rounded-full bg-indigo-600 px-6 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/50 hover:-translate-y-0.5"
             >
               <PlusIcon className="w-5 h-5 mr-2" />
-              New Invitation
+              Nueva Invitación
             </Link>
           </div>
 
@@ -182,7 +182,7 @@ export default function DashboardPage() {
 
                       <div className="mt-auto pt-6">
                         <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">
-                          Created {new Date(inv.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                          Creado {new Date(inv.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                         </p>
                         
                         <div className="flex items-center justify-between border-t border-gray-100 dark:border-gray-800 pt-4">
@@ -227,7 +227,7 @@ export default function DashboardPage() {
                               </button>
                               {inv.is_published && (
                                 <span className="absolute -top-10 right-0 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/delete:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20">
-                                  Cannot delete published
+                                  No se puede eliminar una invitación publicada. Despublica primero. // como se despublica
                                 </span>
                               )}
                             </div>
@@ -245,15 +245,15 @@ export default function DashboardPage() {
               <div className="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
                 <TicketIcon className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">No invitations yet</h3>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">No hay invitaciones todavía</h3>
               <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
-                You haven't created any events yet. Get started by choosing a beautiful template and customizing it for your special day.
+                No has creado ninguna invitación todavía. Haz clic en el botón de abajo para comenzar a crear tu primera invitación digital personalizada. Es rápido, fácil y perfecto para cualquier ocasión especial.
               </p>
               <Link
                 href="/templates"
                 className="inline-flex h-12 items-center justify-center rounded-full bg-indigo-600 px-8 text-base font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/50 hover:-translate-y-0.5"
               >
-                Browse Templates
+                Explora Plantillas
               </Link>
             </div>
           )}
@@ -278,10 +278,10 @@ export default function DashboardPage() {
               <div className="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-gray-800 pb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    Guest Responses
+                    Respuestas de Invitados
                   </h2>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    For <span className="font-medium text-indigo-600 dark:text-indigo-400">{selectedInvitation?.data?.heroNames || 'Invitation'}</span>
+                    Para <span className="font-medium text-indigo-600 dark:text-indigo-400">{selectedInvitation?.data?.heroNames || 'Invitación'}</span>
                   </p>
                 </div>
                 <button 
@@ -297,7 +297,7 @@ export default function DashboardPage() {
                     <div className="w-16 h-16 bg-red-50 dark:bg-red-900/20 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
                       <span className="text-2xl">!</span>
                     </div>
-                    <p className="text-lg font-medium text-gray-900 dark:text-white">Could not load responses.</p>
+                    <p className="text-lg font-medium text-gray-900 dark:text-white">No se pudieron cargar las respuestas.</p>
                     <p className="text-sm text-gray-500 mt-2">{rsvpError}</p>
                   </div>
                 ) : (

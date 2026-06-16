@@ -30,13 +30,13 @@ export default function Home() {
                 href="/templates"
                 className="inline-flex h-14 items-center justify-center rounded-full bg-indigo-600 px-8 text-lg font-medium text-white shadow-lg shadow-indigo-500/30 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/50 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
               >
-                Browse Templates
+                Explora Plantillas
               </Link>
               <Link
                 href="/how-it-works"
                 className="inline-flex h-14 items-center justify-center rounded-full border-2 border-gray-200 bg-transparent px-8 text-lg font-medium text-gray-900 transition-colors hover:bg-gray-50 hover:border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 dark:border-gray-800 dark:text-gray-50 dark:hover:bg-gray-800 dark:hover:border-gray-700"
               >
-                How it Works
+                Como funciona?
               </Link>
             </div>
           </div>

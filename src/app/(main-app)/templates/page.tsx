@@ -124,7 +124,7 @@ export default function TemplatesPage() {
                             <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors">
                               {template.name}
                             </h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Customizable</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Personalizable</p>
                           </div>
                         </Link>
                       </motion.div>

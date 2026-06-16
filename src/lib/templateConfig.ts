@@ -92,7 +92,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
   },
   "minimalist-wedding": {
-    name: "Minimalist Wedding",
+    name: "Black and White Wedding",
     thumbnail:
       "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-bnw.png",
     category: "Wedding",
@@ -459,8 +459,12 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
         {
           time: "6 PM",
           title: "Ceremonia de Graduación",
+          location: "Universidad"
         },
-        { time: "8 PM", title: "Cena" },
+        {
+          time: "8 PM", title: "Cena",
+          location: "Salon de eventos La Hacienda"
+        },
       ],
       tribute: "Un agradecimiento sincero a mi familia y amigos.",
       futurePlans: "Próximo destino: Maestría!",
@@ -471,11 +475,11 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
   },
   "corporate-summit": {
-    name: "Cumbre Ejecutiva",
+    name: "Evento Ejecutivo",
     thumbnail:
       "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-coorporate.png",
     category: "Corporate",
-    description: "A high-end dark mode design for professional events.",
+    description: "Un diseño de alta gama en modo oscuro para eventos profesionales.",
     font: "font-sans",
     defaultFont: "Inter",
     fonts: ["Inter", "Space Grotesk", "Lexend"],

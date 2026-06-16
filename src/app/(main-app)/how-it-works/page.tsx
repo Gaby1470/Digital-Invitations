@@ -12,26 +12,26 @@ import {
 
 const steps = [
   {
-    title: "Choose a Pre-Made Template",
-    description: "Browse our curated collection of stunning, professionally designed templates for weddings, birthdays, baby showers, and more. Find the perfect starting point for your event.",
+    title: "Elige tu Plantilla Perfecta",
+    description: "Explora nuestra colección curada de plantillas impresionantes y profesionalmente diseñadas para bodas, cumpleaños, baby showers y más. Encuentra el punto de partida perfecto para tu evento.",
     icon: CursorArrowRaysIcon,
     color: "from-blue-500 to-indigo-600",
     bg: "bg-blue-50 dark:bg-blue-900/20"
   },
   {
-    title: "Customize & Make it Yours",
-    description: "Easily edit text, upload your own photos, tweak the color palette, and configure your RSVP settings using our intuitive editor. No coding or design skills required.",
+    title: "Personaliza y Hazla Tuya",
+    description: "Edita fácilmente el texto, sube tus propias fotos, ajusta la paleta de colores y configura las opciones de RSVP usando nuestro editor intuitivo. No se requieren habilidades de programación o diseño.",
     icon: PaintBrushIcon,
     color: "from-indigo-500 to-purple-600",
     bg: "bg-indigo-50 dark:bg-indigo-900/20"
   },
   {
-    title: "Publish & Share Instantly",
-    description: "Once you're happy with your design, hit publish! You'll receive a beautiful, personalized link that you can instantly share via WhatsApp, text, or email.",
+    title: "Publica y Comparte al Instante",
+    description: "Una vez que estés satisfecho con tu diseño, ¡publica! Recibirás un enlace hermoso y personalizado que podrás compartir al instante vía WhatsApp, mensaje de texto o correo electrónico.",
     icon: PaperAirplaneIcon,
     color: "from-purple-500 to-pink-600",
     bg: "bg-pink-50 dark:bg-pink-900/20",
-    featureTag: "festia.com/your-event-name"
+    featureTag: "taptoinvite.com/nombre-de-tu-evento"
   }
 ];
 
@@ -49,10 +49,10 @@ export default function HowItWorksPage() {
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl mb-6 text-gray-900 dark:text-white">
-              Your Perfect Invitation in <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">Three Steps</span>
+              Tu invitación ideal <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">en Tres Pasos</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400">
-              Create, personalize, and send beautiful digital invitations in minutes. Managing your event has never been this effortless.
+              Crea, personaliza y envía hermosas invitaciones digitales en minutos. Gestionar tu evento nunca ha sido tan fácil.
             </p>
           </div>
 
@@ -108,7 +108,7 @@ export default function HowItWorksPage() {
               href="/templates"
               className="inline-flex h-14 items-center justify-center rounded-full bg-indigo-600 px-8 text-lg font-medium text-white shadow-lg shadow-indigo-500/30 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/50 hover:-translate-y-0.5"
             >
-              Start Creating Now
+              Empieza a Crear tu Invitación
             </Link>
           </div>
 
@@ -119,20 +119,20 @@ export default function HowItWorksPage() {
             viewport={{ once: true }}
             className="mt-32 relative rounded-3xl overflow-hidden bg-gray-900 text-white"
           >
-            <div className="absolute inset-0 bg-[url('https://picsum.photos/seed/festia-bespoke/1200/600')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>
+            <div className="absolute inset-0 bg-[url('https://picsum.photos/seed/tap-to-invite-bespoke/1200/600')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/95 to-gray-900/80"></div>
             
             <div className="relative z-10 p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-10">
               <div className="flex-1 max-w-2xl">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-pink-300 text-sm font-medium mb-6 backdrop-blur-md border border-white/10">
                   <SparklesIcon className="w-4 h-4" />
-                  Premium Service
+                  Servicio de Diseño Personalizado
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Need a Completely Personalized Design?
+                  ¿Necesitas un Diseño Completamente Personalizado?
                 </h2>
                 <p className="text-gray-300 text-lg">
-                  If you have a highly specific vision, a unique brand, or want an interactive experience built from scratch just for your event, our design team is here to help. We can craft a bespoke invitation tailored exactly to your dreams.
+                  Si tienes una visión muy específica, una marca única o deseas una experiencia interactiva creada desde cero solo para tu evento, nuestro equipo de diseño está aquí para ayudarte. Podemos crear una invitación personalizada exactamente según tus sueños.
                 </p>
               </div>
               
@@ -142,7 +142,7 @@ export default function HowItWorksPage() {
                   className="w-full md:w-auto inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white text-gray-900 px-8 text-lg font-bold shadow-xl transition-all hover:bg-gray-100 hover:scale-105"
                 >
                   <EnvelopeIcon className="w-5 h-5" />
-                  Contact Us
+                  Contáctanos
                 </Link>
               </div>
             </div>
