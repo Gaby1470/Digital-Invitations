@@ -101,7 +101,10 @@ export default function EditorPage() {
       fetch(`/api/invitations/${id}/publish`, { method: 'POST' })
         .then(res => {
           if (res.ok) {
-            setInvitationData({ ...invitationData, is_published: true });
+            setInvitationData(prevData => {
+              if (!prevData) return prevData; // Should not happen, but good for type safety
+              return { ...prevData, is_published: true };
+            });
             console.log('Invitation marked as published');
           }
         });
