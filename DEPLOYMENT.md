@@ -1,39 +1,32 @@
-# Deploying Your Digital Invitations Website to Vercel
+# Deploying Your Digital Invitations Website to Netlify
 
-This guide will walk you through the process of deploying your Next.js application to Vercel. Vercel is a platform for hosting frontend applications that is highly optimized for Next.js.
+This guide will walk you through deploying your Next.js application to Netlify.
 
-## Prerequisites
+## 1. Connect to Netlify
 
-1.  **A Git Repository:** Your project needs to be in a Git repository (e.g., on GitHub, GitLab, or Bitbucket). If you haven't done so already, you should commit and push all the recent changes we've made.
+- Sign up or log in to your [Netlify](https://www.netlify.com/) account.
+- From the **Sites** page, click "**Add new site**" and choose "**Import an existing project**".
+- Connect to your Git provider (GitHub, GitLab, etc.) and select your project's repository.
 
-2.  **A Vercel Account:** You will need a Vercel account. You can sign up for a free account at [vercel.com](https://vercel.com).
+## 2. Configure Build Settings
 
-## Deployment Steps
+Netlify will automatically detect that you're using Next.js and use the settings from the `netlify.toml` file in your repository. You shouldn't need to change anything here.
 
-### Step 1: Create a New Vercel Project
+- **Build command**: `next build`
+- **Publish directory**: `.next`
 
-1.  Go to your Vercel dashboard.
-2.  Click the "**Add New...**" button and select "**Project**".
-3.  In the "**Import Git Repository**" section, connect Vercel to your Git provider and select the repository for this project.
+The necessary Next.js plugin for Netlify is also specified in `netlify.toml`.
 
-### Step 2: Configure Your Project
+## 3. Add Environment Variables
 
-Vercel will automatically detect that you are deploying a Next.js application and will pre-configure the build settings for you. You shouldn't need to change anything here.
+This is a crucial step. In the Netlify project settings, find the section for environment variables (often under **Site configuration > Build & deploy > Environment**). Add the following variables:
 
-### Step 3: Configure Environment Variables
+- `NEXT_PUBLIC_SUPABASE_URL`: The URL for your Supabase project.
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: The anonymous public key for your Supabase project.
+- `SUPABASE_SERVICE_ROLE_KEY`: The secret service role key for your Supabase project.
 
-This is the most important step. You need to provide Vercel with your Supabase API keys.
+You can find these keys in your Supabase project settings under **Settings > API**.
 
-1.  In the project configuration screen, open the "**Environment Variables**" section.
-2.  Add the following environment variables, one by one. You can copy the values from your `.env.local` file if you have one.
+## 4. Deploy
 
-    -   `NEXT_PUBLIC_SUPABASE_URL`
-    -   `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-    -   `SUPABASE_SERVICE_ROLE_KEY`
-
-### Step 4: Deploy
-
-1.  Click the "**Deploy**" button.
-2.  Vercel will now build and deploy your application. You can monitor the progress in the build logs.
-
-That's it! Your digital invitations website is now live on Vercel. When you are ready to set up payments, we can re-enable the Stripe integration.
+After configuring the environment variables, trigger a deployment by clicking the "**Deploy site**" button. Netlify will start building and deploying your application.
