@@ -381,7 +381,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
     features: {
       multiEventSchedule: true,
-      hasGodparents: true,
+      godparentsBlock: true,
     },
   },
   "gender-reveal-party": {
@@ -568,6 +568,8 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       backgroundColor: "#FEF9D1",
       parentsNames: "Linda & Michael",
       heroTitle: "What will baby bee?",
+      heroNames: "Linda & Michael",
+      timelineTitle: "Party Details",
       heroSubtitle: "Acompáñanos a descubrir si tendremos un niño o una niña",
       event_date: "2026-06-12T14:00:00",
       timeRange: "2:00 PM - 5:00 PM",
@@ -599,6 +601,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       backgroundColor: "#F4EFE6",
       heroTitle: "¡Por fin terminé!\nMe encantaría invitarte a ser parte\nde mi graduación y festejar conmigo",
       heroNames: "Samantha Baker",
+      timelineTitle: "Event Schedule",
       hero_image_url: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad-profile.png",
       guestbookPolaroidImage: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/graduation-cover.jpg",
       discoBallImage: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/discoball.png",
@@ -634,6 +637,9 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       buttonTextColor: "#ffffff",
       mainTitle: "You're Invited To",
       eventName: "A Celebration",
+      heroTitle: "You're Invited To",
+      heroNames: "A Celebration",
+      timelineTitle: "Event Schedule",
       eventDescription: "Join us for a special get-together filled with joy, laughter, and unforgettable moments.",
       eventDate: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
       venueName: "The Central Loft",
@@ -647,7 +653,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       ],
     },
     features: {
-      eventSchedule: true,
+      multiEventSchedule: true,
     },
   },
 };

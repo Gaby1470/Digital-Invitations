@@ -148,7 +148,7 @@ export default function ModernEventTemplate({
       </section>
 
       {/* Timeline Section */}
-      {features.eventSchedule && invitationData.timelineItems?.length > 0 && (
+      {features.multiEventSchedule && invitationData.timelineItems?.length > 0 && (
         <section className="py-20 md:py-28 px-6 bg-slate-100">
           <div className="max-w-4xl mx-auto">
             <FadeIn>
@@ -193,7 +193,6 @@ export default function ModernEventTemplate({
                     invitationId={invitationData.id}
                     primaryColor={primaryColor}
                     textColor={textColor}
-                    buttonTextColor={invitationData.buttonTextColor}
                 />
             </FadeIn>
          </div>

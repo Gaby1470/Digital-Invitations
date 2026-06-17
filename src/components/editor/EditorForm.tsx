@@ -205,7 +205,7 @@ export default function EditorForm({
             </CollapsibleSection>
           )}
 
-          {template.features.hasGodparents && (
+          {template.features.godparentsBlock && (
             <CollapsibleSection
               title="Padrinos"
               isOpen={activeSection === "Godparents"}

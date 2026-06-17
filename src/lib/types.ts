@@ -52,6 +52,7 @@ export type RecommendationItem = {
 };
 
 export type TemplateFeatures = {
+  gallery?: boolean;
   multiEventSchedule?: boolean;
   countdown?: {
     type: "flip-clock" | "minimalist";
@@ -92,13 +93,14 @@ export type TemplateConfig = {
     | "Baby Shower"
     | "Graduation"
     | "Baptism"
-    | "Corporate";
+    | "Corporate"
+    | "General";
   description: string;
   font: string;
   thumbnail?: string;
   fonts?: string[];
   defaultFont?: string;
-  palettes?: { name: string; primary: string; text: string }[];
+  palettes?: { name: string; primary: string; text: string; secondary?: string; background?: string; }[];
   defaultData: {
     heroTitle: string;
     heroNames: string;
@@ -109,6 +111,10 @@ export type TemplateConfig = {
     courtOfHonor?: CourtMember[];
     godparents?: Godparent[];
     dressCode?: DressCode;
+    allergyTrackerTitle?: string;
+    allergyTrackerText?: string;
+    teamBoyProduct?: string;
+    teamGirlProduct?: string;
     [key: string]: any;
   };
   features: TemplateFeatures;

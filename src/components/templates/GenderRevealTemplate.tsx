@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView, AnimatePresence, TargetAndTransition } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { TemplateConfig, TimelineItem } from '@/lib/types';
 import { MapPin } from 'lucide-react';
@@ -42,7 +42,7 @@ export default function GenderRevealTemplate({ template, data }: GenderRevealTem
   const date = invitationData.event_date ? new Date(invitationData.event_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
 
   // Floating animation configuration for the balloons
-  const floatAnimation = (yValue: number, duration: number) => ({
+  const floatAnimation = (yValue: number, duration: number): TargetAndTransition => ({
     y: [0, yValue, 0],
     rotate: [-1, 1, -1],
     transition: {

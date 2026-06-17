@@ -31,10 +31,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
 
       {/* Hero Title */}
       <div className="space-y-2">
-        <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-          <Type size={14} /> Hero Heading
-        </label>
         <TextInput 
+          label="Hero Heading"
           placeholder="e.g., Save the Date"
           value={data.heroTitle} 
           onChange={(val) => onFieldChange('heroTitle', val)} 
@@ -43,10 +41,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
 
       {/* Names */}
       <div className="space-y-2">
-        <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-          <User size={14} /> Subject Name(s)
-        </label>
         <TextInput 
+          label="Subject Name(s)"
           placeholder="e.g., Alguien & Alguien"
           value={data.heroNames} 
           onChange={(val) => onFieldChange('heroNames', val)} 
@@ -55,10 +51,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
 
       {defaultData.parentsNames !== undefined && (
         <div className="space-y-2">
-          <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-            <User size={14} /> Parents' Names
-          </label>
           <TextInput
+            label="Parents' Names"
             placeholder="e.g., John & Jane Doe"
             value={data.parentsNames}
             onChange={(val) => onFieldChange('parentsNames', val)}
@@ -68,10 +62,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
 
       {defaultData.parentsDescription !== undefined && (
         <div className="space-y-2">
-          <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-            <User size={14} /> Parents' Description
-          </label>
           <TextareaInput
+            label="Parents' Description"
             placeholder="e.g., A few words from the happy couple..."
             value={data.parentsDescription}
             onChange={(val) => onFieldChange('parentsDescription', val)}
@@ -81,23 +73,18 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
 
       {/* Event Date */}
       <div className="space-y-2">
-        <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-          <Calendar size={14} /> Event Date
-        </label>
         <DateTimePicker
+          label="Event Date"
           value={data.event_date || ''}
           onChange={(val) => onFieldChange('event_date', val)}
-          label=""
         />
       </div>
 
       {/* Generic Location - shown for non-map templates */}
       {!hasMap && (
         <div className="space-y-2">
-          <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-            <MapPin size={14} /> Location
-          </label>
           <TextInput
+            label="Location"
             placeholder="e.g., Mi Casa  Blvd 123, Ciudad, Estado"
             value={defaultData.locationName ? data.locationName : data.location}
             onChange={(val) => onFieldChange(defaultData.locationName ? 'locationName' : 'location', val)}
@@ -108,10 +95,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
       {/* Date Subtitle */}
       {defaultData.dateSubtitle !== undefined && (
         <div className="space-y-2">
-          <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-            <Type size={14} /> Date Section Subtitle
-          </label>
           <TextInput
+            label="Date Section Subtitle"
             placeholder="e.g., ¡No podemos esperar a verte!"
             value={data.dateSubtitle}
             onChange={(val) => onFieldChange('dateSubtitle', val)}
@@ -122,10 +107,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
       {/* Graduation Specifics */}
       {templateFeatures.futurePlans && (
         <div className="space-y-2">
-          <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-            <GraduationCap size={14} /> Academic Degree
-          </label>
           <TextInput 
+            label="Academic Degree"
             placeholder="e.g., Licenciatura en Ingeniería Civil"
             value={data.degreeType} 
             onChange={(val) => onFieldChange('degreeType', val)} 
@@ -136,10 +119,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
       {/* Birthday Age */}
       {templateFeatures.ageSpecificThemes && (
         <div className="space-y-2">
-          <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-            <Calendar size={14} /> Edad a Celebrar  
-          </label>
           <TextInput 
+            label="Edad a Celebrar"
             placeholder="e.g., 5"
             value={data.age} 
             onChange={(val) => onFieldChange('age', val)} 
@@ -150,10 +131,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
       {/* Corporate City */}
       {defaultData.venue_city !== undefined && (
         <div className="space-y-2">
-          <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-            <MapPin size={14} /> Event City
-          </label>
           <TextInput 
+            label="Event City"
             placeholder="e.g., New York, NY"
             value={data.venue_city} 
             onChange={(val) => onFieldChange('venue_city', val)} 
@@ -166,10 +145,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
         <div className="space-y-4 pt-4 border-t border-slate-50">
           {defaultData.locationName !== undefined && (
             <div className='space-y-2'>
-              <label className="flex items-center gap-2 text-xs font-bold text-indigo-400 uppercase tracking-wider">
-                <MapPin size={14} /> Venue Name
-              </label>
               <TextInput 
+                label="Venue Name"
                 placeholder="e.g., The Grand Hall"
                 value={data.locationName} 
                 onChange={(val) => onFieldChange('locationName', val)} 
@@ -178,10 +155,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
           )}
 
           <div className='space-y-2'>
-            <label className="flex items-center gap-2 text-xs font-bold text-indigo-400 uppercase tracking-wider">
-              <MapPin size={14} /> Main Venue Address
-            </label>
             <TextInput 
+              label="Main Venue Address"
               placeholder="Street, City, State, ZIP"
               value={data.mainVenueAddress} 
               onChange={(val) => onFieldChange('mainVenueAddress', val)} 
@@ -197,30 +172,24 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
       {defaultData.receptionTitle !== undefined && (
         <div className="space-y-4 pt-4 border-t border-slate-50">
           <div className='space-y-2'>
-            <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-              <Type size={14} /> Reception Title
-            </label>
             <TextInput 
+              label="Reception Title"
               placeholder="e.g., Recepción"
               value={data.receptionTitle} 
               onChange={(val) => onFieldChange('receptionTitle', val)} 
             />
           </div>
           <div className='space-y-2'>
-            <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-              <Type size={14} /> Reception Text
-            </label>
             <TextareaInput 
+              label="Reception Text"
               placeholder="e.g., Acompáñanos a celebrar..."
               value={data.receptionText} 
               onChange={(val) => onFieldChange('receptionText', val)} 
             />
           </div>
           <div className='space-y-2'>
-            <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-              <MapPin size={14} /> Reception Place
-            </label>
             <TextInput 
+              label="Reception Place"
               placeholder="e.g., Jardín de los Rosales"
               value={data.receptionPlace} 
               onChange={(val) => onFieldChange('receptionPlace', val)} 

@@ -13,10 +13,8 @@ export default function GiftSection({ data, onFieldChange }: GiftSectionProps) {
   return (
     <div className="p-6 space-y-6 bg-white">
       <div className="space-y-2">
-        <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-          <Gift size={14} /> Gift Registry
-        </label>
         <TextInput 
+          label="Gift Registry"
           placeholder="e.g., https://www.amazon.com/wedding/..."
           value={data.giftRegistryUrl} 
           onChange={(val) => onFieldChange('giftRegistryUrl', val)} 

@@ -23,9 +23,8 @@ export default function ParentalNotesSection({ data, onFieldChange }: ParentalNo
       />
       <TextareaInput
         label="Contenido"
-        name="parentalNotes"
         value={data.parentalNotes || ''}
-        onFieldChange={onFieldChange}
+        onChange={(value) => onFieldChange('parentalNotes', value)}
         placeholder="e.g. Se requieren calcetines para el área de juegos."
       />
     </div>

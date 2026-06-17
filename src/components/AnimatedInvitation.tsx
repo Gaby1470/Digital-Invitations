@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 type Invitation = {
   id: string;
@@ -15,7 +15,7 @@ type AnimatedInvitationProps = {
   invitation: Invitation;
 };
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -26,7 +26,7 @@ const containerVariants = {
   },
 };
 
-const titleVariants = {
+const titleVariants: Variants = {
   hidden: { scale: 0.8, opacity: 0 },
   visible: {
     scale: 1,
@@ -39,7 +39,7 @@ const titleVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
@@ -51,7 +51,7 @@ const itemVariants = {
   },
 };
 
-const birthdayTitleVariants = {
+const birthdayTitleVariants: Variants = {
   hidden: { scale: 0.5, opacity: 0, rotate: -10 },
   visible: {
     scale: 1,
@@ -65,7 +65,7 @@ const birthdayTitleVariants = {
   },
 };
 
-const birthdayItemVariants = {
+const birthdayItemVariants: Variants = {
   hidden: { y: 30, opacity: 0 },
   visible: {
     y: 0,
@@ -77,7 +77,7 @@ const birthdayItemVariants = {
   },
 };
 
-const minimalistContainerVariants = {
+const minimalistContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -87,7 +87,7 @@ const minimalistContainerVariants = {
   },
 };
 
-const minimalistItemVariants = {
+const minimalistItemVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
