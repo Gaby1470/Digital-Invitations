@@ -68,11 +68,11 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
     >
       
       {/* Safari Animals Sidebar Image */}
-      <div className="absolute top-0 left-0 h-full w-48 md:w-72 lg:w-80 pointer-events-none select-none z-0">
+      <div className="absolute top-0 left-0 h-full w-36 md:w-48 lg:w-64 pointer-events-none select-none z-0">
         <img 
           src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/animals-babyshower.png" 
           alt="Safari Animals" 
-          className="w-full h-full object-cover sm:object-contain object-left-top opacity-85"
+          className="w-full h-full object-contain object-left-top opacity-85"
         />
       </div>
 

@@ -41,7 +41,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 backdrop-blur-md bg-white/80 dark:bg-gray-950/80 h-20 flex items-center border-b border-gray-100 dark:border-gray-900 w-full z-50 transition-all">
-      <div className="max-w-screen-2xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center w-full px-4 lg:px-8">
+      <div className="max-w-screen-2xl mx-auto flex md:grid grid-cols-[1fr_auto_1fr] items-center justify-between w-full px-4 lg:px-8">
         {/* Logo Section */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2 group">

@@ -28,7 +28,7 @@ export default function ImageUploader({ onImageUploaded }: { onImageUploaded: (u
       return;
     }
 
-    const filePath = `public/${user.id}/${fileName}`;
+    const filePath = `${user.id}/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
       .from('invitation-images')
