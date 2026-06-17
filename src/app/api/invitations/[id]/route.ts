@@ -93,6 +93,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     }
   }
 
+  if (!invitationData) {
+    return NextResponse.json({ error: 'Invitation data is required.' }, { status: 400 });
+  }
+
   // If ownership is verified, proceed with the update
   const { slug: slug_from_data, is_published, ...cleanedData } = invitationData;
 
