@@ -102,17 +102,23 @@ export default function TemplatesPage() {
                   </div>
 
                   {/* Changed to a 2-column grid on mobile (grid-cols-2) with tighter mobile gaps (gap-4) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+                  <div className="flex overflow-x-auto gap-6 -mx-4 px-4 pb-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                    <style jsx>{`
+                      ::-webkit-scrollbar {
+                        display: none;
+                      }
+                    `}</style>
                     {templates.map((template, idx) => (
                       <motion.div
                         key={template.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.05 }}
+                        className="w-56 md:w-64 shrink-0"
                       >
                         <Link href={`/templates/${template.id}`} className="group block h-full">
                           {/* Maintained aspect-square but in a 2-col grid it becomes perfectly sized */}
-                          <div className="relative aspect-[4/5] sm:aspect-square overflow-hidden rounded-xl md:rounded-2xl bg-white dark:bg-gray-900 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-1 border border-gray-100 dark:border-gray-800">
+                          <div className="relative aspect-square overflow-hidden rounded-xl md:rounded-2xl bg-white dark:bg-gray-900 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-1 border border-gray-100 dark:border-gray-800">
                             <img 
                               src={
                                 template.thumbnail ||
