@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { templateConfig } from '@/lib/templateConfig';
 import { TemplateConfig } from '@/lib/types';
 import { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const groupTemplatesByNewCategories = (config: { [key: string]: TemplateConfig }) => {
   return Object.entries(config).reduce((acc, [id, template]) => {
@@ -101,49 +104,47 @@ export default function TemplatesPage() {
                     <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent dark:from-gray-800"></div>
                   </div>
 
-                  {/* Changed to a 2-column grid on mobile (grid-cols-2) with tighter mobile gaps (gap-4) */}
-                  <div className="flex overflow-x-auto gap-6 -mx-4 px-4 pb-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                    <style jsx>{`
-                      ::-webkit-scrollbar {
-                        display: none;
-                      }
-                    `}</style>
+                  <Swiper
+                    slidesPerView={'auto'}
+                    spaceBetween={24}
+                    className="!py-2 !-mx-4 !px-4"
+                  >
                     {templates.map((template, idx) => (
-                      <motion.div
-                        key={template.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.05 }}
-                        className="w-56 md:w-64 shrink-0"
-                      >
-                        <Link href={`/templates/${template.id}`} className="group block h-full">
-                          {/* Maintained aspect-square but in a 2-col grid it becomes perfectly sized */}
-                          <div className="relative aspect-square overflow-hidden rounded-xl md:rounded-2xl bg-white dark:bg-gray-900 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-1 border border-gray-100 dark:border-gray-800">
-                            <img 
-                              src={
-                                template.thumbnail ||
-                                template.defaultData.hero_image_url ||
-                                `https://picsum.photos/seed/${template.id}/600/800`
-                              }
-                              alt={template.name}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                              <span className="px-4 py-2 bg-white text-gray-900 rounded-full font-semibold text-xs md:text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                Personalize
-                              </span>
+                      <SwiperSlide key={template.id} className="!w-56 md:!w-64">
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: idx * 0.05 }}
+                          className="h-full"
+                        >
+                          <Link href={`/templates/${template.id}`} className="group block h-full">
+                            <div className="relative aspect-square overflow-hidden rounded-xl md:rounded-2xl bg-white dark:bg-gray-900 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-1 border border-gray-100 dark:border-gray-800">
+                              <img 
+                                src={
+                                  template.thumbnail ||
+                                  template.defaultData.hero_image_url ||
+                                  `https://picsum.photos/seed/${template.id}/600/800`
+                                }
+                                alt={template.name}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                              />
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span className="px-4 py-2 bg-white text-gray-900 rounded-full font-semibold text-xs md:text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                  Personalize
+                                </span>
+                              </div>
                             </div>
-                          </div>
-                          <div className="mt-3">
-                            <h3 className="text-sm md:text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors line-clamp-1">
-                              {template.name}
-                            </h3>
-                            <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Personalizable</p>
-                          </div>
-                        </Link>
-                      </motion.div>
+                            <div className="mt-3">
+                              <h3 className="text-sm md:text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors line-clamp-1">
+                                {template.name}
+                              </h3>
+                              <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Personalizable</p>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      </SwiperSlide>
                     ))}
-                  </div>
+                  </Swiper>
                 </motion.div>
               ))}
             </AnimatePresence>
