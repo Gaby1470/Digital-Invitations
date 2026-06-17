@@ -39,11 +39,6 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Tap to Invite",
   description: "Crea y comparte invitaciones digitales animadas para cualquier ocasión.",
-  icons: {
-    icon: "/branding/share-image.jpg",
-    shortcut: "/branding/share-image.jpg",
-    apple: "/branding/share-image.jpg",
-  },
   openGraph: {
     title: "Tap to Invite",
     description: "Crea y comparte invitaciones digitales animadas para cualquier ocasión.",
