@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase-server';
 import { templateConfig } from '@/lib/templateConfig';
+import { randomBytes } from 'crypto';
 
 export async function POST(request: Request) {
   const cookieStore = cookies();
@@ -28,10 +29,11 @@ export async function POST(request: Request) {
   if (!selectedTemplate) {
     return NextResponse.json({ error: `Template "${template}" not found.` }, { status: 404 });
   }
+  
+  let sanitizedSlug;
 
-  const sanitizedSlug = slug ? sanitizeSlug(slug) : null;
-
-  if (sanitizedSlug) {
+  if (slug) {
+    sanitizedSlug = sanitizeSlug(slug);
     const { data: slugConflict, error: slugError } = await supabase
       .from('invitations')
       .select('id')
@@ -43,6 +45,21 @@ export async function POST(request: Request) {
     }
     if (slugConflict) {
       return NextResponse.json({ error: 'This custom link is already in use. Please choose another.' }, { status: 409 });
+    }
+  } else {
+    // If no slug is provided, generate a unique random one
+    while (true) {
+      const randomSlug = randomBytes(4).toString('hex');
+      const { data: slugConflict } = await supabase
+        .from('invitations')
+        .select('id')
+        .eq('slug', randomSlug)
+        .single();
+      
+      if (!slugConflict) {
+        sanitizedSlug = randomSlug;
+        break;
+      }
     }
   }
 

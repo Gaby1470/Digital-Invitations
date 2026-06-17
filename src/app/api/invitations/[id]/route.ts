@@ -94,9 +94,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   }
 
   // If ownership is verified, proceed with the update
-  const updatedRecord: { data: any; is_published: boolean; slug?: string } = {
-    data: invitationData,
-    is_published: true,
+  const { slug: slug_from_data, is_published, ...cleanedData } = invitationData;
+
+  const updatedRecord: { data: any; slug?: string } = {
+    data: cleanedData,
   };
 
   if (sanitizedSlug) {

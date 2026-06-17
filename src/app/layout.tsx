@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Inter, Dancing_Script, Playfair_Display, Montserrat } from "next/font/google";
 import QueryProvider from "@/components/QueryProvider";
-import Header from "@/components/Header";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -38,8 +37,31 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Digital Invitations",
-  description: "Create and share beautiful, animated invitations for any occasion.",
+  title: "Tap to Invite",
+  description: "Crea y comparte invitaciones digitales animadas para cualquier ocasión.",
+  icons: {
+    icon: "/branding/share-image.jpg",
+    shortcut: "/branding/share-image.jpg",
+    apple: "/branding/share-image.jpg",
+  },
+  openGraph: {
+    title: "Tap to Invite",
+    description: "Crea y comparte invitaciones digitales animadas para cualquier ocasión.",
+    images: [
+      {
+        url: "/branding/share-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Tap to Invite",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tap to Invite",
+    description: "Crea y comparte invitaciones digitales animadas para cualquier ocasión.",
+    images: ["/branding/share-image.jpg"],
+  },
 };
 
 export default function RootLayout({
