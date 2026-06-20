@@ -1,6 +1,6 @@
 // src/components/templates/index.ts
 import MinimalistWeddingTemplate from "./MinimalistWeddingTemplate";
-import RomanticWeddingTemplate from "./RomanticWeddingTemplate";
+
 import QuinceaneraTemplate from "./QuinceaneraTemplate";
 import BirthdayTemplate from "./BirthdayTemplate";
 import GenderRevealTemplate from "./GenderRevealTemplate";
@@ -11,6 +11,8 @@ import TimelineTemplate from "./TimelineTemplate";
 import BabyShowerTemplate from "./BabyShowerTemplate";
 import GenderRevealBeesTemplate from "./GenderRevealBeesTemplate";
 import ModernEventTemplate from "./ModernEventTemplate";
+import OldMoneyTemplate from "./OldMoneyTemplate";
+import WeddingAquarrelTemplate from "./WeddingAquarrelTemplate";
 
 import ScrapbookGraduationTemplate from "./ScrapbookGraduationTemplate";
 
@@ -18,7 +20,7 @@ import ScrapbookGraduationTemplate from "./ScrapbookGraduationTemplate";
 export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<any> } = {
   'timeline-wedding': TimelineTemplate,
   'minimalist-wedding': MinimalistWeddingTemplate,
-  'romantic-wedding': RomanticWeddingTemplate,
+  
   'quinceanera-dream': QuinceaneraTemplate,
   'kids-birthday-bash': BirthdayTemplate,
   'baptism-ethereal': BaptismTemplate,
@@ -29,4 +31,6 @@ export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<any> } = 
   'gender-reveal-bees': GenderRevealBeesTemplate,
   'scrapbook-graduation': ScrapbookGraduationTemplate,
   'modern-event': ModernEventTemplate,
+  'old-money-wedding': OldMoneyTemplate,
+  'wedding-aquarrel': WeddingAquarrelTemplate,
 };

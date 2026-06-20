@@ -351,6 +351,22 @@ export default function MinimalistWeddingTemplate({
         textColor={invitationData.textColor}
       />
 
+      {/* Guest Count Section */}
+      <section className="py-24 px-6 bg-white text-center">
+          <div className="max-w-md mx-auto">
+              <FadeIn>
+                  <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-neutral-400 mb-6">
+                      Reserved Seats
+                  </p>
+                  <div className="inline-block border-y border-neutral-200 py-4 px-12">
+                      <p className="text-lg uppercase tracking-[0.3em] font-light">
+                          {invitationData.guestCount || "2"} Guests
+                      </p>
+                  </div>
+              </FadeIn>
+          </div>
+      </section>
+
       {/* RSVP Section */}
       <section className="py-20 px-6 bg-neutral-50 border-t border-neutral-100">
         <div className="max-w-md mx-auto">

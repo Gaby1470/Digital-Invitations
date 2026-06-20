@@ -13,6 +13,11 @@ import { RsvpSection } from "./shared/RsvpSection";
 import GiftSection from "./shared/GiftSection";
 import Countdown from "./shared/Countdown";
 
+interface ExtendedTimelineItem extends TimelineItem {
+  imageSrc?: string;
+}
+
+
 function AnimatedSection({
   children,
   delay = 0,
@@ -52,6 +57,18 @@ export default function TimelineTemplate({
     : "";
 
   const dressCode: DressCode | undefined = invitationData.dressCode;
+
+  const imageMap: { [key: string]: string } = {
+    "Ceremonia": "/ceremonia-acuarela.png",
+    "Recepción": "/recepcion-acuarela.png",
+    "Cena y Baile": "/cena-acuarela.png",
+    "Tornaboda": "/torna-acuarela.png",
+  };
+
+  const timelineItemsWithImages = invitationData.timelineItems?.map((item: TimelineItem) => ({
+      ...item,
+      imageSrc: imageMap[item.title] || '',
+  })) as ExtendedTimelineItem[];
 
   return (
     <div
@@ -138,8 +155,8 @@ export default function TimelineTemplate({
                 style={{ backgroundColor: `${invitationData.textColor}1A` }}
               />
 
-              {invitationData.timelineItems?.map(
-                (item: TimelineItem, index: number) => (
+              {timelineItemsWithImages?.map(
+                (item: ExtendedTimelineItem, index: number) => (
                   <div
                     key={index}
                     className={`flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
@@ -180,7 +197,17 @@ export default function TimelineTemplate({
                       className="absolute left-0 md:static z-10 w-3 h-3 md:w-4 md:h-4 rounded-full border-[3px] md:border-4 border-white shadow-sm mt-7 md:mt-0 -translate-x-1/2 md:translate-x-0"
                       style={{ backgroundColor: invitationData.primaryColor }}
                     />
-                    <div className="flex-1 hidden md:block" />
+                    <div className="flex-1 hidden md:block">
+                      <AnimatedSection delay={index * 0.1}>
+                        {item.imageSrc && (
+                            <img
+                              src={item.imageSrc}
+                              alt={item.title}
+                              className="w-48 h-48 object-contain mx-auto"
+                            />
+                        )}
+                      </AnimatedSection>
+                    </div>
                   </div>
                 ),
               )}
@@ -345,6 +372,22 @@ export default function TimelineTemplate({
         primaryColor={invitationData.primaryColor}
         textColor={invitationData.textColor}
       />
+
+      {/* Guest Count Section */}
+      <section className="pb-16 px-6 text-center">
+        <div className="max-w-md mx-auto">
+          <AnimatedSection>
+              <h2 className="text-3xl font-serif text-center mb-8 italic" style={{ color: invitationData.textColor }}>
+                Pases de Acceso
+              </h2>
+              <div className="inline-block border-y py-4 px-12" style={{ borderColor: `${invitationData.textColor}1A` }}>
+                  <p className="text-sm uppercase tracking-[0.3em] font-medium">
+                      {invitationData.guestCount || "2"} Lugares
+                  </p>
+              </div>
+          </AnimatedSection>
+        </div>
+      </section>
 
       {/* RSVP Section */}
       <section className="py-20 px-6 bg-white">

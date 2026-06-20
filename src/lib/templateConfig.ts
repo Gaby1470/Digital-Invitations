@@ -89,6 +89,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       digitalRegistry: { enabled: true, types: ["amazon", "cash_fund"] },
       songRequests: true,
       gallery: true,
+      guestCount: true,
     },
   },
   "minimalist-wedding": {
@@ -149,71 +150,10 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       multiEventSchedule: true,
       recommendations: true,
       gallery: true,
+      guestCount: true,
     },
   },
-  "romantic-wedding": {
-    name: "Romantic Wedding",
-    thumbnail:
-      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-romantic2.png",
-    category: "Wedding",
-    description: "A dreamy and romantic celebration of love.",
-    font: "font-serif",
-    defaultFont: "Great Vibes",
-    fonts: ["Great Vibes", "Parisienne", "Alex Brush", "Dancing Script"],
-    palettes: [
-      { name: "Blush & Gold", primary: "#333745", text: "#ca8a04" },
-      { name: "Lavender & Sage", primary: "#a78bfa", text: "#84cc16" },
-      { name: "Dusty Rose", primary: "#DD2D4A", text: "#44403c" },
-    ],
-    defaultData: {
-      primaryColor: "#a78bfa",
-      textColor: "#333745",
-      backgroundColor: "#faf5ff",
-      hero_image_url:
-        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Romantic/romantic-2.jpg",
-      heroTitle: "Estás invitado a la boda de",
-      heroNames: "Sophia & Noah",
-      timelineTitle: "Nuestro Día Especial",
-      galleryTitle: "Nuestra Historia de Amor",
-      dressCode: {
-        man: "Formal",
-        woman: "Formal",
-        pinterestUrlMan: "https://pin.it/5hSkwuONE",
-        pinterestUrlWoman: "https://pin.it/57zbcpMb7",
-      },
-      locationName: "The Gardens",
-      mainVenueAddress: "The Botanical Gardens, San Francisco",
-      event_date: "2026-10-27T18:00:00",
-      giftRegistryUrl: "https://www.zola.com",
-      galleryImages: [
-        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Romantic/romantic-1.jpg",
-        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Romantic/romantic-4.jpg",
-        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Romantic/romantic-5.jpg",
-      ],
-      timelineItems: [
-        {
-          time: "4:30 PM",
-          title: "Garden Ceremony",
-          location: "The Rose Garden",
-        },
-        {
-          time: "6 PM",
-          title: "Sunset Reception",
-          location: "The Conservatory",
-        },
-        {
-          time: "8 PM",
-          title: "Dinner & Dancing",
-          location: "The Grand Ballroom",
-        },
-      ],
-    },
-    features: {
-      multiEventSchedule: true,
-      recommendations: true,
-      gallery: true,
-    },
-  },
+
   "quinceanera-dream": {
     name: "XV Años",
     thumbnail:
@@ -655,5 +595,112 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     features: {
       multiEventSchedule: true,
     },
+  },
+  "old-money-wedding": {
+    name: "Old Money Wedding",
+    thumbnail:
+      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-oldMoney.png",
+    category: "Wedding",
+    description: "An elegant and timeless wedding invitation with a classic, sophisticated feel.",
+    font: "font-serif",
+    defaultFont: "Cormorant Garamond",
+    fonts: ["Cormorant Garamond", "Playfair Display", "Bodoni Moda", "Lora"],
+    palettes: [
+      { name: "Classic Gold", primary: "#9a825e", text: "#292524", background: "#fcfbf9" },
+    ],
+    defaultData: {
+      primaryColor: "#9a825e",
+      textColor: "#292524",
+      backgroundColor: "#fcfbf9",
+      hero_image_url: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/fondo-oldmoney.jpg",
+      heroTitle: "Nuestra Boda",
+      partner1Name: "Yoselin",
+      partner2Name: "Ivan",
+      event_date: "2024-11-16T13:00:00",
+      quote: "Tú siempre serás mi referente del amor en pareja, por qué siempre quise esto y tú me lo has regalado",
+      partner1Parents: ["Efrain Albiter Hernández", "Rocio Esquivel Garcia"],
+      partner2Parents: ["Lazaro Meneses Ramirez", "Ana Maria Vazquez Nieves"],
+      godparents: ["Jorge Albiter Hernández & Janeth Benitez Rebollar"],
+      venueDividerText: "Después de la ceremonia religiosa agradecemos su presencia en",
+      timelineItems: [
+         { time: "1:00 PM", title: "Ceremonia", location: "Parroquia de San Luis Obispo de Huamantla\nC. Hidalgo Manzana 031, San Luis Huexotla\n56220 San Luis Huexotla, Méx", mapLink: "#" },
+         { time: "3:30 PM", title: "Recepción", location: "Rancho Caballerizas\nAv. Aguilas 36, Lomas de San Esteban\n56257 Texcoco de Mora, Méx", mapLink: "#" },
+      ],
+      dressCode: {
+        title: "Vestimenta",
+        details: "Blanco, Beige, Gris, Rosa Palo, Lila"
+      },
+      galleryImages: [
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney3.png",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney1.png",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney2.png",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Romantic/romantic-3.jpg"
+      ],
+    },
+    features: {
+      multiEventSchedule: true,
+      gallery: true,
+      parentsAndGodparents: true,
+      guestCount: true,
+    },
+  },
+  'wedding-aquarrel': {
+    name: 'Watercolor Sketch',
+    description: 'A romantic, artistic template featuring watercolor illustrations and elegant typography.',
+    category: 'Wedding',
+    thumbnail: '/save-date-acuarela.jpg',
+    font: 'font-serif',
+    defaultFont: 'Playfair Display',
+    fonts: ["Playfair Display", "Lora", "Merriweather", "Cormorant Garamond"],
+    palettes: [
+      { name: "Amethyst", primary: "#A39171", text: "#333333", background: "#FDFBF7" },
+    ],
+    defaultData: {
+      backgroundColor: "#FDFBF7",
+      textColor: "#333333",
+      primaryColor: "#A39171",
+      heroTitle: "SAVE THE DATE",
+      heroNames: "Mark & Lindsay",
+      event_date: "2025-07-21T15:00:00.000Z",
+      mainVenueAddress: "Willow Chapel, 93 Street, Toronto, ON",
+      locationName: "Willow Chapel",
+      timelineTitle: "Wedding Details",
+      guestCount: "2",
+      galleryImages: [
+        'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney2.png',
+        'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney1.png',
+        'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/fondo-oldmoney.jpg'
+      ],
+      timelineItems: [
+        {
+          title: "The Ceremony",
+          time: "3:00 PM",
+          location: "Willow Chapel, 93 Street, Toronto, ON",
+          imageSrc: "/acuarela1.jpg",
+          imageAlt: "Watercolor Church Ceremony",
+        },
+        {
+          title: "The Reception",
+          time: "5:00 PM (Cocktails) | 6:30 PM (Dinner)",
+          location: "The Great Hall, 95 Street, Toronto, ON",
+          imageSrc: "/acuarela2.jpg",
+          imageAlt: "Watercolor Dinner Reception",
+        },
+      ],
+    },
+    features: {
+      multiEventSchedule: true,
+      gallery: true,
+      dressCode: false,
+      recommendations: false,
+      guestCount: true,
+    },
+    formSections: [
+      'main-details',
+      'event-schedule',
+      'gallery',
+      'guest-count',
+      'colors-and-style',
+    ]
   },
 };

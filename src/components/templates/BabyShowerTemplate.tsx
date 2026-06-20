@@ -69,7 +69,7 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
       
 {/* Safari Animals Sidebar Image */}
       <div 
-        className="absolute top-20 left-0 h-[75vh] w-40 md:w-56 lg:w-72 pointer-events-none select-none z-0"
+        className="absolute top-5 left-0 h-[75vh] w-40 md:w-56 lg:w-72 pointer-events-none select-none z-0"
         style={{
           WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 95%)',
           maskImage: 'linear-gradient(to bottom, black 50%, transparent 95%)'
