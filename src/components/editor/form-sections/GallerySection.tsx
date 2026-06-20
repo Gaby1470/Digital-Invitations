@@ -4,8 +4,8 @@
 import GalleryEditor from '../shared/GalleryEditor';
 
 type GallerySectionProps = {
-  data: any;
-  onFieldChange: (field: string, value: any) => void;
+  data: { galleryImages?: string[] };
+  onFieldChange: (field: string, value: string[]) => void;
   onOpenModal: () => void;
 };
 

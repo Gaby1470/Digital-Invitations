@@ -2,12 +2,13 @@
 "use client";
 
 import ListEditor from '../shared/ListEditor';
+import { RecommendationItem } from '@/lib/types';
 import TextInput from '../shared/TextInput';
 import TextareaInput from '../shared/TextareaInput';
 
 type RecommendationsSectionProps = {
-  data: any;
-  onFieldChange: (field: string, value: any) => void;
+  data: { recommendations?: RecommendationItem[] };
+  onFieldChange: (field: string, value: RecommendationItem[]) => void;
 };
 
 export default function RecommendationsSection({ data, onFieldChange }: RecommendationsSectionProps) {

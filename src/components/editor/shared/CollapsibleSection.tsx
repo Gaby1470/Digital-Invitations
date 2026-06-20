@@ -15,6 +15,7 @@ export default function CollapsibleSection({ title, children, isOpen = true, onT
   const [isSectionOpen, setIsSectionOpen] = useState(isOpen);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsSectionOpen(isOpen);
   }, [isOpen]);
 

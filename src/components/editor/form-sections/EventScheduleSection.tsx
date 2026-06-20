@@ -4,10 +4,11 @@
 import ListEditor from '../shared/ListEditor';
 import TextInput from '../shared/TextInput';
 import TimePicker from '../shared/TimePicker';
+import { TimelineItem } from '@/lib/types';
 
 type EventScheduleSectionProps = {
-  data: any;
-  onFieldChange: (field: string, value: any) => void;
+  data: { timelineItems?: TimelineItem[] };
+  onFieldChange: (field: string, value: TimelineItem[]) => void;
 };
 
 export default function EventScheduleSection({ data, onFieldChange }: EventScheduleSectionProps) {

@@ -44,7 +44,7 @@ export default function Countdown({
   const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
 
   useEffect(() => {
-    // Set initial time on client mount
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTimeLeft(calculateTimeLeft(targetDate));
     
     const timer = setInterval(() => {

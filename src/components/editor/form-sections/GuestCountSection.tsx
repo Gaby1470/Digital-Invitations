@@ -1,6 +1,6 @@
 "use client";
 
-import { CollapsibleSection } from '../shared/CollapsibleSection';
+import CollapsibleSection from '../shared/CollapsibleSection';
 import { TextInput } from '../shared/TextInput';
 
 type GuestCountSectionProps = {

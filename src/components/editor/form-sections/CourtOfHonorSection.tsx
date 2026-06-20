@@ -8,15 +8,18 @@ import { Plus, Trash2 } from 'lucide-react';
 
 type CourtOfHonorSectionProps = {
   data: { courtOfHonor?: CourtMember[] };
-  onFieldChange: (field: string, value: any) => void;
+    onFieldChange: (field: string, value: CourtMember[]) => void;
 };
 
 export default function CourtOfHonorSection({ data, onFieldChange }: CourtOfHonorSectionProps) {
   const courtOfHonor = data.courtOfHonor || [];
 
-  const handleItemChange = (index: number, field: keyof CourtMember, value: any) => {
+  const handleItemChange = (index: number, field: keyof CourtMember, value: string) => {
     const nextState = produce(courtOfHonor, (draft) => {
-      (draft[index] as any)[field] = value;
+      const member = draft[index];
+      if (member) {
+        (member[field] as string) = value;
+      }
     });
     onFieldChange('courtOfHonor', nextState);
   };

@@ -1,7 +1,7 @@
 // src/components/editor/form-sections/MainDetailsSection.tsx
 "use client";
 
-import { TemplateConfig } from '@/lib/types';
+import { EditorData, TemplateConfig } from '@/lib/types';
 import TextInput from '../shared/TextInput';
 import TextareaInput from '../shared/TextareaInput';
 import DateTimePicker from '../shared/DateTimePicker';
@@ -9,9 +9,9 @@ import HeroImageUploader from '../shared/HeroImageUploader';
 import { Type, User, GraduationCap, Calendar, MapPin } from 'lucide-react';
 
 type MainDetailsSectionProps = {
-  data: any;
+  data: EditorData;
   template: TemplateConfig;
-  onFieldChange: (field: string, value: any) => void;
+  onFieldChange: (field: string, value: string) => void;
 };
 
 export default function MainDetailsSection({ data, template, onFieldChange }: MainDetailsSectionProps) {

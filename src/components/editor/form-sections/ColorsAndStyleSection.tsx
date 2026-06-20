@@ -7,10 +7,10 @@ import PaletteSelection from '../shared/PaletteSelection';
 import { TemplateConfig } from '@/lib/types';
 
 type ColorsAndStyleSectionProps = {
-  data: any;
+  data: { primaryColor?: string; textColor?: string; backgroundColor?: string; };
   template: TemplateConfig;
-  onFieldChange: (field: string, value: any) => void;
-  onMultipleFieldsChange: (fields: { [key: string]: any }) => void;
+  onFieldChange: (field: string, value: string) => void;
+  onMultipleFieldsChange: (fields: { [key: string]: string }) => void;
 };
 
 export default function ColorsAndStyleSection({ data, template, onFieldChange, onMultipleFieldsChange }: ColorsAndStyleSectionProps) {

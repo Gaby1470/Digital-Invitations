@@ -5,8 +5,8 @@ import TextInput from '../shared/TextInput';
 import { Gift } from 'lucide-react';
 
 type GiftSectionProps = {
-  data: any;
-  onFieldChange: (field: string, value: any) => void;
+  data: { giftRegistryUrl?: string };
+  onFieldChange: (field: string, value: string) => void;
 };
 
 export default function GiftSection({ data, onFieldChange }: GiftSectionProps) {

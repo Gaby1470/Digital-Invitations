@@ -6,7 +6,7 @@ import TextInput from '../shared/TextInput';
 
 type GodparentsSectionProps = {
   data: { godparents?: Godparent[] };
-  onFieldChange: (field: string, value: any) => void;
+  onFieldChange: (field: string, value: Godparent[]) => void;
 };
 
 export default function GodparentsSection({ data, onFieldChange }: GodparentsSectionProps) {
@@ -15,7 +15,7 @@ export default function GodparentsSection({ data, onFieldChange }: GodparentsSec
   const handleGodparentChange = (index: number, field: keyof Godparent, value: string) => {
     const nextState = produce(godparents, (draft) => {
       if (draft[index]) {
-        (draft[index] as any)[field] = value;
+        draft[index][field] = value;
       } else {
         // This case should ideally not be hit if defaultData is correct
         draft[index] = { name: '', role: '', [field]: value };

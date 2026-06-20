@@ -8,7 +8,7 @@ type ParentsAndGodparentsSectionProps = {
   partner1Parents: string[];
   partner2Parents: string[];
   godparents: string[];
-  onUpdate: (data: any) => void;
+  onUpdate: (data: { partner1Parents?: string[]; partner2Parents?: string[]; godparents?: string[] }) => void;
   partner1Name?: string;
   partner2Name?: string;
 };

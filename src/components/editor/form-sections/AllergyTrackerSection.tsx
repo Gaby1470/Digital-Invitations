@@ -7,7 +7,7 @@ type AllergyTrackerSectionProps = {
     allergyTrackerTitle?: string;
     allergyTrackerText?: string;
   };
-  onFieldChange: (field: string, value: any) => void;
+  onFieldChange: (field: string, value: string) => void;
 };
 
 export default function AllergyTrackerSection({ data, onFieldChange }: AllergyTrackerSectionProps) {

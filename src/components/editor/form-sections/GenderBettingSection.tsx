@@ -7,7 +7,7 @@ type GenderBettingSectionProps = {
     teamBoyProduct?: string;
     teamGirlProduct?: string;
   };
-  onFieldChange: (field: string, value: any) => void;
+  onFieldChange: (field: string, value: string) => void;
 };
 
 export default function GenderBettingSection({ data, onFieldChange }: GenderBettingSectionProps) {

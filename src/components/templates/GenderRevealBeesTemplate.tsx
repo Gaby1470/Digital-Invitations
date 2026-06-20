@@ -36,6 +36,64 @@ type GenderRevealBeesTemplateProps = {
   data: any;
 };
 
+const FlipCard = ({
+  selection,
+  frontContent,
+  backContent,
+  bgColor,
+  textColor: cardTextColor,
+  unselectedTextColor,
+  borderColor,
+  hoverBgColor,
+  isFlipped,
+  onVote,
+  vote,
+}: {
+  selection: 'boy' | 'girl';
+  frontContent: React.ReactNode;
+  backContent: React.ReactNode;
+  bgColor: string;
+  textColor: string;
+  unselectedTextColor: string;
+  borderColor: string;
+  hoverBgColor: string;
+  isFlipped: boolean;
+  onVote: (selection: 'boy' | 'girl') => void;
+  vote: 'boy' | 'girl' | null;
+}) => {
+  return (
+    <div
+      className="w-full h-24 [perspective:1000px] cursor-pointer"
+      onClick={() => onVote(selection)}
+    >
+      <motion.div
+        className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700"
+        initial={{ rotateY: 0 }}
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+      >
+        {/* Front */}
+        <div
+          className={`absolute w-full h-full [backface-visibility:hidden] flex items-center justify-center gap-2 rounded-xl p-4 font-bold text-lg border-2 transition-all duration-300 ${
+            vote === selection
+              ? `${bgColor} ${cardTextColor} ${borderColor} scale-105 shadow-lg`
+              : `${hoverBgColor} ${unselectedTextColor} ${borderColor.replace('500','200')} hover:${hoverBgColor} hover:scale-105`
+          }`}
+        >
+          {frontContent}
+        </div>
+        {/* Back */}
+        <div
+          className={`absolute w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] flex items-center justify-center rounded-xl p-4 font-bold text-lg border-2 ${bgColor} ${cardTextColor} ${borderColor}`}
+        >
+          <div className="text-center">
+            {backContent}
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
   template,
   data,
@@ -59,7 +117,6 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
     locationName,
     mainVenueAddress,
     giftRegistryUrl,
-    rsvpDeadline,
     primaryColor,
     backgroundColor,
     textColor,
@@ -68,60 +125,6 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
   } = invitationData;
   
   const date = event_date ? new Date(event_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) : '';
-
-  const FlipCard = ({
-    selection,
-    frontContent,
-    backContent,
-    bgColor,
-    textColor: cardTextColor,
-    unselectedTextColor,
-    borderColor,
-    hoverBgColor,
-  }: {
-    selection: 'boy' | 'girl';
-    frontContent: React.ReactNode;
-    backContent: React.ReactNode;
-    bgColor: string;
-    textColor: string;
-    unselectedTextColor: string;
-    borderColor: string;
-    hoverBgColor: string;
-  }) => {
-    const isCardFlipped = isFlipped === selection;
-
-    return (
-      <div
-        className="w-full h-24 [perspective:1000px] cursor-pointer"
-        onClick={() => handleVote(selection)}
-      >
-        <motion.div
-          className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700"
-          initial={{ rotateY: 0 }}
-          animate={{ rotateY: isCardFlipped ? 180 : 0 }}
-        >
-          {/* Front */}
-          <div
-            className={`absolute w-full h-full [backface-visibility:hidden] flex items-center justify-center gap-2 rounded-xl p-4 font-bold text-lg border-2 transition-all duration-300 ${
-              vote === selection
-                ? `${bgColor} ${cardTextColor} ${borderColor} scale-105 shadow-lg`
-                : `${hoverBgColor} ${unselectedTextColor} ${borderColor.replace('500','200')} hover:${hoverBgColor} hover:scale-105`
-            }`}
-          >
-            {frontContent}
-          </div>
-          {/* Back */}
-          <div
-            className={`absolute w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] flex items-center justify-center rounded-xl p-4 font-bold text-lg border-2 ${bgColor} ${cardTextColor} ${borderColor}`}
-          >
-            <div className="text-center">
-              {backContent}
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    );
-  };
 
   return (
     <div 
@@ -239,6 +242,9 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
                   unselectedTextColor="text-pink-700"
                   borderColor="border-pink-500"
                   hoverBgColor="bg-pink-50"
+                  isFlipped={isFlipped === 'girl'}
+                  onVote={handleVote}
+                  vote={vote}
                 />
                 <FlipCard
                   selection="boy"
@@ -251,6 +257,9 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
                   unselectedTextColor="text-blue-700"
                   borderColor="border-blue-500"
                   hoverBgColor="bg-blue-50"
+                  isFlipped={isFlipped === 'boy'}
+                  onVote={handleVote}
+                  vote={vote}
                 />
               </div>
               {vote && (

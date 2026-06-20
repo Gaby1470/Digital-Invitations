@@ -13,8 +13,7 @@ export default function DressCodeSection({ data, onFieldChange }: DressCodeSecti
   const currentDressCode: DressCode = data.dressCode || {};
 
   const handlePinterestChange = (field: 'pinterestUrlMan' | 'pinterestUrlWoman', url: string) => {
-    const { man, woman, ...rest } = currentDressCode;
-    onFieldChange('dressCode', { ...rest, [field]: url });
+    onFieldChange('dressCode', { ...currentDressCode, [field]: url });
   };
 
   return (

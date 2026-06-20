@@ -3,10 +3,31 @@
 
 import { produce } from 'immer';
 
-export default function ListEditor<T>({ items, onChange, renderItem, defaultItem, title, addItemText }: { items: T[], onChange: (items: T[]) => void, renderItem: (item: T, index: number, handleItemChange: (index: number, field: keyof T, value: any) => void) => React.ReactNode, defaultItem: T, title: string, addItemText: string }) {
-  const handleItemChange = (index: number, field: keyof T, value: any) => {
-    const newItems = produce(items, draft => {
-      (draft[index] as any)[field] = value;
+export default function ListEditor<T>({ 
+  items, 
+  onChange, 
+  renderItem, 
+  defaultItem, 
+  title, 
+  addItemText 
+}: { 
+  items: T[], 
+  onChange: (items: T[]) => void, 
+  renderItem: (
+    item: T, 
+    index: number, 
+    handleItemChange: <K extends keyof T>(index: number, field: K, value: T[K]) => void
+  ) => React.ReactNode, 
+  defaultItem: T, 
+  title: string, 
+  addItemText: string 
+}) {
+  const handleItemChange = <K extends keyof T>(index: number, field: K, value: T[K]) => {
+    const newItems = produce(items, (draft: T[]) => {
+      const item = draft[index];
+      if (item) {
+        item[field] = value;
+      }
     });
     onChange(newItems);
   };
