@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
+  EditorData,
   TemplateConfig,
   TimelineItem,
   DressCode,
@@ -41,15 +42,17 @@ interface ExtendedTimelineItem extends TimelineItem {
   imageAlt?: string;
 }
 
-type TimelineTemplateProps = {
+type WeddingAquarrelTemplateProps = {
   template?: TemplateConfig;
-  data?: any;
+  data?: EditorData;
+  invitationId?: string;
 };
 
 export default function WeddingAquarrelTemplate({
   template,
   data,
-}: TimelineTemplateProps) {
+  invitationId,
+}: WeddingAquarrelTemplateProps) {
   // Hardcoded defaults to showcase the specific design request
   const invitationData = {
     backgroundColor: "#FDFBF7",
@@ -321,11 +324,17 @@ export default function WeddingAquarrelTemplate({
               Kindly reply by June 1st, 2025
             </p>
             <div className="bg-[#FDFBF7] p-8 sm:p-10 rounded-sm border border-stone-200 shadow-sm">
-              <RsvpSection
-                invitationId={invitationData.id}
-                primaryColor={invitationData.primaryColor}
-                textColor={invitationData.textColor}
-              />
+              {invitationId ? (
+                <RsvpSection
+                  invitationId={invitationId}
+                  primaryColor={invitationData.primaryColor}
+                  textColor={invitationData.textColor}
+                />
+              ) : (
+                <div className="text-center text-gray-500">
+                  <p>The RSVP form will be displayed here on the live invitation.</p>
+                </div>
+              )}
             </div>
           </AnimatedSection>
         </div>

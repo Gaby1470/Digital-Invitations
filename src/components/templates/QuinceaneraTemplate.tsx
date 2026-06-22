@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { EditorData, TemplateConfig, TimelineItem, CourtMember } from "@/lib/types";
+import { RsvpSection } from "./shared/RsvpSection";
 
 // Helper for smooth scroll animations
 function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -24,9 +25,10 @@ function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; d
 type QuinceaneraTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  invitationId?: string;
 };
 
-export default function QuinceaneraTemplate({ template, data }: QuinceaneraTemplateProps) {
+export default function QuinceaneraTemplate({ template, data, invitationId }: QuinceaneraTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
 
@@ -224,6 +226,28 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
           </AnimatedSection>
         </section>
       )}
+
+      {/* RSVP Section */}
+      <section className="py-20 px-6 max-w-sm mx-auto text-center pb-32">
+        <AnimatedSection>
+          <div className="p-10 rounded-[2.5rem] bg-white shadow-2xl shadow-slate-200/60 border border-slate-100">
+            <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: 'var(--font-playfair-display), serif', color: invitationData.textColor }}>
+              Confirma tu asistencia
+            </h2>
+            {invitationId ? (
+              <RsvpSection
+                invitationId={invitationId}
+                primaryColor={invitationData.primaryColor}
+                textColor={invitationData.textColor}
+              />
+            ) : (
+              <div className="text-center text-gray-500">
+                <p>The RSVP form will be displayed here on the live invitation.</p>
+              </div>
+            )}
+          </div>
+        </AnimatedSection>
+      </section>
     </div>
   );
 }

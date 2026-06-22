@@ -339,12 +339,16 @@ export default function OldMoneyTemplate({
 
           <AnimatedSection>
              <div className="mt-8">
-              {invitationId && (
+              {invitationId ? (
                 <RsvpSection
                   invitationId={invitationId}
                   primaryColor={accentColor}
                   textColor={primaryText}
                 />
+              ) : (
+                <div className="text-center text-gray-500">
+                  <p>The RSVP form will be displayed here on the live invitation.</p>
+                </div>
               )}
             </div>
           </AnimatedSection>

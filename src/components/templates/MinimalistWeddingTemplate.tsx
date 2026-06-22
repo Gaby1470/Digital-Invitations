@@ -380,12 +380,16 @@ export default function MinimalistWeddingTemplate({
               Will you be joining us?
             </h2>
             <div className="bg-white p-6 border border-neutral-200/60 rounded-lg shadow-sm">
-              {invitationId && (
+              {invitationId ? (
                 <RsvpSection
                   invitationId={invitationId}
                   primaryColor={invitationData.primaryColor}
                   textColor={invitationData.textColor}
                 />
+              ) : (
+                <div className="text-center text-gray-500">
+                  <p>The RSVP form will be displayed here on the live invitation.</p>
+                </div>
               )}
             </div>
           </FadeIn>

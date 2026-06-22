@@ -75,15 +75,56 @@ const ransomLetters = [
 type GraduationTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  invitationId?: string;
 };
 
 export default function ScrapbookGraduationTemplate({
   template,
   data,
+  invitationId,
 }: GraduationTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
+  const [guestName, setGuestName] = useState("");
   const [guestMessage, setGuestMessage] = useState("");
+  const [formState, setFormState] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async () => {
+    if (!invitationId) {
+      setErrorMessage('RSVP is not available in preview mode.');
+      setFormState('error');
+      return;
+    }
+    if (!guestName) {
+      setErrorMessage('Please provide your name.');
+      setFormState('error');
+      return;
+    }
+    setFormState('submitting');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch(`/api/invitations/${invitationId}/rsvp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: guestName,
+          status: 'ATTENDING',
+          plus_ones: 0,
+          message: guestMessage,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Something went wrong. Please try again.');
+      }
+      setFormState('submitted');
+    } catch (error: any) {
+      setFormState('error');
+      setErrorMessage(error.message);
+    }
+  };
 
   const colorPalette = {
     "--background-color": invitationData.backgroundColor || "#F4EFE6",
@@ -327,20 +368,36 @@ export default function ScrapbookGraduationTemplate({
               <FloatingSticker className="bottom-100 right-[112%] w-24 h-24 z-20" delay={0.5} yOffset={-20} duration={5}>
                 <Image src={invitationData.starBalloonImage || "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/star.png"} alt="Star Balloon" layout="fill" objectFit="contain" />
               </FloatingSticker>
-              <div className="space-y-4 font-mono">
-                <textarea
-                  className="w-full p-3 bg-transparent border-b-2 border-dashed border-black/30 focus:border-[var(--primary-color)] outline-none transition-all min-h-[100px] resize-none"
-                  placeholder="Escribe un deseo para el graduado..."
-                  value={guestMessage}
-                  onChange={(e) => setGuestMessage(e.target.value)}
-                />
-                <button
-                  className="w-full py-4 bg-black text-white font-bold uppercase tracking-widest hover:bg-[var(--primary-color)] transition-colors"
-                  onClick={() => alert("¡Gracias por tu mensaje!")}
-                >
-                  Enviar
-                </button>
-              </div>
+              {formState === 'submitted' ? (
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold" style={{ color: 'var(--primary-color)' }}>¡Gracias!</h3>
+                  <p>Tu mensaje ha sido enviado.</p>
+                </div>
+              ) : (
+                <div className="space-y-4 font-mono">
+                  <input
+                    type="text"
+                    className="w-full p-3 bg-transparent border-b-2 border-dashed border-black/30 focus:border-[var(--primary-color)] outline-none transition-all"
+                    placeholder="Tu nombre"
+                    value={guestName}
+                    onChange={(e) => setGuestName(e.target.value)}
+                  />
+                  <textarea
+                    className="w-full p-3 bg-transparent border-b-2 border-dashed border-black/30 focus:border-[var(--primary-color)] outline-none transition-all min-h-[100px] resize-none"
+                    placeholder="Escribe un deseo para el graduado..."
+                    value={guestMessage}
+                    onChange={(e) => setGuestMessage(e.target.value)}
+                  />
+                  {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
+                  <button
+                    className="w-full py-4 bg-black text-white font-bold uppercase tracking-widest hover:bg-[var(--primary-color)] transition-colors disabled:opacity-50"
+                    onClick={handleSubmit}
+                    disabled={formState === 'submitting'}
+                  >
+                    {formState === 'submitting' ? 'Enviando...' : 'Enviar'}
+                  </button>
+                </div>
+              )}
             </div>
           </PopIn>
         </div>

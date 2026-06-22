@@ -191,12 +191,16 @@ export default function ModernEventTemplate({
                     </h2>
                     <p className="mt-3 text-slate-600">RSVP by {invitationData.rsvpDeadline ? new Date(invitationData.rsvpDeadline).toLocaleDateString('en-US', { month: 'long', day: 'numeric'}) : 'the deadline'}</p>
                 </div>
-                {invitationId && (
+                {invitationId ? (
                   <RsvpSection
                       invitationId={invitationId}
                       primaryColor={primaryColor}
                       textColor={textColor}
                   />
+                ) : (
+                  <div className="text-center text-gray-500">
+                    <p>The RSVP form will be displayed here on the live invitation.</p>
+                  </div>
                 )}
             </FadeIn>
          </div>

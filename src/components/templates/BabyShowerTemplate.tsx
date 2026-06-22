@@ -234,12 +234,16 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
           <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border-2 border-white/80 p-6 sm:p-8">
             {/* Managed RSVP Area */}
             <div className="text-center">
-              {invitationId && (
+              {invitationId ? (
                 <RsvpSection
                   invitationId={invitationId}
                   primaryColor={primaryColor}
                   textColor={textColor}
                 />
+              ) : (
+                <div className="text-center text-gray-500">
+                  <p>The RSVP form will be displayed here on the live invitation.</p>
+                </div>
               )}
             </div>
           </div>

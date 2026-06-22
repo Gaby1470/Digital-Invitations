@@ -34,6 +34,7 @@ function FadeIn({
 type GenderRevealBeesTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  invitationId?: string;
 };
 
 const FlipCard = ({
@@ -97,6 +98,7 @@ const FlipCard = ({
 const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
   template,
   data,
+  invitationId,
 }) => {
   const { defaultData } = template;
   const invitationData = { ...defaultData, ...data };
@@ -305,10 +307,17 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
       <section className="relative z-10 py-6 px-4 max-w-xl mx-auto mt-4">
         <FadeIn delay={0.4}>
           <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-yellow-200/50 p-6 sm:p-8">
-            <RsvpSection 
-              primaryColor={primaryColor}
-              textColor={textColor}
-            />
+            {invitationId ? (
+              <RsvpSection 
+                invitationId={invitationId}
+                primaryColor={primaryColor}
+                textColor={textColor}
+              />
+            ) : (
+              <div className="text-center text-gray-500">
+                <p>The RSVP form will be displayed here on the live invitation.</p>
+              </div>
+            )}
           </div>
         </FadeIn>
       </section>

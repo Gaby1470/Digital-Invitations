@@ -1,9 +1,10 @@
 "use client";
 
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
 import React from 'react';
+import { RsvpSection } from './shared/RsvpSection';
 
 /**
  * Clean, sharp transition for professional blocks.
@@ -27,11 +28,13 @@ function SectionReveal({ children, delay = 0 }: { children: React.ReactNode, del
 type CorporateTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  invitationId?: string;
 };
 
-export default function CorporateTemplate({ template, data }: CorporateTemplateProps) {
+export default function CorporateTemplate({ template, data, invitationId }: CorporateTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
+  const [isRsvpModalOpen, setIsRsvpModalOpen] = useState(false);
 
   return (
     <div 
@@ -151,6 +154,7 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
         <SectionReveal>
           <h2 className="text-4xl md:text-6xl font-black mb-10">Secure Your Presence</h2>
           <button 
+            onClick={() => setIsRsvpModalOpen(true)}
             className="px-12 py-5 text-white font-bold uppercase tracking-widest rounded-full transition-all hover:scale-105 active:scale-95"
             style={{ 
               backgroundColor: invitationData.primaryColor,
@@ -161,6 +165,16 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
           </button>
         </SectionReveal>
       </section>
+
+      {isRsvpModalOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg max-w-md w-full">
+            <h2 className="text-2xl font-bold mb-4 text-black">Register for the event</h2>
+            <RsvpSection invitationId={invitationId} primaryColor={invitationData.primaryColor} textColor="#000" />
+            <button onClick={() => setIsRsvpModalOpen(false)} className="mt-4 text-sm text-gray-500">Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

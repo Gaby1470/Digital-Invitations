@@ -43,12 +43,14 @@ function AnimatedSection({
 
 type TimelineTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
+  invitationId?: string;
 };
 
 export default function TimelineTemplate({
   template,
   data,
+  invitationId,
 }: TimelineTemplateProps) {
   const { features, defaultData } = template;
   const invitationData = { ...defaultData, ...data };
@@ -398,11 +400,17 @@ export default function TimelineTemplate({
               Confirmación de Asistencia
             </h2>
             <div className="bg-stone-50/50 p-6 rounded-2xl border border-stone-100 shadow-xs">
-              <RsvpSection
-                invitationId={invitationData.id}
-                primaryColor={invitationData.primaryColor}
-                textColor={invitationData.textColor}
-              />
+              {invitationId ? (
+                <RsvpSection
+                  invitationId={invitationId}
+                  primaryColor={invitationData.primaryColor}
+                  textColor={invitationData.textColor}
+                />
+              ) : (
+                <div className="text-center text-gray-500">
+                  <p>The RSVP form will be displayed here on the live invitation.</p>
+                </div>
+              )}
             </div>
           </AnimatedSection>
         </div>
