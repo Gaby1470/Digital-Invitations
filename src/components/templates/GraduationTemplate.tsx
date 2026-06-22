@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { TemplateConfig, TimelineItem } from '@/lib/types';
+import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
 import { Feather } from 'lucide-react';
 import Image from 'next/image';
 
@@ -25,7 +25,7 @@ function GentleFade({ children, delay = 0, yOffset = 20 }: { children: React.Rea
 
 type GraduationTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 export default function GraduationTemplate({ template, data }: GraduationTemplateProps) {
@@ -205,7 +205,7 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
             <GentleFade>
               <h2 className="text-xs uppercase tracking-[0.25em] text-[var(--primary)] mb-6 font-sans">Planes Futuros</h2>
               <p className="text-xl md:text-2xl font-light leading-relaxed italic text-[var(--text)] opacity-90">
-                "{invitationData.futurePlans}"
+                &quot;{invitationData.futurePlans}&quot;
               </p>
             </GentleFade>
           </div>

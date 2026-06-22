@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
+  EditorData,
   TemplateConfig,
   TimelineItem,
   DressCode,

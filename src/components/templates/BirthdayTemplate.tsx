@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect } from 'react';
-import { TemplateConfig, TimelineItem } from '@/lib/types';
+import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
 import confetti from 'canvas-confetti';
 
 function PopIn({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
@@ -23,7 +23,7 @@ function PopIn({ children, delay = 0 }: { children: React.ReactNode, delay?: num
 
 type BirthdayTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 function formatTimelineTime(rawTime?: string) {

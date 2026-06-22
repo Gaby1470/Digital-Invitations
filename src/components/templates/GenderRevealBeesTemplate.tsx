@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useRef, useState } from 'react';
-import { TemplateConfig } from "@/lib/types";
+import { EditorData, TemplateConfig } from "@/lib/types";
 import { motion, useInView } from "framer-motion";
 import { RsvpSection } from "./shared/RsvpSection";
 import { Calendar, MapPin, Gift, Clock, Sparkles, CheckCircle, XCircle, ExternalLink } from "lucide-react";
@@ -33,7 +33,7 @@ function FadeIn({
 
 type GenderRevealBeesTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 const FlipCard = ({

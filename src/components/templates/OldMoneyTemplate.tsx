@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import React, { useRef } from "react";
 import {
+  EditorData,
   TemplateConfig,
   TimelineItem,
   DressCode,
@@ -36,7 +37,7 @@ function AnimatedSection({
 
 type OldMoneyTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 export default function OldMoneyTemplate({
@@ -197,7 +198,7 @@ export default function OldMoneyTemplate({
 
       {/* 4. VENUES (Ceremony & Reception) */}
       <section className="px-6 max-w-md mx-auto space-y-12 pb-20">
-        {invitationData.timelineItems?.map((item: any, index: number) => (
+        {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
           <React.Fragment key={index}>
             <AnimatedSection>
               <div className="text-center space-y-5">

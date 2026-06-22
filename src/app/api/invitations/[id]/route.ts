@@ -2,6 +2,7 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase-server';
+import { EditorData, TemplateConfig } from '@/lib/types';
 
 // GET a single invitation by ID (publicly accessible, but unpublished are owner-only)
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -53,7 +54,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: 'You must be logged in to update an invitation.' }, { status: 401 });
   }
 
-  const body = await request.json();
+  const body = await request.json() as { data: EditorData, slug: string };
   const { data: invitationData, slug } = body;
 
   if (!id) {
@@ -100,7 +101,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   // If ownership is verified, proceed with the update
   const { slug: slug_from_data, is_published, ...cleanedData } = invitationData;
 
-  const updatedRecord: { data: any; slug?: string } = {
+  const updatedRecord: { data: TemplateConfig['defaultData']; slug?: string } = {
     data: cleanedData,
   };
 

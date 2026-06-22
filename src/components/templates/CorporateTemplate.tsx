@@ -2,7 +2,8 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { TemplateConfig, TimelineItem } from '@/lib/types';
+import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
+import React from 'react';
 
 /**
  * Clean, sharp transition for professional blocks.
@@ -25,7 +26,7 @@ function SectionReveal({ children, delay = 0 }: { children: React.ReactNode, del
 
 type CorporateTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 export default function CorporateTemplate({ template, data }: CorporateTemplateProps) {
@@ -43,7 +44,7 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
       {/* Hero: The Keynote Entrance */}
       <section className="relative h-[85vh] w-full flex items-center px-6 md:px-20 overflow-hidden border-b" style={{ borderColor: `${invitationData.textColor}1A` }}>
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))]" style={{'--tw-gradient-from': `${invitationData.primaryColor}33`, '--tw-gradient-to': 'transparent'} as any}/>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))]" style={{'--tw-gradient-from': `${invitationData.primaryColor}33`, '--tw-gradient-to': 'transparent'} as React.CSSProperties}/>
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
         </div>
 
@@ -146,7 +147,7 @@ export default function CorporateTemplate({ template, data }: CorporateTemplateP
 
       {/* Action Section: RSVP/Register */}
       <section className="py-40 text-center relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b to-transparent" style={{ '--gradient-from': invitationData.primaryColor } as any} />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b to-transparent" style={{ '--gradient-from': invitationData.primaryColor } as React.CSSProperties} />
         <SectionReveal>
           <h2 className="text-4xl md:text-6xl font-black mb-10">Secure Your Presence</h2>
           <button 

@@ -15,9 +15,15 @@ import OldMoneyTemplate from "./OldMoneyTemplate";
 import WeddingAquarrelTemplate from "./WeddingAquarrelTemplate";
 
 import ScrapbookGraduationTemplate from "./ScrapbookGraduationTemplate";
+import { TemplateConfig, EditorData } from "@/lib/types";
+
+interface TemplateComponentProps {
+  template: TemplateConfig;
+  data: EditorData;
+}
 
 // This map MUST use the same keys as defined in 'src/lib/templateConfig.ts'
-export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<any> } = {
+export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<TemplateComponentProps> } = {
   'timeline-wedding': TimelineTemplate,
   'minimalist-wedding': MinimalistWeddingTemplate,
   

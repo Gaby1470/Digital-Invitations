@@ -56,8 +56,12 @@ export default function EditorPage() {
         setInvitationData({ ...data, slug: inv.slug });
         setTemplate(templateConf);
         setTemplateId(inv.template);
-      } catch (e: any) {
-        setError(e.message);
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          setError(e.message);
+        } else {
+          setError('An unknown error occurred.');
+        }
       } finally {
         setLoading(false);
       }
@@ -84,8 +88,12 @@ export default function EditorPage() {
       // Update local state and open modal
       setInvitationData({ ...invitationData, ...updatedInvitation });
       setShareModalOpen(true);
-    } catch (e: any) {
-      alert(`Error: ${e.message}`);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        alert(`Error: ${e.message}`);
+      } else {
+        alert('An unknown error occurred');
+      }
     }
   };
 

@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useRef } from 'react';
-import { TemplateConfig, TimelineItem } from "@/lib/types";
+import { EditorData, TemplateConfig, TimelineItem } from "@/lib/types";
 import { motion, useInView } from "framer-motion";
 import { RsvpSection } from "./shared/RsvpSection";
 import { Calendar, MapPin, Baby, Heart, PartyPopper, Utensils, Clock } from "lucide-react";
@@ -32,7 +32,7 @@ function FadeIn({
 
 type BabyShowerTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({

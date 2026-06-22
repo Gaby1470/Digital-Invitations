@@ -6,7 +6,7 @@ import { templateConfig } from '@/lib/templateConfig';
 import TemplateRenderer from '@/components/TemplateRenderer';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase-client';
-import { User } from '@supabase/supabase-js';
+import { User, Session } from '@supabase/supabase-js';
 
 async function safeJsonParse(response: Response) {
   const text = await response.text();
@@ -28,9 +28,10 @@ export default function TemplatePreviewPage() {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHasMounted(true);
     const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } }: { data: { session: Session | null } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
       setLoading(false);
     };
@@ -65,8 +66,12 @@ export default function TemplatePreviewPage() {
         throw new Error('Failed to get the ID of the new invitation.');
       }
 
-    } catch (e: any) {
-      alert(`An error occurred: ${e.message}`);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        alert(`An error occurred: ${e.message}`);
+      } else {
+        alert('An unknown error occurred.');
+      }
     } finally {
       setLoading(false);
     }

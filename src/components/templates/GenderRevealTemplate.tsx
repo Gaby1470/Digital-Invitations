@@ -2,7 +2,7 @@
 
 import { motion, useInView, AnimatePresence, TargetAndTransition } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { TemplateConfig, TimelineItem } from '@/lib/types';
+import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
 import { MapPin } from 'lucide-react';
 
 /**
@@ -26,7 +26,7 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode, delay?: nu
 
 type GenderRevealTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 export default function GenderRevealTemplate({ template, data }: GenderRevealTemplateProps) {

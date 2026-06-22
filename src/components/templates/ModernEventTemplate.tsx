@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { TemplateConfig, TimelineItem } from "@/lib/types";
+import { EditorData, TemplateConfig, TimelineItem } from "@/lib/types";
 import { RsvpSection } from "./shared/RsvpSection";
 import Countdown from "./shared/Countdown";
 import { MapPinIcon, CalendarIcon, SparklesIcon } from "@heroicons/react/24/outline";
@@ -32,7 +32,7 @@ function FadeIn({
 
 type ModernEventTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 export default function ModernEventTemplate({

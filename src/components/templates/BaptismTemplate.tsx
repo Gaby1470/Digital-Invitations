@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { TemplateConfig, TimelineItem } from '@/lib/types';
+import { EditorData, Godparent, TemplateConfig, TimelineItem } from '@/lib/types';
 
 /**
  * Ethereal fade-in for sacred milestones, optimized for mobile performance.
@@ -25,7 +25,7 @@ function SacredFadeIn({ children, delay = 0 }: { children: React.ReactNode, dela
 
 type BaptismTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 export default function BaptismTemplate({ template, data }: BaptismTemplateProps) {
@@ -156,7 +156,7 @@ export default function BaptismTemplate({ template, data }: BaptismTemplateProps
             </h3>
 
             <div className="flex flex-col gap-8">
-              {invitationData.godparents?.map((godparent: any, index: number) => (
+              {invitationData.godparents?.map((godparent: Godparent, index: number) => (
                 <div key={index} className="p-4 rounded-2xl bg-[#FCFBF7] border border-dashed" style={{ borderColor: `${invitationData.primaryColor}40` }}>
                   <p className="text-[10px] uppercase tracking-widest font-sans font-semibold mb-1" style={{ color: invitationData.textColor }}>{godparent.role}</p>
                   <p className="text-1xl font-normal" style={{ color: invitationData.textColor }}>{godparent.name}</p>

@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { TemplateConfig, TimelineItem, CourtMember } from "@/lib/types";
+import { EditorData, TemplateConfig, TimelineItem, CourtMember } from "@/lib/types";
 
 // Helper for smooth scroll animations
 function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -23,7 +23,7 @@ function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; d
 
 type QuinceaneraTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 export default function QuinceaneraTemplate({ template, data }: QuinceaneraTemplateProps) {

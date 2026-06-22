@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { TemplateConfig, TimelineItem } from "@/lib/types";
+import { EditorData, TemplateConfig, TimelineItem } from "@/lib/types";
 import Image from "next/image";
 
 // Floating animation utility for stickers/elements
@@ -74,7 +74,7 @@ const ransomLetters = [
 
 type GraduationTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 export default function ScrapbookGraduationTemplate({

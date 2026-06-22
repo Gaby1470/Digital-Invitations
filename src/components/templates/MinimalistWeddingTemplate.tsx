@@ -3,6 +3,7 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import {
+  EditorData,
   TemplateConfig,
   TimelineItem,
   DressCode,
@@ -43,7 +44,7 @@ function FadeIn({
 
 type MinimalistWeddingTemplateProps = {
   template: TemplateConfig;
-  data: any;
+  data: EditorData;
 };
 
 export default function MinimalistWeddingTemplate({

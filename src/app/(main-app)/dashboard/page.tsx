@@ -5,14 +5,25 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase-client';
 import { User } from '@supabase/supabase-js';
-import { Rsvp } from '@/lib/types';
+import { EditorData, Rsvp } from '@/lib/types';
 import { TrashIcon, DocumentDuplicateIcon, EyeIcon, PencilIcon, TicketIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 import RsvpList from '@/components/dashboard/RsvpList';
 
+interface Invitation {
+  id: string;
+  user_id: string;
+  created_at: string;
+  template: string;
+  data: EditorData;
+  is_published: boolean;
+  is_expired: boolean;
+  slug: string | null;
+}
+
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
-  const [invitations, setInvitations] = useState<any[]>([]);
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [selectedInvitationId, setSelectedInvitationId] = useState<string | null>(null);
@@ -57,14 +68,19 @@ export default function DashboardPage() {
     try {
       const response = await fetch(`/api/invitations/${invitationId}/rsvps`);
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json() as { error: string };
         throw new Error(errorData.error || 'Failed to fetch RSVPs');
       }
-      const data = await response.json();
+      const data = await response.json() as Rsvp[];
       setRsvps(data);
-    } catch (error: any) {
-      console.error('Error fetching RSVPs:', error.message);
-      setRsvpError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error fetching RSVPs:', error.message);
+        setRsvpError(error.message);
+      } else {
+        console.error('An unknown error occurred:', error);
+        setRsvpError('An unknown error occurred');
+      }
     } finally {
       setRsvpLoading(false);
     }
@@ -83,18 +99,22 @@ export default function DashboardPage() {
       try {
         const response = await fetch(`/api/invitations/${invitationId}`, { method: 'DELETE' });
         if (!response.ok) {
-          const errorData = await response.json();
+          const errorData = await response.json() as { error: string };
           throw new Error(errorData.error || 'No se pudo eliminar la invitación.');
         }
         setInvitations(invitations.filter(inv => inv.id !== invitationId));
-      } catch (error: any) {
-        alert(`Error: ${error.message}`);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          alert(`Error: ${error.message}`);
+        } else {
+          alert('An unknown error occurred');
+        }
       }
     }
   };
 
   // Helper function to determine the status of the invitation
-  const getInvitationStatus = (inv: any) => {
+    const getInvitationStatus = (inv: Invitation) => {
     // Check if the database explicitly marks it as expired, 
     // OR if the event date has passed (assuming eventDate is stored in inv.data)
     const isPastEvent = inv.data?.eventDate && new Date(inv.data.eventDate) < new Date();

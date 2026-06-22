@@ -4,10 +4,10 @@
 import ColorInput from '../shared/ColorInput';
 import FontSelection from '../shared/FontSelection';
 import PaletteSelection from '../shared/PaletteSelection';
-import { TemplateConfig } from '@/lib/types';
+import { EditorData, TemplateConfig } from '@/lib/types';
 
 type ColorsAndStyleSectionProps = {
-  data: { primaryColor?: string; textColor?: string; backgroundColor?: string; };
+  data: EditorData;
   template: TemplateConfig;
   onFieldChange: (field: string, value: string) => void;
   onMultipleFieldsChange: (fields: { [key: string]: string }) => void;
