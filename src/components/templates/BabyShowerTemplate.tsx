@@ -33,11 +33,13 @@ function FadeIn({
 type BabyShowerTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  invitationId?: string;
 };
 
 export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
   template,
   data,
+  invitationId,
 }) => {
   const { defaultData } = template;
   const invitationData = { ...defaultData, ...data };
@@ -232,11 +234,13 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
           <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border-2 border-white/80 p-6 sm:p-8">
             {/* Managed RSVP Area */}
             <div className="text-center">
-              <RsvpSection
-                invitationId={data.id}
-                primaryColor={primaryColor}
-                textColor={textColor}
-              />
+              {invitationId && (
+                <RsvpSection
+                  invitationId={invitationId}
+                  primaryColor={primaryColor}
+                  textColor={textColor}
+                />
+              )}
             </div>
           </div>
         </FadeIn>

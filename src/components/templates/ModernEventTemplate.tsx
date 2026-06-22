@@ -33,11 +33,13 @@ function FadeIn({
 type ModernEventTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  invitationId?: string;
 };
 
 export default function ModernEventTemplate({
   template,
   data,
+  invitationId,
 }: ModernEventTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
@@ -48,8 +50,8 @@ export default function ModernEventTemplate({
   const backgroundColor = invitationData.backgroundColor || '#f8fafc'; // slate-50
   const textColor = invitationData.textColor || '#1e293b'; // slate-800
 
-  const mapSrc = invitationData.venueAddress
-    ? `https://maps.google.com/maps?q=${encodeURIComponent(invitationData.venueAddress)}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+  const mapSrc = invitationData.mainVenueAddress
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(invitationData.mainVenueAddress)}&t=&z=13&ie=UTF8&iwloc=&output=embed`
     : "";
 
   return (
@@ -126,7 +128,7 @@ export default function ModernEventTemplate({
                         <div>
                             <h3 className="text-xl font-bold text-slate-900 mb-1">Where</h3>
                             <p className="text-slate-600 text-lg">{invitationData.venueName || 'Venue TBD'}</p>
-                            <p className="text-slate-500">{invitationData.venueAddress}</p>
+                            <p className="text-slate-500">{invitationData.mainVenueAddress}</p>
                         </div>
                     </div>
                 </div>
@@ -189,11 +191,13 @@ export default function ModernEventTemplate({
                     </h2>
                     <p className="mt-3 text-slate-600">RSVP by {invitationData.rsvpDeadline ? new Date(invitationData.rsvpDeadline).toLocaleDateString('en-US', { month: 'long', day: 'numeric'}) : 'the deadline'}</p>
                 </div>
-                <RsvpSection
-                    invitationId={invitationData.id}
-                    primaryColor={primaryColor}
-                    textColor={textColor}
-                />
+                {invitationId && (
+                  <RsvpSection
+                      invitationId={invitationId}
+                      primaryColor={primaryColor}
+                      textColor={textColor}
+                  />
+                )}
             </FadeIn>
          </div>
       </section>

@@ -33,9 +33,9 @@ export default function GraduationTemplate({ template, data }: GraduationTemplat
   const invitationData = { ...defaultData, ...data };
   const [guestMessage, setGuestMessage] = useState("");
 
-  const eventDate = new Date(invitationData.event_date).toLocaleDateString('es-ES', {
+  const eventDate = invitationData.event_date ? new Date(invitationData.event_date).toLocaleDateString('es-ES', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-  });
+  }) : '';
 
   const colorPalette = {
     '--background': invitationData.backgroundColor || '#F9F8F6',

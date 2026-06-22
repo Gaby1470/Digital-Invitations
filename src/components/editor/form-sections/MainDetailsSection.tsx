@@ -122,7 +122,7 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
           <TextInput 
             label="Edad a Celebrar"
             placeholder="e.g., 5"
-            value={data.age} 
+            value={data.age?.toString()} 
             onChange={(val) => onFieldChange('age', val)} 
           />
         </div>

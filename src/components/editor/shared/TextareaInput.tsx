@@ -1,7 +1,7 @@
 // src/components/editor/shared/TextareaInput.tsx
 "use client";
 
-export default function TextareaInput({ label, value, onChange, placeholder }: { label: string, value: string, onChange: (value: string) => void, placeholder?: string }) {
+export default function TextareaInput({ label, value, onChange, placeholder }: { label: string, value: string | undefined, onChange: (value: string) => void, placeholder?: string }) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>

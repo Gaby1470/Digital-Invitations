@@ -1,7 +1,7 @@
 // src/components/editor/shared/ColorInput.tsx
 "use client";
 
-export default function ColorInput({ label, value, onChange }: { label: string, value: string, onChange: (value: string) => void }) {
+export default function ColorInput({ label, value, onChange }: { label: string, value: string | undefined, onChange: (value: string) => void }) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>

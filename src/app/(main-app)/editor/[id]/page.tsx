@@ -166,6 +166,7 @@ export default function EditorPage() {
                     templateId={templateId} 
                     template={template} 
                     data={invitationData} 
+                    invitationId={id}
                   />
                 </div>
               </div>

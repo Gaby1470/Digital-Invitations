@@ -228,7 +228,7 @@ export default function DashboardPage() {
                           {/* Secondary Actions */}
                           <div className="flex gap-1">
                             <button
-                              onClick={() => handleCopyLink(inv.id, inv.slug)}
+                              onClick={() => handleCopyLink(inv.id, inv.slug ?? undefined)}
                               className="p-2 rounded-full text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white transition-colors relative group/btn"
                             >
                               <DocumentDuplicateIcon className={`w-5 h-5 ${copiedId === inv.id ? 'text-green-500' : ''}`} />

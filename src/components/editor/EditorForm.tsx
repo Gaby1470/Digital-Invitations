@@ -47,7 +47,7 @@ export default function EditorForm({
 
   const handleFieldChange = (field: string, value: unknown) => {
     const nextState = produce(data, (draft: EditorData) => {
-      draft[field] = value;
+      (draft as any)[field] = value;
     });
     onDataChange(nextState);
   };
@@ -55,7 +55,7 @@ export default function EditorForm({
   const handleMultipleFieldsChange = (fields: Record<string, unknown>) => {
     const nextState = produce(data, (draft: EditorData) => {
       for (const field in fields) {
-        draft[field] = fields[field];
+        (draft as any)[field] = fields[field];
       }
     });
     onDataChange(nextState);

@@ -8,9 +8,10 @@ type TemplateRendererProps = {
   templateId: string;
   template: TemplateConfig;
   data: EditorData;
+  invitationId?: string;
 };
 
-export default function TemplateRenderer({ templateId, template, data }: TemplateRendererProps) {
+export default function TemplateRenderer({ templateId, template, data, invitationId }: TemplateRendererProps) {
   const rawId = templateId || "";
   const normalizedId = rawId
     .toLowerCase()
@@ -35,7 +36,7 @@ export default function TemplateRenderer({ templateId, template, data }: Templat
 
   return (
     <div>
-      <SelectedComponent template={template} data={data} />
+      <SelectedComponent template={template} data={data} invitationId={invitationId} />
     </div>
   );
 }

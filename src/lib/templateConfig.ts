@@ -583,7 +583,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       eventDescription: "Join us for a special get-together filled with joy, laughter, and unforgettable moments.",
       eventDate: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
       venueName: "The Central Loft",
-      venueAddress: "123 Main Street, Downtown",
+      mainVenueAddress: "123 Main Street, Downtown",
       rsvpDeadline: new Date(new Date().setDate(new Date().getDate() + 23)).toISOString(),
       hostNames: "The Hosts",
       timelineItems: [
@@ -614,22 +614,26 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       backgroundColor: "#fcfbf9",
       hero_image_url: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/fondo-oldmoney.jpg",
       heroTitle: "Nuestra Boda",
+      heroNames: "Yoselin & Ivan",
+      timelineTitle: "Itinerario",
       partner1Name: "Yoselin",
       partner2Name: "Ivan",
       event_date: "2024-11-16T13:00:00",
       quote: "Tú siempre serás mi referente del amor en pareja, por qué siempre quise esto y tú me lo has regalado",
       partner1Parents: ["Efrain Albiter Hernández", "Rocio Esquivel Garcia"],
       partner2Parents: ["Lazaro Meneses Ramirez", "Ana Maria Vazquez Nieves"],
-      godparents: ["Jorge Albiter Hernández & Janeth Benitez Rebollar"],
+      godparents: [{ name: "Jorge Albiter Hernández & Janeth Benitez Rebollar", role: "Padrinos" }],
       venueDividerText: "Después de la ceremonia religiosa agradecemos su presencia en",
       timelineItems: [
          { time: "1:00 PM", title: "Ceremonia", location: "Parroquia de San Luis Obispo de Huamantla\nC. Hidalgo Manzana 031, San Luis Huexotla\n56220 San Luis Huexotla, Méx", mapLink: "#" },
          { time: "3:30 PM", title: "Recepción", location: "Rancho Caballerizas\nAv. Aguilas 36, Lomas de San Esteban\n56257 Texcoco de Mora, Méx", mapLink: "#" },
       ],
       dressCode: {
-        title: "Vestimenta",
-        details: "Blanco, Beige, Gris, Rosa Palo, Lila"
+        man: "Formal",
+        woman: "Formal",
       },
+      dressCodeTitle: "Vestimenta",
+      dressCodeDetails: "Blanco, Beige, Gris, Rosa Palo, Lila",
       galleryImages: [
         "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney3.png",
         "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney1.png",

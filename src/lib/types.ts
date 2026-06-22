@@ -14,6 +14,9 @@ export type TimelineItem = {
   time: string;
   title: string;
   location: string;
+  mapLink?: string;
+  imageSrc?: string;
+  imageAlt?: string;
 };
 
 export type CourtMember = {
@@ -81,6 +84,9 @@ export type TemplateFeatures = {
   linkedInIntegration?: boolean;
   speakerProfile?: boolean;
   resourceDownload?: boolean;
+  guestCount?: boolean;
+  parentsAndGodparents?: boolean;
+  dressCode?: boolean;
 };
 
 export type TemplateConfig = {
@@ -142,8 +148,38 @@ export type TemplateConfig = {
     rsvpContact?: string;
     location?: string;
     eventDate?: string;
+    photoSharingUrl?: string;
+    theme?: string;
+    parentalNotes?: string;
+    parentalNotesTitle?: string;
+    speakerImages?: string[];
+    heroSubtitle?: string;
+    borderColor?: string;
+    selectionColor?: string;
+    futurePlans?: string;
+    secondaryColor?: string;
+    mainTitle?: string;
+    eventName?: string;
+    eventDescription?: string;
+    venueName?: string;
+    hostNames?: string;
+    partner1Name?: string;
+    partner2Name?: string;
+    quote?: string;
+    partner1Parents?: string[];
+    partner2Parents?: string[];
+    venueDividerText?: string;
+    itineraryItems?: TimelineItem[];
+    discoBallImage?: string;
+    starBalloonImage?: string;
+    guestbookPolaroidImage?: string;
+    tribute?: string;
+    buttonTextColor?: string;
+    dressCodeTitle?: string;
+    dressCodeDetails?: string;
   };
   features: TemplateFeatures;
+  formSections?: string[];
 };
 
 export type EditorData = TemplateConfig['defaultData'] & { is_published?: boolean; slug?: string; };

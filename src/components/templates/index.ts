@@ -20,6 +20,7 @@ import { TemplateConfig, EditorData } from "@/lib/types";
 interface TemplateComponentProps {
   template: TemplateConfig;
   data: EditorData;
+  invitationId?: string;
 }
 
 // This map MUST use the same keys as defined in 'src/lib/templateConfig.ts'

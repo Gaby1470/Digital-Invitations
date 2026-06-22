@@ -26,7 +26,7 @@ export default function ListEditor<T>({
     const newItems = produce(items, (draft: T[]) => {
       const item = draft[index];
       if (item) {
-        item[field] = value;
+        (item as any)[field] = value;
       }
     });
     onChange(newItems);

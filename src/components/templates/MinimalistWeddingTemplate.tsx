@@ -45,11 +45,13 @@ function FadeIn({
 type MinimalistWeddingTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  invitationId?: string;
 };
 
 export default function MinimalistWeddingTemplate({
   template,
   data,
+  invitationId,
 }: MinimalistWeddingTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
@@ -139,12 +141,14 @@ export default function MinimalistWeddingTemplate({
 
           <FadeIn delay={0.7}>
             <div className="mt-8">
-              <Countdown
-                targetDate={invitationData.event_date}
-                className="flex justify-center gap-6"
-                numberClassName="text-2xl sm:text-3xl font-light tracking-tight text-white"
-                labelClassName="text-[8px] uppercase tracking-[0.2em] text-white/50 block mt-1"
-              />
+              {invitationData.event_date && (
+                <Countdown
+                  targetDate={invitationData.event_date}
+                  className="flex justify-center gap-6"
+                  numberClassName="text-2xl sm:text-3xl font-light tracking-tight text-white"
+                  labelClassName="text-[8px] uppercase tracking-[0.2em] text-white/50 block mt-1"
+                />
+              )}
             </div>
           </FadeIn>
         </div>
@@ -208,7 +212,7 @@ export default function MinimalistWeddingTemplate({
       )}
 
       {/* GALLERY: Clean Horizontal Filmstrip */}
-      {invitationData.galleryImages?.length > 0 && (
+      {(invitationData.galleryImages?.length || 0) > 0 && (
         <section className="py-20 md:py-32 bg-neutral-50 border-b border-neutral-100">
           <FadeIn>
             <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-neutral-400 mb-10 text-center">
@@ -218,7 +222,7 @@ export default function MinimalistWeddingTemplate({
 
           {/* Fixed mobile horizontal presentation with mask gradient */}
           <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-6 md:px-[25vw] no-scrollbar pb-6 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
-            {invitationData.galleryImages.map((src: string, index: number) => (
+            {invitationData.galleryImages?.map((src: string, index: number) => (
               <div
                 key={index}
                 className="flex-none w-[80vw] max-w-[320px] md:max-w-[420px] snap-center cursor-pointer"
@@ -300,7 +304,7 @@ export default function MinimalistWeddingTemplate({
 
       {/* Recommendations Section */}
       {features.recommendations &&
-        invitationData.recommendations?.length > 0 && (
+        (invitationData.recommendations?.length || 0) > 0 && (
           <section className="py-20 px-6">
             <div className="max-w-md mx-auto">
               <FadeIn>
@@ -310,7 +314,7 @@ export default function MinimalistWeddingTemplate({
               </FadeIn>
 
               <div className="space-y-4">
-                {invitationData.recommendations.map(
+                {invitationData.recommendations?.map(
                   (item: RecommendationItem, index: number) => (
                     <FadeIn key={index}>
                       <div className="p-6 rounded-lg bg-white border border-neutral-200/80 shadow-sm flex flex-col justify-between">
@@ -376,11 +380,13 @@ export default function MinimalistWeddingTemplate({
               Will you be joining us?
             </h2>
             <div className="bg-white p-6 border border-neutral-200/60 rounded-lg shadow-sm">
-              <RsvpSection
-                invitationId={invitationData.id}
-                primaryColor={invitationData.primaryColor}
-                textColor={invitationData.textColor}
-              />
+              {invitationId && (
+                <RsvpSection
+                  invitationId={invitationId}
+                  primaryColor={invitationData.primaryColor}
+                  textColor={invitationData.textColor}
+                />
+              )}
             </div>
           </FadeIn>
         </div>

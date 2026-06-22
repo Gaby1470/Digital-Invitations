@@ -75,8 +75,7 @@ export default async function InvitePage({ params }: InvitePageProps) {
   }
 
   // The 'data' field from Supabase contains all the personalized content
-  // We also pass the top-level ID down so the RSVP section can use it.
-  const rendererData = { ...invitation.data, id: invitation.id };
+  const rendererData = invitation.data;
   
-  return <TemplateRenderer templateId={invitation.template} template={template} data={rendererData} />;
+  return <TemplateRenderer templateId={invitation.template} template={template} data={rendererData} invitationId={invitation.id} />;
 }

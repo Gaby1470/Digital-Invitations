@@ -7,11 +7,9 @@ import {
   TemplateConfig,
   TimelineItem,
   DressCode,
-  RecommendationItem,
 } from "@/lib/types";
 import { DressCodePreview } from "./shared/DressCodePreview";
 import { RsvpSection } from "./shared/RsvpSection";
-import GiftSection from "./shared/GiftSection";
 
 function AnimatedSection({
   children,
@@ -38,11 +36,13 @@ function AnimatedSection({
 type OldMoneyTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  invitationId?: string;
 };
 
 export default function OldMoneyTemplate({
   template,
   data,
+  invitationId,
 }: OldMoneyTemplateProps) {
   const { features, defaultData } = template;
   const invitationData = { ...defaultData, ...data };
@@ -55,11 +55,11 @@ export default function OldMoneyTemplate({
   const dressCode: DressCode | undefined = invitationData.dressCode;
 
   // Formatting date for the central display
-  const eventDate = new Date(invitationData.event_date || "2024-11-16T00:00:00");
-  const dayName = eventDate.toLocaleDateString("es-MX", { weekday: "long" });
-  const dayNumber = eventDate.getDate();
-  const monthName = eventDate.toLocaleDateString("es-MX", { month: "long" });
-  const year = eventDate.getFullYear();
+  const eventDateRaw = invitationData.event_date ? new Date(invitationData.event_date) : new Date("2024-11-16T00:00:00");
+  const dayName = eventDateRaw.toLocaleDateString("es-MX", { weekday: "long" });
+  const dayNumber = eventDateRaw.getDate();
+  const monthName = eventDateRaw.toLocaleDateString("es-MX", { month: "long" });
+  const year = eventDateRaw.getFullYear();
 
   return (
     <div
@@ -139,7 +139,7 @@ export default function OldMoneyTemplate({
           </p>
         </AnimatedSection>
 
-        {(invitationData.partner1Parents?.length > 0 || invitationData.partner2Parents?.length > 0) && (
+        {((invitationData.partner1Parents?.length || 0) > 0 || (invitationData.partner2Parents?.length || 0) > 0) && (
           <AnimatedSection delay={0.2}>
             <div className="space-y-6">
               <h3 className="font-serif italic text-2xl" style={{ color: accentColor }}>
@@ -147,24 +147,24 @@ export default function OldMoneyTemplate({
               </h3>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[10px] uppercase tracking-widest opacity-80">
                 <div className="space-y-1">
-                  {invitationData.partner1Parents.map((p: string) => <p key={p}>{p}</p>)}
+                  {invitationData.partner1Parents?.map((p: string) => <p key={p}>{p}</p>)}
                 </div>
                 <div className="space-y-1">
-                  {invitationData.partner2Parents.map((p: string) => <p key={p}>{p}</p>)}
+                  {invitationData.partner2Parents?.map((p: string) => <p key={p}>{p}</p>)}
                 </div>
               </div>
             </div>
           </AnimatedSection>
         )}
 
-        {invitationData.godparents?.length > 0 && (
+        {(invitationData.godparents?.length || 0) > 0 && (
           <AnimatedSection delay={0.3}>
             <div className="space-y-6 pt-4">
               <h3 className="font-serif italic text-2xl" style={{ color: accentColor }}>
                 y nuestros padrinos
               </h3>
               <div className="text-[10px] uppercase tracking-widest opacity-80">
-                {invitationData.godparents.map((g: string) => <p key={g}>{g}</p>)}
+                {invitationData.godparents?.map((g: any) => <p key={g.name}>{g.name}</p>)}
               </div>
             </div>
           </AnimatedSection>
@@ -227,7 +227,7 @@ export default function OldMoneyTemplate({
                 )}
               </div>
             </AnimatedSection>
-            {index < invitationData.timelineItems.length - 1 && (
+            {invitationData.timelineItems && index < invitationData.timelineItems.length - 1 && (
               <AnimatedSection>
                 <p className="text-center text-[10px] uppercase tracking-widest opacity-60 max-w-[250px] mx-auto leading-relaxed">
                   {invitationData.venueDividerText || 'Después de la ceremonia religiosa agradecemos su presencia en'}
@@ -259,11 +259,11 @@ export default function OldMoneyTemplate({
       )}
 
       {/* 6. GALLERY (Collage Style) */}
-      {invitationData.galleryImages?.length > 0 && (
+      {(invitationData.galleryImages?.length || 0) > 0 && (
         <section className="py-2 px-2 bg-white">
           <AnimatedSection>
             <div className="grid grid-cols-2 gap-2 max-w-md mx-auto">
-              {invitationData.galleryImages.map((src: string, idx: number) => (
+              {invitationData.galleryImages?.map((src: string, idx: number) => (
                 <div key={idx} className="aspect-square">
                   <img 
                     src={src} 
@@ -278,7 +278,7 @@ export default function OldMoneyTemplate({
       )}
 
       {/* 7. ITINERARY (Vertical Timeline) */}
-      {features.multiEventSchedule && invitationData.itineraryItems?.length > 0 && (
+      {features.multiEventSchedule && (invitationData.itineraryItems?.length || 0) > 0 && (
         <section className="py-20 px-6 bg-[#fcfbf9]">
           <div className="max-w-md mx-auto">
             <AnimatedSection>
@@ -288,7 +288,7 @@ export default function OldMoneyTemplate({
             </AnimatedSection>
 
             <div className="relative border-l border-[#d4c5b0] ml-8 space-y-12 py-4">
-              {invitationData.itineraryItems.map((item: TimelineItem, index: number) => (
+              {invitationData.itineraryItems?.map((item: TimelineItem, index: number) => (
                 <AnimatedSection key={index} delay={index * 0.1}>
                   <div className="relative pl-8 flex flex-col justify-center min-h-[40px]">
                     {/* Timeline Node marker */}
@@ -339,11 +339,13 @@ export default function OldMoneyTemplate({
 
           <AnimatedSection>
              <div className="mt-8">
-              <RsvpSection
-                invitationId={invitationData.id}
-                primaryColor={accentColor}
-                textColor={primaryText}
-              />
+              {invitationId && (
+                <RsvpSection
+                  invitationId={invitationId}
+                  primaryColor={accentColor}
+                  textColor={primaryText}
+                />
+              )}
             </div>
           </AnimatedSection>
         </div>

@@ -152,7 +152,7 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
       </section>
 
       {/* --- COURT OF HONOR SECTION --- */}
-      {features.courtOfHonor && invitationData.courtOfHonor?.length > 0 && (
+      {features.courtOfHonor && (invitationData.courtOfHonor?.length || 0) > 0 && (
         <section id="court-of-honor" className="py-16 relative">
           <AnimatedSection>
             <h2 className="text-sm tracking-[0.3em] uppercase font-bold text-center mb-12" style={{ color: invitationData.primaryColor }}>
@@ -162,7 +162,7 @@ export default function QuinceaneraTemplate({ template, data }: QuinceaneraTempl
 
           {/* Horizontal scroll with hidden scrollbar classes */}
           <div className="flex justify-start items-stretch gap-5 overflow-x-auto snap-x snap-mandatory px-8 pb-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {invitationData.courtOfHonor.map((member: CourtMember, idx: number) => (
+            {invitationData.courtOfHonor?.map((member: CourtMember, idx: number) => (
               <div key={member.name} className="flex-none w-[65vw] max-w-[220px] snap-center first:ml-0 last:mr-8">
                 <AnimatedSection delay={idx * 0.05}>
                   <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-black/5 bg-slate-200 group">

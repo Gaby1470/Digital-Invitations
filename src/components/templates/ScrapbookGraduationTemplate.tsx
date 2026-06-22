@@ -282,7 +282,7 @@ export default function ScrapbookGraduationTemplate({
                   <div>
                     <h3 className="text-xl font-black uppercase tracking-tight mb-2">Ubicación</h3>
                     <p className="text-lg font-bold text-[var(--primary-color)]">
-                      {invitationData.mainVenueName || "Recepción Principal"}
+                      {invitationData.venueName || "Recepción Principal"}
                     </p>
                     <p className="text-black/80 mt-2 text-sm leading-relaxed">
                       {invitationData.mainVenueAddress || "123 Graduation Lane, Scholar City"}
