@@ -123,12 +123,14 @@ export default function TimelineTemplate({
             transition={{ duration: 0.9, delay: 0.8 }}
             className="mt-6"
           >
-            <Countdown 
-              targetDate={invitationData.event_date}
-              className="flex justify-center gap-4 sm:gap-6"
-              numberClassName="text-3xl sm:text-4xl font-serif text-white"
-              labelClassName="text-[10px] uppercase tracking-widest text-white/70 block mt-0.5"
-            />
+            {invitationData.event_date && (
+              <Countdown 
+                targetDate={invitationData.event_date}
+                className="flex justify-center gap-4 sm:gap-6"
+                numberClassName="text-3xl sm:text-4xl font-serif text-white"
+                labelClassName="text-[10px] uppercase tracking-widest text-white/70 block mt-0.5"
+              />
+            )}
           </motion.div>
           <motion.div
             initial={{ opacity: 0 }}
@@ -220,7 +222,7 @@ export default function TimelineTemplate({
       )}
 
       {/* GALLERY */}
-      {invitationData.galleryImages?.length > 0 && (
+      {(invitationData.galleryImages?.length || 0) > 0 && (
         <section
           className="py-20 overflow-hidden"
           style={{ backgroundColor: `${invitationData.backgroundColor}60` }}
@@ -235,7 +237,7 @@ export default function TimelineTemplate({
           </AnimatedSection>
 
           <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory px-6 md:px-[20vw] no-scrollbar pb-6 items-center">
-            {invitationData.galleryImages.map((src: string, index: number) => (
+            {invitationData.galleryImages?.map((src: string, index: number) => (
               <motion.div
                 key={index}
                 className="flex-none w-[80vw] max-w-[310px] md:w-[380px] snap-center"
@@ -288,7 +290,7 @@ export default function TimelineTemplate({
 
       {/* Accommodations Block - Tightened spacing */}
       {features.recommendations &&
-        invitationData.recommendations?.length > 0 && (
+        (invitationData.recommendations?.length || 0) > 0 && (
           <section className="py-10 px-6">
             <div className="max-w-md mx-auto">
               <AnimatedSection>
@@ -309,7 +311,7 @@ export default function TimelineTemplate({
                   hidden: { opacity: 0 },
                 }}
               >
-                {invitationData.recommendations.map(
+                {invitationData.recommendations?.map(
                   (item: RecommendationItem, index: number) => (
                     <motion.div
                       key={index}
