@@ -5,6 +5,8 @@ import { EditorData, TemplateConfig } from '@/lib/types';
 import TextInput from '../shared/TextInput';
 import TextareaInput from '../shared/TextareaInput';
 import DateTimePicker from '../shared/DateTimePicker';
+import TimePicker from '../shared/TimePicker';
+import PortraitImageUploader from '../shared/PortraitImageUploader';
 import HeroImageUploader from '../shared/HeroImageUploader';
 import { Type, User, GraduationCap, Calendar, MapPin } from 'lucide-react';
 
@@ -29,15 +31,24 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
         />
       )}
 
-      {/* Hero Title */}
-      <div className="space-y-2">
-        <TextInput 
-          label="Hero Heading"
-          placeholder="e.g., Save the Date"
-          value={data.heroTitle} 
-          onChange={(val) => onFieldChange('heroTitle', val)} 
+      {defaultData.photoUrl !== undefined && (
+        <PortraitImageUploader
+          label="Portrait Image"
+          value={data.photoUrl}
+          onChange={(url) => onFieldChange('photoUrl', url)}
         />
-      </div>
+      )}
+
+      {defaultData.heroTitle !== undefined && (
+        <div className="space-y-2">
+          <TextInput 
+            label="Hero Heading"
+            placeholder="e.g., Save the Date"
+            value={data.heroTitle} 
+            onChange={(val) => onFieldChange('heroTitle', val)} 
+          />
+        </div>
+      )}
 
       {/* Names */}
       <div className="space-y-2">
@@ -79,6 +90,40 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
           onChange={(val) => onFieldChange('event_date', val)}
         />
       </div>
+
+      {/* START TIME */}
+      {defaultData.startTime !== undefined && (
+        <div className="space-y-2">
+          <TimePicker
+            label="Start Time"
+            value={data.startTime || ''}
+            onChange={(val) => onFieldChange('startTime', val)}
+          />
+        </div>
+      )}
+
+      {/* END TIME */}
+      {defaultData.endTime !== undefined && (
+        <div className="space-y-2">
+          <TimePicker
+            label="End Time"
+            value={data.endTime || ''}
+            onChange={(val) => onFieldChange('endTime', val)}
+          />
+        </div>
+      )}
+
+      {/* RSVP Date Text */}
+      {defaultData.rsvpDateText !== undefined && (
+        <div className="space-y-2">
+          <TextInput
+            label="RSVP Date Text"
+            placeholder="e.g., 15 de julio"
+            value={data.rsvpDateText}
+            onChange={(val) => onFieldChange('rsvpDateText', val)}
+          />
+        </div>
+      )}
 
       {/* Generic Location - shown for non-map templates */}
       {!hasMap && (
@@ -162,7 +207,7 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
               onChange={(val) => onFieldChange('mainVenueAddress', val)} 
             />
             <p className="text-[10px] text-slate-400 italic">
-              This address will be used to generate the "Get Directions" button for mobile users.
+              This address will be used to generate the &quot;Get Directions&quot; button for mobile users.
             </p>
           </div>
         </div>

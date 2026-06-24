@@ -106,7 +106,7 @@ export type TemplateConfig = {
   thumbnail?: string;
   fonts?: string[];
   defaultFont?: string;
-  palettes?: { name: string; primary: string; text: string; secondary?: string; background?: string; }[];
+  palettes?: { name: string; primary: string; text: string; secondary?: string; background?: string; dark?: string; }[];
   defaultData: {
     heroTitle: string;
     heroNames: string;
@@ -177,6 +177,16 @@ export type TemplateConfig = {
     buttonTextColor?: string;
     dressCodeTitle?: string;
     dressCodeDetails?: string;
+    photoUrl?: string;
+    childName?: string;
+    time?: string;
+    extraInfo?: string;
+    startTime?: string;
+    endTime?: string;
+    rsvpDateText?: string;
+    textPrimary?: string;
+    textGold?: string;
+    textDark?: string;
   };
   features: TemplateFeatures;
   formSections?: string[];

@@ -47,6 +47,7 @@ export default function EditorForm({
 
   const handleFieldChange = (field: string, value: unknown) => {
     const nextState = produce(data, (draft: EditorData) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (draft as any)[field] = value;
     });
     onDataChange(nextState);
@@ -55,6 +56,7 @@ export default function EditorForm({
   const handleMultipleFieldsChange = (fields: Record<string, unknown>) => {
     const nextState = produce(data, (draft: EditorData) => {
       for (const field in fields) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (draft as any)[field] = fields[field];
       }
     });
@@ -69,7 +71,7 @@ export default function EditorForm({
 
   return (
     <div className="flex flex-col h-full bg-slate-50 border-r border-slate-200">
-      <Modal title="Upload Image" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal title="Cambiar Imagen" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ImageUploader onImageUploaded={handleImageUploaded} />
       </Modal>
 
@@ -77,17 +79,19 @@ export default function EditorForm({
       <div className="flex-1 overflow-y-auto pb-10 custom-scrollbar">
         <div className="divide-y divide-slate-100">
 
-          <CollapsibleSection 
-            title="Datos Principales" 
-            isOpen={activeSection === "Main Details"}
-            onToggle={() => setActiveSection(activeSection === "Main Details" ? null : "Main Details")}
-          >
-            <MainDetailsSection
-              data={data}
-              template={template}
-              onFieldChange={handleFieldChange}
-            />
-          </CollapsibleSection>
+          {(!template.formSections || template.formSections.includes('main-details')) && (
+            <CollapsibleSection 
+              title="Datos Principales" 
+              isOpen={activeSection === "Main Details"}
+              onToggle={() => setActiveSection(activeSection === "Main Details" ? null : "Main Details")}
+            >
+              <MainDetailsSection
+                data={data}
+                template={template}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
+          )}
 
           <CollapsibleSection
             title="Enlace de Invitación"
@@ -108,20 +112,22 @@ export default function EditorForm({
             </div>
           </CollapsibleSection>
 
-          <CollapsibleSection 
-            title="Diseño y Estilo" 
-            isOpen={activeSection === "Design"}
-            onToggle={() => setActiveSection(activeSection === "Design" ? null : "Design")}
-          >
-            <ColorsAndStyleSection
-              data={data}
-              template={template}
-              onFieldChange={handleFieldChange}
-              onMultipleFieldsChange={handleMultipleFieldsChange}
-            />
-          </CollapsibleSection>
+          {(!template.formSections || template.formSections.includes('colors-and-style')) && (
+            <CollapsibleSection 
+              title="Diseño y Estilo" 
+              isOpen={activeSection === "Design"}
+              onToggle={() => setActiveSection(activeSection === "Design" ? null : "Design")}
+            >
+              <ColorsAndStyleSection
+                data={data}
+                template={template}
+                onFieldChange={handleFieldChange}
+                onMultipleFieldsChange={handleMultipleFieldsChange}
+              />
+            </CollapsibleSection>
+          )}
 
-          {data.dressCode && (
+          {(!template.formSections || template.formSections.includes('dress-code')) && data.dressCode && (
             <CollapsibleSection
               title="Código de Vestimenta"
               isOpen={activeSection === "DressCode"}
@@ -147,7 +153,7 @@ export default function EditorForm({
             </CollapsibleSection>
           )}
 
-          {template.features.gallery && (
+          {(!template.formSections || template.formSections.includes('gallery')) && template.features.gallery && (
             <CollapsibleSection 
               title="Galería de Fotos" 
               isOpen={activeSection === "Gallery"}
@@ -161,16 +167,18 @@ export default function EditorForm({
             </CollapsibleSection>
           )}
 
-          <CollapsibleSection 
-            title="Horario del Evento" 
-            isOpen={activeSection === "Schedule"}
-            onToggle={() => setActiveSection(activeSection === "Schedule" ? null : "Schedule")}
-          >
-            <EventScheduleSection
-              data={data}
-              onFieldChange={handleFieldChange}
-            />
-          </CollapsibleSection>
+          {(!template.formSections || template.formSections.includes('event-schedule')) && (
+            <CollapsibleSection 
+              title="Horario del Evento" 
+              isOpen={activeSection === "Schedule"}
+              onToggle={() => setActiveSection(activeSection === "Schedule" ? null : "Schedule")}
+            >
+              <EventScheduleSection
+                data={data}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
+          )}
 
           {template.features.courtOfHonor && (
             <CollapsibleSection
@@ -231,9 +239,9 @@ export default function EditorForm({
             </CollapsibleSection>
           )}
 
-          {template.name === 'Fiesta de Cumpleaños Infantil' && (
+          {(!template.formSections || template.formSections.includes('parental-notes')) && (
             <CollapsibleSection 
-              title="Nota para los Padres"
+              title={template.name === 'Sports Birthday' ? "Notas del Entrenador" : "Nota para los Padres"}
               isOpen={activeSection === "ParentalNotes"}
               onToggle={() => setActiveSection(activeSection === "ParentalNotes" ? null : "ParentalNotes")}
             >

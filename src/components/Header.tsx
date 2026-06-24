@@ -45,8 +45,8 @@ export default function Header() {
         {/* Logo Section */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">
-              Tap to Invite<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500 group-hover:animate-pulse">.</span>
+            <span className="text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">
+              Tap to Invite<span className="text-pink-500 group-hover:animate-pulse">.</span>
             </span>
           </Link>
         </div>
@@ -75,7 +75,7 @@ export default function Header() {
             <>
               <Link
                 href="/dashboard"
-                className="hidden sm:inline-flex h-10 items-center justify-center rounded-full bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100 px-5 text-sm font-semibold transition-all hover:bg-gray-200 dark:hover:bg-gray-700"
+                className="hidden sm:inline-flex h-11 items-center justify-center rounded-full bg-indigo-600 px-6 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/30 hover:-translate-y-0.5 active:translate-y-0"
               >
                 Panel de Control
               </Link>

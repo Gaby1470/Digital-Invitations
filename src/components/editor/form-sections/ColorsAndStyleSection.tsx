@@ -14,12 +14,23 @@ type ColorsAndStyleSectionProps = {
 };
 
 export default function ColorsAndStyleSection({ data, template, onFieldChange, onMultipleFieldsChange }: ColorsAndStyleSectionProps) {
-  const handlePaletteSelect = (palette: { primary: string; text: string }) => {
-    onMultipleFieldsChange({
-      primaryColor: palette.primary,
-      textColor: palette.text,
-    });
+  const handlePaletteSelect = (palette: { primary: string; text: string; secondary?: string; dark?: string; }) => {
+    if (template.name === 'Princess Birthday') {
+      onMultipleFieldsChange({
+        backgroundColor: palette.primary,
+        textPrimary: palette.text,
+        textGold: palette.secondary || '',
+        textDark: palette.dark || '',
+      });
+    } else {
+      onMultipleFieldsChange({
+        primaryColor: palette.primary,
+        textColor: palette.text,
+      });
+    }
   };
+
+  const isPrincess = template.name === 'Princess Birthday';
 
   return (
     <div className="p-6">
@@ -27,12 +38,20 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
         {template.palettes && (
           <PaletteSelection palettes={template.palettes} onPaletteSelect={handlePaletteSelect} />
         )}
-        <ColorInput label="Primary Color" value={data.primaryColor} onChange={(val) => onFieldChange('primaryColor', val)} />
-        <ColorInput label="Text Color" value={data.textColor} onChange={(val) => onFieldChange('textColor', val)} />
-        {data.backgroundColor !== undefined && (
-          <ColorInput label="Background Color" value={data.backgroundColor} onChange={(val) => onFieldChange('backgroundColor', val)} />
+        {isPrincess ? (
+          <>
+            <ColorInput label="Gold Text Color" value={data.textGold} onChange={(val) => onFieldChange('textGold', val)} />
+            <ColorInput label="Dark Text Color" value={data.textDark} onChange={(val) => onFieldChange('textDark', val)} />
+          </>
+        ) : (
+          <>
+            <ColorInput label="Primary Color" value={data.primaryColor} onChange={(val) => onFieldChange('primaryColor', val)} />
+            <ColorInput label="Text Color" value={data.textColor} onChange={(val) => onFieldChange('textColor', val)} />
+            {data.backgroundColor !== undefined && (
+              <ColorInput label="Background Color" value={data.backgroundColor} onChange={(val) => onFieldChange('backgroundColor', val)} />
+            )}
+          </>
         )}
-
       </div>
     </div>
   );

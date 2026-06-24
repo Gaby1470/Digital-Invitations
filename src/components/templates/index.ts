@@ -13,16 +13,16 @@ import GenderRevealBeesTemplate from "./GenderRevealBeesTemplate";
 import ModernEventTemplate from "./ModernEventTemplate";
 import OldMoneyTemplate from "./OldMoneyTemplate";
 import WeddingAquarrelTemplate from "./WeddingAquarrelTemplate";
+import SportsBirthdayTemplate from "./SportsBirthdayTemplate";
+import PrincessBirthdayTemplate from "./PrincessBirthdayTemplate";
 
 import ScrapbookGraduationTemplate from "./ScrapbookGraduationTemplate";
 import { TemplateConfig, EditorData } from "@/lib/types";
-
 interface TemplateComponentProps {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
 }
-
 // This map MUST use the same keys as defined in 'src/lib/templateConfig.ts'
 export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<TemplateComponentProps> } = {
   'timeline-wedding': TimelineTemplate,
@@ -40,4 +40,6 @@ export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<TemplateC
   'modern-event': ModernEventTemplate,
   'old-money-wedding': OldMoneyTemplate,
   'wedding-aquarrel': WeddingAquarrelTemplate,
+  'sports-birthday': SportsBirthdayTemplate,
+  'princess-birthday': PrincessBirthdayTemplate,
 };

@@ -7,6 +7,7 @@ import {
   TemplateConfig,
   TimelineItem,
   DressCode,
+  Godparent,
 } from "@/lib/types";
 import { DressCodePreview } from "./shared/DressCodePreview";
 import { RsvpSection } from "./shared/RsvpSection";
@@ -164,7 +165,7 @@ export default function OldMoneyTemplate({
                 y nuestros padrinos
               </h3>
               <div className="text-[10px] uppercase tracking-widest opacity-80">
-                {invitationData.godparents?.map((g: any) => <p key={g.name}>{g.name}</p>)}
+                {invitationData.godparents?.map((g: Godparent) => <p key={g.name}>{g.name}</p>)}
               </div>
             </div>
           </AnimatedSection>

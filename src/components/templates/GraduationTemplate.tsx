@@ -67,9 +67,13 @@ export default function GraduationTemplate({ template, data, invitationId }: Gra
         throw new Error('Something went wrong. Please try again.');
       }
       setFormState('submitted');
-    } catch (error: any) {
+    } catch (error: unknown) {
       setFormState('error');
-      setErrorMessage(error.message);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage('An unknown error occurred.');
+      }
     }
   };
 

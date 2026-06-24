@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
+interface CustomCSS extends React.CSSProperties {
+  '--focus-ring-color'?: string;
+  '--ring-color'?: string;
+}
+
 export function RsvpSection({ invitationId, primaryColor, textColor }: { invitationId?: string, primaryColor?: string, textColor?: string }) {
   const [name, setName] = useState('');
   const [status, setStatus] = useState<'ATTENDING' | 'DECLINED' | null>(null);
@@ -41,9 +46,13 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
         throw new Error('Something went wrong. Please try again.');
       }
       setFormState('submitted');
-    } catch (error: any) {
+    } catch (error: unknown) {
       setFormState('error');
-      setErrorMessage(error.message);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage('An unknown error occurred.');
+      }
     }
   };
 
@@ -67,7 +76,7 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2"
-          style={{ '--focus-ring-color': effectivePrimaryColor } as any}
+          style={{ '--focus-ring-color': effectivePrimaryColor } as CustomCSS}
         />
       </div>
       <div>
@@ -85,7 +94,7 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
               backgroundColor: status === 'ATTENDING' ? effectivePrimaryColor : undefined, 
               color: status === 'ATTENDING' ? 'white' : effectiveTextColor,
               '--ring-color': effectivePrimaryColor
-            } as any}
+            } as CustomCSS}
           >
             Si
           </button>
@@ -104,7 +113,7 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
               backgroundColor: status === 'DECLINED' ? effectivePrimaryColor : undefined, 
               color: status === 'DECLINED' ? 'white' : effectiveTextColor,
               '--ring-color': effectivePrimaryColor
-            } as any}
+            } as CustomCSS}
           >
             No
           </button>
@@ -129,7 +138,7 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
                 min="0"
                 max="10"
                 className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2"
-                style={{ '--focus-ring-color': effectivePrimaryColor } as any}
+                style={{ '--focus-ring-color': effectivePrimaryColor } as CustomCSS}
               />
             </div>
             <div>
@@ -140,7 +149,7 @@ export function RsvpSection({ invitationId, primaryColor, textColor }: { invitat
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2"
-                style={{ '--focus-ring-color': effectivePrimaryColor } as any}
+                style={{ '--focus-ring-color': effectivePrimaryColor } as CustomCSS}
               />
             </div>
           </motion.div>

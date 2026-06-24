@@ -4,8 +4,7 @@ import { TemplateConfig } from "./types";
 export const templateConfig: { [key: string]: TemplateConfig } = {
   "timeline-wedding": {
     name: "Timeline Wedding",
-    thumbnail:
-      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-timeline.png",
+    thumbnail: "/branding/portadas/portada-timeline.png",
     category: "Wedding",
     description: "A beautiful, scrolling story of your special day.",
     font: "font-serif",
@@ -94,8 +93,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "minimalist-wedding": {
     name: "Black and White Wedding",
-    thumbnail:
-      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-bnw.png",
+    thumbnail: "/branding/portadas/portada-bnw.png",
     category: "Wedding",
     description: "Clean, modern, and elegant. For the minimalist couple.",
     font: "font-sans",
@@ -156,8 +154,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
 
   "quinceanera-dream": {
     name: "XV Años",
-    thumbnail:
-      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-quince.png",
+    thumbnail: "/branding/portadas/portada-quince.png",
     category: "XV Years",
     description:
       "Tu celebración de XV años hecha realidad en una invitación digital.",
@@ -223,8 +220,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "kids-birthday-bash": {
     name: "Fiesta de Cumpleaños Infantil",
-    thumbnail:
-      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-bdy2.png",
+    thumbnail: "/branding/portadas/portada-bdy2.png",
     category: "Kids Birthday",
     description: "Una fiesta divertida y temática para los más pequeños.",
     font: "font-sans",
@@ -278,8 +274,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "baptism-ethereal": {
     name: "Bautizo",
-    thumbnail:
-      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-bautizo.png",
+    thumbnail: "/branding/portadas/portada-bautizo.png",
     category: "Baby Shower",
     description: "Un diseño sereno y etéreo para bautizos.",
     font: "font-serif",
@@ -326,8 +321,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "gender-reveal-party": {
     name: "Revelación de Género - Clásica",
-    thumbnail:
-      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-gender.png",
+    thumbnail: "/branding/portadas/portada-gender.png",
     category: "Baby Shower",
     description:
       "¿Niño o Niña? ¡Ven y descúbrelo! Una fiesta divertida para revelar el género de nuestro bebé.",
@@ -377,8 +371,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "graduation-celebration": {
     name: "Celebración de Graduación",
-    thumbnail:
-      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-graduation-formal.png",
+    thumbnail: "/branding/portadas/portada-graduation-formal.png",
     category: "Graduation",
     description: "Una celebración de logros y nuevos comienzos.",
     font: "font-serif",
@@ -416,8 +409,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "corporate-summit": {
     name: "Evento Ejecutivo",
-    thumbnail:
-      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-coorporate.png",
+    thumbnail: "/branding/portadas/portada-coorporate.png",
     category: "Corporate",
     description: "Un diseño de alta gama en modo oscuro para eventos profesionales.",
     font: "font-sans",
@@ -460,7 +452,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "baby-shower-whimsical": {
     name: "Baby Shower",
-    thumbnail: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-babyShower.png",
+    thumbnail: "/branding/portadas/portada-babyShower.png",
     category: "Baby Shower",
     description: "Fiesta de baby shower",
     font: "font-sans",
@@ -493,7 +485,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "gender-reveal-bees": {
     name: "Revelación de Género - Tema Abejas",
-    thumbnail: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-gender-bee.png",
+    thumbnail: "/branding/portadas/portada-gender-bee.png",
     category: "Baby Shower",
     description: "Invitación de revelación de género con tema de abejas.",
     font: "font-sans",
@@ -526,7 +518,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "scrapbook-graduation": {
     name: "Graduación - Moderno",
-    thumbnail: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-grad-cool.png",
+    thumbnail: "/branding/portadas/portada-grad-cool.png",
     category: "Graduation",
     description: "A fun, scrapbook-style invitation for graduates.",
     font: "font-mono",
@@ -558,7 +550,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "modern-event": {
     name: "Modern Event",
-    thumbnail: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/general.png", 
+    thumbnail: "/branding/portadas/general.png", 
     category: "General",
     description: "A clean and modern design for any occasion, from parties to get-togethers.",
     font: "font-sans",
@@ -598,8 +590,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "old-money-wedding": {
     name: "Old Money Wedding",
-    thumbnail:
-      "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Portadas/portada-oldMoney.png",
+    thumbnail: "/branding/portadas/portada-oldMoney.png",
     category: "Wedding",
     description: "An elegant and timeless wedding invitation with a classic, sophisticated feel.",
     font: "font-serif",
@@ -707,4 +698,77 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       'colors-and-style',
     ]
   },
+  'sports-birthday': {
+    name: "Sports Birthday",
+    thumbnail: "/branding/portadas/portada-soccer.png",
+    category: "Kids Birthday",
+    description: "A high-energy, modern template for a sports-themed birthday.",
+    font: "font-sans",
+    defaultFont: "Inter",
+    fonts: ["Inter", "Poppins", "Lexend", "Space Grotesk"],
+    defaultData: {
+      heroTitle: "You're Invited!",
+      timelineTitle: "Game Day Schedule",
+      heroNames: "Alex",
+      age: 7,
+      photoUrl: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Kids-Bdy/futbol-kid.jpg",
+      location: "The Local Park",
+      event_date: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
+      parentalNotes: "Bring your A-game! We'll have pizza and cake after the match.",
+      extraInfo: "Don't forget your water bottles!",
+      timelineItems: [
+        { time: "2:00 PM", title: "Warm-up & Drills", location: "Main Field" },
+        { time: "3:00 PM", title: "The Big Game!", location: "Main Field" },
+        { time: "4:30 PM", title: "Awards & Cake", location: "Picnic Area" },
+      ],
+    },
+    features: {
+      parentalNotes: true,
+      ageSpecificThemes: [],
+    },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'parental-notes',
+    ]
+  },
+  'princess-birthday': {
+    name: "Princess Birthday",
+    thumbnail: "/branding/portadas/portada-princesa.png",
+    category: "Kids Birthday",
+    description: "A magical and elegant birthday invitation for a little princess.",
+    font: "font-serif",
+    defaultFont: "Dancing Script",
+    fonts: ["Playfair Display", "Lora", "Cormorant Garamond", "Dancing Script"],
+    palettes: [
+      { name: "Blush & Gold", primary: "#FDF6F8", text: "#C28B96", secondary: "#B89766", dark: "#5A4A42" },
+    ],
+    defaultData: {
+      heroTitle: "You're Invited to a",
+      timelineTitle: "Royal Celebration",
+      timelineItems: [],
+      heroNames: "Olivia",
+      age: 4,
+      event_date: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
+      startTime: "12:00 PM",
+      endTime: "2:00 PM",
+      location: "William's Residence\n876 Street Ln, Boulder CO",
+      rsvpDateText: "15 de julio",
+      parentalNotes: "Favor de traer calcetas extras y cambio de ropa",
+      photoUrl: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Kids-Bdy/princesa.png",
+      backgroundColor: "#FDF6F8",
+      textPrimary: '#C28B96',
+      textGold: '#B89766',
+      textDark: '#5A4A42',
+    },
+    features: {
+      parentalNotes: true,
+      ageSpecificThemes: [],
+    },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'parental-notes',
+    ]
+  }
 };

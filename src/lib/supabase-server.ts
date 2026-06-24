@@ -15,6 +15,7 @@ export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
           if (typeof resolvedCookieStore.get === 'function') {
             return resolvedCookieStore.get(name)?.value
           }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const cookie = (resolvedCookieStore as any)[name];
           if (typeof cookie === 'object' && cookie !== null && 'value' in cookie) {
             return cookie.value;
@@ -23,6 +24,7 @@ export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
         },
         async set(name: string, value: string, options: CookieOptions) {
           try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const resolvedCookieStore = await cookieStore as any;
             if (typeof resolvedCookieStore.set === 'function') {
               resolvedCookieStore.set({ name, value, ...options })
@@ -35,6 +37,7 @@ export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
         },
         async remove(name: string, options: CookieOptions) {
           try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const resolvedCookieStore = await cookieStore as any;
             if (typeof resolvedCookieStore.set === 'function') {
               resolvedCookieStore.set({ name, value: '', ...options })

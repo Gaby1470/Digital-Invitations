@@ -1,129 +1,102 @@
 'use client';
 
-// import { getStripe } from '@/lib/stripe-client';
+import Link from 'next/link';
+import { Check } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
+// Re-using the tiers data structure
+const tiers = [
+  {
+    name: 'Plantilla',
+    priceId: 'price_template_tier_placeholder',
+    price: '$899 MXN',
+    description: 'Elige cualquiera de nuestras plantillas y personalízala para tu evento. Ideal para bodas, cumpleaños, baby showers y más.',
+    features: [
+      'Publicación de la plantilla con:',
+      'Plantilla de colores e imagen personalizable',
+      'Hasta 150 invitados',
+      'URL de la pagina + personalización',
+      'Revisón de RSVP y confirmación de asistencia',
+    ],
+    cta: 'Comenzar',
+    primary: true,
+  },
+  {
+    name: 'Personalizado',
+    priceId: 'contact',
+    price: '$1499 MXN',
+    description: 'Un diseño único adaptado a tu evento. Trabajaremos contigo para crear una invitación única.',
+    features: [
+      'Todo en el paquete de plantilla, más:',
+      'Diseño personalizado de tu invitación',
+      'Soporte dedicado',
+      'URL personalizado',
+      'Musica de fondo y animaciones personalizadas',
+      'Mapa interactivo y RSVP avanzado',
+      'Correción de errores y revisiones',
+      'Cuenta regresiva para el evento',
+    ],
+    cta: 'Contactar',
+    primary: false,
+  },
+];
 
 export default function PricingPage() {
-  // IMPORTANT: Replace these with your actual Price IDs from your Stripe dashboard
-  const tiers = [
-    {
-      name: 'Template',
-      priceId: 'price_template_tier_placeholder', // This is a placeholder
-      price: '$899 MXN',
-      description: 'Choose one of our beautiful templates and customize it to your liking.',
-      features: [
-        'Access to all templates',
-        'Up to 150 guests',
-        'Remove branding',
-        'Advanced analytics',
-      ],
-      cta: 'Get Started',
-      primary: true,
-    },
-    {
-      name: 'Custom',
-      priceId: 'contact', // Special case for contact
-      price: '$1499 MXN',
-      description: 'A unique design tailored to your event. We will work with you to create a one-of-a-kind invitation.',
-      features: [
-        'Everything in Template, plus:',
-        'Custom design',
-        'Dedicated support',
-        'Unlimited revisions',
-      ],
-      cta: 'Contact Us',
-      primary: false,
-    },
-  ];
-
-  /*
-  const handleCheckout = async (priceId: string) => {
-    if (priceId === 'contact') {
-      window.location.href = 'mailto:sales@digital-invitations.com';
-      return;
-    }
-
-    // setLoading(true);
-    try {
-      const res = await fetch('/api/stripe/checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ priceId }),
-      });
-
-      const { sessionId } = await res.json();
-      if (!sessionId) {
-        throw new Error('Could not create checkout session');
-      }
-
-      const stripe = await getStripe();
-      if (!stripe) {
-        throw new Error('Could not connect to Stripe');
-      }
-
-      await stripe.redirectToCheckout({ sessionId });
-    } catch (error) {
-      console.error(error);
-      alert('An error occurred. Please try again.');
-    } finally {
-      // setLoading(false);
-    }
-  };
-  */
-
+  const router = useRouter();
   return (
-    <div className="w-full py-12 md:py-24">
-      <div className="container px-4 md:px-6">
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            Choose the perfect plan for your event
+    <div className="relative w-full py-16 md:py-24 lg:py-32 overflow-hidden bg-slate-50 dark:bg-gray-950">
+      {/* Background gradients from home page */}
+      <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10"></div>
+      <div className="absolute top-0 -right-4 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10"></div>
+      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10"></div>
+      <div className="absolute -bottom-8 right-20 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10"></div>
+
+      <div className="container relative px-4 md:px-6 mx-auto">
+        <div className="mx-auto max-w-4xl text-center">
+          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+            Elige el paquete <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">perfecto</span> para tu evento
           </h1>
-          <p className="mt-6 text-lg text-gray-600">
-            Simple and transparent pricing.
+          <p className="mt-6 text-lg text-gray-600 dark:text-gray-400">
+            Tenemos opciones que se adaptan a tus necesidades. Ya sea que quieras una plantilla lista para usar o un diseño completamente personalizado.
           </p>
         </div>
-        <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+
+        <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12 max-w-4xl mx-auto">
           {tiers.map((tier) => (
             <div
               key={tier.name}
-              className={`rounded-3xl p-8 shadow-lg ring-1 ${
+              className={`rounded-3xl p-8 shadow-2xl transition-all duration-300 hover:shadow-indigo-500/20 hover:-translate-y-1 ${
                 tier.primary
-                  ? 'ring-gray-900 bg-gray-900 text-white'
-                  : 'ring-gray-200 bg-white'
+                  ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white ring-2 ring-purple-400'
+                  : 'bg-white dark:bg-gray-900 ring-1 ring-gray-200 dark:ring-gray-800'
               }`}
             >
-              <h2 className={`text-lg font-semibold ${tier.primary ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-2xl font-bold ${tier.primary ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
                 {tier.name}
               </h2>
-              <p className="mt-4 flex items-baseline gap-x-2">
-                <span className="text-4xl font-bold tracking-tight">
+              <p className={`mt-4 flex items-baseline gap-x-2 ${tier.primary ? 'text-indigo-100' : 'text-gray-500 dark:text-gray-400'}`}>
+                <span className="text-5xl font-extrabold tracking-tight">
                   {tier.price}
                 </span>
               </p>
-              <p className={`mt-6 text-sm ${tier.primary ? 'text-gray-300' : 'text-gray-600'}`}>
+              {tier.name === 'Personalizado' && (
+                <p className="mt- text-sm italic text-gray-500 dark:text-gray-400">
+                  El costo puede variar segun la personalizacion
+                </p>
+              )}
+              <p className={`mt-6 text-base leading-7 ${tier.primary ? 'text-indigo-200' : 'text-gray-600 dark:text-gray-300'}`}>
                 {tier.description}
               </p>
               <ul
                 role="list"
-                className={`mt-8 space-y-3 text-sm ${tier.primary ? 'text-gray-300' : 'text-gray-600'}`}
+                className={`mt-10 space-y-4 text-sm leading-6 ${tier.primary ? 'text-indigo-100' : 'text-gray-600 dark:text-gray-400'}`}
               >
                 {tier.features.map((feature) => (
-                  <li key={feature} className="flex gap-x-3">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className={`h-6 w-5 flex-none ${tier.primary ? 'text-white' : 'text-gray-900'}`}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4.5 12.75l6 6 9-13.5"
-                      />
-                    </svg>
+                  <li key={feature} className="flex gap-x-3 items-center">
+                    <Check
+                      className={`h-6 w-5 flex-none ${tier.primary ? 'text-white' : 'text-indigo-600'}`}
+                      aria-hidden="true"
+                    />
                     {feature}
                   </li>
                 ))}
@@ -131,20 +104,26 @@ export default function PricingPage() {
               <button
                 onClick={() => {
                   if (tier.priceId === 'contact') {
-                    window.location.href = 'mailto:sales@digital-invitations.com';
+                    router.push('/contact');
                   }
                 }}
                 disabled={tier.priceId !== 'contact'}
-                className={`mt-10 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+                className={`mt-10 block w-full rounded-full px-4 py-3 text-center text-base font-semibold leading-6 shadow-md transition-transform active:scale-95 ${
                   tier.primary
-                    ? 'bg-white text-gray-900 hover:bg-gray-100 focus-visible:outline-white'
-                    : 'bg-gray-900 text-white hover:bg-gray-800 focus-visible:outline-gray-900'
+                    ? 'bg-white text-indigo-600 hover:bg-indigo-50 focus-visible:outline-white'
+                    : 'bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:outline-indigo-600'
                 } disabled:opacity-50`}
               >
                 {tier.priceId === 'contact' ? tier.cta : 'Coming Soon'}
               </button>
             </div>
           ))}
+        </div>
+        
+        <div className="mt-16 text-center">
+          <p className="text-gray-500 dark:text-gray-400">
+            ¿Tienes preguntas? <Link href="/contact" className="font-semibold text-indigo-600 hover:text-indigo-500">Contáctanos</Link>
+          </p>
         </div>
       </div>
     </div>

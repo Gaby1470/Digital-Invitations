@@ -204,7 +204,7 @@ export default function AnimatedInvitation({ invitation }: AnimatedInvitationPro
         initial="hidden"
         animate="visible"
       >
-        <motion.p variants={minimalistItemVariants} className="text-lg text-white/70">You're invited to</motion.p>
+        <motion.p variants={minimalistItemVariants} className="text-lg text-white/70">You&apos;re invited to</motion.p>
         <motion.h1
           variants={minimalistItemVariants}
           className="text-5xl md:text-6xl font-sans font-bold tracking-tight text-white my-4"

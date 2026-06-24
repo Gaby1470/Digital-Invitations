@@ -26,6 +26,7 @@ export default function ListEditor<T>({
     const newItems = produce(items, (draft: T[]) => {
       const item = draft[index];
       if (item) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (item as any)[field] = value;
       }
     });

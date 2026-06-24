@@ -35,7 +35,7 @@ export default function ImageUploader({ onImageUploaded }: { onImageUploaded: (u
       .upload(filePath, file);
 
     if (uploadError) {
-      setError('Failed to upload image. Make sure the "invitation-images" bucket is public and configured for uploads.');
+      setError('Failed to upload image. Make sure the invitation-images bucket is public and configured for uploads.');
       console.error(uploadError);
     } else {
       const { data: { publicUrl } } = supabase.storage
