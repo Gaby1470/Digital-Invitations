@@ -287,21 +287,20 @@ export default function WeddingAquarrelTemplate({
                 <AnimatedSection 
                   key={index} 
                   delay={index * 0.1}
-                  // Make the first image a full-width focal point on mobile
-                  // On desktop (md:), it behaves normally within the 3-column grid
-                  className={index === 0 ? "col-span-2 md:col-span-1" : "col-span-1"}
                 >
-                  <div 
-                    className={`relative overflow-hidden rounded-md shadow-sm border border-stone-200/50 transition-all duration-500 hover:shadow-lg hover:-translate-y-1 ${
-                      // Taller aspect ratio for the mobile hero image, square for the rest
-                      index === 0 ? "aspect-[4/5] md:aspect-[4/5]" : "aspect-square md:aspect-[4/5]"
-                    }`}
-                  >
-                    <img
-                      src={src}
-                      alt={`Gallery image ${index + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-700 ease-in-out hover:scale-105"
-                    />
+                  <div className={index === 0 ? "col-span-2 md:col-span-1" : "col-span-1"}>
+                    <div 
+                      className={`relative overflow-hidden rounded-md shadow-sm border border-stone-200/50 transition-all duration-500 hover:shadow-lg hover:-translate-y-1 ${
+                        // Taller aspect ratio for the mobile hero image, square for the rest
+                        index === 0 ? "aspect-[4/5] md:aspect-[4/5]" : "aspect-square md:aspect-[4/5]"
+                      }`}
+                    >
+                      <img
+                        src={src}
+                        alt={`Gallery image ${index + 1}`}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-in-out hover:scale-105"
+                      />
+                    </div>
                   </div>
                 </AnimatedSection>
               ))}
