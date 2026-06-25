@@ -138,7 +138,7 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
       {gallery.length > 0 && (
         <section className="py-4 px-4 relative z-10 max-w-md mx-auto -mt-8">
           <PopIn>
-            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-6 px-4">
+            <div className="flex justify-center gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-6 px-4">
               {gallery.map((src: string, index: number) => (
                 <motion.div
                   key={index}
