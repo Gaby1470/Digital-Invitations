@@ -268,9 +268,9 @@ export default function WeddingAquarrelTemplate({
         </section>
       )}
 
-      {/* Gallery Section */}
+{/* Gallery Section - Enhanced */}
       {invitationData.galleryImages && invitationData.galleryImages.length > 0 && (
-        <section className="py-24 px-6 bg-[#FDFBF7]">
+        <section className="py-24 px-4 sm:px-6 bg-[#FDFBF7]">
           <div className="max-w-5xl mx-auto">
             <AnimatedSection>
               <h2
@@ -280,14 +280,27 @@ export default function WeddingAquarrelTemplate({
                 Our Moments
               </h2>
             </AnimatedSection>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            
+            {/* Enhanced Asymmetric Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               {invitationData.galleryImages.map((src: string, index: number) => (
-                <AnimatedSection key={index} delay={index * 0.1}>
-                  <div className="aspect-square relative overflow-hidden rounded-sm shadow-sm border border-stone-200/50 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
+                <AnimatedSection 
+                  key={index} 
+                  delay={index * 0.1}
+                  // Make the first image a full-width focal point on mobile
+                  // On desktop (md:), it behaves normally within the 3-column grid
+                  className={index === 0 ? "col-span-2 md:col-span-1" : "col-span-1"}
+                >
+                  <div 
+                    className={`relative overflow-hidden rounded-md shadow-sm border border-stone-200/50 transition-all duration-500 hover:shadow-lg hover:-translate-y-1 ${
+                      // Taller aspect ratio for the mobile hero image, square for the rest
+                      index === 0 ? "aspect-[4/5] md:aspect-[4/5]" : "aspect-square md:aspect-[4/5]"
+                    }`}
+                  >
                     <img
                       src={src}
                       alt={`Gallery image ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-700 ease-in-out hover:scale-105"
                     />
                   </div>
                 </AnimatedSection>
@@ -310,7 +323,7 @@ export default function WeddingAquarrelTemplate({
         </div>
       </section>
 
-      {/* RSVP Section */}
+      {/* RSVP Section */} 
       <section className="py-24 px-6 bg-white border-t border-stone-100">
         <div className="max-w-lg mx-auto">
           <AnimatedSection>
