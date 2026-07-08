@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
@@ -109,10 +110,11 @@ export default function WeddingAquarrelTemplate({
             transition={{ duration: 1.2 }}
             className="relative w-full max-w-md aspect-[3/4] mb-8"
           >
-            <img
+            <Image
               src="/save-date-acuarela.jpg"
-              className="w-full h-full object-contain mix-blend-multiply"
               alt="Save the Date Sketch"
+              fill
+              className="object-contain mix-blend-multiply"
             />
           </motion.div>
 
@@ -225,10 +227,11 @@ export default function WeddingAquarrelTemplate({
                   <div className="flex-1 w-full relative aspect-[4/3] rounded-sm overflow-hidden shadow-md">
                      <AnimatedSection delay={index * 0.1}>
                         {item.imageSrc && (
-                          <img
+                          <Image
                             src={item.imageSrc}
-                            alt={item.imageAlt}
-                            className="w-full h-full object-cover"
+                            alt={item.imageAlt || "Timeline image"}
+                            fill
+                            className="object-cover"
                           />
                         )}
                      </AnimatedSection>
@@ -295,10 +298,11 @@ export default function WeddingAquarrelTemplate({
                         index === 0 ? "aspect-[4/5] md:aspect-[4/5]" : "aspect-square md:aspect-[4/5]"
                       }`}
                     >
-                      <img
+                      <Image
                         src={src}
                         alt={`Gallery image ${index + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-in-out hover:scale-105"
+                        fill
+                        className="object-cover transition-transform duration-700 ease-in-out hover:scale-105"
                       />
                     </div>
                   </div>

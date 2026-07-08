@@ -12,6 +12,8 @@ import {
 import { DressCodePreview } from "./shared/DressCodePreview";
 import { RsvpSection } from "./shared/RsvpSection";
 
+import Image from "next/image";
+
 function AnimatedSection({
   children,
   delay = 0,
@@ -75,12 +77,13 @@ export default function OldMoneyTemplate({
           transition={{ duration: 1.5 }}
           className="absolute inset-0 z-0"
         >
-          <img
+          <Image
             src={
               invitationData.hero_image_url ||
               "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80"
             }
-            className="w-full h-full object-cover object-top"
+            fill
+            className="object-cover object-top"
             alt="Couple"
           />
           {/* Subtle gradient overlay to ensure text legibility */}
@@ -265,11 +268,12 @@ export default function OldMoneyTemplate({
           <AnimatedSection>
             <div className="grid grid-cols-2 gap-2 max-w-md mx-auto">
               {invitationData.galleryImages?.map((src: string, idx: number) => (
-                <div key={idx} className="aspect-square">
-                  <img 
+                <div key={idx} className="aspect-square relative">
+                  <Image 
                     src={src} 
                     alt={`Gallery ${idx + 1}`} 
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
               ))}

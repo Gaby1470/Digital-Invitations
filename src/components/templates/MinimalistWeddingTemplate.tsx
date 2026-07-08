@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import {
@@ -102,13 +103,14 @@ export default function MinimalistWeddingTemplate({
             scale: imageScale,
           }}
         >
-          <img
+          <Image
             src={
               invitationData.hero_image_url ||
               "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070&auto=format&fit=crop"
             }
-            className="w-full h-full object-cover"
             alt="Wedding Background"
+            fill
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-black/35" />
         </motion.div>
@@ -229,10 +231,11 @@ export default function MinimalistWeddingTemplate({
                 onClick={() => setSelectedImage(src)}
               >
                 <div className="relative aspect-[3/4] overflow-hidden bg-white p-2.5 border border-neutral-200/60 shadow-sm rounded-md">
-                  <img
+                  <Image
                     src={src}
                     alt="Gallery split"
-                    className="w-full h-full object-cover filter grayscale contrast-[102%] hover:grayscale-0 transition-all duration-700 ease-out"
+                    fill
+                    className="object-cover filter grayscale contrast-[102%] hover:grayscale-0 transition-all duration-700 ease-out"
                   />
                 </div>
               </div>

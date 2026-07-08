@@ -3,6 +3,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { EditorData, TemplateConfig } from '@/lib/types';
+import Image from 'next/image';
 import { RsvpSection } from './shared/RsvpSection';
 
 function BounceIn({ children, delay = 0, direction = "up" }: { children: React.ReactNode, delay?: number, direction?: "up" | "left" | "right" }) {
@@ -62,31 +63,41 @@ export default function SportsBirthdayTemplate({ template, data, invitationId }:
       
       {/* DECORATION LAYER: Floating sports elements */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <motion.img 
+        <motion.div 
           animate={{ y: [0, 10, 0], rotate: [-12, -8, -12] }} 
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          src="/soccer-ball.png" alt="" className="absolute top-12 -right-8 w-28 opacity-90 drop-shadow-lg" 
-        />
-        <motion.img 
+          className="absolute top-12 -right-8 w-28 h-28 opacity-90 drop-shadow-lg" 
+        >
+          <Image src="/soccer-ball.png" alt="" fill className="object-contain" />
+        </motion.div>
+        <motion.div 
           animate={{ y: [0, -12, 0], rotate: [45, 50, 45] }} 
           transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          src="/basket-ball.png" alt="" className="absolute top-1/3 -left-10 w-24 opacity-90 drop-shadow-lg" 
-        />
-        <motion.img 
+          className="absolute top-1/3 -left-10 w-24 h-24 opacity-90 drop-shadow-lg"
+        >
+          <Image src="/basket-ball.png" alt="" fill className="object-contain" />
+        </motion.div>
+        <motion.div 
           animate={{ y: [0, 15, 0], rotate: [-6, 0, -6] }} 
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          src="/jersey.png" alt="" className="absolute bottom-5 -right-6 w-32 opacity-90 drop-shadow-lg" 
-        />
-        <motion.img 
+          className="absolute bottom-5 -right-6 w-32 h-32 opacity-90 drop-shadow-lg"
+        >
+          <Image src="/jersey.png" alt="" fill className="object-contain" />
+        </motion.div>
+        <motion.div 
           animate={{ y: [0, -10, 0], rotate: [6, 10, 6] }} 
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-          src="/trophy.png" alt="" className="absolute bottom-1/2 -right-10 w-36 opacity-90 drop-shadow-lg" 
-        />
-        <motion.img 
+          className="absolute bottom-1/2 -right-10 w-36 h-36 opacity-90 drop-shadow-lg"
+        >
+          <Image src="/trophy.png" alt="" fill className="object-contain" />
+        </motion.div>
+        <motion.div 
           animate={{ y: [0, 12, 0], rotate: [-12, -18, -12] }} 
           transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-          src="/soccer-ball.png" alt="" className="absolute bottom-10 -left-8 w-24 opacity-90 drop-shadow-lg" 
-        />
+          className="absolute bottom-10 -left-8 w-24 h-24 opacity-90 drop-shadow-lg"
+        >
+          <Image src="/soccer-ball.png" alt="" fill className="object-contain" />
+        </motion.div>
       </div>
 
       {/* CONTENT LAYER */}
@@ -106,11 +117,12 @@ export default function SportsBirthdayTemplate({ template, data, invitationId }:
           <div className="w-full mb-12 relative flex flex-col items-center">
             <div className="w-[85%] bg-white p-3 rounded-[1rem] border-4 border-black shadow-[8px_8px_0px_#000000] relative z-10 transform -rotate-2">
               {invitationData.photoUrl ? (
-                <div className="aspect-[4/5] w-full overflow-hidden rounded-[0.5rem] bg-neutral-100 border-2 border-black">
-                  <img 
+                <div className="aspect-[4/5] w-full overflow-hidden rounded-[0.5rem] bg-neutral-100 border-2 border-black relative">
+                  <Image 
                     src={invitationData.photoUrl} 
-                    alt={invitationData.heroNames} 
-                    className="w-full h-full object-cover" 
+                    alt={invitationData.heroNames || "Hero Image"}
+                    fill
+                    className="object-cover" 
                   />
                 </div>
               ) : (

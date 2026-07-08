@@ -2,6 +2,7 @@
 
 import { motion, useInView, AnimatePresence, TargetAndTransition } from 'framer-motion';
 import { useRef, useState } from 'react';
+import Image from 'next/image';
 import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
 import { MapPin } from 'lucide-react';
 
@@ -156,10 +157,11 @@ export default function GenderRevealTemplate({ template, data }: GenderRevealTem
               <div className="relative mx-auto max-w-xs sm:max-w-sm md:max-w-none group">
                 <div className="absolute -inset-3 rounded-[2.5rem] rotate-2 bg-gradient-to-tr from-pink-200/50 via-amber-100/50 to-sky-200/50 group-hover:rotate-0 transition-transform duration-500" />
                 <div className="relative overflow-hidden rounded-[2rem] shadow-xl border-8 border-white aspect-[4/5]">
-                  <img 
+                  <Image 
                     src={invitationData.family_image_url || 'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/gender-1.jpg'} 
                     alt="The Happy Family"
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
               </div>

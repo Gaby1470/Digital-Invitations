@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { EditorData, TemplateConfig, TimelineItem, CourtMember } from "@/lib/types";
+import Image from "next/image";
 import { RsvpSection } from "./shared/RsvpSection";
 
 // Helper for smooth scroll animations
@@ -50,14 +51,19 @@ export default function QuinceaneraTemplate({ template, data, invitationId }: Qu
       >
         <div className="absolute inset-0 z-0">
           {/* Subtle Ken Burns zoom effect */}
-          <motion.img 
+          <motion.div 
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 10, ease: "easeOut" }}
-            src={heroImageUrl} 
-            className="w-full h-full object-cover object-center opacity-100"
-            alt="Celebration background"
-          />
+            className="w-full h-full"
+          >
+            <Image 
+              src={heroImageUrl} 
+              fill
+              className="object-cover object-center"
+              alt="Celebration background"
+            />
+          </motion.div>
           {/* Heavy vignette gradient for perfect text legibility without muddying the center */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" />
         </div>
@@ -168,10 +174,11 @@ export default function QuinceaneraTemplate({ template, data, invitationId }: Qu
               <div key={member.name} className="flex-none w-[65vw] max-w-[220px] snap-center first:ml-0 last:mr-8">
                 <AnimatedSection delay={idx * 0.05}>
                   <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-black/5 bg-slate-200 group">
-                    <img 
+                    <Image 
                       src={member.photoUrl} 
                       alt={member.name} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105" 
                     />
                     {/* Strong dark gradient ensures names are always readable */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />

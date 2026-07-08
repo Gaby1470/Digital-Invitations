@@ -4,6 +4,8 @@ import { motion, useInView } from 'framer-motion';
 import { useMemo, useRef } from 'react';
 import { EditorData, TemplateConfig } from '@/lib/types';
 
+import Image from 'next/image';
+
 // Soft, elegant fade-in animation suitable for a princess theme
 function GentleFadeIn({ children, delay = 0, direction = "up" }: { children: React.ReactNode, delay?: number, direction?: "up" | "none" }) {
   const ref = useRef(null);
@@ -98,21 +100,27 @@ export default function PrincessBirthdayTemplate({ template, data }: PrincessBir
       {/* Decorative Castle - Fixed to bottom */}
       <div className="absolute bottom-0 left-0 w-full flex justify-center pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white/40 opacity-30" />
-        <img 
-          src="/castillo.png" 
-          alt="Royal Castle" 
-          className="w-full max-w-[450px] object-cover opacity-80 drop-shadow-2xl" 
-        />
+        <div className="w-full max-w-[450px] h-[450px] relative">
+          <Image 
+            src="/castillo.png" 
+            alt="Royal Castle" 
+            fill
+            className="object-contain opacity-80 drop-shadow-2xl" 
+          />
+        </div>
       </div>
 
       {/* Pink Bow Image Fixed at the Very Top */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 w-full flex justify-center mt-4">
         <GentleFadeIn direction="none">
-          <img 
-            src="/pink-bow.png" 
-            alt="Decorative Bow" 
-            className="w-full max-w-100 drop-shadow-md" 
-          />
+          <div className="w-full max-w-xs h-24 relative">
+            <Image 
+              src="/pink-bow.png" 
+              alt="Decorative Bow" 
+              fill
+              className="object-contain drop-shadow-md" 
+            />
+          </div>
         </GentleFadeIn>
       </div>
 
@@ -150,12 +158,13 @@ export default function PrincessBirthdayTemplate({ template, data }: PrincessBir
 
             {/* Elegant oval frame with gold border */}
             <div className="w-52 h-72 relative z-10 p-1 rounded-t-full rounded-b-full bg-gradient-to-b from-[#E6D089] to-[#AA7F39] shadow-[0_15px_35px_rgba(184,151,102,0.25)]">
-              <div className="w-full h-full bg-white rounded-t-full rounded-b-full overflow-hidden border-4 border-white">
+              <div className="w-full h-full bg-white rounded-t-full rounded-b-full overflow-hidden border-4 border-white relative">
                 {invitationData.photoUrl ? (
-                  <img 
+                  <Image 
                     src={invitationData.photoUrl} 
-                    alt={invitationData.heroNames} 
-                    className="w-full h-full object-cover" 
+                    alt={invitationData.heroNames || "Royal Portrait"}
+                    fill
+                    className="object-cover" 
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-[#FCF1F1]">

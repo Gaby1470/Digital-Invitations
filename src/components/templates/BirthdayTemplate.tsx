@@ -2,6 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
 import confetti from 'canvas-confetti';
 
@@ -146,11 +147,12 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
                   style={{ rotate: index % 2 === 0 ? '-1.5deg' : '1.5deg' }}
                   whileTap={{ rotate: 0, scale: 0.98 }}
                 >
-                  <div className="aspect-square w-full overflow-hidden rounded-xl bg-neutral-50">
-                    <img 
+                  <div className="aspect-square w-full overflow-hidden rounded-xl bg-neutral-50 relative">
+                    <Image 
                       src={src} 
                       alt={`Birthday portrait memory ${index + 1}`} 
-                      className="w-full h-full object-cover" 
+                      fill
+                      className="object-cover" 
                     />
                   </div>
                   <div className="mt-3 text-center font-mono text-[9px] text-neutral-400 uppercase tracking-widest font-bold">

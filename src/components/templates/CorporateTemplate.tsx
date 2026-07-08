@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
@@ -134,10 +135,11 @@ export default function CorporateTemplate({ template, data, invitationId }: Corp
             <SectionReveal key={i} delay={i * 0.1}>
               <div className="group cursor-pointer">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-800 mb-4 border" style={{ borderColor: `${invitationData.textColor}1A` }}>
-                  <img 
+                  <Image 
                     src={src} 
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                     alt="Speaker"
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                   />
                 </div>
                 <h4 className="text-lg font-bold">Executive Name</h4>

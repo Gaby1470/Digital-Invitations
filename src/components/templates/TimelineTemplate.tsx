@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 import {
   EditorData,
   TemplateConfig,
@@ -89,12 +90,13 @@ export default function TimelineTemplate({
           transition={{ duration: 1.2 }}
           className="absolute inset-0 z-0"
         >
-          <img
+          <Image
             src={
               invitationData.hero_image_url ||
               "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80"
             }
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
             alt="Wedding Hero"
           />
           <div className="absolute inset-0 bg-black/35 backdrop-blur-[1px]" />
@@ -205,10 +207,12 @@ export default function TimelineTemplate({
                     <div className="flex-1 hidden md:block">
                       <AnimatedSection delay={index * 0.1}>
                         {item.imageSrc && (
-                            <img
+                            <Image
                               src={item.imageSrc}
                               alt={item.title}
-                              className="w-48 h-48 object-contain mx-auto"
+                              width={192}
+                              height={192}
+                              className="object-contain mx-auto"
                             />
                         )}
                       </AnimatedSection>
@@ -247,10 +251,11 @@ export default function TimelineTemplate({
               >
                 <div className="bg-white p-2.5 pb-8 shadow-md shadow-stone-900/5 border border-stone-200/50 rounded-sm">
                   <div className="relative aspect-[3/4] overflow-hidden rounded-xs bg-stone-50">
-                    <img
+                    <Image
                       src={src}
                       alt="Gallery presentation"
-                      className="w-full h-full object-cover filter contrast-[98%] transition-all duration-500"
+                      fill
+                      className="object-cover filter contrast-[98%] transition-all duration-500"
                     />
                   </div>
                   <div className="mt-3.5 flex justify-center items-center gap-1 opacity-40">
