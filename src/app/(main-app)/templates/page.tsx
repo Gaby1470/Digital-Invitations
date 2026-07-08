@@ -47,10 +47,10 @@ export default function TemplatesPage() {
           
           <div className="max-w-2xl mb-8 md:mb-12">
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl mb-3">
-              Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">Design</span>
+              Elige tu <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">Diseño</span>
             </h1>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400">
-              Select from our curated collection of professional templates and make them your own.
+              Selecciona de nuestra colección curada de plantillas profesionales y hazlas tuyas.
             </p>
           </div>
 
@@ -69,7 +69,7 @@ export default function TemplatesPage() {
                 : "bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
             >
-              All Designs
+              Todos los Diseños
             </button>
             {categories.map((category) => (
               <button

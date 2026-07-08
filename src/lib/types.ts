@@ -92,14 +92,14 @@ export type TemplateFeatures = {
 export type TemplateConfig = {
   name: string;
   category:
-    | "Wedding"
-    | "XV Years"
-    | "Birthday"
-    | "Kids Birthday"
+    | "Boda"
+    | "XV Años"
+    | "Cumpleaños"
+    | "Cumpleaños Infantil"
     | "Baby Shower"
-    | "Graduation"
-    | "Baptism"
-    | "Corporate"
+    | "Graduación"
+    | "Bautizo"
+    | "Corporativo"
     | "General";
   description: string;
   font: string;

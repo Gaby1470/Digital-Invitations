@@ -51,7 +51,7 @@ export default function ImageUploader({ onImageUploaded }: { onImageUploaded: (u
   return (
     <div>
       <p className="text-sm text-gray-600 mb-4">
-        Upload an image to your gallery. This requires a public Supabase storage bucket named "invitation-images".
+        Sube una imagen para tu invitación.
       </p>
       <input
         type="file"

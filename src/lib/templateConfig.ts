@@ -3,9 +3,9 @@ import { TemplateConfig } from "./types";
 
 export const templateConfig: { [key: string]: TemplateConfig } = {
   "timeline-wedding": {
-    name: "Timeline Wedding",
+    name: "Boda - Linea del Tiempo",
     thumbnail: "/branding/portadas/portada-timeline.png",
-    category: "Wedding",
+    category: "Boda",
     description: "A beautiful, scrolling story of your special day.",
     font: "font-serif",
     defaultFont: "Playfair Display",
@@ -90,11 +90,20 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       gallery: true,
       guestCount: true,
     },
+    formSections: [
+      "main-details",
+      "event-schedule",
+      "gallery",
+      "dress-code",
+      "recommendations",
+      "gift-section",
+      "colors-and-style",
+    ],
   },
   "minimalist-wedding": {
     name: "Black and White Wedding",
     thumbnail: "/branding/portadas/portada-bnw.png",
-    category: "Wedding",
+    category: "Boda",
     description: "Clean, modern, and elegant. For the minimalist couple.",
     font: "font-sans",
     defaultFont: "Montserrat",
@@ -155,7 +164,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   "quinceanera-dream": {
     name: "XV Años",
     thumbnail: "/branding/portadas/portada-quince.png",
-    category: "XV Years",
+    category: "XV Años",
     description:
       "Tu celebración de XV años hecha realidad en una invitación digital.",
     font: "font-serif",
@@ -221,7 +230,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   "kids-birthday-bash": {
     name: "Fiesta de Cumpleaños Infantil",
     thumbnail: "/branding/portadas/portada-bdy2.png",
-    category: "Kids Birthday",
+    category: "Cumpleaños Infantil",
     description: "Una fiesta divertida y temática para los más pequeños.",
     font: "font-sans",
     defaultFont: "Nunito",
@@ -275,7 +284,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   "baptism-ethereal": {
     name: "Bautizo",
     thumbnail: "/branding/portadas/portada-bautizo.png",
-    category: "Baby Shower",
+    category: "Bautizo",
     description: "Un diseño sereno y etéreo para bautizos.",
     font: "font-serif",
     defaultFont: "Cormorant Garamond",
@@ -372,7 +381,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   "graduation-celebration": {
     name: "Celebración de Graduación",
     thumbnail: "/branding/portadas/portada-graduation-formal.png",
-    category: "Graduation",
+    category: "Graduación",
     description: "Una celebración de logros y nuevos comienzos.",
     font: "font-serif",
     defaultFont: "Great Vibes",
@@ -410,7 +419,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   "corporate-summit": {
     name: "Evento Ejecutivo",
     thumbnail: "/branding/portadas/portada-coorporate.png",
-    category: "Corporate",
+    category: "Corporativo",
     description: "Un diseño de alta gama en modo oscuro para eventos profesionales.",
     font: "font-sans",
     defaultFont: "Inter",
@@ -519,7 +528,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   "scrapbook-graduation": {
     name: "Graduación - Moderno",
     thumbnail: "/branding/portadas/portada-grad-cool.png",
-    category: "Graduation",
+    category: "Graduación",
     description: "A fun, scrapbook-style invitation for graduates.",
     font: "font-mono",
     defaultFont: "Permanent Marker",
@@ -591,7 +600,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   "old-money-wedding": {
     name: "Old Money Wedding",
     thumbnail: "/branding/portadas/portada-oldMoney.png",
-    category: "Wedding",
+    category: "Boda",
     description: "An elegant and timeless wedding invitation with a classic, sophisticated feel.",
     font: "font-serif",
     defaultFont: "Cormorant Garamond",
@@ -642,7 +651,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   'wedding-aquarrel': {
     name: 'Watercolor Sketch',
     description: 'A romantic, artistic template featuring watercolor illustrations and elegant typography.',
-    category: 'Wedding',
+    category: 'Boda',
     thumbnail: '/save-date-acuarela.jpg',
     font: 'font-serif',
     defaultFont: 'Playfair Display',
@@ -701,7 +710,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   'sports-birthday': {
     name: "Sports Birthday",
     thumbnail: "/branding/portadas/portada-soccer.png",
-    category: "Kids Birthday",
+    category: "Cumpleaños Infantil",
     description: "A high-energy, modern template for a sports-themed birthday.",
     font: "font-sans",
     defaultFont: "Inter",
@@ -735,7 +744,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   'princess-birthday': {
     name: "Princess Birthday",
     thumbnail: "/branding/portadas/portada-princesa.png",
-    category: "Kids Birthday",
+    category: "Cumpleaños Infantil",
     description: "A magical and elegant birthday invitation for a little princess.",
     font: "font-serif",
     defaultFont: "Dancing Script",

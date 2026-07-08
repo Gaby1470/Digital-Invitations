@@ -91,6 +91,21 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
         />
       </div>
 
+      {/* Guest Count */}
+      {templateFeatures.guestCount && (
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Número de Invitados</label>
+          <input
+            type="number"
+            value={data.guestCount?.toString() || ''}
+            onChange={(e) => onFieldChange('guestCount', e.target.value)}
+            placeholder="p. ej., 2"
+            min={0}
+            className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow text-slate-900"
+          />
+        </div>
+      )}
+
       {/* START TIME */}
       {defaultData.startTime !== undefined && (
         <div className="space-y-2">

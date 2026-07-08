@@ -1,17 +1,8 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import { categories } from '@/lib/categoryConfig';
 
 export default function Home() {
-  const categories = [
-    { name: 'Weddings', href: '/templates', icon: '💍' },
-    { name: 'Birthdays', href: '/templates', icon: '🎉' },
-    { name: 'Baby Showers', href: '/templates', icon: '🍼' },
-    { name: 'Graduations', href: '/templates', icon: '🎓' },
-    { name: 'Quinceañeras', href: '/templates', icon: '👑' },
-    { name: 'Baptisms', href: '/templates', icon: '🕊️' },
-    { name: 'Corporate', href: '/templates', icon: '💼' },
-    { name: 'Parties', href: '/templates', icon: '🥳' },
-  ];
-
   return (
     <main>
       <section className="relative w-full py-12 md:py-24 lg:py-32 xl:py-40 overflow-hidden bg-slate-50 dark:bg-gray-950">
@@ -27,13 +18,13 @@ export default function Home() {
             <div className="flex flex-col justify-center space-y-8 text-center lg:text-left">
               <div className="space-y-4">
                 <div className="inline-block rounded-full bg-indigo-100 px-4 py-1.5 text-sm font-semibold text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300">
-                  ✨ Elevate Your Events
+                  ✨ Eleva tus eventos
                 </div>
                 <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-                  Create <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">Unforgettable</span> Digital Invitations
+                  Crea <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">Invitaciones Digitales</span> Inolvidables
                 </h1>
                 <p className="mx-auto max-w-[600px] text-gray-600 md:text-lg lg:text-xl dark:text-gray-400 lg:mx-0">
-                  Design and share beautiful, animated invitations for any occasion. Choose a stunning template, customize it to your style, and instantly delight your guests.
+                  Diseña y comparte invitaciones digitales personalizadas para bodas, cumpleaños, baby showers y más. Haz que cada evento sea especial con nuestras plantillas elegantes y fáciles de usar.
                 </p>
               </div>
 
@@ -91,15 +82,21 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Browse by Occasion</h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">Find the perfect template for any event.</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-4 md:gap-6">
-            {categories.map((category) => (
-              <Link href={category.href} key={category.name} className="group block text-center p-6 rounded-2xl bg-slate-50 dark:bg-gray-800/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all duration-300 transform hover:-translate-y-1">
-                <div className="text-4xl mb-3">
-                  {category.icon}
-                </div>
-                <p className="font-semibold text-gray-800 dark:text-gray-200">{category.name}</p>
-              </Link>
-            ))}
+          <div className="text-center">
+            <div className="inline-grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-7 gap-4 md:gap-6">
+              {categories.map((category) => (
+                <Link href={category.href} key={category.name} className="group block text-center p-6 rounded-2xl bg-slate-50 dark:bg-gray-800/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all duration-300 transform hover:-translate-y-1">
+                  <div className="flex justify-center items-center text-7xl mb-3 h-20">
+                    {typeof category.icon === 'string' ? (
+                      <span>{category.icon}</span>
+                    ) : (
+                      <Image src={category.icon} alt={category.name} width={80} height={80} />
+                    )}
+                  </div>
+                  <p className="font-semibold text-gray-800 dark:text-gray-200">{category.name}</p>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
