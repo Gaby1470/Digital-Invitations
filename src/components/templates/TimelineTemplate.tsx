@@ -19,7 +19,6 @@ interface ExtendedTimelineItem extends TimelineItem {
   imageSrc?: string;
 }
 
-
 function AnimatedSection({
   children,
   delay = 0,
@@ -156,9 +155,10 @@ export default function TimelineTemplate({
               </h2>
             </AnimatedSection>
 
-            <div className="relative pl-6 md:pl-0 space-y-12 md:space-y-24">
+            <div className="relative space-y-12 md:space-y-24">
+              {/* Perfectly centered timeline dot track */}
               <div
-                className="absolute left-1.5 md:left-1/2 top-2 bottom-2 w-[1px] -translate-x-1/2"
+                className="absolute left-1/2 top-2 bottom-2 w-[1px] -translate-x-1/2"
                 style={{ backgroundColor: `${invitationData.textColor}1A` }}
               />
 
@@ -166,32 +166,35 @@ export default function TimelineTemplate({
                 (item: ExtendedTimelineItem, index: number) => (
                   <div
                     key={index}
-                    className={`flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
+                    // Enforce flex-row layout on all screen sizes to keep the images side-by-side
+                    className={`flex flex-row items-center gap-4 sm:gap-8 ${index % 2 === 0 ? "flex-row-reverse" : ""}`}
                   >
-                    <div className="flex-1 w-full text-left">
+                    {/* min-w-0 prevents flex items from overflowing when content is too long */}
+                    <div className="flex-1 w-full min-w-0">
                       <AnimatedSection delay={index * 0.05}>
                         <div
-                          className={`p-6 sm:p-8 rounded-2xl border bg-white shadow-sm transition-transform duration-300 md:text-left ${
-                            index % 2 === 0 ? "md:text-left" : "md:text-right"
+                          // break-words ensures long unspaced strings wrap instead of breaking the layout
+                          className={`p-4 sm:p-8 rounded-2xl border bg-white shadow-sm transition-transform duration-300 break-words ${
+                            index % 2 === 0 ? "text-left" : "text-right"
                           }`}
                           style={{
                             borderColor: `${invitationData.textColor}12`,
                           }}
                         >
                           <span
-                            className="font-mono text-[11px] tracking-widest uppercase mb-1.5 block font-medium"
+                            className="font-mono text-[9px] sm:text-[11px] tracking-widest uppercase mb-1.5 block font-medium"
                             style={{ color: invitationData.primaryColor }}
                           >
                             {item.time}
                           </span>
                           <h3
-                            className="text-xl sm:text-2xl font-serif mb-1.5"
+                            className="text-lg sm:text-2xl font-serif mb-1.5"
                             style={{ color: invitationData.textColor }}
                           >
                             {item.title}
                           </h3>
                           <p
-                            className="font-light text-xs sm:text-sm"
+                            className="font-light text-[10px] sm:text-sm"
                             style={{ color: `${invitationData.textColor}80` }}
                           >
                             {item.location}
@@ -200,11 +203,14 @@ export default function TimelineTemplate({
                       </AnimatedSection>
                     </div>
 
+                    {/* shrink-0 keeps the dot perfectly sized regardless of text length */}
                     <div
-                      className="absolute left-0 md:static z-10 w-3 h-3 md:w-4 md:h-4 rounded-full border-[3px] md:border-4 border-white shadow-sm mt-7 md:mt-0 -translate-x-1/2 md:translate-x-0"
+                      className="z-10 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-[3px] sm:border-4 border-white shadow-sm shrink-0"
                       style={{ backgroundColor: invitationData.primaryColor }}
                     />
-                    <div className="flex-1 hidden md:block">
+                    
+                    {/* Images are now visible on all sizes (hidden class removed) */}
+                    <div className="flex-1 min-w-0">
                       <AnimatedSection delay={index * 0.1}>
                         {item.imageSrc && (
                             <Image
@@ -212,7 +218,7 @@ export default function TimelineTemplate({
                               alt={item.title}
                               width={192}
                               height={192}
-                              className="object-contain mx-auto"
+                              className="object-contain mx-auto w-20 sm:w-48"
                             />
                         )}
                       </AnimatedSection>

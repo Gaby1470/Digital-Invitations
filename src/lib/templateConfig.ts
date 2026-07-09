@@ -92,12 +92,12 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
     formSections: [
       "main-details",
-      "event-schedule",
-      "gallery",
-      "dress-code",
-      "recommendations",
-      "gift-section",
       "colors-and-style",
+      "event-schedule",
+      "recommendations",
+      "dress-code",
+      "gift-section",
+      "gallery",
     ],
   },
   "minimalist-wedding": {
@@ -701,10 +701,10 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
     formSections: [
       'main-details',
+      'colors-and-style',
       'event-schedule',
       'gallery',
       'guest-count',
-      'colors-and-style',
     ]
   },
   'sports-birthday': {

@@ -143,23 +143,7 @@ export default function OldMoneyTemplate({
           </p>
         </AnimatedSection>
 
-        {((invitationData.partner1Parents?.length || 0) > 0 || (invitationData.partner2Parents?.length || 0) > 0) && (
-          <AnimatedSection delay={0.2}>
-            <div className="space-y-6">
-              <h3 className="font-serif italic text-2xl" style={{ color: accentColor }}>
-                Con la bendición de Nuestros padres
-              </h3>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[10px] uppercase tracking-widest opacity-80">
-                <div className="space-y-1">
-                  {invitationData.partner1Parents?.map((p: string) => <p key={p}>{p}</p>)}
-                </div>
-                <div className="space-y-1">
-                  {invitationData.partner2Parents?.map((p: string) => <p key={p}>{p}</p>)}
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-        )}
+        {/* This block is intentionally left empty to remove the parents section */}
 
         {(invitationData.godparents?.length || 0) > 0 && (
           <AnimatedSection delay={0.3}>
