@@ -45,10 +45,10 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
           </>
         ) : (
           <>
-            <ColorInput label="Primary Color" value={data.primaryColor} onChange={(val) => onFieldChange('primaryColor', val)} />
-            <ColorInput label="Text Color" value={data.textColor} onChange={(val) => onFieldChange('textColor', val)} />
+            <ColorInput label="Color Principal" value={data.primaryColor} onChange={(val) => onFieldChange('primaryColor', val)} />
+            <ColorInput label="Color del Texto" value={data.textColor} onChange={(val) => onFieldChange('textColor', val)} />
             {data.backgroundColor !== undefined && (
-              <ColorInput label="Background Color" value={data.backgroundColor} onChange={(val) => onFieldChange('backgroundColor', val)} />
+              <ColorInput label="Color de Fondo" value={data.backgroundColor} onChange={(val) => onFieldChange('backgroundColor', val)} />
             )}
           </>
         )}

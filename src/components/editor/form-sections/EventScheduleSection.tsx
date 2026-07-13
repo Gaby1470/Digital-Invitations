@@ -22,9 +22,10 @@ export default function EventScheduleSection({ data, onFieldChange }: EventSched
         onChange={(items) => onFieldChange('timelineItems', items)}
         renderItem={(item, index, handleItemChange) => (
           <div className="space-y-4">
-            <TimePicker label="Time" value={item.time} onChange={(val) => handleItemChange(index, 'time', val)} />
-            <TextInput label="Title" value={item.title} onChange={(val) => handleItemChange(index, 'title', val)} />
-            <TextInput label="Location" value={item.location} onChange={(val) => handleItemChange(index, 'location', val)} />
+            <TimePicker label="Horario" value={item.time} onChange={(val) => handleItemChange(index, 'time', val)} />
+            <TextInput label="Título" value={item.title} onChange={(val) => handleItemChange(index, 'title', val)} />
+            <TextInput label="Ubicación" value={item.location} onChange={(val) => handleItemChange(index, 'location', val)} />
+            <TextInput label="Enlace del Mapa (URL)" value={item.mapLink || ''} onChange={(val) => handleItemChange(index, 'mapLink', val)} placeholder="https://maps.google.com/..." />
           </div>
         )}
       />

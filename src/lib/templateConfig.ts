@@ -159,6 +159,13 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       gallery: true,
       guestCount: true,
     },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'dress-code',
+      'event-schedule',
+      'gallery',
+    ],
   },
 
   "quinceanera-dream": {
@@ -625,8 +632,8 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       godparents: [{ name: "Jorge Albiter Hernández & Janeth Benitez Rebollar", role: "Padrinos" }],
       venueDividerText: "Después de la ceremonia religiosa agradecemos su presencia en",
       timelineItems: [
-         { time: "1:00 PM", title: "Ceremonia", location: "Parroquia de San Luis Obispo de Huamantla\nC. Hidalgo Manzana 031, San Luis Huexotla\n56220 San Luis Huexotla, Méx", mapLink: "#" },
-         { time: "3:30 PM", title: "Recepción", location: "Rancho Caballerizas\nAv. Aguilas 36, Lomas de San Esteban\n56257 Texcoco de Mora, Méx", mapLink: "#" },
+        { time: "1:00 PM", title: "Ceremonia", location: "Parroquia de San Luis Obispo de Huamantla\nC. Hidalgo Manzana 031, San Luis Huexotla\n56220 San Luis Huexotla, Méx", mapLink: "" },
+        { time: "3:30 PM", title: "Recepción", location: "Rancho Caballerizas\nAv. Aguilas 36, Lomas de San Esteban\n56257 Texcoco de Mora, Méx", mapLink: "" },
       ],
       dressCode: {
         man: "Formal",
@@ -647,6 +654,13 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       parentsAndGodparents: true,
       guestCount: true,
     },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'dress-code',
+      'event-schedule',
+      'gallery',
+    ],
   },
   'wedding-aquarrel': {
     name: 'Watercolor Sketch',

@@ -29,7 +29,7 @@ export default function DressCodeSection({ data, onFieldChange }: DressCodeSecti
             <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
             <input
               type="url"
-              placeholder="Men's board: https://pinterest.com/..."
+              placeholder="Inspiración Hombres: https://pinterest.com/..."
               value={currentDressCode.pinterestUrlMan || ''}
               onChange={(e) => handlePinterestChange('pinterestUrlMan', e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
@@ -39,7 +39,7 @@ export default function DressCodeSection({ data, onFieldChange }: DressCodeSecti
             <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
             <input
               type="url"
-              placeholder="Women's board: https://pinterest.com/..."
+              placeholder="Inspiración Mujeres: https://pinterest.com/..."
               value={currentDressCode.pinterestUrlWoman || ''}
               onChange={(e) => handlePinterestChange('pinterestUrlWoman', e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm"

@@ -127,7 +127,7 @@ export default function EditorPage() {
 
   return (
     <>
-      <div className="bg-gray-100 h-[100dvh] overflow-hidden">
+      <div className="bg-gray-100 h-[calc(100dvh-5rem)] overflow-hidden">
         {/* Mobile view toggle */}
         <div className="md:hidden fixed bottom-4 right-4 z-20 flex gap-2">
           <button

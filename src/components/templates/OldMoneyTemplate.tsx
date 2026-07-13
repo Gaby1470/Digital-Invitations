@@ -197,13 +197,13 @@ export default function OldMoneyTemplate({
                   {item.location}
                 </p>
                 <p className="text-sm font-medium tracking-widest">{item.time}</p>
-                {item.mapLink && (
+                {item.mapLink?.trim() && item.mapLink.trim() !== "#" && (
                   <>
                     <p className="text-[10px] uppercase tracking-widest opacity-60 mt-4 mb-2">
                       ¿Cómo llegar?
                     </p>
                     <a
-                      href={item.mapLink}
+                      href={item.mapLink.trim()}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block px-10 py-3 rounded-full text-xs uppercase tracking-widest text-white transition-opacity hover:opacity-90"

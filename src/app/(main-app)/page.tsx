@@ -79,8 +79,8 @@ export default function Home() {
       <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Browse by Occasion</h2>
-            <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">Find the perfect template for any event.</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Explora segun la ocasión</h2>
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">Encuentra la plantilla perfecta para cualquier ocasión.</p>
           </div>
           <div className="text-center">
             <div className="inline-grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-7 gap-4 md:gap-6">

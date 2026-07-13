@@ -61,16 +61,16 @@ export default function TimelineTemplate({
 
   const dressCode: DressCode | undefined = invitationData.dressCode;
 
-  const imageMap: { [key: string]: string } = {
-    "Ceremonia": "/ceremonia-acuarela.png",
-    "Recepción": "/recepcion-acuarela.png",
-    "Cena y Baile": "/cena-acuarela.png",
-    "Tornaboda": "/torna-acuarela.png",
-  };
+  const imagesByIndex: string[] = [
+    "/ceremonia-acuarela.png",
+    "/recepcion-acuarela.png",
+    "/cena-acuarela.png",
+    "/torna-acuarela.png",
+  ];
 
-  const timelineItemsWithImages = invitationData.timelineItems?.map((item: TimelineItem) => ({
+  const timelineItemsWithImages = invitationData.timelineItems?.map((item: TimelineItem, index: number) => ({
       ...item,
-      imageSrc: imageMap[item.title] || '',
+      imageSrc: imagesByIndex[index] || '',
   })) as ExtendedTimelineItem[];
 
   return (

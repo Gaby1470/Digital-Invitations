@@ -46,7 +46,7 @@ export default function Header() {
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2 group">
             <span className="text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">
-              Tap to Invite<span className="text-pink-500 group-hover:animate-pulse">.</span>
+              Tap 2 Invite<span className="text-pink-500 group-hover:animate-pulse">.</span>
             </span>
           </Link>
         </div>
