@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { templateConfig } from '@/lib/templateConfig';
 import { TemplateConfig } from '@/lib/types';
@@ -30,6 +31,7 @@ export default function TemplatesPage() {
   const groupedTemplates = groupTemplatesByNewCategories(templateConfig);
   const categories = Object.keys(groupedTemplates);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [loadedCovers, setLoadedCovers] = useState<Record<string, boolean>>({});
 
   const filteredTemplates = selectedCategory 
     ? { [selectedCategory]: groupedTemplates[selectedCategory] }
@@ -88,7 +90,7 @@ export default function TemplatesPage() {
 
           <motion.div layout className="space-y-16">
             <AnimatePresence mode='popLayout'>
-              {Object.entries(filteredTemplates).map(([category, templates]) => (
+              {Object.entries(filteredTemplates).map(([category, templates], categoryIndex) => (
                 <motion.div
                   key={category}
                   initial={{ opacity: 0, y: 20 }}
@@ -109,7 +111,10 @@ export default function TemplatesPage() {
                     spaceBetween={24}
                     className="!py-2 !-mx-4 !px-4"
                   >
-                    {templates.map((template, idx) => (
+                    {templates.map((template, idx) => {
+                      const isPriorityCover = categoryIndex === 0 && idx < 3;
+
+                      return (
                       <SwiperSlide key={template.id} className="!w-56 md:!w-64">
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
@@ -119,14 +124,31 @@ export default function TemplatesPage() {
                         >
                           <Link href={`/templates/${template.id}`} className="group block h-full">
                             <div className="relative aspect-square overflow-hidden rounded-xl md:rounded-2xl bg-white dark:bg-gray-900 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-1 border border-gray-100 dark:border-gray-800">
-                              <img 
+                              <div
+                                className={`absolute inset-0 bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 transition-opacity duration-300 ${
+                                  loadedCovers[template.id] ? 'opacity-0' : 'opacity-100'
+                                }`}
+                                aria-hidden="true"
+                              />
+                              <Image
                                 src={
                                   template.thumbnail ||
                                   template.defaultData.hero_image_url ||
                                   `https://picsum.photos/seed/${template.id}/600/800`
                                 }
                                 alt={template.name}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                fill
+                                quality={70}
+                                sizes="(max-width: 640px) 224px, (max-width: 1024px) 256px, 320px"
+                                priority={isPriorityCover}
+                                loading={isPriorityCover ? 'eager' : 'lazy'}
+                                fetchPriority={isPriorityCover ? 'high' : 'auto'}
+                                onLoad={() =>
+                                  setLoadedCovers((prev) => ({ ...prev, [template.id]: true }))
+                                }
+                                className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-110 ${
+                                  loadedCovers[template.id] ? 'opacity-100' : 'opacity-0'
+                                }`}
                               />
                               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                 <span className="px-4 py-2 bg-white text-gray-900 rounded-full font-semibold text-xs md:text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
@@ -143,7 +165,8 @@ export default function TemplatesPage() {
                           </Link>
                         </motion.div>
                       </SwiperSlide>
-                    ))}
+                      );
+                    })}
                   </Swiper>
                 </motion.div>
               ))}

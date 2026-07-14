@@ -291,7 +291,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   "baptism-ethereal": {
     name: "Bautizo",
     thumbnail: "/branding/portadas/portada-bautizo.png",
-    category: "Bautizo",
+    category: "Baby Shower",
     description: "Un diseño sereno y etéreo para bautizos.",
     font: "font-serif",
     defaultFont: "Cormorant Garamond",
