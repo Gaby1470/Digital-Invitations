@@ -3,7 +3,6 @@
 import { motion, useInView } from 'framer-motion';
 import { useMemo, useRef } from 'react';
 import { EditorData, TemplateConfig } from '@/lib/types';
-
 import Image from 'next/image';
 
 // Soft, elegant fade-in animation suitable for a princess theme
@@ -77,11 +76,11 @@ export default function PrincessBirthdayTemplate({ template, data }: PrincessBir
   
   // Design system: Blush pinks, champagne gold, elegant serif
   const theme = {
-    bg: invitationData.backgroundColor || '#FDF6F8', // Fallback color
-    textPrimary: invitationData.textPrimary || '#C28B96', // Dusty rose pink for scripts
-    textGold: invitationData.textGold || '#B89766', // Champagne gold for headings
-    textDark: invitationData.textDark || '#5A4A42', // Soft dark brown for readability
-    cardBg: 'rgba(255, 255, 255, 0.65)', // Glassmorphism base
+    bg: invitationData.backgroundColor || '#FDF6F8', 
+    textPrimary: invitationData.textPrimary || '#C28B96', 
+    textGold: invitationData.textGold || '#B89766', 
+    textDark: invitationData.textDark || '#5A4A42', 
+    cardBg: 'rgba(255, 255, 255, 0.65)', 
   };
 
   return (
@@ -186,10 +185,10 @@ export default function PrincessBirthdayTemplate({ template, data }: PrincessBir
                 {/* Date & Time block */}
                 <div>
                   <p className="text-sm uppercase tracking-[0.2em] mb-1.5 font-medium" style={{ color: theme.textGold }}>
-                    {invitationData.event_date ? new Date(invitationData.event_date).toLocaleDateString('es-MX', { weekday: 'long' }) : "Miércoles"}
+                    {invitationData.event_date ? new Date(invitationData.event_date).toLocaleDateString('es-MX', { weekday: 'long' }) : "Sábado"}
                   </p>
                   <p className="text-3xl font-light tracking-widest mb-2" style={{ color: theme.textDark }}>
-                    {invitationData.event_date ? new Date(invitationData.event_date).toLocaleDateString('es-MX', { month: 'long', day: 'numeric' }) : "22 de Julio"}
+                    {invitationData.event_date ? new Date(invitationData.event_date).toLocaleDateString('es-MX', { month: 'long', day: 'numeric' }) : "15 de Agosto"}
                   </p>
                   <p className="text-sm font-medium tracking-[0.15em]" style={{ color: theme.textGold }}>
                     {invitationData.startTime && invitationData.endTime ? `${invitationData.startTime} - ${invitationData.endTime}` : (invitationData.time || "12:00 PM - 2:00 PM")}
@@ -198,14 +197,23 @@ export default function PrincessBirthdayTemplate({ template, data }: PrincessBir
 
                 <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-[#C28B96] to-transparent mx-auto opacity-40" />
 
-                {/* Location */}
-                <div>
+                {/* Location with Action Button */}
+                <div className="flex flex-col items-center">
                   <p className="text-[11px] uppercase tracking-[0.25em] mb-2 font-semibold" style={{ color: theme.textGold }}>
                     Ubicación de la Fiesta
                   </p>
-                  <p className="text-xl font-light leading-relaxed px-2 tracking-wide" style={{ color: theme.textDark }}>
+                  <p className="text-xl font-light leading-relaxed px-2 tracking-wide mb-4" style={{ color: theme.textDark }}>
                     {invitationData.location || "William's Residence\n876 Street Ln, Boulder CO"}
                   </p>
+                  <a 
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(invitationData.location || "William's Residence, 876 Street Ln, Boulder CO")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 py-2 px-6 rounded-full border border-white/60 bg-white/40 text-xs uppercase tracking-widest font-medium shadow-sm transition-all hover:bg-white/60"
+                    style={{ color: theme.textDark }}
+                  >
+                    <span>📍</span> Cómo Llegar
+                  </a>
                 </div>
 
               </div>
@@ -213,21 +221,19 @@ export default function PrincessBirthdayTemplate({ template, data }: PrincessBir
           </GentleFadeIn>
         </section>
 
-        {/* Royal Decree (Parental Info) */}
-        {(invitationData.parentalNotes || invitationData.extraInfo) && (
-          <section className="w-full mb-8">
-            <GentleFadeIn delay={0.7}>
-              <div className="px-6 py-5 rounded-3xl border border-white/60 bg-white/50 backdrop-blur-sm shadow-sm w-full max-w-[90%] mx-auto relative overflow-hidden">
-                <h3 className="text-[xl uppercase tracking-[0.25em] mb-2 font-bold relative z-10" style={{ color: theme.textGold }}>
-                  Reglamento Real
-                </h3>
-                <p className="text-s sm:text-sm font-light italic leading-relaxed relative z-10" style={{ color: theme.textDark }}>
-                  {invitationData.parentalNotes || invitationData.extraInfo || "¡Favor de asistir con su mejor atuendo real!"}
-                </p>
-              </div>
-            </GentleFadeIn>
-          </section>
-        )}
+        {/* Note for Parents / Aviso Real */}
+        <section className="w-full mb-8">
+          <GentleFadeIn delay={0.65}>
+            <div className="backdrop-blur-md rounded-[2.5rem] p-6 border border-white/80 shadow-[0_8px_32px_rgba(194,139,150,0.15)] relative w-full flex flex-col items-center text-center" style={{ backgroundColor: theme.cardBg }}>
+              <p className="text-[18px] uppercase tracking-[0.25em] mb-2 font-bold" style={{ color: theme.textGold }}>
+                Nota para los Papás
+              </p>
+              <p className="text-[18px] font-light italic leading-relaxed tracking-wide px-2" style={{ color: theme.textDark }}>
+                {invitationData.parentalNotes || invitationData.extraInfo || "Por favor traigan un cambio de ropa para las niñas ya que habrá juegos de agua. ¡Y sean puntuales para no perderse el show de magia!"}
+              </p>
+            </div>
+          </GentleFadeIn>
+        </section>
 
         {/* Side-by-Side RSVP Section */}
         <section className="w-full mt-2 z-20">

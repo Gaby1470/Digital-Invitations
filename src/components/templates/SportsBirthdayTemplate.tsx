@@ -142,15 +142,15 @@ export default function SportsBirthdayTemplate({ template, data, invitationId }:
           </div>
         </BounceIn>
 
-        {/* The Playbook (VIP Ticket Details Card) */}
+        {/* The Playbook (VIP Ticket Details Card - Time & Date Only) */}
         <section className="w-full mt-8 mb-6">
           <BounceIn direction="up" delay={0.2}>
             <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.3)] border-4 border-black relative overflow-hidden">
               
               {/* Ticket Header */}
-              <div className="py-3" style={{ backgroundColor: invitationData.primaryColor }}>
+              <div className="py-3" style={{ backgroundColor: "#111827" }}>
                 <h3 className="text-white text-sm font-black uppercase tracking-[0.3em]">
-                  La Celebración
+                  El Partido
                 </h3>
               </div>
 
@@ -183,23 +183,41 @@ export default function SportsBirthdayTemplate({ template, data, invitationId }:
                     </p>
                   </div>
                 </div>
-
-                <div className="w-full border-t-2 border-dashed border-neutral-200" />
-
-                {/* Location Row */}
-                <div className="flex items-center gap-4">
-                  <div className="bg-neutral-100 p-3 rounded-full border-2 border-black shadow-sm">
-                    <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase font-black text-neutral-400 tracking-wider">Lugar</p>
-                    <p className="text-base font-bold text-black leading-tight mt-0.5">
-                      {invitationData.location || "The Local Park"}
-                    </p>
-                  </div>
-                </div>
-
               </div>
+            </div>
+          </BounceIn>
+        </section>
+
+        {/* Dedicated Location / Stadium Section */}
+        <section className="w-full mb-6">
+          <BounceIn direction="up" delay={0.25}>
+            <div className="bg-white rounded-2xl p-5 border-4 border-black text-left shadow-[4px_4px_0px_#000000]">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-black p-2 rounded-full">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </div>
+                <h3 className="text-lg font-black uppercase tracking-wider text-black">
+                  El Estadio
+                </h3>
+              </div>
+              
+              {/* Visual Map Placeholder (Can be replaced with actual static map image or iframe) */}
+              <div className="w-full h-24 bg-neutral-200 rounded-lg border-2 border-dashed border-neutral-400 flex items-center justify-center mb-4 overflow-hidden relative">
+                <span className="text-neutral-500 font-bold text-xs uppercase tracking-widest z-10">Mapa del Lugar</span>
+              </div>
+
+              <p className="text-base font-bold text-neutral-800 leading-tight mb-4">
+                {invitationData.location || "The Local Park"}
+              </p>
+
+              <a 
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(invitationData.location || "The Local Park")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full block text-center bg-blue-500 hover:bg-blue-400 text-white font-black text-sm py-3 rounded-xl border-2 border-black shadow-[0_4px_0_0_#000000] active:shadow-[0_0px_0_0_#000000] active:translate-y-1 transition-all uppercase tracking-widest"
+              >
+                📍 Cómo Llegar
+              </a>
             </div>
           </BounceIn>
         </section>
@@ -223,8 +241,21 @@ export default function SportsBirthdayTemplate({ template, data, invitationId }:
           </section>
         )}
 
-        {/* RSVP Button CTA */}
-        <section className="w-full mt-2">
+        {/* Action Buttons Section */}
+        <section className="w-full mt-2 flex flex-col gap-4">
+          <BounceIn direction="up" delay={0.35}>
+            <button 
+              className="w-full bg-white hover:bg-gray-50 text-black font-black text-sm py-3 rounded-xl border-4 border-black shadow-[0_4px_0_0_#000000] active:shadow-[0_0px_0_0_#000000] active:translate-y-1 transition-all uppercase tracking-widest flex items-center justify-center gap-2"
+              onClick={() => {
+                // Future implementation: trigger ICS file download or native calendar intent
+                alert("Calendar functionality to be implemented!");
+              }}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+              Agregar al Calendario
+            </button>
+          </BounceIn>
+
           <BounceIn direction="up" delay={0.4}>
             <button 
               className="w-full bg-green-500 hover:bg-green-400 text-black font-black text-lg py-4 rounded-xl border-4 border-black shadow-[0_6px_0_0_#000000] active:shadow-[0_0px_0_0_#000000] active:translate-y-1.5 transition-all uppercase tracking-widest"
@@ -236,10 +267,16 @@ export default function SportsBirthdayTemplate({ template, data, invitationId }:
         </section>
       </div>
 
+      {/* Enhanced RSVP Modal */}
       {isRsvpModalOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-4 text-black">Confirmar Asistencia</h2>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="bg-white p-8 rounded-3xl border-4 border-black shadow-[8px_8px_0px_#000000] max-w-md w-full relative"
+          >
+            <div className="absolute -top-6 -right-4 text-4xl rotate-12">🎫</div>
+            <h2 className="text-3xl font-black mb-6 text-black uppercase tracking-tighter">Tu Boleto VIP</h2>
             {invitationId ? (
               <RsvpSection
                 invitationId={invitationId}
@@ -247,12 +284,17 @@ export default function SportsBirthdayTemplate({ template, data, invitationId }:
                 textColor={invitationData.textColor}
               />
             ) : (
-              <div className="text-center text-gray-500">
-                <p>La confirmación de asistencia solo está disponible en la invitación en vivo.</p>
+              <div className="text-center p-6 bg-gray-100 rounded-xl border-2 border-dashed border-gray-300">
+                <p className="text-gray-600 font-bold">La confirmación de asistencia solo está disponible en la invitación en vivo.</p>
               </div>
             )}
-            <button onClick={() => setIsRsvpModalOpen(false)} className="mt-4 text-sm text-gray-500">Cerrar</button>
-          </div>
+            <button 
+              onClick={() => setIsRsvpModalOpen(false)} 
+              className="mt-6 w-full py-3 bg-neutral-200 hover:bg-neutral-300 text-black font-bold rounded-xl border-2 border-black transition-colors uppercase text-sm tracking-wider"
+            >
+              Volver al Juego
+            </button>
+          </motion.div>
         </div>
       )}
     </div>
