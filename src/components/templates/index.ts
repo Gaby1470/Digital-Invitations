@@ -15,6 +15,7 @@ import OldMoneyTemplate from "./OldMoneyTemplate";
 import WeddingAquarrelTemplate from "./WeddingAquarrelTemplate";
 import SportsBirthdayTemplate from "./SportsBirthdayTemplate";
 import PrincessBirthdayTemplate from "./PrincessBirthdayTemplate";
+import GardenWeddingTemplate from "./GardenWeddingTemplate";
 
 import ScrapbookGraduationTemplate from "./ScrapbookGraduationTemplate";
 import { TemplateConfig, EditorData } from "@/lib/types";
@@ -42,4 +43,5 @@ export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<TemplateC
   'wedding-aquarrel': WeddingAquarrelTemplate,
   'sports-birthday': SportsBirthdayTemplate,
   'princess-birthday': PrincessBirthdayTemplate,
+  'garden-wedding': GardenWeddingTemplate,
 };

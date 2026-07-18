@@ -41,8 +41,8 @@ export type DressCodeStyle =
   | "Garden Attire";
 
 export type DressCode = {
-  man?: DressCodeStyle;
-  woman?: DressCodeStyle;
+  man?: DressCodeStyle | string;
+  woman?: DressCodeStyle | string;
   pinterestUrlMan?: string;
   pinterestUrlWoman?: string;
 };
@@ -85,6 +85,7 @@ export type TemplateFeatures = {
   speakerProfile?: boolean;
   resourceDownload?: boolean;
   guestCount?: boolean;
+  rsvp?: boolean;
   parentsAndGodparents?: boolean;
   dressCode?: boolean;
 };

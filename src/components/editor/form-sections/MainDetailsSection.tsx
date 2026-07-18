@@ -8,7 +8,6 @@ import DateTimePicker from '../shared/DateTimePicker';
 import TimePicker from '../shared/TimePicker';
 import PortraitImageUploader from '../shared/PortraitImageUploader';
 import HeroImageUploader from '../shared/HeroImageUploader';
-import { Type, User, GraduationCap, Calendar, MapPin } from 'lucide-react';
 
 type MainDetailsSectionProps = {
   data: EditorData;
@@ -217,12 +216,12 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
           <div className='space-y-2'>
             <TextInput 
               label="Dirección Principal del Lugar"
-              placeholder="Calle, Ciudad, Estado, Código Postal"
+              placeholder="https://maps.app.goo.gl/..."
               value={data.mainVenueAddress} 
               onChange={(val) => onFieldChange('mainVenueAddress', val)} 
             />
             <p className="text-[10px] text-slate-400 italic">
-              Esta dirección se utilizará para generar el botón &quot;Obtener Direcciones&quot; para usuarios móviles.
+              Pega aquí tu enlace de Google Maps. Si escribes una dirección, también la convertiremos en enlace de mapa automáticamente.
             </p>
           </div>
         </div>
@@ -245,14 +244,6 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
               placeholder="p. ej., Acompáñanos a celebrar..."
               value={data.receptionText} 
               onChange={(val) => onFieldChange('receptionText', val)} 
-            />
-          </div>
-          <div className='space-y-2'>
-            <TextInput 
-              label="Lugar de la Recepción"
-              placeholder="p. ej., Jardín de los Rosales"
-              value={data.receptionPlace} 
-              onChange={(val) => onFieldChange('receptionPlace', val)} 
             />
           </div>
         </div>

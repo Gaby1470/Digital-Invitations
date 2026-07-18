@@ -15,7 +15,7 @@ type PaletteSelectionProps = {
 export default function PaletteSelection({ palettes, onPaletteSelect }: PaletteSelectionProps) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">Color Palettes</label>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Paleta de colores pre-diseñada</label>
       <div className="grid grid-cols-3 gap-3">
         {palettes.map((palette) => (
           <div 

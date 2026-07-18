@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from 'framer-motion';
-import { useMemo, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { EditorData, TemplateConfig } from '@/lib/types';
 import Image from 'next/image';
 
@@ -27,14 +27,14 @@ function GentleFadeIn({ children, delay = 0, direction = "up" }: { children: Rea
 
 // Floating sparkle effect for the background
 function FloatingSparkles() {
-  const sparkles = useMemo(() => {
+  const [sparkles] = useState(() => {
     return [...Array(8)].map(() => ({
       top: `${Math.random() * 100}%`,
       left: `${Math.random() * 100}%`,
       duration: 3 + Math.random() * 3,
       delay: Math.random() * 2,
     }));
-  }, []);
+  });
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">

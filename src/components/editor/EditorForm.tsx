@@ -287,7 +287,7 @@ export default function EditorForm({
           className="inline-flex h-14 items-center justify-center rounded-full bg-indigo-600 px-8 text-lg font-medium text-white shadow-lg shadow-indigo-500/30 transition-all gap-3 hover:bg-indigo-700 hover:shadow-indigo-500/50 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 disabled:bg-indigo-400 disabled:shadow-none disabled:cursor-not-allowed disabled:translate-y-0"
         >
           <Save size={20} />
-          {isSaving ? 'Saving...' : 'Save Changes'}
+          {isSaving ? 'Guardando...' : 'Guardar cambios'}
         </button>
       </div>
     </div>

@@ -9,7 +9,6 @@ import {
   DressCode,
   Godparent,
 } from "@/lib/types";
-import { DressCodePreview } from "./shared/DressCodePreview";
 import { RsvpSection } from "./shared/RsvpSection";
 
 import Image from "next/image";
@@ -234,12 +233,29 @@ export default function OldMoneyTemplate({
                 <h2 className="font-serif italic text-4xl text-center mb-8" style={{ color: accentColor }}>
                     Vestimenta
                 </h2>
-                <div className="w-full px-4">
-                    <DressCodePreview
-                        dressCode={dressCode}
-                        primaryColor={accentColor}
-                        textColor={primaryText}
-                    />
+                <div className="flex justify-center gap-4">
+                  {dressCode.pinterestUrlMan && (
+                    <a
+                      href={dressCode.pinterestUrlMan}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block px-10 py-3 rounded-full text-xs uppercase tracking-widest text-white transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: accentColor }}
+                    >
+                      Hombre
+                    </a>
+                  )}
+                  {dressCode.pinterestUrlWoman && (
+                    <a
+                      href={dressCode.pinterestUrlWoman}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block px-10 py-3 rounded-full text-xs uppercase tracking-widest text-white transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: accentColor }}
+                    >
+                      Mujer
+                    </a>
+                  )}
                 </div>
             </div>
             </AnimatedSection>

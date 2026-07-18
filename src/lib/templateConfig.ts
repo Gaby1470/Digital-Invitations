@@ -2,9 +2,78 @@
 import { TemplateConfig } from "./types";
 
 export const templateConfig: { [key: string]: TemplateConfig } = {
+  'garden-wedding': {
+    name: 'Boda en el Jardín',
+    thumbnail: '/branding/portadas/portada-garden.png',
+    category: 'Boda',
+    description: 'A romantic and elegant template for a garden wedding, with a classic, sophisticated feel.',
+    font: 'font-serif',
+    defaultFont: 'Playfair Display',
+    fonts: ['Playfair Display', 'Lora', 'Cormorant Garamond'],
+    palettes: [
+      { name: 'Garden Green', primary: '#646f58', text: '#292524', background: '#Fdfbf5', secondary: '#8c8470', dark: '#f0eee4' },
+    ],
+    defaultData: {
+      primaryColor: '#646f58',
+      textColor: '#292524',
+      backgroundColor: '#Fdfbf5',
+      secondaryColor: '#8c8470',
+      buttonTextColor: '#f0eee4',
+      heroTitle: "Acompáñanos a celebrar la boda de",
+      partner1Name: "Alicia",
+      partner2Name: "Oliver",
+      event_date: "2026-11-07T16:30:00",
+      locationName: "Villa Cantacuzino",
+      venue_city: "Toscana, Italia",
+      heroSubtitle: "Estamos listos para unir nuestro amor",
+      receptionTitle: "Prepárate para la celebración",
+      timelineTitle: "Programa del Día",
+      timelineItems: [
+        { time: '15:30', title: 'Misa', location: 'Iglesia Santa Maria Reina' },
+        { time: '16:30', title: 'Recepción de Invitados', location: 'Viñedos L.A Cetto' },
+        { time: '17:30', title: 'Banquete', location: 'Viñedos L.A Cetto' },
+        { time: '22:00', title: 'Pastel', location: 'El dulce símbolo de nuestra<br />nueva vida' },
+        { time: '23:00', title: 'Fin de la Fiesta', location: 'Incluso una noche tan maravillosa<br />llega a su fin' },
+      ],
+      mainVenueAddress: 'Lugar del Evento',
+      receptionText: 'Nuestra boda se llevará a cabo en: Villa Cantacuzino, Valle de Guadalupe, Baja California, México. ¡Esperamos verlos allí para celebrar juntos!',
+      receptionPlace: 'VER EN MAPA',
+      dressCodeTitle: 'Código de Vestimenta',
+      giftRegistryUrl: 'Regalos',
+      dressCodeDetails: 'Vestimental Formal, elegante y con un toque de color en tonos otoñales. Puedes ver los siguientes links para inspirarte en tu atuendo',
+      futurePlans: 'Agradecemos su presencia en un día tan especial para nosotros y esperamos que puedan acompañarnos en esta nueva etapa de nuestras vidas.',
+      galleryImages: [
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/fondo-oldmoney.jpg",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Romantic/romantic-4.jpg",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Romantic/romantic-5.jpg",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney3.png",
+      ],
+      parentalNotesTitle: 'Pequeños Invitados',
+      parentalNotes: 'Por favor, dejad a los niños en buenas manos durante la noche de nuestra celebración, ya que el formato no incluye zona infantil ni animadores.',
+      dressCode: {
+        woman: 'Vestidos en tonos pastel.',
+        man: 'Traje o una combinación de los siguientes elementos:<br />Pantalones: pantalones de vestir, chinos, slacks<br />o shorts.'
+      },
+      heroNames: "Alicia & Oliver",
+    },
+    features: {
+      multiEventSchedule: true,
+      dressCode: true,
+      rsvp: true,
+      guestCount: true,
+      gallery: true,
+    },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'event-schedule',
+      'dress-code',
+      'gift-section',
+    ],
+  },
   "timeline-wedding": {
-    name: "Boda - Linea del Tiempo",
-    thumbnail: "/branding/portadas/portada-timeline.png",
+    name: "Boda - Estilo Elegante",
+    thumbnail: "/branding/portadas/portada-elegante.png",
     category: "Boda",
     description: "A beautiful, scrolling story of your special day.",
     font: "font-serif",
@@ -100,8 +169,67 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       "gallery",
     ],
   },
+  'wedding-aquarrel': {
+    name: 'Boda - Estilo Acuarela',
+    description: 'A romantic, artistic template featuring watercolor illustrations and elegant typography.',
+    category: 'Boda',
+    thumbnail: '/save-date-acuarela.jpg',
+    font: 'font-serif',
+    defaultFont: 'Playfair Display',
+    fonts: ["Playfair Display", "Lora", "Merriweather", "Cormorant Garamond"],
+    palettes: [
+      { name: "Amethyst", primary: "#A39171", text: "#333333", background: "#FDFBF7" },
+    ],
+    defaultData: {
+      backgroundColor: "#FDFBF7",
+      textColor: "#333333",
+      primaryColor: "#A39171",
+      heroTitle: "SAVE THE DATE",
+      heroNames: "Mark & Lindsay",
+      event_date: "2025-07-21T15:00:00.000Z",
+      mainVenueAddress: "Willow Chapel, 93 Street, Toronto, ON",
+      locationName: "Willow Chapel",
+      timelineTitle: "Wedding Details",
+      guestCount: "2",
+      galleryImages: [
+        'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney2.png',
+        'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney1.png',
+        'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/fondo-oldmoney.jpg'
+      ],
+      timelineItems: [
+        {
+          title: "The Ceremony",
+          time: "3:00 PM",
+          location: "Willow Chapel, 93 Street, Toronto, ON",
+          imageSrc: "/acuarela1.jpg",
+          imageAlt: "Watercolor Church Ceremony",
+        },
+        {
+          title: "The Reception",
+          time: "5:00 PM (Cocktails) | 6:30 PM (Dinner)",
+          location: "The Great Hall, 95 Street, Toronto, ON",
+          imageSrc: "/acuarela2.jpg",
+          imageAlt: "Watercolor Dinner Reception",
+        },
+      ],
+    },
+    features: {
+      multiEventSchedule: true,
+      gallery: true,
+      dressCode: false,
+      recommendations: false,
+      guestCount: true,
+    },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'event-schedule',
+      'gallery',
+      'guest-count',
+    ]
+  },
   "minimalist-wedding": {
-    name: "Black and White Wedding",
+    name: "Boda - Estilo Blanco & Negro",
     thumbnail: "/branding/portadas/portada-bnw.png",
     category: "Boda",
     description: "Clean, modern, and elegant. For the minimalist couple.",
@@ -605,7 +733,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     },
   },
   "old-money-wedding": {
-    name: "Old Money Wedding",
+    name: "Boda - Estilo Old Money",
     thumbnail: "/branding/portadas/portada-oldMoney.png",
     category: "Boda",
     description: "An elegant and timeless wedding invitation with a classic, sophisticated feel.",
@@ -638,6 +766,8 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       dressCode: {
         man: "Formal",
         woman: "Formal",
+        pinterestUrlMan: "https://pin.it/5hSkwuONE",
+        pinterestUrlWoman: "https://pin.it/57zbcpMb7",
       },
       dressCodeTitle: "Vestimenta",
       dressCodeDetails: "Blanco, Beige, Gris, Rosa Palo, Lila",
@@ -661,65 +791,6 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       'event-schedule',
       'gallery',
     ],
-  },
-  'wedding-aquarrel': {
-    name: 'Watercolor Sketch',
-    description: 'A romantic, artistic template featuring watercolor illustrations and elegant typography.',
-    category: 'Boda',
-    thumbnail: '/save-date-acuarela.jpg',
-    font: 'font-serif',
-    defaultFont: 'Playfair Display',
-    fonts: ["Playfair Display", "Lora", "Merriweather", "Cormorant Garamond"],
-    palettes: [
-      { name: "Amethyst", primary: "#A39171", text: "#333333", background: "#FDFBF7" },
-    ],
-    defaultData: {
-      backgroundColor: "#FDFBF7",
-      textColor: "#333333",
-      primaryColor: "#A39171",
-      heroTitle: "SAVE THE DATE",
-      heroNames: "Mark & Lindsay",
-      event_date: "2025-07-21T15:00:00.000Z",
-      mainVenueAddress: "Willow Chapel, 93 Street, Toronto, ON",
-      locationName: "Willow Chapel",
-      timelineTitle: "Wedding Details",
-      guestCount: "2",
-      galleryImages: [
-        'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney2.png',
-        'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/oldMoney1.png',
-        'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/oldMoney/fondo-oldmoney.jpg'
-      ],
-      timelineItems: [
-        {
-          title: "The Ceremony",
-          time: "3:00 PM",
-          location: "Willow Chapel, 93 Street, Toronto, ON",
-          imageSrc: "/acuarela1.jpg",
-          imageAlt: "Watercolor Church Ceremony",
-        },
-        {
-          title: "The Reception",
-          time: "5:00 PM (Cocktails) | 6:30 PM (Dinner)",
-          location: "The Great Hall, 95 Street, Toronto, ON",
-          imageSrc: "/acuarela2.jpg",
-          imageAlt: "Watercolor Dinner Reception",
-        },
-      ],
-    },
-    features: {
-      multiEventSchedule: true,
-      gallery: true,
-      dressCode: false,
-      recommendations: false,
-      guestCount: true,
-    },
-    formSections: [
-      'main-details',
-      'colors-and-style',
-      'event-schedule',
-      'gallery',
-      'guest-count',
-    ]
   },
   'sports-birthday': {
     name: "Sports Birthday",
@@ -793,5 +864,5 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       'colors-and-style',
       'parental-notes',
     ]
-  }
+  },
 };

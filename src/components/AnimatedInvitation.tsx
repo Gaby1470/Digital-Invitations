@@ -181,7 +181,7 @@ export default function AnimatedInvitation({ invitation }: AnimatedInvitationPro
 
         <div className="z-10 text-white">
           <motion.p className="text-2xl font-bold" variants={birthdayItemVariants}>
-            It's a Party!
+            It&apos;s a Party!
           </motion.p>
           {invitation.event_date && (
             <motion.p className="text-3xl font-extrabold mt-4" variants={birthdayItemVariants}>
