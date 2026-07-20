@@ -38,7 +38,7 @@ export default function TemplatesPage() {
     : groupedTemplates;
 
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-gray-950 transition-colors duration-500 overflow-x-hidden">
+    <main className="min-h-screen bg-slate-50 dark:bg-gray-950 transition-colors duration-500">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-100/50 dark:bg-indigo-900/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-pink-100/50 dark:bg-pink-900/10 rounded-full blur-3xl"></div>

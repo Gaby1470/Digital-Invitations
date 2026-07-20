@@ -228,16 +228,8 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
       )}
 
       {/* Reception Details */}
-      {defaultData.receptionTitle !== undefined && (
+      {defaultData.receptionText !== undefined && (
         <div className="space-y-4 pt-4 border-t border-slate-50">
-          <div className='space-y-2'>
-            <TextInput 
-              label="Título de la Recepción"
-              placeholder="p. ej., Recepción"
-              value={data.receptionTitle} 
-              onChange={(val) => onFieldChange('receptionTitle', val)} 
-            />
-          </div>
           <div className='space-y-2'>
             <TextareaInput 
               label="Texto de la Recepción"

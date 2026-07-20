@@ -140,6 +140,8 @@ export type TemplateConfig = {
     receptionText?: string;
     receptionPlace?: string;
     guestCount?: string | number;
+    giftTitle?: string;
+    giftMessage?: string;
     giftRegistryUrl?: string;
     galleryImages?: string[];
     babyName?: string;

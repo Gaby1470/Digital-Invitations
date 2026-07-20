@@ -89,9 +89,14 @@ export default function GardenWeddingTemplate({ template, data, invitationId }: 
     ? invitationData.galleryImages
     : ['/acuarela1.jpg', '/acuarela2.jpg', '/save-date-acuarela.jpg', '/garden-background.png'];
 
-  const giftRegistryLink = (invitationData.giftRegistryUrl || '').startsWith('http')
-    ? invitationData.giftRegistryUrl
-    : '#';
+  const normalizeLink = (value?: string) => {
+    if (!value?.trim()) return '#';
+    const trimmed = value.trim();
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    return `https://${trimmed}`;
+  }
+
+  const giftRegistryLink = normalizeLink(invitationData.giftRegistryUrl);
   const mapsLink = normalizeExternalUrl(invitationData.mainVenueAddress);
   const dressCodeWomenLink = normalizeExternalUrl(invitationData.dressCode?.pinterestUrlWoman);
   const dressCodeMenLink = normalizeExternalUrl(invitationData.dressCode?.pinterestUrlMan);
@@ -349,11 +354,10 @@ export default function GardenWeddingTemplate({ template, data, invitationId }: 
             />
           </div>
 
-          <h3 className="text-3xl font-serif italic text-center mb-4 mt-2" style={{color: accentColor}}>{invitationData.giftRegistryUrl || "Подарки"}</h3>
+          <h3 className="text-3xl font-serif italic text-center mb-4 mt-2" style={{color: accentColor}}>{invitationData.giftTitle || 'Mesa de Regalos'}</h3>
           
           <div className="text-center text-[15px] font-serif font-light text-gray-600 space-y-6 leading-8 tracking-[0.04em]">
-            <p dangerouslySetInnerHTML={{ __html: invitationData.dressCodeDetails || "(1)<br />Чтобы наши руки были свободны<br />для объятий, будем рады легким<br />подаркам в конвертах."}} />
-            <p dangerouslySetInnerHTML={{ __html: invitationData.futurePlans || "(2)<br />Приятным комплиментом для нас<br />будет, если вместо цветов вы<br />решите подарить виниловую<br />пластинку на свой вкус в нашу<br />семейную коллекцию."}} />
+            <p dangerouslySetInnerHTML={{ __html: invitationData.giftMessage || ''}} />
           </div>
 
           <a
@@ -362,7 +366,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId }: 
             rel="noopener noreferrer"
             className="mt-6 w-full inline-flex items-center justify-center bg-[#646f58] text-[#fcfaf2] px-6 py-3 rounded-full text-xs font-semibold tracking-widest shadow-md hover:opacity-90 transition"
           >
-            IR A REGALOS
+            IR A LA MESA DE REGALOS
           </a>
         </div>
       </section>
