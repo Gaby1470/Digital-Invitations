@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase-client';
-import { User } from '@supabase/supabase-js';
-import { EditorData, Rsvp } from '@/lib/types';
-import { TrashIcon, DocumentDuplicateIcon, EyeIcon, PencilIcon, TicketIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { EditorData } from '@/lib/types';
+import { templateConfig } from '@/lib/templateConfig';
+import { TrashIcon, DocumentDuplicateIcon, UserGroupIcon, PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
-import RsvpList from '@/components/dashboard/RsvpList';
+import GuestManager from '@/components/dashboard/GuestManager';
 
 interface Invitation {
   id: string;
@@ -22,14 +22,10 @@ interface Invitation {
 }
 
 export default function DashboardPage() {
-  const [user, setUser] = useState<User | null>(null);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
-  const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [selectedInvitationId, setSelectedInvitationId] = useState<string | null>(null);
-  const [isRsvpModalOpen, setIsRsvpModalOpen] = useState(false);
-  const [rsvpLoading, setRsvpLoading] = useState(false);
-  const [rsvpError, setRsvpError] = useState<string | null>(null);
+  const [isGuestManagerOpen, setIsGuestManagerOpen] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClient();
@@ -38,7 +34,6 @@ export default function DashboardPage() {
     const fetchUserData = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        setUser(user);
         const { data: invitations, error } = await supabase
           .from('invitations')
           .select('*')
@@ -59,31 +54,9 @@ export default function DashboardPage() {
     fetchUserData();
   }, [router, supabase]);
 
-  const handleViewRsvps = async (invitationId: string) => {
+  const handleOpenGuestManager = (invitationId: string) => {
     setSelectedInvitationId(invitationId);
-    setIsRsvpModalOpen(true);
-    setRsvpLoading(true);
-    setRsvpError(null);
-    setRsvps([]);
-    try {
-      const response = await fetch(`/api/invitations/${invitationId}/rsvps`);
-      if (!response.ok) {
-        const errorData = await response.json() as { error: string };
-        throw new Error(errorData.error || 'Failed to fetch RSVPs');
-      }
-      const data = await response.json() as Rsvp[];
-      setRsvps(data);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('Error fetching RSVPs:', error.message);
-        setRsvpError(error.message);
-      } else {
-        console.error('An unknown error occurred:', error);
-        setRsvpError('An unknown error occurred');
-      }
-    } finally {
-      setRsvpLoading(false);
-    }
+    setIsGuestManagerOpen(true);
   };
 
   const handleCopyLink = (invitationId: string, slug?: string) => {
@@ -113,16 +86,17 @@ export default function DashboardPage() {
     }
   };
 
-  // Helper function to determine the status of the invitation
-    const getInvitationStatus = (inv: Invitation) => {
-    // Check if the database explicitly marks it as expired, 
-    // OR if the event date has passed (assuming eventDate is stored in inv.data)
+  const getInvitationStatus = (inv: Invitation) => {
     const isPastEvent = inv.data?.eventDate && new Date(inv.data.eventDate) < new Date();
     
     if (inv.is_expired || isPastEvent) {
       return 'Expired';
     }
     return inv.is_published ? 'Published' : 'Draft';
+  };
+
+  const getTemplateDisplayName = (templateKey: string) => {
+    return templateConfig[templateKey]?.name ?? templateKey.replace(/-/g, ' ');
   };
 
   const selectedInvitation = invitations.find(inv => inv.id === selectedInvitationId);
@@ -138,7 +112,6 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-gray-950 transition-colors duration-500 relative overflow-hidden">
       
-      {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-indigo-100/50 dark:bg-indigo-900/10 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-pink-100/50 dark:bg-pink-900/10 rounded-full blur-3xl pointer-events-none translate-x-1/2 translate-y-1/2"></div>
 
@@ -186,7 +159,7 @@ export default function DashboardPage() {
                             {inv.data?.heroNames || 'Untitled Event'}
                           </h3>
                           <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
-                            {inv.template.replace('-', ' ')}
+                            {getTemplateDisplayName(inv.template)}
                           </p>
                         </div>
                         <span className={`px-3 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${
@@ -206,7 +179,6 @@ export default function DashboardPage() {
                         </p>
                         
                         <div className="flex items-center justify-between border-t border-gray-100 dark:border-gray-800 pt-4">
-                          {/* Primary Actions */}
                           <div className="flex gap-2">
                             <Link 
                               href={`/editor/${inv.id}`} 
@@ -217,15 +189,14 @@ export default function DashboardPage() {
                             </Link>
                             
                             <button 
-                              onClick={() => handleViewRsvps(inv.id)} 
+                              onClick={() => handleOpenGuestManager(inv.id)} 
                               className="p-2 rounded-full bg-pink-50 text-pink-600 hover:bg-pink-100 dark:bg-pink-900/20 dark:text-pink-400 dark:hover:bg-pink-900/40 transition-colors tooltip-trigger relative group/btn"
                             >
-                              <TicketIcon className="w-5 h-5" />
-                              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">View RSVPs</span>
+                              <UserGroupIcon className="w-5 h-5" />
+                              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">Manage Guests</span>
                             </button>
                           </div>
 
-                          {/* Secondary Actions */}
                           <div className="flex gap-1">
                             <button
                               onClick={() => handleCopyLink(inv.id, inv.slug ?? undefined)}
@@ -247,7 +218,7 @@ export default function DashboardPage() {
                               </button>
                               {inv.is_published && (
                                 <span className="absolute -top-10 right-0 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/delete:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20">
-                                  No se puede eliminar una invitación publicada. Despublica primero. // como se despublica
+                                  No se puede eliminar una invitación publicada. Despublica primero.
                                 </span>
                               )}
                             </div>
@@ -260,14 +231,13 @@ export default function DashboardPage() {
               </AnimatePresence>
             </motion.div>
           ) : (
-            // ... (Empty state remains the same)
             <div className="bg-white dark:bg-gray-900 rounded-3xl p-12 text-center shadow-sm border border-gray-100 dark:border-gray-800 max-w-2xl mx-auto mt-12">
               <div className="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <TicketIcon className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
+                <UserGroupIcon className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">No hay invitaciones todavía</h3>
               <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
-                No has creado ninguna invitación todavía. Haz clic en el botón de abajo para comenzar a crear tu primera invitación digital personalizada. Es rápido, fácil y perfecto para cualquier ocasión especial.
+                No has creado ninguna invitación todavía. Haz clic en el botón de abajo para comenzar a crear tu primera invitación digital personalizada.
               </p>
               <Link
                 href="/templates"
@@ -280,49 +250,40 @@ export default function DashboardPage() {
         </div>
       </main>
       
-      {/* Enhanced RSVP Modal */}
       <AnimatePresence>
-        {isRsvpModalOpen && (
+        {isGuestManagerOpen && selectedInvitationId && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={() => setIsGuestManagerOpen(false)}
           >
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-6 md:p-8 w-full max-w-4xl max-h-[90vh] flex flex-col border border-gray-100 dark:border-gray-800"
+              className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col border border-gray-100 dark:border-gray-800"
+              onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-gray-800 pb-6">
+              <div className="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-gray-800 pb-6 p-6">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    Respuestas de Invitados
+                    Guest Manager
                   </h2>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Para <span className="font-medium text-indigo-600 dark:text-indigo-400">{selectedInvitation?.data?.heroNames || 'Invitación'}</span>
+                    For <span className="font-medium text-indigo-600 dark:text-indigo-400">{selectedInvitation?.data?.heroNames || 'Invitation'}</span>
                   </p>
                 </div>
                 <button 
-                  onClick={() => setIsRsvpModalOpen(false)} 
+                  onClick={() => setIsGuestManagerOpen(false)} 
                   className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 >
                   <span className="text-2xl leading-none">&times;</span>
                 </button>
               </div>
-              <div className="overflow-y-auto pr-2 custom-scrollbar">
-                {rsvpError ? (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-red-50 dark:bg-red-900/20 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl">!</span>
-                    </div>
-                    <p className="text-lg font-medium text-gray-900 dark:text-white">No se pudieron cargar las respuestas.</p>
-                    <p className="text-sm text-gray-500 mt-2">{rsvpError}</p>
-                  </div>
-                ) : (
-                  <RsvpList rsvps={rsvps} isLoading={rsvpLoading} />
-                )}
+              <div className="overflow-y-auto pr-2 custom-scrollbar p-6 pt-0">
+                <GuestManager invitationId={selectedInvitationId} />
               </div>
             </motion.div>
           </motion.div>

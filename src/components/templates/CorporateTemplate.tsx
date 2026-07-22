@@ -2,10 +2,9 @@
 
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
 import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
-import React from 'react';
-import { RsvpSection } from './shared/RsvpSection';
+import React, { useRef } from 'react';
+import { RsvpTrigger } from './shared/RsvpTrigger';
 
 /**
  * Clean, sharp transition for professional blocks.
@@ -30,9 +29,10 @@ type CorporateTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
-export default function CorporateTemplate({ template, data, invitationId }: CorporateTemplateProps) {
+export default function CorporateTemplate({ template, data, invitationId, onRsvpClick }: CorporateTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
   const highlightTextColor = '#FACC15';
@@ -189,21 +189,12 @@ export default function CorporateTemplate({ template, data, invitationId }: Corp
         </div>
       </section>
 
-      {/* RSVP Section */}
-      {features.rsvp && (
+
+      {onRsvpClick && (
         <section className="py-32 px-6 md:px-20" style={{ backgroundColor: `${invitationData.textColor}08` }}>
           <div className="max-w-2xl mx-auto">
             <SectionReveal>
-              <div className="flex justify-between items-end mb-20">
-                <h2 className="text-4xl font-bold">Register for the Event</h2>
-                <div className="hidden md:block h-[1px] flex-1 mx-12" style={{ backgroundColor: `${invitationData.textColor}1A` }} />
-                <p className="font-bold uppercase tracking-widest text-xs" style={{ color: highlightTextColor }}>Secure Your Spot</p>
-              </div>
-              <RsvpSection 
-                invitationId={invitationId} 
-                primaryColor={highlightTextColor} 
-                textColor={invitationData.textColor || '#1A1A1A'} 
-              />
+              <RsvpTrigger onClick={onRsvpClick} primaryColor={highlightTextColor} textColor={invitationData.textColor} />
             </SectionReveal>
           </div>
         </section>

@@ -4,9 +4,9 @@
 import React, { useRef } from 'react';
 import { EditorData, TemplateConfig, TimelineItem } from "@/lib/types";
 import { motion, useInView } from "framer-motion";
-import { RsvpSection } from "./shared/RsvpSection";
 import { Calendar, MapPin, Baby, Heart, PartyPopper, Utensils, Clock } from "lucide-react";
 import GiftSection from './shared/GiftSection';
+import { RsvpTrigger } from './shared/RsvpTrigger';
 
 function FadeIn({
   children,
@@ -34,13 +34,16 @@ type BabyShowerTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
 export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
   template,
   data,
   invitationId,
+  onRsvpClick,
 }) => {
+  console.log('BabyShowerTemplate onRsvpClick:', typeof onRsvpClick);
   const { defaultData } = template;
   const invitationData = { ...defaultData, ...data };
 
@@ -59,7 +62,7 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
     primaryColor,
     textColor,
   } = invitationData;
-  
+
   const date = event_date ? new Date(event_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
   const time = event_date ? new Date(event_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : '';
 
@@ -68,7 +71,7 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
       className="relative w-full min-h-screen antialiased font-sans overflow-hidden pb-12"
       style={{ backgroundColor: backgroundColor, color: textColor }}
     >
-      
+
 {/* Safari Animals Sidebar Image */}
       <div 
         className="absolute top-5 left-0 h-[75vh] w-40 md:w-56 lg:w-72 pointer-events-none select-none z-0"
@@ -91,7 +94,7 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
       <div className="absolute top-64 right-8 text-2xl opacity-40 select-none animate-bounce" style={{ animationDuration: '5s' }}>🐝</div>
       <div className="absolute top-1/2 left-8 md:left-1/3 text-3xl opacity-20 select-none">🧸</div>
       <div className="absolute top-3/4 right-8 text-3xl opacity-30 select-none animate-pulse">🎈</div>
-      
+
       {/* Hero Section */}
       <section className="relative z-10 flex flex-col items-center justify-center text-center pt-20 pb-10 px-4 max-w-2xl mx-auto">
         <FadeIn>
@@ -99,7 +102,7 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
             {/* Floating Clouds */}
             <div className="absolute -top-4 left-4 w-20 h-9 bg-white/80 rounded-full blur-[2px] shadow-sm animate-pulse" style={{ animationDuration: '6s' }}></div>
             <div className="absolute top-6 -right-6 w-24 h-10 bg-white/70 rounded-full blur-[2px] shadow-sm animate-pulse" style={{ animationDuration: '8s' }}></div>
-            
+
             <div className="bg-white/40 p-3 rounded-full mb-4 shadow-sm backdrop-blur-sm border border-white/60">
               <Baby className="w-8 h-8" style={{ color: primaryColor }} />
             </div>
@@ -108,15 +111,15 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
               <span style={{ color: primaryColor }} className="font-serif">Baby</span>{' '}
               <span className="text-[#F5B041] font-serif">Shower</span>
             </h1>
-            
+
             <p className="mt-6 text-xs font-bold uppercase tracking-widest bg-white/50 px-3 py-1 rounded-full border border-white/40" style={{ color: primaryColor }}>
               {heroTitle || "Celebramos la llegada de un nuevo miembro a la familia"}
             </p>
-            
+
             <h2 className="mt-4 text-3xl sm:text-4xl font-black tracking-tight" style={{ color: textColor }}>
               {babyName || "Little One"}
             </h2>
-            
+
             <p className="text-sm md:text-base font-medium mt-2 max-w-sm mx-auto">
               Para los orgullosos padres <span className="font-semibold" style={{ color: textColor }}>{parentsNames}</span>
             </p>
@@ -147,7 +150,7 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
       {/* Details Section */}
       <section className="relative z-10 py-6 px-4">
         <div className="container mx-auto max-w-xl grid grid-cols-1 gap-6">
-          
+
           {(!timelineItems || timelineItems.length === 0) && (
             <>
               {/* Date Card */}
@@ -194,7 +197,7 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
               </div>
             </FadeIn>
           )}
-          
+
           {/* Location Card */}
           <FadeIn delay={0.3}>
             <div className="group bg-white/60 backdrop-blur-md rounded-2xl p-6 shadow-md border border-white/80 text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
@@ -228,27 +231,15 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
         </section>
       )}
 
-      {/* RSVP Section */}
-      <section className="relative z-10 py-4 px-4 max-w-xl mx-auto">
-        <FadeIn delay={0.4}>
-          <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border-2 border-white/80 p-6 sm:p-8">
-            {/* Managed RSVP Area */}
-            <div className="text-center">
-              {invitationId ? (
-                <RsvpSection
-                  invitationId={invitationId}
-                  primaryColor={primaryColor}
-                  textColor={textColor}
-                />
-              ) : (
-                <div className="text-center text-gray-500">
-                  <p>The RSVP form will be displayed here on the live invitation.</p>
-                </div>
-              )}
+      {onRsvpClick && (
+        <section className="relative z-10 py-4 px-4 max-w-xl mx-auto">
+          <FadeIn delay={0.4}>
+            <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border-2 border-white/80 p-6 sm:p-8">
+              <RsvpTrigger onClick={onRsvpClick} primaryColor={primaryColor} textColor={textColor} />
             </div>
-          </div>
-        </FadeIn>
-      </section>
+          </FadeIn>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="relative z-10 mt-12 mx-4 max-w-xl sm:mx-auto bg-white/40 backdrop-blur-sm rounded-2xl py-6 border border-white/50 flex flex-col items-center justify-center gap-2 text-center shadow-sm">

@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
 import { Feather } from 'lucide-react';
 import Image from 'next/image';
+import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 // Smooth, organic fade-in utility
 function GentleFade({ children, delay = 0, yOffset = 20 }: { children: React.ReactNode, delay?: number, yOffset?: number }) {
@@ -27,55 +28,12 @@ type GraduationTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
-export default function GraduationTemplate({ template, data, invitationId }: GraduationTemplateProps) {
+export default function GraduationTemplate({ template, data, invitationId, onRsvpClick }: GraduationTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
-  const [guestName, setGuestName] = useState("");
-  const [guestMessage, setGuestMessage] = useState("");
-  const [formState, setFormState] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleSubmit = async () => {
-    if (!invitationId) {
-      setErrorMessage('RSVP is not available in preview mode.');
-      setFormState('error');
-      return;
-    }
-    if (!guestName) {
-      setErrorMessage('Please provide your name.');
-      setFormState('error');
-      return;
-    }
-    setFormState('submitting');
-    setErrorMessage('');
-
-    try {
-      const response = await fetch(`/api/invitations/${invitationId}/rsvp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: guestName,
-          status: 'ATTENDING',
-          plus_ones: 0,
-          message: guestMessage,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Something went wrong. Please try again.');
-      }
-      setFormState('submitted');
-    } catch (error: unknown) {
-      setFormState('error');
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage('An unknown error occurred.');
-      }
-    }
-  };
 
 
   const eventDate = invitationData.event_date ? new Date(invitationData.event_date).toLocaleDateString('es-ES', {
@@ -212,52 +170,7 @@ export default function GraduationTemplate({ template, data, invitationId }: Gra
         </div>
       </section>
 
-      {/* Guestbook Section - Soft & Welcoming */}
-      <section className="py-24 px-6">
-        <div className="max-w-2xl mx-auto">
-          <GentleFade>
-            <div className="bg-white/40 backdrop-blur-sm border border-[var(--selection)] p-8 md:p-14 rounded-2xl shadow-sm">
-              <div className="flex flex-col items-center justify-center gap-4 mb-10">
-                <Feather className="text-[var(--primary)]" size={28} strokeWidth={1} />
-                <h2 className="text-2xl md:text-3xl font-light text-center">Palabras de inspiración para el graduado</h2>
-              </div>
-              
-              {formState === 'submitted' ? (
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold" style={{ color: 'var(--primary)' }}>¡Gracias!</h3>
-                  <p>Tu mensaje ha sido enviado.</p>
-                </div>
-              ) : (
-                <div className="space-y-6 font-sans">
-                   <input
-                    type="text"
-                    className="w-full p-3 bg-transparent border-b border-[var(--border)] focus:border-[var(--primary)] outline-none transition-all"
-                    placeholder="Tu nombre"
-                    value={guestName}
-                    onChange={(e) => setGuestName(e.target.value)}
-                  />
-                  <textarea 
-                    className="w-full p-5 bg-transparent border-b border-[var(--border)] focus:border-[var(--primary)] outline-none transition-all min-h-[140px] text-[var(--text)] placeholder:text-[var(--placeholder)] resize-none"
-                    placeholder="Escribe tus mejores deseos, consejos o recuerdos para el graduado..."
-                    value={guestMessage}
-                    onChange={(e) => setGuestMessage(e.target.value)}
-                  />
-                  {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
-                  <div className="flex justify-center">
-                    <button 
-                      className="px-10 py-4 text-[var(--text)] border border-[var(--text)] text-xs font-medium uppercase tracking-[0.2em] rounded hover:bg-[var(--text)] hover:text-white transition-colors duration-300 disabled:opacity-50"
-                      onClick={handleSubmit}
-                      disabled={formState === 'submitting'}
-                    >
-                      {formState === 'submitting' ? 'Enviando...' : 'Compartir Mensaje'}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </GentleFade>
-        </div>
-      </section>
+
       
       {/* Future Plans Section - Grounded Footer */}
       {features.futurePlans && invitationData.futurePlans && (
@@ -272,6 +185,13 @@ export default function GraduationTemplate({ template, data, invitationId }: Gra
           </div>
         </section>
       )}
+
+      {onRsvpClick && (
+        <section className="py-20 px-6 text-center">
+          <RsvpTrigger onClick={onRsvpClick} primaryColor={colorPalette['--primary']} />
+        </section>
+      )}
     </div>
   );
 }
+

@@ -23,6 +23,7 @@ interface TemplateComponentProps {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 }
 // This map MUST use the same keys as defined in 'src/lib/templateConfig.ts'
 export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<TemplateComponentProps> } = {

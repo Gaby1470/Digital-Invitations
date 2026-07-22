@@ -4,9 +4,9 @@
 import React, { useRef, useState } from 'react';
 import { EditorData, TemplateConfig } from "@/lib/types";
 import { motion, useInView } from "framer-motion";
-import { RsvpSection } from "./shared/RsvpSection";
 import { Calendar, MapPin, Gift, Clock, Sparkles, CheckCircle, XCircle, ExternalLink } from "lucide-react";
 import Image from 'next/image';
+import { RsvpTrigger } from './shared/RsvpTrigger';
 
 function FadeIn({
   children,
@@ -24,7 +24,6 @@ function FadeIn({
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-      className="h-full"
     >
       {children}
     </motion.div>
@@ -35,6 +34,7 @@ type GenderRevealBeesTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
 const FlipCard = ({
@@ -95,10 +95,12 @@ const FlipCard = ({
   );
 };
 
+
 const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
   template,
   data,
   invitationId,
+  onRsvpClick,
 }) => {
   const { defaultData } = template;
   const invitationData = { ...defaultData, ...data };
@@ -125,7 +127,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
     heroTitle,
     heroSubtitle,
   } = invitationData;
-  
+
   const date = event_date ? new Date(event_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) : '';
 
   return (
@@ -184,10 +186,10 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
           </div>
         </FadeIn>
       </header>
-      
+
       {/* Details Grid */}
       <main className="relative z-10 max-w-3xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 -mt-8 items-stretch">
-        
+
         {/* Date & Time Card */}
         <FadeIn delay={0.1}>
           <div className="h-full flex flex-col justify-center items-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-2 border-yellow-300/50 text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
@@ -200,7 +202,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
             <p className="text-sm font-semibold text-yellow-800 mt-2">{timeSubtitle}</p>
           </div>
         </FadeIn>
-        
+
         {/* Location Card */}
         <FadeIn delay={0.2}>
           <div className="h-full flex flex-col justify-center items-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-2 border-yellow-300/50 text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
@@ -231,7 +233,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
               <p className="text-sm font-medium max-w-md mx-auto opacity-80" style={{ color: textColor }}>
                 Vota y ayúdanos a revelar el gran secreto. ¡No olvides traer tu mejor consejo para los futuros padres!
               </p>
-              
+
               <div className="mt-8 grid grid-cols-2 gap-6 max-w-sm mx-auto">
                 <FlipCard
                   selection="girl"
@@ -302,25 +304,17 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
           </FadeIn>
         </section>
       )}
-      
-      {/* RSVP Section */}
-      <section className="relative z-10 py-6 px-4 max-w-xl mx-auto mt-4">
-        <FadeIn delay={0.4}>
-          <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-yellow-200/50 p-6 sm:p-8">
-            {invitationId ? (
-              <RsvpSection 
-                invitationId={invitationId}
-                primaryColor={primaryColor}
-                textColor={textColor}
-              />
-            ) : (
-              <div className="text-center text-gray-500">
-                <p>The RSVP form will be displayed here on the live invitation.</p>
-              </div>
-            )}
-          </div>
-        </FadeIn>
-      </section>
+
+      {onRsvpClick && (
+        <section className="relative z-10 py-6 px-4 max-w-xl mx-auto mt-4">
+          <FadeIn delay={0.4}>
+            <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-yellow-200/50 p-6 sm:p-8">
+              <RsvpTrigger onClick={onRsvpClick} primaryColor={primaryColor} textColor={textColor} />
+            </div>
+          </FadeIn>
+        </section>
+      )}
+
 
       {/* Footer */}
       <footer className="relative z-10 mt-12 mb-8 text-center px-4">
@@ -330,7 +324,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
 
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;600;700&display=swap');
-        
+
         .font-sans {
           font-family: 'Quicksand', sans-serif;
         }
@@ -346,7 +340,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
           50% { transform: translateX(-25px) translateY(20px) rotate(-20deg); }
           100% { transform: translateX(0) translateY(0) rotate(0deg); }
         }
-        
+
         .animate-fly {
           animation: fly 10s ease-in-out infinite;
         }

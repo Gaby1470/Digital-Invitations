@@ -9,9 +9,8 @@ import {
   DressCode,
   Godparent,
 } from "@/lib/types";
-import { RsvpSection } from "./shared/RsvpSection";
-
 import Image from "next/image";
+import { RsvpTrigger } from './shared/RsvpTrigger';
 
 function AnimatedSection({
   children,
@@ -39,12 +38,14 @@ type OldMoneyTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
 export default function OldMoneyTemplate({
   template,
   data,
   invitationId,
+  onRsvpClick,
 }: OldMoneyTemplateProps) {
   const { features, defaultData } = template;
   const invitationData = { ...defaultData, ...data };
@@ -341,22 +342,15 @@ export default function OldMoneyTemplate({
               Es muy importante para nosotros contar con tu presencia.
             </p>
           </AnimatedSection>
-
-          <AnimatedSection>
-             <div className="mt-8">
-              {invitationId ? (
-                <RsvpSection
-                  invitationId={invitationId}
-                  primaryColor={accentColor}
-                  textColor={primaryText}
-                />
-              ) : (
-                <div className="text-center text-gray-500">
-                  <p>The RSVP form will be displayed here on the live invitation.</p>
+          
+          {onRsvpClick && (
+            <AnimatedSection>
+                <div className="mt-8">
+                    <RsvpTrigger onClick={onRsvpClick} primaryColor={accentColor} textColor={primaryText} />
                 </div>
-              )}
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
+          )}
+
         </div>
       </section>
 

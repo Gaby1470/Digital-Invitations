@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { useState, useRef } from 'react';
 import { EditorData, TemplateConfig } from '@/lib/types';
 import Image from 'next/image';
+import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 // Soft, elegant fade-in animation suitable for a princess theme
 function GentleFadeIn({ children, delay = 0, direction = "up" }: { children: React.ReactNode, delay?: number, direction?: "up" | "none" }) {
@@ -68,9 +69,10 @@ function FloatingSparkles() {
 type PrincessBirthdayTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  onRsvpClick?: () => void;
 };
 
-export default function PrincessBirthdayTemplate({ template, data }: PrincessBirthdayTemplateProps) {
+export default function PrincessBirthdayTemplate({ template, data, onRsvpClick }: PrincessBirthdayTemplateProps) {
   const { defaultData, font } = template;
   const invitationData = { ...defaultData, ...data };
   
@@ -235,32 +237,11 @@ export default function PrincessBirthdayTemplate({ template, data }: PrincessBir
           </GentleFadeIn>
         </section>
 
-        {/* Side-by-Side RSVP Section */}
-        <section className="w-full mt-2 z-20">
-          <GentleFadeIn delay={0.8}>
-            <div className="flex flex-row items-center justify-between gap-4 w-full bg-white/40 p-2 rounded-full border border-white/50 backdrop-blur-sm shadow-lg">
-
-              {/* Gold Pill Button */}
-              <button 
-                className="flex-1 text-white font-medium text-xs sm:text-sm py-4 px-2 rounded-full shadow-[0_4px_15px_rgba(184,151,102,0.4)] active:scale-[0.98] transition-transform uppercase tracking-widest border border-white/30"
-                style={{ background: 'linear-gradient(135deg, #D4AF37 0%, #B89766 50%, #996515 100%)' }}
-                onClick={() => alert("RSVP seleccionado!")}
-              >
-                RSVP para la fiesta
-              </button>
-
-              {/* RSVP Text Block aligned right */}
-              <div className="flex-1 text-right pr-4">
-                <p className="text-[9px] sm:text-[10px] tracking-[0.15em] uppercase leading-relaxed font-semibold opacity-70" style={{ color: theme.textDark }}>
-                  Por favor responde antes del <br/>
-                  <span className="text-xs sm:text-sm tracking-widest text-[#B89766]">{invitationData.rsvpDateText || "15 de julio"}</span>
-                </p>
-              </div>
-
-            </div>
-          </GentleFadeIn>
-        </section>
-
+        {onRsvpClick && (
+          <section className="py-20 px-6 text-center">
+            <RsvpTrigger onClick={onRsvpClick} primaryColor={theme.textGold} />
+          </section>
+        )}
       </div>
     </div>
   );

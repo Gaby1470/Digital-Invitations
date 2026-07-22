@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
 import { MapPin } from 'lucide-react';
+import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 /**
  * Enhanced FadeIn for organic baby-themed entries.
@@ -28,9 +29,10 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode, delay?: nu
 type GenderRevealTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  onRsvpClick?: () => void;
 };
 
-export default function GenderRevealTemplate({ template, data }: GenderRevealTemplateProps) {
+export default function GenderRevealTemplate({ template, data, onRsvpClick }: GenderRevealTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
   const [team, setTeam] = useState<'boy' | 'girl' | null>(null);
@@ -341,6 +343,12 @@ export default function GenderRevealTemplate({ template, data }: GenderRevealTem
               </AnimatePresence>
             </div>
           </FadeIn>
+        </section>
+      )}
+
+      {onRsvpClick && (
+        <section className="py-20 px-6 text-center">
+          <RsvpTrigger onClick={onRsvpClick} primaryColor={invitationData.primaryColor} />
         </section>
       )}
     </div>

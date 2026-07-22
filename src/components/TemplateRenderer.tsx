@@ -9,9 +9,11 @@ type TemplateRendererProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
-export default function TemplateRenderer({ templateId, template, data, invitationId }: TemplateRendererProps) {
+export default function TemplateRenderer({ templateId, template, data, invitationId, onRsvpClick }: TemplateRendererProps) {
+  console.log('TemplateRenderer onRsvpClick:', typeof onRsvpClick);
   const rawId = templateId || "";
   const normalizedId = rawId
     .toLowerCase()
@@ -36,7 +38,7 @@ export default function TemplateRenderer({ templateId, template, data, invitatio
 
   return (
     <div>
-      <SelectedComponent template={template} data={data} invitationId={invitationId} />
+      <SelectedComponent template={template} data={data} invitationId={invitationId} onRsvpClick={onRsvpClick} />
     </div>
   );
 }

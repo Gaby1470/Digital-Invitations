@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { EditorData, TemplateConfig, TimelineItem } from "@/lib/types";
 import Image from "next/image";
+import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 // Floating animation utility for stickers/elements
 function FloatingSticker({
@@ -76,59 +77,17 @@ type GraduationTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
 export default function ScrapbookGraduationTemplate({
   template,
   data,
   invitationId,
+  onRsvpClick,
 }: GraduationTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
-  const [guestName, setGuestName] = useState("");
-  const [guestMessage, setGuestMessage] = useState("");
-  const [formState, setFormState] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleSubmit = async () => {
-    if (!invitationId) {
-      setErrorMessage('RSVP is not available in preview mode.');
-      setFormState('error');
-      return;
-    }
-    if (!guestName) {
-      setErrorMessage('Please provide your name.');
-      setFormState('error');
-      return;
-    }
-    setFormState('submitting');
-    setErrorMessage('');
-
-    try {
-      const response = await fetch(`/api/invitations/${invitationId}/rsvp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: guestName,
-          status: 'ATTENDING',
-          plus_ones: 0,
-          message: guestMessage,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Something went wrong. Please try again.');
-      }
-      setFormState('submitted');
-    } catch (error: unknown) {
-      setFormState('error');
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage('An unknown error occurred.');
-      }
-    }
-  };
 
   const colorPalette = {
     "--background-color": invitationData.backgroundColor || "#F4EFE6",
@@ -349,63 +308,11 @@ export default function ScrapbookGraduationTemplate({
         </div>
       </section>
 
-      {/* Guestbook / RSVP - Polaroid Style */}
-      <section className="py-24 px-6 relative overflow-hidden">
-        <div className="max-w-md mx-auto relative z-10">
-          <PopIn>
-            <div className="bg-white p-4 pb-16 border border-gray-200 shadow-2xl transform rotate-2">
-              <div className="bg-black/5 w-full h-48 mb-6 border border-black/10 relative overflow-hidden">
-                <Image
-                  src={invitationData.guestbookPolaroidImage || invitationData.hero_image_url || "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/graduation-cover.jpg"}
-                  alt="Guestbook polaroid"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-
-              <h2
-                className="text-3xl text-center mb-6"
-                style={{ fontFamily: "'Permanent Marker', 'Caveat', cursive" }}
-              >
-                ¡Deja un mensaje!
-              </h2>
-              <FloatingSticker className="bottom-100 right-[112%] w-24 h-24 z-20" delay={0.5} yOffset={-20} duration={5}>
-                <Image src={invitationData.starBalloonImage || "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/star.png"} alt="Star Balloon" layout="fill" objectFit="contain" />
-              </FloatingSticker>
-              {formState === 'submitted' ? (
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold" style={{ color: 'var(--primary-color)' }}>¡Gracias!</h3>
-                  <p>Tu mensaje ha sido enviado.</p>
-                </div>
-              ) : (
-                <div className="space-y-4 font-mono">
-                  <input
-                    type="text"
-                    className="w-full p-3 bg-transparent border-b-2 border-dashed border-black/30 focus:border-[var(--primary-color)] outline-none transition-all"
-                    placeholder="Tu nombre"
-                    value={guestName}
-                    onChange={(e) => setGuestName(e.target.value)}
-                  />
-                  <textarea
-                    className="w-full p-3 bg-transparent border-b-2 border-dashed border-black/30 focus:border-[var(--primary-color)] outline-none transition-all min-h-[100px] resize-none"
-                    placeholder="Escribe un deseo para el graduado..."
-                    value={guestMessage}
-                    onChange={(e) => setGuestMessage(e.target.value)}
-                  />
-                  {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
-                  <button
-                    className="w-full py-4 bg-black text-white font-bold uppercase tracking-widest hover:bg-[var(--primary-color)] transition-colors disabled:opacity-50"
-                    onClick={handleSubmit}
-                    disabled={formState === 'submitting'}
-                  >
-                    {formState === 'submitting' ? 'Enviando...' : 'Enviar'}
-                  </button>
-                </div>
-              )}
-            </div>
-          </PopIn>
-        </div>
-      </section>
+      {onRsvpClick && (
+        <section className="py-20 px-6 text-center">
+          <RsvpTrigger onClick={onRsvpClick} primaryColor={colorPalette['--primary-color']} />
+        </section>
+      )}
 
       <style jsx global>{`
         @import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@400;700&display=swap");
@@ -413,3 +320,4 @@ export default function ScrapbookGraduationTemplate({
     </div>
   );
 }
+

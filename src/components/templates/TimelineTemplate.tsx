@@ -11,9 +11,9 @@ import {
   RecommendationItem,
 } from "@/lib/types";
 import { DressCodePreview } from "./shared/DressCodePreview";
-import { RsvpSection } from "./shared/RsvpSection";
 import GiftSection from "./shared/GiftSection";
 import Countdown from "./shared/Countdown";
+import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 interface ExtendedTimelineItem extends TimelineItem {
   imageSrc?: string;
@@ -45,12 +45,14 @@ type TimelineTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
 export default function TimelineTemplate({
   template,
   data,
   invitationId,
+  onRsvpClick,
 }: TimelineTemplateProps) {
   const { features, defaultData } = template;
   const invitationData = { ...defaultData, ...data };
@@ -405,29 +407,11 @@ export default function TimelineTemplate({
         </div>
       </section>
 
-      {/* RSVP Section */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-md mx-auto">
-          <AnimatedSection>
-            <h2 className="text-3xl font-serif text-center mb-8 italic" style={{ color: invitationData.textColor }}>
-              Confirmación de Asistencia
-            </h2>
-            <div className="bg-stone-50/50 p-6 rounded-2xl border border-stone-100 shadow-xs">
-              {invitationId ? (
-                <RsvpSection
-                  invitationId={invitationId}
-                  primaryColor={invitationData.primaryColor}
-                  textColor={invitationData.textColor}
-                />
-              ) : (
-                <div className="text-center text-gray-500">
-                  <p>The RSVP form will be displayed here on the live invitation.</p>
-                </div>
-              )}
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
+      {onRsvpClick && (
+        <section className="py-20 px-6 text-center">
+          <RsvpTrigger onClick={onRsvpClick} primaryColor={invitationData.primaryColor} />
+        </section>
+      )}
     </div>
   );
 }

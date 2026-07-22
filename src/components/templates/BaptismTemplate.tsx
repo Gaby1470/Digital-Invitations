@@ -3,6 +3,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { EditorData, Godparent, TemplateConfig, TimelineItem } from '@/lib/types';
+import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 /**
  * Ethereal fade-in for sacred milestones, optimized for mobile performance.
@@ -26,9 +27,10 @@ function SacredFadeIn({ children, delay = 0 }: { children: React.ReactNode, dela
 type BaptismTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  onRsvpClick?: () => void;
 };
 
-export default function BaptismTemplate({ template, data }: BaptismTemplateProps) {
+export default function BaptismTemplate({ template, data, onRsvpClick }: BaptismTemplateProps) {
   const { defaultData } = template;
   const invitationData = { ...defaultData, ...data };
 
@@ -231,6 +233,12 @@ export default function BaptismTemplate({ template, data }: BaptismTemplateProps
           </div>
         </SacredFadeIn>
       </section>
+      
+      {onRsvpClick && (
+        <section className="py-20 px-6 text-center">
+          <RsvpTrigger onClick={onRsvpClick} primaryColor={invitationData.primaryColor} />
+        </section>
+      )}
     </div>
   );
 }

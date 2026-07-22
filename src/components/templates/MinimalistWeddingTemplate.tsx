@@ -11,10 +11,10 @@ import {
   RecommendationItem,
 } from "@/lib/types";
 import { DressCodePreview } from "./shared/DressCodePreview";
-import { RsvpSection } from "./shared/RsvpSection";
 import GiftSection from "./shared/GiftSection";
 import Countdown from "./shared/Countdown";
 import Lightbox from "./shared/Lightbox";
+import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 function FadeIn({
   children,
@@ -47,12 +47,14 @@ type MinimalistWeddingTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
 export default function MinimalistWeddingTemplate({
   template,
   data,
   invitationId,
+  onRsvpClick,
 }: MinimalistWeddingTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
@@ -375,29 +377,15 @@ export default function MinimalistWeddingTemplate({
           </div>
       </section>
 
-      {/* RSVP Section */}
-      <section className="py-20 px-6 bg-neutral-50 border-t border-neutral-100">
-        <div className="max-w-md mx-auto">
-          <FadeIn>
-            <h2 className="text-2xl font-light tracking-tight text-center mb-8">
-              Will you be joining us?
-            </h2>
-            <div className="bg-white p-6 border border-neutral-200/60 rounded-lg shadow-sm">
-              {invitationId ? (
-                <RsvpSection
-                  invitationId={invitationId}
-                  primaryColor={invitationData.primaryColor}
-                  textColor={invitationData.textColor}
-                />
-              ) : (
-                <div className="text-center text-gray-500">
-                  <p>The RSVP form will be displayed here on the live invitation.</p>
-                </div>
-              )}
+      {onRsvpClick && (
+        <section className="py-20 px-6 bg-neutral-50 border-t border-neutral-100">
+            <div className="max-w-md mx-auto">
+            <FadeIn>
+                <RsvpTrigger onClick={onRsvpClick} primaryColor={invitationData.primaryColor} textColor={invitationData.textColor} />
+            </FadeIn>
             </div>
-          </FadeIn>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

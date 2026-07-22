@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Inter, Dancing_Script, Playfair_Display, Montserrat } from "next/font/google";
 import QueryProvider from "@/components/QueryProvider";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -71,6 +72,12 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-gray-50">
         <QueryProvider>
+          <Toaster
+            position="bottom-center"
+            toastOptions={{
+              duration: 3000,
+            }}
+          />
           {children}
         </QueryProvider>
       </body>

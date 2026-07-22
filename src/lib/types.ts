@@ -1,5 +1,165 @@
 // src/lib/types.ts
 
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export interface Database {
+  public: {
+    Tables: {
+      profiles: {
+        Row: {
+          id: string
+          plan: string | null
+          stripe_customer_id: string | null
+        }
+        Insert: {
+          id: string
+          plan?: string | null
+          stripe_customer_id?: string | null
+        }
+        Update: {
+          id?: string
+          plan?: string | null
+          stripe_customer_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      invitations: {
+        Row: {
+          id: string
+          user_id: string
+          slug: string | null
+          template_name: string | null
+          invitation_data: Json | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          slug?: string | null
+          template_name?: string | null
+          invitation_data?: Json | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          slug?: string | null
+          template_name?: string | null
+          invitation_data?: Json | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invitations_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      guest_parties: {
+        Row: {
+          id: string
+          invitation_id: string
+          party_name: string
+          allocated_seats: number
+          rsvp_slug: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          invitation_id: string
+          party_name: string
+          allocated_seats: number
+          rsvp_slug?: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          invitation_id?: string
+          party_name?: string
+          allocated_seats?: number
+          rsvp_slug?: string
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_parties_invitation_id_fkey"
+            columns: ["invitation_id"]
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      rsvps: {
+        Row: {
+          id: string
+          guest_party_id: string
+          attending_count: number
+          guest_names: string[] | null
+          notes: string | null
+          submitted_at: string | null
+        }
+        Insert: {
+          id?: string
+          guest_party_id: string
+          attending_count: number
+          guest_names?: string[] | null
+          notes?: string | null
+          submitted_at?: string | null
+        }
+        Update: {
+          id?: string
+          guest_party_id?: string
+          attending_count?: number
+          guest_names?: string[] | null
+          notes?: string | null
+          submitted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rsvps_guest_party_id_fkey"
+            columns: ["guest_party_id"]
+            referencedRelation: "guest_parties"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      generate_unique_rsvp_slug: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
 export type Rsvp = {
   id: number;
   invitation_id: string;

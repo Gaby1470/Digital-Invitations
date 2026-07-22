@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { EditorData, TemplateConfig } from '@/lib/types';
 import Image from 'next/image';
-import { RsvpSection } from './shared/RsvpSection';
+import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 function BounceIn({ children, delay = 0, direction = "up" }: { children: React.ReactNode, delay?: number, direction?: "up" | "left" | "right" }) {
   const ref = useRef(null);
@@ -30,9 +30,10 @@ type SportsBirthdayTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
-export default function SportsBirthdayTemplate({ template, data, invitationId }: SportsBirthdayTemplateProps) {
+export default function SportsBirthdayTemplate({ template, data, invitationId, onRsvpClick }: SportsBirthdayTemplateProps) {
   const { defaultData, font } = template;
   const invitationData = { ...defaultData, ...data };
   const [isRsvpModalOpen, setIsRsvpModalOpen] = useState(false);
@@ -255,48 +256,16 @@ export default function SportsBirthdayTemplate({ template, data, invitationId }:
               Agregar al Calendario
             </button>
           </BounceIn>
-
-          <BounceIn direction="up" delay={0.4}>
-            <button 
-              className="w-full bg-green-500 hover:bg-green-400 text-black font-black text-lg py-4 rounded-xl border-4 border-black shadow-[0_6px_0_0_#000000] active:shadow-[0_0px_0_0_#000000] active:translate-y-1.5 transition-all uppercase tracking-widest"
-              onClick={() => setIsRsvpModalOpen(true)}
-            >
-              Confirmar Asistencia
-            </button>
-          </BounceIn>
         </section>
+
+        {onRsvpClick && (
+          <section className="py-20 px-6 text-center">
+            <RsvpTrigger onClick={onRsvpClick} primaryColor={invitationData.primaryColor} />
+          </section>
+        )}
       </div>
 
-      {/* Enhanced RSVP Modal */}
-      {isRsvpModalOpen && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="bg-white p-8 rounded-3xl border-4 border-black shadow-[8px_8px_0px_#000000] max-w-md w-full relative"
-          >
-            <div className="absolute -top-6 -right-4 text-4xl rotate-12">🎫</div>
-            <h2 className="text-3xl font-black mb-6 text-black uppercase tracking-tighter">Tu Boleto VIP</h2>
-            {invitationId ? (
-              <RsvpSection
-                invitationId={invitationId}
-                primaryColor={invitationData.primaryColor}
-                textColor={invitationData.textColor}
-              />
-            ) : (
-              <div className="text-center p-6 bg-gray-100 rounded-xl border-2 border-dashed border-gray-300">
-                <p className="text-gray-600 font-bold">La confirmación de asistencia solo está disponible en la invitación en vivo.</p>
-              </div>
-            )}
-            <button 
-              onClick={() => setIsRsvpModalOpen(false)} 
-              className="mt-6 w-full py-3 bg-neutral-200 hover:bg-neutral-300 text-black font-bold rounded-xl border-2 border-black transition-colors uppercase text-sm tracking-wider"
-            >
-              Volver al Juego
-            </button>
-          </motion.div>
-        </div>
-      )}
+
     </div>
   );
 }

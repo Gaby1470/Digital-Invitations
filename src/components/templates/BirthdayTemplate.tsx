@@ -5,6 +5,7 @@ import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
 import confetti from 'canvas-confetti';
+import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 function PopIn({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
   const ref = useRef(null);
@@ -25,6 +26,7 @@ function PopIn({ children, delay = 0 }: { children: React.ReactNode, delay?: num
 type BirthdayTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
+  onRsvpClick?: () => void;
 };
 
 function formatTimelineTime(rawTime?: string) {
@@ -54,7 +56,7 @@ function formatTimelineTime(rawTime?: string) {
   return value;
 }
 
-export default function BirthdayTemplate({ template, data }: BirthdayTemplateProps) {
+export default function BirthdayTemplate({ template, data, onRsvpClick }: BirthdayTemplateProps) {
   const { defaultData, features, font } = template;
   const invitationData = { ...defaultData, ...data };
   const theme = invitationData.theme || 'default';
@@ -262,6 +264,12 @@ export default function BirthdayTemplate({ template, data }: BirthdayTemplatePro
               </p>
             </div>
           </PopIn>
+        </section>
+      )}
+
+      {onRsvpClick && (
+        <section className="py-8 px-6 text-center">
+          <RsvpTrigger onClick={onRsvpClick} primaryColor={currentTheme.accent} />
         </section>
       )}
     </div>

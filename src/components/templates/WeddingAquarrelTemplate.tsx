@@ -11,9 +11,9 @@ import {
   RecommendationItem,
 } from "@/lib/types";
 import { DressCodePreview } from "./shared/DressCodePreview";
-import { RsvpSection } from "./shared/RsvpSection";
 import GiftSection from "./shared/GiftSection";
 import Countdown from "./shared/Countdown";
+import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 function AnimatedSection({
   children,
@@ -47,12 +47,14 @@ type WeddingAquarrelTemplateProps = {
   template?: TemplateConfig;
   data?: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
 export default function WeddingAquarrelTemplate({
   template,
   data,
   invitationId,
+  onRsvpClick,
 }: WeddingAquarrelTemplateProps) {
   // Hardcoded defaults to showcase the specific design request
   const invitationData = {
@@ -326,35 +328,12 @@ export default function WeddingAquarrelTemplate({
         </div>
       </section>
 
-      {/* RSVP Section */} 
-      <section className="py-24 px-6 bg-white border-t border-stone-100">
-        <div className="max-w-lg mx-auto">
-          <AnimatedSection>
-            <h2 
-              className="text-4xl font-serif text-center mb-4 tracking-widest uppercase" 
-              style={{ color: invitationData.textColor }}
-            >
-              RSVP
-            </h2>
-            <p className="text-center text-stone-500 mb-10 text-sm tracking-wide italic">
-              Kindly reply by June 1st, 2025
-            </p>
-            <div className="bg-[#FDFBF7] p-8 sm:p-10 rounded-sm border border-stone-200 shadow-sm">
-              {invitationId ? (
-                <RsvpSection
-                  invitationId={invitationId}
-                  primaryColor={invitationData.primaryColor}
-                  textColor={invitationData.textColor}
-                />
-              ) : (
-                <div className="text-center text-gray-500">
-                  <p>The RSVP form will be displayed here on the live invitation.</p>
-                </div>
-              )}
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
+      {onRsvpClick && (
+        <section className="py-20 px-6 text-center">
+          <RsvpTrigger onClick={onRsvpClick} primaryColor={invitationData.primaryColor} />
+        </section>
+      )}
     </div>
   );
 }
+

@@ -3,9 +3,9 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { EditorData, TemplateConfig, TimelineItem } from "@/lib/types";
-import { RsvpSection } from "./shared/RsvpSection";
 import Countdown from "./shared/Countdown";
 import { MapPinIcon, CalendarIcon, SparklesIcon } from "@heroicons/react/24/outline";
+import { RsvpTrigger } from './shared/RsvpTrigger';
 
 // A reusable fade-in component for modern animations
 function FadeIn({
@@ -23,7 +23,7 @@ function FadeIn({
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
@@ -34,12 +34,14 @@ type ModernEventTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
 export default function ModernEventTemplate({
   template,
   data,
   invitationId,
+  onRsvpClick,
 }: ModernEventTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
@@ -180,31 +182,19 @@ export default function ModernEventTemplate({
         </section>
       )}
 
-      {/* RSVP Section */}
-      <section className="py-20 md:py-32 px-6" id="rsvp">
-         <div className="relative max-w-lg mx-auto bg-white rounded-2xl shadow-xl p-8 md:p-12 border">
+      {onRsvpClick && (
+        <section className="py-20 md:py-32 px-6" id="rsvp">
+            <div className="relative max-w-lg mx-auto bg-white rounded-2xl shadow-xl p-8 md:p-12 border">
             <FadeIn>
-                <div className="text-center mb-8">
-                    <SparklesIcon className="w-12 h-12 mx-auto mb-4" style={{color: secondaryColor}}/>
-                    <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-                        Are You Attending?
-                    </h2>
-                    <p className="mt-3 text-slate-600">RSVP by {invitationData.rsvpDeadline ? new Date(invitationData.rsvpDeadline).toLocaleDateString('en-US', { month: 'long', day: 'numeric'}) : 'the deadline'}</p>
-                </div>
-                {invitationId ? (
-                  <RsvpSection
-                      invitationId={invitationId}
-                      primaryColor={primaryColor}
-                      textColor={textColor}
-                  />
-                ) : (
-                  <div className="text-center text-gray-500">
-                    <p>The RSVP form will be displayed here on the live invitation.</p>
-                  </div>
-                )}
+                <RsvpTrigger
+                    onClick={onRsvpClick}
+                    primaryColor={primaryColor}
+                    textColor={textColor}
+                />
             </FadeIn>
-         </div>
-      </section>
+            </div>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="text-center py-10 px-6">

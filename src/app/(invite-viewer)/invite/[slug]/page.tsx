@@ -1,45 +1,168 @@
-// src/app/(invite-viewer)/invite/[slug]/page.tsx
-import { templateConfig } from '@/lib/templateConfig';
+'use client';
+
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import TemplateRenderer from '@/components/TemplateRenderer';
+import { templateConfig } from '@/lib/templateConfig';
+import { EditorData } from '@/lib/types';
+import Modal from '@/components/editor/shared/Modal';
+import { CheckCircle, Loader, AlertTriangle, Send } from 'lucide-react';
 import Link from 'next/link';
 
-type InvitePageProps = {
-  params: {
-    slug: string;
-  };
-};
+// --- Data Fetching ---
 
 async function getInvitation(slug: string) {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  const url = `${appUrl}/api/invitations/by-slug/${slug}`;
-
-  try {
-    const res = await fetch(url, {
-      next: { revalidate: 3600 } // Revalidate data every hour
-    });
-
-    if (!res.ok) {
-       const errorBody = await res.json().catch(() => ({}));
-       return { error: true, status: res.status, message: errorBody.error || res.statusText };
-    }
-
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error(`[getInvitation] Failed to fetch invitation ${slug}:`, error);
-    return null;
+  const res = await fetch(`/api/invitations/by-slug/${slug}`);
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    const error = new Error(errorBody.error || `Error: ${res.status}`);
+    (error as any).status = res.status;
+    throw error;
   }
+  return res.json();
 }
 
-export default async function InvitePage({ params }: InvitePageProps) {
-  const { slug } = await params;
-  const invitation = await getInvitation(slug);
+type RsvpSubmission = {
+    attending_count: number;
+    guest_names?: string[];
+    notes?: string;
+}
 
-  if (!invitation || invitation.error) {
+async function submitGeneralRsvp(submission: RsvpSubmission & { invitationId: string }): Promise<any> {
+    const res = await fetch(`/api/general-rsvp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submission),
+    });
+    if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to submit RSVP.');
+    }
+    return res.json();
+}
+
+// --- Components ---
+
+function GeneralRsvpForm({ invitationId, onClose }: { invitationId: string, onClose: () => void }) {
+    const queryClient = useQueryClient();
+    const [willAttend, setWillAttend] = useState<boolean | null>(null);
+    const [guestName, setGuestName] = useState('');
+    const [notes, setNotes] = useState('');
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const rsvpMutation = useMutation({
+        mutationFn: (submission: RsvpSubmission & { invitationId: string }) => submitGeneralRsvp(submission),
+        onSuccess: () => {
+            setIsSubmitted(true);
+            toast.success("Thank you for your response!");
+            queryClient.invalidateQueries({ queryKey: ['guestParties', invitationId] });
+        },
+        onError: (err: Error) => {
+            toast.error(err.message);
+        }
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const attending_count = willAttend ? 1 : 0;
+        const guest_names = willAttend && guestName ? [guestName] : [];
+        rsvpMutation.mutate({ invitationId, attending_count, guest_names, notes });
+    };
+
+    if (isSubmitted) {
+        return (
+            <div className="text-center p-8 bg-green-50 rounded-xl">
+                <CheckCircle className="mx-auto text-green-500 mb-4" size={56} />
+                <h2 className="text-3xl font-bold text-gray-800 mb-2">RSVP Received!</h2>
+                <p className="text-gray-600">Your response has been recorded. Thank you!</p>
+                <button onClick={onClose} className="mt-8 inline-block px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all">
+                    Close
+                </button>
+            </div>
+        );
+    }
+
+    return (
+        <div className="p-6">
+            <div className="text-center mb-8">
+                <h1 className="text-3xl font-bold text-gray-900">Will you be attending?</h1>
+                <p className="text-base text-gray-600 mt-2">Please let us know if you can make it.</p>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                    <button type="button" onClick={() => setWillAttend(true)} className={`py-4 rounded-lg font-semibold border-2 transition-all ${willAttend === true ? 'bg-green-600 text-white border-green-700 scale-105' : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'}`}>
+                        Yes, I'll be there!
+                    </button>
+                    <button type="button" onClick={() => setWillAttend(false)} className={`py-4 rounded-lg font-semibold border-2 transition-all ${willAttend === false ? 'bg-red-600 text-white border-red-700 scale-105' : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'}`}>
+                        Sorry, I can't make it
+                    </button>
+                </div>
+
+                {willAttend && (
+                    <div className="pt-4 border-t">
+                        <label htmlFor="guest_name" className="block text-sm font-semibold text-gray-600 mb-1">Your Name</label>
+                        <input
+                            id="guest_name"
+                            type="text"
+                            value={guestName}
+                            onChange={(e) => setGuestName(e.target.value)}
+                            placeholder="Full Name"
+                            required
+                            className="w-full px-4 py-2 text-base bg-gray-50 rounded-lg border border-gray-300 shadow-inner focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                        />
+                    </div>
+                )}
+                
+                <div>
+                    <label htmlFor="notes" className="block text-sm font-semibold text-gray-600 mb-2">Leave a note (optional)</label>
+                    <textarea
+                        id="notes"
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        rows={3}
+                        className="w-full px-4 py-2 text-base bg-gray-50 rounded-lg border border-gray-300 shadow-inner focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                        placeholder="e.g., well wishes..."
+                    ></textarea>
+                </div>
+
+                <button type="submit" disabled={rsvpMutation.isLoading || willAttend === null} className="w-full flex items-center justify-center px-6 py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:bg-indigo-400 transition-all text-lg shadow-md">
+                    {rsvpMutation.isLoading ? <><Loader className="animate-spin mr-2"/> Submitting...</> : <><Send className="mr-2"/> Submit RSVP</>}
+                </button>
+            </form>
+        </div>
+    );
+}
+
+export default function InvitePage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { data: invitation, isLoading, error } = useQuery({
+    queryKey: ['invitation', slug],
+    queryFn: () => getInvitation(slug),
+    enabled: !!slug,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="flex flex-col items-center">
+          <Loader className="h-12 w-12 text-indigo-500 animate-spin" />
+          <p className="mt-4 text-lg text-gray-600 font-medium">Loading Invitation...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    const status = (error as any).status;
     let title = "Invitation Not Found";
     let message = "The invitation link is either invalid or has been removed.";
-
-    if (invitation?.status === 403) {
+    if (status === 403) {
       title = "Invitation Not Published";
       message = "This invitation is not yet available to the public.";
     }
@@ -48,9 +171,7 @@ export default async function InvitePage({ params }: InvitePageProps) {
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center px-4">
         <div className="bg-white p-8 rounded-2xl shadow-md max-w-md w-full">
           <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-            </svg>
+            <AlertTriangle className="w-8 h-8"/>
           </div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">{title}</h1>
           <p className="text-gray-600 mb-8">{message}</p>
@@ -61,9 +182,8 @@ export default async function InvitePage({ params }: InvitePageProps) {
       </div>
     );
   }
-
-  // Get the corresponding template configuration
-  const template = templateConfig[invitation.template];
+  
+  const template = invitation ? templateConfig[invitation.template] : null;
 
   if (!template) {
      return (
@@ -74,8 +194,19 @@ export default async function InvitePage({ params }: InvitePageProps) {
     );
   }
 
-  // The 'data' field from Supabase contains all the personalized content
-  const rendererData = invitation.data;
-  
-  return <TemplateRenderer templateId={invitation.template} template={template} data={rendererData} invitationId={invitation.id} />;
+  return (
+    <>
+      <TemplateRenderer 
+        templateId={invitation.template} 
+        template={template} 
+        data={invitation.data} 
+        invitationId={invitation.id}
+        onRsvpClick={() => setIsModalOpen(true)}
+      />
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title=" ">
+        <GeneralRsvpForm invitationId={invitation.id} onClose={() => setIsModalOpen(false)} />
+      </Modal>
+    </>
+  );
 }
+

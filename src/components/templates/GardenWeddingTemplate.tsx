@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from "framer-motion";
 import { EditorData, TemplateConfig } from "@/lib/types";
-import { RsvpSection } from "./shared/RsvpSection";
 import Lightbox from "./shared/Lightbox";
+import { RsvpTrigger } from './shared/RsvpTrigger';
 
 // A utility for animations, similar to other templates
 function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number; }) {
@@ -28,6 +28,7 @@ type GardenWeddingTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
+  onRsvpClick?: () => void;
 };
 
 const TIMELINE_ICONS: { keywords: string[]; src: string }[] = [
@@ -55,7 +56,7 @@ function normalizeExternalUrl(value?: string): string {
   return `https://maps.google.com/maps?q=${encodeURIComponent(trimmed)}`;
 }
 
-export default function GardenWeddingTemplate({ template, data, invitationId }: GardenWeddingTemplateProps) {
+export default function GardenWeddingTemplate({ template, data, invitationId, onRsvpClick }: GardenWeddingTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
 
@@ -371,49 +372,23 @@ export default function GardenWeddingTemplate({ template, data, invitationId }: 
         </div>
       </section>
 
-      {/* 6. RSVP Section */}
-      {features.rsvp && (
-        <section className="py-20 px-6 bg-[#fcfaf2] text-center">
-          <AnimatedSection>
-            <h2 className="font-serif italic text-4xl text-center mb-3" style={{ color: accentColor }}>
-              Confirmar Asistencia
-            </h2>
 
-            <div className="mb-8 inline-block border-y py-3 px-10" style={{ borderColor: `${accentColor}35` }}>
-              <p className="text-sm uppercase tracking-[0.3em] font-medium" style={{ color: primaryText }}>
-                Pases de Acceso:<br />{invitationData.guestCount || "2"} lugares
-              </p>
-            </div>
-
-            <div
-              className="max-w-md mx-auto rounded-xl p-8 shadow-lg border"
-              style={{
-                backgroundColor: 'rgba(253, 251, 245, 0.8)', // semi-transparent #fdfbf5
-                borderColor: `${accentColor}30`,
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              {invitationId ? (
-                <RsvpSection
-                  invitationId={invitationId}
-                  primaryColor={accentColor}
-                  textColor={primaryText}
-                />
-              ) : (
-                <div className="text-center text-gray-500 py-8">
-                  <p className="italic">El formulario de confirmación de asistencia se mostrará aquí en la invitación en vivo.</p>
-                </div>
-              )}
-            </div>
-          </AnimatedSection>
-        </section>
-      )}
 
       <Lightbox
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
         imageUrl={selectedImage}
       />
+
+      {onRsvpClick && (
+        <section className="bg-[#fcfaf2] py-16 px-6 text-center">
+          <AnimatedSection>
+            <div className="max-w-md mx-auto">
+                <RsvpTrigger onClick={onRsvpClick} primaryColor={accentColor} textColor={primaryText} />
+            </div>
+          </AnimatedSection>
+        </section>
+      )}
     </div>
   );
 }
