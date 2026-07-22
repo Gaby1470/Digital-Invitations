@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { EditorData, Godparent, TemplateConfig, TimelineItem } from '@/lib/types';
+import { Godparent, TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
 
 /**

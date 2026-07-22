@@ -4,7 +4,8 @@
 import ColorInput from '../shared/ColorInput';
 import FontSelection from '../shared/FontSelection';
 import PaletteSelection from '../shared/PaletteSelection';
-import { EditorData, TemplateConfig } from '@/lib/types';
+import { TemplateConfig } from '@/lib/custom_types';
+import { EditorData } from '@/lib/custom_types';
 
 type ColorsAndStyleSectionProps = {
   data: EditorData;

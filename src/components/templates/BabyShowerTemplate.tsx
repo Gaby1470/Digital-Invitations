@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useRef } from 'react';
-import { EditorData, TemplateConfig, TimelineItem } from "@/lib/types";
+import { TemplateConfig, TimelineItem, EditorData } from "@/lib/custom_types";
 import { motion, useInView } from "framer-motion";
 import { Calendar, MapPin, Baby, Heart, PartyPopper, Utensils, Clock } from "lucide-react";
 import GiftSection from './shared/GiftSection';

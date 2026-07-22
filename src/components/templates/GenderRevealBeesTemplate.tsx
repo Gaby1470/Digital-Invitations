@@ -2,7 +2,8 @@
 "use client";
 
 import React, { useRef, useState } from 'react';
-import { EditorData, TemplateConfig } from "@/lib/types";
+import { TemplateConfig } from "@/lib/custom_types";
+import { EditorData } from "@/lib/custom_types";
 import { motion, useInView } from "framer-motion";
 import { Calendar, MapPin, Gift, Clock, Sparkles, CheckCircle, XCircle, ExternalLink } from "lucide-react";
 import Image from 'next/image';

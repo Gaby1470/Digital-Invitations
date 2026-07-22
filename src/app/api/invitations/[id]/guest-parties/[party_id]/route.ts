@@ -47,14 +47,11 @@ async function checkPermissions(
 // PATCH handler to update a guest party
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string, party_id: string } }
+  { params }: { params: Promise<{ id: string, party_id: string }> }
 ) {
   const supabase = createClient(cookies());
 
-  const url = new URL(request.url);
-  const pathSegments = url.pathname.split('/');
-  const invitationId = pathSegments[3];
-  const partyId = pathSegments[5];
+  const { id: invitationId, party_id: partyId } = await params;
 
   const { party_name, allocated_seats } = await request.json();
 
@@ -94,14 +91,11 @@ export async function PATCH(
 // DELETE handler to remove a guest party
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string, party_id: string } }
+  { params }: { params: Promise<{ id: string, party_id: string }> }
 ) {
   const supabase = createClient(cookies());
   
-  const url = new URL(request.url);
-  const pathSegments = url.pathname.split('/');
-  const invitationId = pathSegments[3];
-  const partyId = pathSegments[5];
+  const { id: invitationId, party_id: partyId } = await params;
 
   try {
     const permCheck = await checkPermissions(supabase, invitationId, partyId);

@@ -3,7 +3,7 @@
 import { motion, useInView, AnimatePresence, TargetAndTransition } from 'framer-motion';
 import { useRef, useState } from 'react';
 import Image from 'next/image';
-import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
+import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import { MapPin } from 'lucide-react';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
 

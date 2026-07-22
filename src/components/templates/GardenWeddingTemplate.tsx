@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from "framer-motion";
-import { EditorData, TemplateConfig } from "@/lib/types";
+import { TemplateConfig } from "@/lib/custom_types";
+import { EditorData } from "@/lib/custom_types";
 import Lightbox from "./shared/Lightbox";
 import { RsvpTrigger } from './shared/RsvpTrigger';
 
@@ -210,7 +211,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
             </div>
 
             <div className="space-y-12">
-              {invitationData.timelineItems.map((item, index) => (
+              {invitationData.timelineItems.map((item: any, index: number) => (
                 <div className="flex items-center" key={index}>
                   <div className="w-1/4 flex justify-center z-10 bg-[#fcfaf2] py-2">
                     <div className="relative w-12 h-12">
@@ -242,7 +243,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
               {invitationData.galleryTitle || "Our Story"}
             </h2>
             <div className="grid grid-cols-2 gap-4">
-              {galleryImages.map((src, index) => (
+              {galleryImages.map((src: any, index: number) => (
                 <motion.div
                   key={index}
                   className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-lg cursor-pointer"

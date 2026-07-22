@@ -8,9 +8,9 @@ export const dynamic = 'force-dynamic';
 // POST handler to submit a "general" RSVP for an invitation that doesn't have a pre-existing guest party
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id: invitationId } = params;
+  const { id: invitationId } = await params;
   const { attending_count, guest_names, notes } = await request.json();
 
   if (!invitationId) {

@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
+import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import { Feather } from 'lucide-react';
 import Image from 'next/image';
 import { RsvpTrigger } from "./shared/RsvpTrigger";

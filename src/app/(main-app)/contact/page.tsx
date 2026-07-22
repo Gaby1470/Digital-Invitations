@@ -26,12 +26,27 @@ export default function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate an API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message.');
+      }
+
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error sending your message. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -65,7 +80,7 @@ export default function ContactPage() {
                     <EnvelopeIcon className="w-6 h-6 text-indigo-500 shrink-0 mt-1" />
                     <div>
                       <p className="font-medium text-gray-900 dark:text-white">Correo Electrónico</p>
-                      <a href="mailto:hello@taptoinvite.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">hello@taptoinvite.com</a>
+                      <a href="mailto:tap2invite@gmail.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">tap2invite@gmail.com</a>
                     </div>
                   </div>
                   

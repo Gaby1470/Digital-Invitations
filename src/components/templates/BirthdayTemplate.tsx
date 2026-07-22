@@ -3,7 +3,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
+import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import confetti from 'canvas-confetti';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
 

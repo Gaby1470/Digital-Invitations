@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { templateConfig } from '@/lib/templateConfig';
-import { TemplateConfig } from '@/lib/types';
+import { TemplateConfig } from '@/lib/custom_types';
 import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';

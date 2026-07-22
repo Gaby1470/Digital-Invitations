@@ -1,5 +1,3 @@
-// src/lib/types.ts
-
 export type Json =
   | string
   | number
@@ -8,9 +6,118 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
   public: {
     Tables: {
+      guest_parties: {
+        Row: {
+          allocated_seats: number
+          created_at: string | null
+          id: string
+          invitation_id: string
+          is_edited: boolean | null
+          party_name: string
+          rsvp_slug: string
+        }
+        Insert: {
+          allocated_seats?: number
+          created_at?: string | null
+          id?: string
+          invitation_id: string
+          is_edited?: boolean | null
+          party_name: string
+          rsvp_slug?: string
+        }
+        Update: {
+          allocated_seats?: number
+          created_at?: string | null
+          id?: string
+          invitation_id?: string
+          is_edited?: boolean | null
+          party_name?: string
+          rsvp_slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_parties_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invitations: {
+        Row: {
+          created_at: string
+          data: Json | null
+          dress_code: Json | null
+          event_date: string | null
+          font: string | null
+          gallery_images: Json | null
+          hero_image_url: string | null
+          hero_names: string | null
+          hero_title: string | null
+          id: string
+          is_published: boolean
+          music_url: string | null
+          photos: Json | null
+          primary_color: string | null
+          slug: string | null
+          template: string | null
+          timeline_items: Json | null
+          title: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          dress_code?: Json | null
+          event_date?: string | null
+          font?: string | null
+          gallery_images?: Json | null
+          hero_image_url?: string | null
+          hero_names?: string | null
+          hero_title?: string | null
+          id?: string
+          is_published?: boolean
+          music_url?: string | null
+          photos?: Json | null
+          primary_color?: string | null
+          slug?: string | null
+          template?: string | null
+          timeline_items?: Json | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          dress_code?: Json | null
+          event_date?: string | null
+          font?: string | null
+          gallery_images?: Json | null
+          hero_image_url?: string | null
+          hero_names?: string | null
+          hero_title?: string | null
+          id?: string
+          is_published?: boolean
+          music_url?: string | null
+          photos?: Json | null
+          primary_color?: string | null
+          slug?: string | null
+          template?: string | null
+          timeline_items?: Json | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           id: string
@@ -27,108 +134,30 @@ export interface Database {
           plan?: string | null
           stripe_customer_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "profiles_id_fkey"
-            columns: ["id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      invitations: {
-        Row: {
-          id: string
-          user_id: string
-          slug: string | null
-          template_name: string | null
-          invitation_data: Json | null
-          created_at: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          slug?: string | null
-          template_name?: string | null
-          invitation_data?: Json | null
-          created_at?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          slug?: string | null
-          template_name?: string | null
-          invitation_data?: Json | null
-          created_at?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "invitations_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      guest_parties: {
-        Row: {
-          id: string
-          invitation_id: string
-          party_name: string
-          allocated_seats: number
-          rsvp_slug: string
-          created_at: string | null
-        }
-        Insert: {
-          id?: string
-          invitation_id: string
-          party_name: string
-          allocated_seats: number
-          rsvp_slug?: string
-          created_at?: string | null
-        }
-        Update: {
-          id?: string
-          invitation_id?: string
-          party_name?: string
-          allocated_seats?: number
-          rsvp_slug?: string
-          created_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "guest_parties_invitation_id_fkey"
-            columns: ["invitation_id"]
-            referencedRelation: "invitations"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
       rsvps: {
         Row: {
-          id: string
-          guest_party_id: string
           attending_count: number
           guest_names: string[] | null
+          guest_party_id: string
+          id: string
           notes: string | null
           submitted_at: string | null
         }
         Insert: {
-          id?: string
-          guest_party_id: string
-          attending_count: number
+          attending_count?: number
           guest_names?: string[] | null
+          guest_party_id: string
+          id?: string
           notes?: string | null
           submitted_at?: string | null
         }
         Update: {
-          id?: string
-          guest_party_id?: string
           attending_count?: number
           guest_names?: string[] | null
+          guest_party_id?: string
+          id?: string
           notes?: string | null
           submitted_at?: string | null
         }
@@ -136,23 +165,80 @@ export interface Database {
           {
             foreignKeyName: "rsvps_guest_party_id_fkey"
             columns: ["guest_party_id"]
+            isOneToOne: true
             referencedRelation: "guest_parties"
             referencedColumns: ["id"]
-          }
+          },
         ]
+      }
+      rsvps_legacy: {
+        Row: {
+          created_at: string
+          id: number
+          invitation_id: string | null
+          message: string | null
+          name: string
+          plus_ones: number
+          status: Database["public"]["Enums"]["rsvp_status"]
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          invitation_id?: string | null
+          message?: string | null
+          name: string
+          plus_ones?: number
+          status?: Database["public"]["Enums"]["rsvp_status"]
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          invitation_id?: string | null
+          message?: string | null
+          name?: string
+          plus_ones?: number
+          status?: Database["public"]["Enums"]["rsvp_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rsvps_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      template_defaults: {
+        Row: {
+          gallery_images: Json | null
+          hero_image_url: string | null
+          id: string
+          template_name: string
+        }
+        Insert: {
+          gallery_images?: Json | null
+          hero_image_url?: string | null
+          id?: string
+          template_name: string
+        }
+        Update: {
+          gallery_images?: Json | null
+          hero_image_url?: string | null
+          id?: string
+          template_name?: string
+        }
+        Relationships: []
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      generate_unique_rsvp_slug: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      generate_unique_rsvp_slug: { Args: never; Returns: string }
     }
     Enums: {
-      [_ in never]: never
+      rsvp_status: "ATTENDING" | "DECLINED" | "PENDING"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -160,199 +246,127 @@ export interface Database {
   }
 }
 
-export type Rsvp = {
-  id: number;
-  invitation_id: string;
-  name: string;
-  status: 'ATTENDING' | 'DECLINED';
-  plus_ones: number;
-  message: string | null;
-  created_at: string;
-};
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
-export type TimelineItem = {
-  time: string;
-  title: string;
-  location: string;
-  mapLink?: string;
-  imageSrc?: string;
-  imageAlt?: string;
-};
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
-export type CourtMember = {
-  name: string;
-  role: "Dama" | "Chambelán";
-  photoUrl: string;
-};
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
 
-export type Godparent = {
-  name: string;
-  role: string;
-  photoUrl?: string;
-};
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
 
-// --- DRESS CODE TYPES ---
-export type DressCodeStyle =
-  | "Casual"
-  | "Black Tie"
-  | "Formal"
-  | "Semi-Formal"
-  | "Cocktail"
-  | "Garden Attire";
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
 
-export type DressCode = {
-  man?: DressCodeStyle | string;
-  woman?: DressCodeStyle | string;
-  pinterestUrlMan?: string;
-  pinterestUrlWoman?: string;
-};
-// --- END DRESS CODE TYPES ---
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
 
-export type RecommendationItem = {
-  name: string;
-  description: string;
-  link: string;
-};
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
 
-export type TemplateFeatures = {
-  gallery?: boolean;
-  multiEventSchedule?: boolean;
-  countdown?: {
-    type: "flip-clock" | "minimalist";
-  };
-  lodgingAndTravel?: boolean;
-  recommendations?: boolean;
-  digitalRegistry?: {
-    enabled: boolean;
-    types: ("amazon" | "zola" | "cash_fund")[];
-  };
-  songRequests?: boolean;
-  courtOfHonor?: boolean;
-  uniqueCeremonies?: boolean;
-  socialMediaWall?: boolean;
-  ageSpecificThemes?: ("superhero" | "boho" | "minimalist")[];
-  parentalNotes?: boolean;
-  allergyTracker?: boolean;
-  genderBetting?: boolean;
-  diaperRaffle?: boolean;
-  tributeSection?: boolean;
-  futurePlans?: boolean;
-  godparentsBlock?: boolean;
-  religiousVerse?: boolean;
-  addToCalendar?: boolean;
-  whiteLabel?: boolean;
-  linkedInIntegration?: boolean;
-  speakerProfile?: boolean;
-  resourceDownload?: boolean;
-  guestCount?: boolean;
-  rsvp?: boolean;
-  parentsAndGodparents?: boolean;
-  dressCode?: boolean;
-};
-
-export type TemplateConfig = {
-  name: string;
-  category:
-    | "Boda"
-    | "XV Años"
-    | "Cumpleaños"
-    | "Cumpleaños Infantil"
-    | "Baby Shower"
-    | "Graduación"
-    | "Bautizo"
-    | "Corporativo"
-    | "General";
-  description: string;
-  font: string;
-  thumbnail?: string;
-  fonts?: string[];
-  defaultFont?: string;
-  palettes?: { name: string; primary: string; text: string; secondary?: string; background?: string; dark?: string; }[];
-  defaultData: {
-    heroTitle: string;
-    heroNames: string;
-    timelineTitle: string;
-    galleryTitle?: string;
-    timelineItems: TimelineItem[];
-    recommendations?: RecommendationItem[];
-    courtOfHonor?: CourtMember[];
-    godparents?: Godparent[];
-    dressCode?: DressCode;
-    allergyTrackerTitle?: string;
-    allergyTrackerText?: string;
-    teamBoyProduct?: string;
-    teamGirlProduct?: string;
-    event_date?: string;
-    primaryColor?: string;
-    textColor?: string;
-    backgroundColor?: string;
-    hero_image_url?: string;
-    family_image_url?: string;
-    parentsNames?: string;
-    parentsDescription?: string;
-    dateSubtitle?: string;
-    degreeType?: string;
-    age?: string | number;
-    venue_city?: string;
-    locationName?: string;
-    mainVenueAddress?: string;
-    receptionTitle?: string;
-    receptionText?: string;
-    receptionPlace?: string;
-    guestCount?: string | number;
-    giftTitle?: string;
-    giftMessage?: string;
-    giftRegistryUrl?: string;
-    galleryImages?: string[];
-    babyName?: string;
-    timeRange?: string;
-    timeSubtitle?: string;
-    rsvpDeadline?: string;
-    rsvpContact?: string;
-    location?: string;
-    eventDate?: string;
-    photoSharingUrl?: string;
-    theme?: string;
-    parentalNotes?: string;
-    parentalNotesTitle?: string;
-    speakerImages?: string[];
-    heroSubtitle?: string;
-    borderColor?: string;
-    selectionColor?: string;
-    futurePlans?: string;
-    secondaryColor?: string;
-    mainTitle?: string;
-    eventName?: string;
-    eventDescription?: string;
-    venueName?: string;
-    hostNames?: string;
-    partner1Name?: string;
-    partner2Name?: string;
-    quote?: string;
-    partner1Parents?: string[];
-    partner2Parents?: string[];
-    venueDividerText?: string;
-    itineraryItems?: TimelineItem[];
-    discoBallImage?: string;
-    starBalloonImage?: string;
-    guestbookPolaroidImage?: string;
-    tribute?: string;
-    buttonTextColor?: string;
-    dressCodeTitle?: string;
-    dressCodeDetails?: string;
-    photoUrl?: string;
-    childName?: string;
-    time?: string;
-    extraInfo?: string;
-    startTime?: string;
-    endTime?: string;
-    rsvpDateText?: string;
-    textPrimary?: string;
-    textGold?: string;
-    textDark?: string;
-  };
-  features: TemplateFeatures;
-  formSections?: string[];
-};
-
-export type EditorData = TemplateConfig['defaultData'] & { is_published?: boolean; slug?: string; };
+export const Constants = {
+  public: {
+    Enums: {
+      rsvp_status: ["ATTENDING", "DECLINED", "PENDING"],
+    },
+  },
+} as const

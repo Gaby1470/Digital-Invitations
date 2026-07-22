@@ -3,13 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-import {
-  EditorData,
-  TemplateConfig,
-  TimelineItem,
-  DressCode,
-  RecommendationItem,
-} from "@/lib/types";
+import { TimelineItem, DressCode, RecommendationItem, TemplateConfig, EditorData } from "@/lib/custom_types";
 import { DressCodePreview } from "./shared/DressCodePreview";
 import GiftSection from "./shared/GiftSection";
 import Countdown from "./shared/Countdown";

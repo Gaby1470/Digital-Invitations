@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { EditorData, TemplateConfig, TimelineItem } from "@/lib/types";
+import { TimelineItem, TemplateConfig, EditorData } from "@/lib/custom_types";
 import Countdown from "./shared/Countdown";
 import { MapPinIcon, CalendarIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { RsvpTrigger } from './shared/RsvpTrigger';

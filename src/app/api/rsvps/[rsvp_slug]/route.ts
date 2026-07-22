@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 // GET handler to fetch guest party details for the RSVP form
 export async function GET(
   request: Request,
-  { params }: { params: any }
+  { params }: { params: Promise<{ rsvp_slug: string }> }
 ) {
   const supabase = createServerClient(cookies());
   const { rsvp_slug } = await params;
@@ -49,7 +49,7 @@ export async function GET(
 // POST handler to submit an RSVP
 export async function POST(
   request: Request,
-  { params }: { params: any }
+  { params }: { params: Promise<{ rsvp_slug: string }> }
 ) {
   const { rsvp_slug } = await params;
   const { attending_count, guest_names, notes } = await request.json();

@@ -1,7 +1,7 @@
 // src/components/editor/form-sections/DressCodeSection.tsx
 "use client";
 
-import { DressCode } from '@/lib/types';
+import { DressCode } from '@/lib/custom_types';
 import { Link as LinkIcon, Sparkles } from 'lucide-react';
 
 type DressCodeSectionProps = {

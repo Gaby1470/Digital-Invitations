@@ -1,5 +1,5 @@
 "use client";
-import { DressCode, DressCodeStyle } from "@/lib/types";
+import { DressCode, DressCodeStyle } from "@/lib/custom_types";
 
 type DressCodePreviewProps = {
   dressCode: DressCode;

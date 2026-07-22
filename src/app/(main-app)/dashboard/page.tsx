@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase-client';
-import { EditorData } from '@/lib/types';
+import { EditorData } from '@/lib/custom_types';
 import { templateConfig } from '@/lib/templateConfig';
 import { TrashIcon, DocumentDuplicateIcon, UserGroupIcon, PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';

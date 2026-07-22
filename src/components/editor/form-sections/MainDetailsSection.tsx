@@ -1,7 +1,8 @@
 // src/components/editor/form-sections/MainDetailsSection.tsx
 "use client";
 
-import { EditorData, TemplateConfig } from '@/lib/types';
+import { TemplateConfig } from '@/lib/custom_types';
+import { EditorData } from '@/lib/custom_types';
 import TextInput from '../shared/TextInput';
 import TextareaInput from '../shared/TextareaInput';
 import DateTimePicker from '../shared/DateTimePicker';

@@ -1,5 +1,5 @@
 // src/lib/templateConfig.ts
-import { TemplateConfig } from "./types";
+import { TemplateConfig } from "./custom_types";
 
 export const templateConfig: { [key: string]: TemplateConfig } = {
   'garden-wedding': {

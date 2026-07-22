@@ -2,7 +2,7 @@
 "use client";
 
 import ListEditor from '../shared/ListEditor';
-import { RecommendationItem } from '@/lib/types';
+import { RecommendationItem } from '@/lib/custom_types';
 import TextInput from '../shared/TextInput';
 import TextareaInput from '../shared/TextareaInput';
 

@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { EditorData, TemplateConfig, TimelineItem, CourtMember } from "@/lib/types";
+import { TimelineItem, CourtMember, TemplateConfig, EditorData } from "@/lib/custom_types";
 import Image from "next/image";
 
 import { RsvpTrigger } from "./shared/RsvpTrigger";

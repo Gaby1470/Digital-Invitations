@@ -2,7 +2,7 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase-server';
-import { Rsvp } from '@/lib/types';
+import { Rsvp } from '@/lib/custom_types';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

@@ -2,7 +2,8 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useState, useRef } from 'react';
-import { EditorData, TemplateConfig } from '@/lib/types';
+import { TemplateConfig } from '@/lib/custom_types';
+import { EditorData } from "@/lib/custom_types";
 import Image from 'next/image';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
 

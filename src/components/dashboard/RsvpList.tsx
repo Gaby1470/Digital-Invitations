@@ -1,7 +1,7 @@
 // src/components/dashboard/RsvpList.tsx
 "use client";
 
-import { Rsvp } from '@/lib/types';
+import { Rsvp } from '@/lib/custom_types';
 import { ChatBubbleLeftIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 

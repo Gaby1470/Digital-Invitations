@@ -8,14 +8,12 @@ export const dynamic = 'force-dynamic';
 // GET handler to list all guest parties for an invitation
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   
-  const url = new URL(request.url);
-  const pathSegments = url.pathname.split('/');
-  const invitationId = pathSegments[3];
+  const { id: invitationId } = await params;
 
   if (!invitationId) {
     return NextResponse.json({ error: 'Invitation ID is required' }, { status: 400 });
@@ -88,14 +86,12 @@ export async function GET(
 // POST handler to create a new guest party
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   
-  const url = new URL(request.url);
-  const pathSegments = url.pathname.split('/');
-  const invitationId = pathSegments[3];
+  const { id: invitationId } = await params;
   
   const { party_name, allocated_seats } = await request.json();
 

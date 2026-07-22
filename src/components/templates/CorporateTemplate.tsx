@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
-import { EditorData, TemplateConfig, TimelineItem } from '@/lib/types';
+import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import React, { useRef } from 'react';
 import { RsvpTrigger } from './shared/RsvpTrigger';
 

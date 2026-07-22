@@ -1,7 +1,7 @@
 "use client";
 
 import { produce } from 'immer';
-import { CourtMember } from '@/lib/types';
+import { CourtMember } from '@/lib/custom_types';
 import TextInput from '../shared/TextInput';
 import ImageUploader from '../shared/ImageUploader';
 import { Plus, Trash2 } from 'lucide-react';

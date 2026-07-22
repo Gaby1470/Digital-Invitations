@@ -6,20 +6,26 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import TemplateRenderer from '@/components/TemplateRenderer';
 import { templateConfig } from '@/lib/templateConfig';
-import { EditorData } from '@/lib/types';
+import { EditorData } from '@/lib/custom_types';
 import Modal from '@/components/editor/shared/Modal';
 import { CheckCircle, Loader, AlertTriangle, Send } from 'lucide-react';
 import Link from 'next/link';
 
 // --- Data Fetching ---
 
+class HttpError extends Error {
+    status: number;
+    constructor(message: string, status: number) {
+        super(message);
+        this.status = status;
+    }
+}
+
 async function getInvitation(slug: string) {
   const res = await fetch(`/api/invitations/by-slug/${slug}`);
   if (!res.ok) {
     const errorBody = await res.json().catch(() => ({}));
-    const error = new Error(errorBody.error || `Error: ${res.status}`);
-    (error as any).status = res.status;
-    throw error;
+    throw new HttpError(errorBody.error || `Error: ${res.status}`, res.status);
   }
   return res.json();
 }
@@ -30,7 +36,16 @@ type RsvpSubmission = {
     notes?: string;
 }
 
-async function submitGeneralRsvp(submission: RsvpSubmission & { invitationId: string }): Promise<any> {
+type RsvpResponse = {
+    id: string;
+    guest_party_id: string;
+    attending_count: number;
+    guest_names: string[];
+    notes: string | null;
+    submitted_at: string;
+}
+
+async function submitGeneralRsvp(submission: RsvpSubmission & { invitationId: string }): Promise<RsvpResponse> {
     const res = await fetch(`/api/general-rsvp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -94,10 +109,10 @@ function GeneralRsvpForm({ invitationId, onClose }: { invitationId: string, onCl
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                     <button type="button" onClick={() => setWillAttend(true)} className={`py-4 rounded-lg font-semibold border-2 transition-all ${willAttend === true ? 'bg-green-600 text-white border-green-700 scale-105' : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'}`}>
-                        Yes, I'll be there!
+                        Yes, I&apos;ll be there!
                     </button>
                     <button type="button" onClick={() => setWillAttend(false)} className={`py-4 rounded-lg font-semibold border-2 transition-all ${willAttend === false ? 'bg-red-600 text-white border-red-700 scale-105' : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'}`}>
-                        Sorry, I can't make it
+                        Sorry, I can&apos;t make it
                     </button>
                 </div>
 
@@ -128,8 +143,8 @@ function GeneralRsvpForm({ invitationId, onClose }: { invitationId: string, onCl
                     ></textarea>
                 </div>
 
-                <button type="submit" disabled={rsvpMutation.isLoading || willAttend === null} className="w-full flex items-center justify-center px-6 py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:bg-indigo-400 transition-all text-lg shadow-md">
-                    {rsvpMutation.isLoading ? <><Loader className="animate-spin mr-2"/> Submitting...</> : <><Send className="mr-2"/> Submit RSVP</>}
+                <button type="submit" disabled={rsvpMutation.isPending || willAttend === null} className="w-full flex items-center justify-center px-6 py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:bg-indigo-400 transition-all text-lg shadow-md">
+                    {rsvpMutation.isPending ? <><Loader className="animate-spin mr-2"/> Submitting...</> : <><Send className="mr-2"/> Submit RSVP</>}
                 </button>
             </form>
         </div>
@@ -159,7 +174,7 @@ export default function InvitePage() {
   }
 
   if (error) {
-    const status = (error as any).status;
+    const status = (error as HttpError).status;
     let title = "Invitation Not Found";
     let message = "The invitation link is either invalid or has been removed.";
     if (status === 403) {

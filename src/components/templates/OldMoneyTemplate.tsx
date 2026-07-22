@@ -2,13 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import React, { useRef } from "react";
-import {
-  EditorData,
-  TemplateConfig,
-  TimelineItem,
-  DressCode,
-  Godparent,
-} from "@/lib/types";
+import { TimelineItem, DressCode, Godparent, TemplateConfig, EditorData } from "@/lib/custom_types";
 import Image from "next/image";
 import { RsvpTrigger } from './shared/RsvpTrigger';
 

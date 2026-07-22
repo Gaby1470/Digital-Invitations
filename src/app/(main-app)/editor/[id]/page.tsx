@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { templateConfig } from '@/lib/templateConfig';
 import TemplateRenderer from '@/components/TemplateRenderer';
-import { TemplateConfig, EditorData } from '@/lib/types';
+import { TemplateConfig } from '@/lib/custom_types';
+import { EditorData } from '@/lib/custom_types';
 import EditorForm from '@/components/editor/EditorForm';
 import { EyeIcon, PencilSquareIcon, CheckCircleIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -109,7 +110,7 @@ export default function EditorPage() {
       fetch(`/api/invitations/${id}/publish`, { method: 'POST' })
         .then(res => {
           if (res.ok) {
-            setInvitationData(prevData => {
+            setInvitationData((prevData: EditorData | null) => {
               if (!prevData) return prevData; // Should not happen, but good for type safety
               return { ...prevData, is_published: true };
             });

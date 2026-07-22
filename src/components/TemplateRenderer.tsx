@@ -1,7 +1,8 @@
 // src/components/TemplateRenderer.tsx
 "use client";
 
-import { EditorData, TemplateConfig } from "@/lib/types";
+import { TemplateConfig } from "@/lib/custom_types";
+import { EditorData } from "@/lib/custom_types";
 import { TEMPLATE_COMPONENTS } from "./templates";
 
 type TemplateRendererProps = {

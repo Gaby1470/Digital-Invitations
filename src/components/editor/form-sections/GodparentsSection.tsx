@@ -1,7 +1,7 @@
 "use client";
 
 import { produce } from 'immer';
-import { Godparent } from '@/lib/types';
+import { Godparent } from '@/lib/custom_types';
 import TextInput from '../shared/TextInput';
 
 type GodparentsSectionProps = {

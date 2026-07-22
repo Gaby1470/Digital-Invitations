@@ -4,7 +4,7 @@
 import ListEditor from '../shared/ListEditor';
 import TextInput from '../shared/TextInput';
 import TimePicker from '../shared/TimePicker';
-import { TimelineItem } from '@/lib/types';
+import { TimelineItem } from '@/lib/custom_types';
 
 type EventScheduleSectionProps = {
   data: { timelineItems?: TimelineItem[] };

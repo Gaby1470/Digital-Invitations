@@ -4,7 +4,8 @@
 import { useState } from 'react';
 import { produce } from 'immer';
 import { Smartphone, Monitor, Save } from 'lucide-react';
-import { TemplateConfig, EditorData } from '@/lib/types';
+import { TemplateConfig } from '@/lib/custom_types';
+import { EditorData } from '@/lib/custom_types';
 
 import MainDetailsSection from './form-sections/MainDetailsSection';
 import ColorsAndStyleSection from './form-sections/ColorsAndStyleSection';

@@ -18,7 +18,8 @@ import PrincessBirthdayTemplate from "./PrincessBirthdayTemplate";
 import GardenWeddingTemplate from "./GardenWeddingTemplate";
 
 import ScrapbookGraduationTemplate from "./ScrapbookGraduationTemplate";
-import { TemplateConfig, EditorData } from "@/lib/types";
+import { TemplateConfig } from "@/lib/custom_types";
+import { EditorData } from "@/lib/custom_types";
 interface TemplateComponentProps {
   template: TemplateConfig;
   data: EditorData;
