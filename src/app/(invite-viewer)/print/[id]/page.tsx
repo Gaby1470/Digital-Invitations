@@ -7,8 +7,8 @@ import { templateConfig } from '@/lib/templateConfig';
 import { Loader, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import { useEffect } from 'react';
+import html2canvas from 'html2canvas-pro';
+import { useEffect, useCallback } from 'react';
 
 // --- Data Fetching ---
 
@@ -40,26 +40,30 @@ export default function PrintInvitationPage() {
     enabled: !!id,
   });
 
-  const handlePrint = () => {
+  const handlePrint = useCallback(() => {
     const invitationElement = document.getElementById(`invitation-container`);
     if (invitationElement) {
       html2canvas(invitationElement).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgProps= pdf.getImageProperties(imgData);
+        const imgProps = pdf.getImageProperties(imgData);
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save(`invitation-${id}.pdf`);
+        window.close();
       });
     }
-  }
+  }, [id]);
 
   useEffect(() => {
     if (invitation) {
-      handlePrint();
+      const timer = setTimeout(() => {
+        handlePrint();
+      }, 1000);
+      return () => clearTimeout(timer);
     }
-  }, [invitation]);
+  }, [invitation, handlePrint]);
 
   if (isLoading) {
     return (
