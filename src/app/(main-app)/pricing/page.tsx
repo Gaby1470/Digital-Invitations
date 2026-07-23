@@ -9,7 +9,7 @@ const tiers = [
   {
     name: 'Plantilla',
     priceId: 'price_template_tier_placeholder',
-    price: '$899 MXN',
+    price: '$799 MXN',
     description: 'Elige cualquiera de nuestras plantillas y personalízala para tu evento. Ideal para bodas, cumpleaños, baby showers y más.',
     features: [
       'Publicación de la plantilla con:',

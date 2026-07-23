@@ -8,8 +8,7 @@ import TemplateRenderer from '@/components/TemplateRenderer';
 import { TemplateConfig } from '@/lib/custom_types';
 import { EditorData } from '@/lib/custom_types';
 import EditorForm from '@/components/editor/EditorForm';
-import { EyeIcon, PencilSquareIcon, CheckCircleIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+import { EyeIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 
 // Helper to safely parse JSON responses
 async function safeJsonParse(response: Response) {
@@ -29,13 +28,11 @@ export default function EditorPage() {
 
   const [invitationData, setInvitationData] = useState<EditorData | null>(null);
   const [template, setTemplate] = useState<TemplateConfig | null>(null);
-  const [templateId, setTemplateId] = useState<string>(''); // State for the template ID
+  const [templateId, setTemplateId] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'editor' | 'preview'>('editor');
-  const [isShareModalOpen, setShareModalOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
-
 
   useEffect(() => {
     if (!id) return;
@@ -72,6 +69,7 @@ export default function EditorPage() {
   }, [id]);
 
   const handleSave = async () => {
+    setIsSaving(true);
     try {
       const response = await fetch(`/api/invitations/${id}`, {
         method: 'PUT',
@@ -81,42 +79,22 @@ export default function EditorPage() {
 
       if (!response.ok) {
         const errorData = await safeJsonParse(response);
-        throw new Error(errorData?.details || 'Failed to save and publish invitation.');
+        throw new Error(errorData?.details || 'Failed to save invitation.');
       }
       
-      const updatedInvitation = await safeJsonParse(response);
+      // Optionally show a toast message here
       
-      // Update local state and open modal
-      setInvitationData({ ...invitationData, ...updatedInvitation });
-      setShareModalOpen(true);
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 1000);
+
     } catch (e: unknown) {
       if (e instanceof Error) {
         alert(`Error: ${e.message}`);
       } else {
         alert('An unknown error occurred');
       }
-    }
-  };
-
-  const handleCopyLink = () => {
-    const link = `${window.location.origin}/invite/${invitationData?.slug || id}`;
-    navigator.clipboard.writeText(link).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
-    });
-
-    // Mark as published on first share
-    if (!invitationData?.is_published) {
-      fetch(`/api/invitations/${id}/publish`, { method: 'POST' })
-        .then(res => {
-          if (res.ok) {
-            setInvitationData((prevData: EditorData | null) => {
-              if (!prevData) return prevData; // Should not happen, but good for type safety
-              return { ...prevData, is_published: true };
-            });
-            console.log('Invitation marked as published');
-          }
-        });
+      setIsSaving(false);
     }
   };
 
@@ -155,6 +133,7 @@ export default function EditorPage() {
                 template={template}
                 viewMode={viewMode}
                 onViewModeChange={setViewMode}
+                isSaving={isSaving}
               />
             </div>
           </div>
@@ -175,38 +154,6 @@ export default function EditorPage() {
           </div>
         </div>
       </div>
-      {isShareModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-lg w-full text-center">
-            <CheckCircleIcon className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Saved Successfully!</h2>
-            <p className="text-gray-500 mb-6">Your invitation is ready to be shared.</p>
-            
-            <div className="flex items-center bg-gray-100 border border-gray-200 rounded-lg p-2 mb-6">
-              <input 
-                type="text" 
-                readOnly 
-                value={`${window.location.origin}/invite/${invitationData?.slug || id}`}
-                className="bg-transparent flex-grow text-gray-700 focus:outline-none"
-              />
-              <button 
-                onClick={handleCopyLink}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-indigo-700 transition-colors flex items-center gap-2"
-              >
-                <ClipboardDocumentIcon className="w-5 h-5" />
-                {copied ? 'Copied!' : 'Copy'}
-              </button>
-            </div>
-            
-            <button 
-              onClick={() => router.push('/dashboard')}
-              className="w-full bg-gray-800 text-white py-3 rounded-lg font-semibold hover:bg-gray-900 transition-colors"
-            >
-              Go to Dashboard
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 }
