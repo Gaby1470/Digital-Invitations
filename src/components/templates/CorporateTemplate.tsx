@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion';
 import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import React, { useRef } from 'react';
 import { RsvpTrigger } from './shared/RsvpTrigger';
+import { BrandingFooter } from './shared/BrandingFooter';
 
 /**
  * Clean, sharp transition for professional blocks.
@@ -199,6 +200,7 @@ export default function CorporateTemplate({ template, data, invitationId, onRsvp
           </div>
         </section>
       )}
+      <BrandingFooter />
     </div>
   );
 }

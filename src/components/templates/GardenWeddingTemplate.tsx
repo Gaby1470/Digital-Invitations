@@ -7,6 +7,7 @@ import { TemplateConfig } from "@/lib/custom_types";
 import { EditorData } from "@/lib/custom_types";
 import Lightbox from "./shared/Lightbox";
 import { RsvpTrigger } from './shared/RsvpTrigger';
+import { BrandingFooter } from './shared/BrandingFooter';
 
 // A utility for animations, similar to other templates
 function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number; }) {
@@ -390,6 +391,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
           </AnimatedSection>
         </section>
       )}
+      <BrandingFooter />
     </div>
   );
 }

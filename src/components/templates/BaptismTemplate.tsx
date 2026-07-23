@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Godparent, TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { BrandingFooter } from './shared/BrandingFooter';
 
 /**
  * Ethereal fade-in for sacred milestones, optimized for mobile performance.
@@ -239,6 +240,7 @@ export default function BaptismTemplate({ template, data, onRsvpClick }: Baptism
           <RsvpTrigger onClick={onRsvpClick} primaryColor={invitationData.primaryColor} />
         </section>
       )}
+      <BrandingFooter />
     </div>
   );
 }

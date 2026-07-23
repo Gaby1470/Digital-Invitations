@@ -117,6 +117,10 @@ export default function GuestManager({ invitationId }: { invitationId: string })
         toast.success("Lista de invitados exportada a Excel!");
     };
 
+    const handleExportPdf = () => {
+        window.open(`/print/${invitationId}`, '_blank');
+      };
+
 
     if (isLoading) return (
         <div className="flex items-center justify-center p-10 bg-gray-50 rounded-lg">
@@ -134,10 +138,16 @@ export default function GuestManager({ invitationId }: { invitationId: string })
         <div className="p-6 bg-gray-50 rounded-2xl shadow-sm">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-3xl font-bold text-gray-800 flex items-center"><Users size={28} className="mr-3 text-indigo-500"/> Gestor de Lista de Invitados</h2>
-                <button onClick={handleExport} className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg shadow-sm hover:bg-green-700 transition-colors disabled:bg-gray-300">
-                    <FileDown size={18} className="mr-2"/>
-                    Exportar a Excel
-                </button>
+                <div className="flex gap-2">
+                    <button onClick={handleExport} className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg shadow-sm hover:bg-green-700 transition-colors disabled:bg-gray-300">
+                        <FileDown size={18} className="mr-2"/>
+                        Exportar a Excel
+                    </button>
+                    <button onClick={handleExportPdf} className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg shadow-sm hover:bg-red-700 transition-colors disabled:bg-gray-300">
+                        <FileDown size={18} className="mr-2"/>
+                        Export to PDF
+                    </button>
+                </div>
             </div>
             
             <form onSubmit={handleAddGuest} className="mb-8 p-6 bg-white border border-gray-200 rounded-xl flex items-end gap-4 shadow-sm">

@@ -8,6 +8,7 @@ import { motion, useInView } from "framer-motion";
 import { Calendar, MapPin, Gift, Clock, Sparkles, CheckCircle, XCircle, ExternalLink } from "lucide-react";
 import Image from 'next/image';
 import { RsvpTrigger } from './shared/RsvpTrigger';
+import { BrandingFooter } from './shared/BrandingFooter';
 
 function FadeIn({
   children,
@@ -322,6 +323,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
         <p className="font-bold text-2xl" style={{ color: textColor }}>¡Los esperamos!</p>
         <p className="text-base font-medium mt-2 opacity-80" style={{ color: textColor }}>Con cariño, {parentsNames}</p>
       </footer>
+      <BrandingFooter />
 
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;600;700&display=swap');

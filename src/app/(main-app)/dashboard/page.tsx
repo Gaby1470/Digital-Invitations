@@ -85,6 +85,9 @@ export default function DashboardPage() {
       }
     }
   };
+  const handleExportPdf = (invitationId: string) => {
+    window.open(`/print/${invitationId}`, '_blank');
+  };
 
   const getInvitationStatus = (inv: Invitation) => {
     const isPastEvent = inv.data?.eventDate && new Date(inv.data.eventDate) < new Date();
@@ -185,7 +188,7 @@ export default function DashboardPage() {
                               className="p-2 rounded-full bg-indigo-50 text-indigo-600 hover:bg-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 dark:hover:bg-indigo-900/40 transition-colors tooltip-trigger relative group/btn"
                             >
                               <PencilIcon className="w-5 h-5" />
-                              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">Edit Design</span>
+                              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">Editar Diseño</span>
                             </Link>
                             
                             <button 
@@ -193,7 +196,7 @@ export default function DashboardPage() {
                               className="p-2 rounded-full bg-pink-50 text-pink-600 hover:bg-pink-100 dark:bg-pink-900/20 dark:text-pink-400 dark:hover:bg-pink-900/40 transition-colors tooltip-trigger relative group/btn"
                             >
                               <UserGroupIcon className="w-5 h-5" />
-                              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">Manage Guests</span>
+                              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">Editar Invitados</span>
                             </button>
                           </div>
 
@@ -269,10 +272,10 @@ export default function DashboardPage() {
               <div className="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-gray-800 pb-6 p-6">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    Guest Manager
+                    Lista de Invitados
                   </h2>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    For <span className="font-medium text-indigo-600 dark:text-indigo-400">{selectedInvitation?.data?.heroNames || 'Invitation'}</span>
+                    Para <span className="font-medium text-indigo-600 dark:text-indigo-400">{selectedInvitation?.data?.heroNames || 'Invitation'}</span>
                   </p>
                 </div>
                 <button 

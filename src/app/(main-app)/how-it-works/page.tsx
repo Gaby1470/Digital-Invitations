@@ -78,7 +78,7 @@ export default function HowItWorksPage() {
                 {/* Content Card */}
                 <div className="flex-1 bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-shadow relative overflow-hidden">
                   {/* Mobile Icon */}
-                  <div className="md:hidden w-12 h-12 rounded-xl mb-6 flex items-center justify-center bg-gradient-to-br shadow-md ${step.color}">
+                  <div className={`md:hidden w-12 h-12 rounded-xl mb-6 flex items-center justify-center bg-gradient-to-br shadow-md ${step.color}`}>
                     <step.icon className="w-6 h-6 text-white" />
                   </div>
 

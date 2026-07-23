@@ -7,6 +7,7 @@ import { motion, useInView } from "framer-motion";
 import { Calendar, MapPin, Baby, Heart, PartyPopper, Utensils, Clock } from "lucide-react";
 import GiftSection from './shared/GiftSection';
 import { RsvpTrigger } from './shared/RsvpTrigger';
+import { BrandingFooter } from './shared/BrandingFooter';
 
 function FadeIn({
   children,
@@ -248,6 +249,7 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
           ¡No podemos esperar para celebrar contigo!
         </p>
       </footer>
+      <BrandingFooter />
     </div>
   );
 };

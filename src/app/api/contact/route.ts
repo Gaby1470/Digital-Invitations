@@ -23,7 +23,8 @@ export async function POST(request: Request) {
     });
 
     const mailOptions = {
-      from: `"${name}" <${email}>`, // sender address
+      from: `"${subject}" <tap2invite@gmail.com>`, // sender address
+      replyTo: email,
       to: 'tap2invite@gmail.com', // list of receivers
       subject: `Contact Form: ${subject}`, // Subject line
       text: message, // plain text body

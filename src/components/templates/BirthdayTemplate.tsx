@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import confetti from 'canvas-confetti';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { BrandingFooter } from './shared/BrandingFooter';
 
 function PopIn({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
   const ref = useRef(null);
@@ -272,6 +273,7 @@ export default function BirthdayTemplate({ template, data, onRsvpClick }: Birthd
           <RsvpTrigger onClick={onRsvpClick} primaryColor={currentTheme.accent} />
         </section>
       )}
+      <BrandingFooter />
     </div>
   );
 }
