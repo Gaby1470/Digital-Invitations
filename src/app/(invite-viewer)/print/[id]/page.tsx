@@ -70,7 +70,7 @@ export default function PrintInvitationPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="flex flex-col items-center">
           <Loader className="h-12 w-12 text-indigo-500 animate-spin" />
-          <p className="mt-4 text-lg text-gray-600 font-medium">Loading Invitation...</p>
+          <p className="mt-4 text-lg text-gray-600 font-medium">Cargando Invitación...</p>
         </div>
       </div>
     );
@@ -94,7 +94,7 @@ export default function PrintInvitationPage() {
           <h1 className="text-2xl font-bold text-gray-800 mb-2">{title}</h1>
           <p className="text-gray-600 mb-8">{message}</p>
           <Link href="/" className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-800">
-            Go to Homepage
+            Ir a la Página Principal
           </Link>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function PrintInvitationPage() {
      return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <h1 className="text-4xl font-bold mb-4">Error</h1>
-        <p className="text-gray-600">Could not load the invitation template.</p>
+        <p className="text-gray-600">No se pudo cargar la plantilla de la invitación.</p>
       </div>
     );
   }

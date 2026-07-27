@@ -3,5 +3,11 @@
     "env": {
       "NEXT_TURBO": "false"
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/expire-invitations",
+      "schedule": "0 0 * * *"
+    }
+  ]
 }

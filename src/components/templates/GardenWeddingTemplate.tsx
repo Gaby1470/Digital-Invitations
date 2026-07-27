@@ -391,7 +391,6 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
           </AnimatedSection>
         </section>
       )}
-      <BrandingFooter />
     </div>
   );
 }

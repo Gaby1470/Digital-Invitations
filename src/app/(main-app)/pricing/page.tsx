@@ -101,21 +101,33 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <button
-                onClick={() => {
-                  if (tier.priceId === 'contact') {
-                    router.push('/contact');
-                  }
-                }}
-                disabled={tier.priceId !== 'contact'}
-                className={`mt-10 block w-full rounded-full px-4 py-3 text-center text-base font-semibold leading-6 shadow-md transition-transform active:scale-95 ${
-                  tier.primary
-                    ? 'bg-white text-indigo-600 hover:bg-indigo-50 focus-visible:outline-white'
-                    : 'bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:outline-indigo-600'
-                } disabled:opacity-50`}
-              >
-                {tier.priceId === 'contact' ? tier.cta : 'Coming Soon'}
-              </button>
+              {tier.name === 'Plantilla' ? (
+                <div className={`mt-10 text-center rounded-lg p-4 ${tier.primary ? 'bg-white/10' : 'bg-gray-100 dark:bg-gray-800'}`}>
+                    <p className="font-semibold">Para pagar con transferencia:</p>
+                    <p className={`mt-2 text-sm ${tier.primary ? 'text-indigo-200' : 'text-gray-600 dark:text-gray-300'}`}>
+                        Por favor, contáctanos para recibir los detalles.
+                    </p>
+                    <Link href="/contact" className={`mt-4 inline-block font-semibold ${tier.primary ? 'text-white hover:text-indigo-100' : 'text-indigo-600 hover:text-indigo-500'}`}>
+                        Contactar ahora &rarr;
+                    </Link>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    if (tier.priceId === 'contact') {
+                      router.push('/contact');
+                    }
+                  }}
+                  disabled={tier.priceId !== 'contact'}
+                  className={`mt-10 block w-full rounded-full px-4 py-3 text-center text-base font-semibold leading-6 shadow-md transition-transform active:scale-95 ${
+                    tier.primary
+                      ? 'bg-white text-indigo-600 hover:bg-indigo-50 focus-visible:outline-white'
+                      : 'bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:outline-indigo-600'
+                  } disabled:opacity-50`}
+                >
+                  {tier.cta}
+                </button>
+              )}
             </div>
           ))}
         </div>

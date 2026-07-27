@@ -27,6 +27,22 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     return NextResponse.json({ error: 'Invitation not found.' }, { status: 404 });
   }
 
+  // Check if the invitation is expired
+  const now = new Date();
+  const expiresAt = data.expires_at ? new Date(data.expires_at) : null;
+  
+  if (expiresAt && expiresAt < now) {
+    // Optionally update the is_expired flag in the database for future queries
+    if (!data.is_expired) {
+      supabase.from('invitations').update({ is_expired: true }).eq('id', data.id).then(({ error: updateError }) => {
+        if (updateError) {
+          console.error(`Failed to update is_expired flag for invitation ${data.id}:`, updateError);
+        }
+      });
+    }
+    return NextResponse.json({ error: 'This invitation has expired.' }, { status: 410 });
+  }
+
   // If the invitation isn't published, only the owner can see it
   if (!data.is_published) {
     if (!user || user.id !== data.user_id) {

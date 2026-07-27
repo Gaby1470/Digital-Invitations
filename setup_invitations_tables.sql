@@ -7,6 +7,9 @@ CREATE TABLE public.invitations (
   slug TEXT UNIQUE,
   template_name TEXT,
   invitation_data JSONB,
+  is_published BOOLEAN DEFAULT false,
+  is_expired BOOLEAN DEFAULT false,
+  expires_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase-client';
 
 export default function SignupPage() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,6 +30,10 @@ export default function SignupPage() {
       email,
       password,
       options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+        },
         // This will redirect the user to the homepage after they confirm their email
         emailRedirectTo: `${location.origin}/`,
       },
@@ -37,6 +43,8 @@ export default function SignupPage() {
       setError(error.message);
     } else {
       setMessage("Success! Please check your email for a confirmation link.");
+      setFirstName('');
+      setLastName('');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
@@ -49,6 +57,44 @@ export default function SignupPage() {
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <h1 className="text-2xl font-bold text-center">Create an Account</h1>
         <form className="space-y-6" onSubmit={handleSignUp}>
+          <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
+            <div>
+              <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
+                First name
+              </label>
+              <div className="mt-1">
+                <input
+                  id="first-name"
+                  name="first-name"
+                  type="text"
+                  autoComplete="given-name"
+                  required
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">
+                Last name
+              </label>
+              <div className="mt-1">
+                <input
+                  id="last-name"
+                  name="last-name"
+                  type="text"
+                  autoComplete="family-name"
+                  required
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+          </div>
+
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email address

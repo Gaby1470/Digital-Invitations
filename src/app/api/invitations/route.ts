@@ -16,18 +16,46 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'You must be logged in to create an invitation.' }, { status: 401 });
   }
 
+  // Check user's plan and existing drafts
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('plan')
+    .eq('id', user.id)
+    .single();
+
+  if (profileError) {
+      return NextResponse.json({ error: 'No se pudo recuperar el perfil del usuario.' }, { status: 500 });
+  }
+
+  if (profile.plan === 'single_tier') {
+      const { data: existingDraft, error: draftError } = await supabase
+          .from('invitations')
+          .select('id', { count: 'exact' })
+          .eq('user_id', user.id)
+          .eq('is_published', false);
+
+      if (draftError) {
+          return NextResponse.json({ error: 'Error al verificar los borradores existentes.' }, { status: 500 });
+      }
+
+      if (existingDraft && existingDraft.length > 0) {
+          return NextResponse.json({ error: 'Ya cuentas con un borrador activo. Por favor publícalo o elimínalo antes de crear uno nuevo en este plan.' }, { status: 403 });
+      }
+  }
+
+
   const body = await request.json();
   const { template, slug } = body;
 
   if (!template) {
-    return NextResponse.json({ error: 'A template name is required.' }, { status: 400 });
+    return NextResponse.json({ error: 'Se requiere un nombre de plantilla.' }, { status: 400 });
   }
 
 
   const selectedTemplate = templateConfig[template];
 
   if (!selectedTemplate) {
-    return NextResponse.json({ error: `Template "${template}" not found.` }, { status: 404 });
+    return NextResponse.json({ error: `Plantilla "${template}" no encontrada.` }, { status: 404 });
   }
   
   let sanitizedSlug;
@@ -44,7 +72,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Error checking slug uniqueness.', details: slugError.message }, { status: 500 });
     }
     if (slugConflict) {
-      return NextResponse.json({ error: 'This custom link is already in use. Please choose another.' }, { status: 409 });
+      return NextResponse.json({ error: 'Este enlace personalizado ya está en uso. Por favor elige otro.' }, { status: 409 });
     }
   } else {
     // If no slug is provided, generate a unique random one
@@ -79,9 +107,9 @@ export async function POST(request: Request) {
   if (error) {
     console.error('Supabase error creating invitation:', error);
     if (error.code === '23505') { // Unique constraint violation on slug
-      return NextResponse.json({ error: 'This custom link is already in use. Please choose another.' }, { status: 409 });
+      return NextResponse.json({ error: 'Este enlace personalizado ya está en uso. Por favor elige otro.' }, { status: 409 });
     }
-    return NextResponse.json({ error: 'Failed to create invitation in database.', details: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Error al crear la invitación en la base de datos.', details: error.message }, { status: 500 });
   }
 
   return NextResponse.json({ success: true, invitation: { id: data.id } });

@@ -1,8 +1,11 @@
 -- 1. Create the 'profiles' table to store public user data and subscription info
 CREATE TABLE public.profiles (
   id uuid NOT NULL REFERENCES auth.users ON DELETE CASCADE,
+  first_name TEXT,
+  last_name TEXT,
   plan TEXT,
   stripe_customer_id TEXT,
+  template_credits INT DEFAULT 0,
   CONSTRAINT profiles_pkey PRIMARY KEY (id)
 );
 
@@ -25,8 +28,8 @@ USING (auth.uid() = id);
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id)
-  VALUES (new.id);
+  INSERT INTO public.profiles (id, first_name, last_name)
+  VALUES (new.id, new.raw_user_meta_data->>'first_name', new.raw_user_meta_data->>'last_name');
   RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

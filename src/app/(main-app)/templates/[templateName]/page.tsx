@@ -7,6 +7,7 @@ import TemplateRenderer from '@/components/TemplateRenderer';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase-client';
 import { User, Session } from '@supabase/supabase-js';
+import Modal from '@/components/editor/shared/Modal'; // Using the existing modal
 
 async function safeJsonParse(response: Response) {
   const text = await response.text();
@@ -26,9 +27,10 @@ export default function TemplatePreviewPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [hasMounted, setHasMounted] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHasMounted(true);
     const getSession = async () => {
       const { data: { session } }: { data: { session: Session | null } } = await supabase.auth.getSession();
@@ -56,7 +58,16 @@ export default function TemplatePreviewPage() {
 
       if (!createResponse.ok) {
         const errorData = await safeJsonParse(createResponse);
-        throw new Error(errorData?.error || 'Could not create invitation.');
+        const message = errorData?.error || 'Could not create invitation.';
+        
+        if (createResponse.status === 403) {
+          setErrorMessage(message);
+          setIsErrorModalOpen(true);
+          setLoading(false);
+          return;
+        } else {
+          throw new Error(message);
+        }
       }
 
       const newInvitation = await safeJsonParse(createResponse);
@@ -107,6 +118,27 @@ export default function TemplatePreviewPage() {
         template={template} 
         data={template.defaultData} 
       />
+
+      <Modal
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        title="Cannot Create New Invitation"
+      >
+        <div className="p-4">
+          <p className="text-gray-700">{errorMessage}</p>
+          <div className="mt-6 flex justify-end gap-4">
+              <button 
+                  onClick={() => setIsErrorModalOpen(false)}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+              >
+                  Close
+              </button>
+              <Link href="/dashboard" className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                  Go to Dashboard
+              </Link>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -180,6 +180,9 @@ export default function InvitePage() {
     if (status === 403) {
       title = "Invitation Not Published";
       message = "This invitation is not yet available to the public.";
+    } else if (status === 410) {
+      title = "Invitation Expired";
+      message = "We're sorry, but this invitation is no longer active.";
     }
     
     return (
