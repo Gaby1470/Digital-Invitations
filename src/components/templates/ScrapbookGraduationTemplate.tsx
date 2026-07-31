@@ -234,6 +234,16 @@ export default function ScrapbookGraduationTemplate({
                       {item.title}
                     </h3>
                     <p className="text-black/70 text-sm">{item.location}</p>
+                    {item.mapLink && (
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.mapLink)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 inline-block text-sm font-bold text-[var(--primary-color)] uppercase tracking-widest hover:underline"
+                      >
+                        Ver en Mapa
+                      </a>
+                    )}
                   </div>
                 </div>
               </PopIn>

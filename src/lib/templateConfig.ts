@@ -24,7 +24,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       partner2Name: "Oliver",
       event_date: "2026-11-07T16:30:00",
       locationName: "Villa Cantacuzino",
-      venue_city: "Valle de Guadalupe, Baja California, México",
+      venue_city: "Valle de Guadalupe, B.C., México",
       heroSubtitle: "Estamos listos para unir nuestro amor",
       receptionTitle: "Prepárate para la celebración",
       timelineTitle: "Programa del Día",
@@ -35,13 +35,14 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
         { time: '22:00', title: 'Pastel', location: 'El dulce símbolo de nuestra nueva vida' },
         { time: '02:00', title: 'Fin de la Fiesta', location: 'Incluso una noche tan maravillosa llega a su fin' },
       ],
-      mainVenueAddress: 'Lugar del Evento',
+      mainVenueAddress: 'Dirección del Evento',
       receptionText: 'Nuestra boda se llevará a cabo en: Villa Cantacuzino, Valle de Guadalupe, Baja California, México. ¡Esperamos verlos allí para celebrar juntos!',
       receptionPlace: 'VER EN MAPA',
       dressCodeTitle: 'Código de Vestimenta',
+      giftRegistryUrl: 'Regalos',
       giftTitle: 'Mesa de Regalos',
-      giftMessage: 'Agradecemos mucho su presencia, y si desean hacernos un obsequio, pueden hacerlo a través de nuestra mesa de regalos.',
-      giftRegistryUrl: '',
+      giftMessage: 'Tu presencia es nuestro mayor regalo. Pero si deseas obsequiarnos algo, hemos preparado una mesa de regalos con cariño.',
+      giftButtonText: 'Ver Opciones de Regalo',
       dressCodeDetails: 'Vestimental Formal, elegante y con un toque de color en tonos otoñales. Puedes ver los siguientes links para inspirarte en tu atuendo',
       futurePlans: 'Agradecemos su presencia en un día tan especial para nosotros y esperamos que puedan acompañarnos en esta nueva etapa de nuestras vidas.',
       galleryImages: [
@@ -71,6 +72,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       'event-schedule',
       'dress-code',
       'gift-section',
+      'gift-registry',
     ],
   },
   "timeline-wedding": {
@@ -82,9 +84,9 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Playfair Display",
     fonts: ["Playfair Display", "Lora", "Merriweather", "Cormorant Garamond"],
     palettes: [
-      { name: "Amethyst", primary: "#F7F5F0", text: "#374151" },
-      { name: "Rose Gold", primary: "#b45309", text: "#4b5563" },
-      { name: "Emerald", primary: "#047857", text: "#374151" },
+      { name: "Amethyst", primary: "#F7F5F0", text: "#374151", background: "#ffffff" },
+      { name: "Rose Gold", primary: "#b45309", text: "#4b5563", background: "#ffffff" },
+      { name: "Emerald", primary: "#047857", text: "#374151", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#8F9779",
@@ -106,6 +108,9 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       mainVenueAddress: "123 Calle Principal, Ciudad, MX",
       event_date: "2026-10-27T18:00:00",
       giftRegistryUrl: "https://www.amazon.com",
+      giftTitle: "Mesa de Regalos",
+      giftMessage: "Tu presencia es nuestro mayor regalo. Pero si deseas obsequiarnos algo, hemos preparado una mesa de regalos con cariño.",
+      giftButtonText: "Ver Opciones de Regalo",
       galleryImages: [
         "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Timeline/timeline-portada.jpg",
         "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Timeline/timeline-3.jpg",
@@ -169,6 +174,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       "dress-code",
       "gift-section",
       "gallery",
+      "gift-registry"
     ],
   },
   'wedding-aquarrel': {
@@ -239,9 +245,9 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Montserrat",
     fonts: ["Montserrat", "Poppins", "Lato", "Open Sans"],
     palettes: [
-      { name: "Black & White", primary: "#111827", text: "#6b7280" },
-      { name: "Dusty Blue", primary: "#60a5fa", text: "#4b5563" },
-      { name: "Terracotta", primary: "#f59e0b", text: "#374151" },
+      { name: "Black & White", primary: "#111827", text: "#6b7280", background: "#ffffff" },
+      { name: "Dusty Blue", primary: "#60a5fa", text: "#4b5563", background: "#ffffff" },
+      { name: "Terracotta", primary: "#f59e0b", text: "#374151", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#111827",
@@ -308,9 +314,9 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Dancing Script",
     fonts: ["Dancing Script", "Great Vibes", "Parisienne", "Alex Brush"],
     palettes: [
-      { name: "Pink Dream", primary: "#db2777", text: "#374151" },
-      { name: "Royal Gold", primary: "#ca8a04", text: "#46dfd2" },
-      { name: "Lilac", primary: "#8b5cf6", text: "#f9fafb" },
+      { name: "Pink Dream", primary: "#db2777", text: "#374151", background: "#ffffff" },
+      { name: "Royal Gold", primary: "#ca8a04", text: "#46dfd2", background: "#ffffff" },
+      { name: "Lilac", primary: "#8b5cf6", text: "#f9fafb", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#e61875",
@@ -373,9 +379,9 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Nunito",
     fonts: ["Nunito", "Quicksand", "Comfortaa", "Fredoka One"],
     palettes: [
-      { name: "Superhéroe", primary: "#2563eb", text: "#1f2937" },
-      { name: "Dinosaurio", primary: "#16a34a", text: "#ffa12e" },
-      { name: "Unicornio", primary: "#ec4899", text: "#e3b1ee" },
+      { name: "Superhéroe", primary: "#2563eb", text: "#1f2937", background: "#ffffff" },
+      { name: "Dinosaurio", primary: "#16a34a", text: "#ffa12e", background: "#ffffff" },
+      { name: "Unicornio", primary: "#ec4899", text: "#e3b1ee", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#2563eb",
@@ -427,31 +433,39 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Cormorant Garamond",
     fonts: ["Cormorant Garamond", "Lora", "Playfair Display"],
     palettes: [
-      { name: "Sacred White", primary: "#d1a36a", text: "#a27b5c" },
-      { name: "Divine Gold", primary: "#d4d4d8", text: "#71717a" },
+      { name: "Sacred White", primary: "#d1a36a", text: "#a27b5c", background: "#ffffff" },
+      { name: "Divine Gold", primary: "#d4d4d8", text: "#71717a", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#d1a36a",
       textColor: "#a27b5c",
       backgroundColor: "#fcfbf7",
       heroTitle: "Una Celebración Sagrada",
-      heroNames: "Benjamin James",
+      heroNames: "Andrea Fernandez",
       timelineTitle: "Detalles del Evento",
       event_date: "2026-04-25T11:00:00",
       timelineItems: [
         {
           time: "11 AM",
-          title: "Bautizo Sagrado",
-          location: "Catedral de la Gracia",
+          title: "Ceremonia",
+          location: "Catedral de la Gracia\n123 Grace Ave, City",
+          mapLink: "",
         },
         {
           time: "1 PM",
-          title: "Brunch Celebratorio",
-          location: "El Conservatorio",
+          title: "Recepción",
+          location: "El Conservatorio\n456 Garden St, City",
+          mapLink: "",
         },
       ],
       locationName: "Catedral de la Gracia",
       mainVenueAddress: "123 Grace Ave, City",
+      parentsTitle: 'Con la bendición de mis padres',
+      parentsSectionTitle: 'Mis Padres',
+      partner1Parents: ['Nombre Padre', 'Nombre Madre'],
+      partner2Parents: [],
+      godparentsSubtitle: 'Guías de Fe',
+      godparentsTitle: 'Mis Padrinos',
       godparents: [
         { role: 'Madrina', name: 'Elizabeth Montgomery' },
         { role: 'Padrino', name: 'Christopher Rhodes' },
@@ -459,13 +473,25 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       receptionTitle: 'Recepción',
       receptionText: '"Después de la bendición sagrada, acompáñanos a celebrar con un brindis especial en honor a Sofía."',
       receptionPlace: 'Lugar: Jardín de los Rosales Conservatorio',
+      giftRegistryUrl: 'https://www.amazon.com',
+      giftTitle: 'Mesa de Regalos',
+      giftMessage: 'Tu presencia es nuestro mayor regalo, pero si deseas obsequiarnos algo, hemos preparado una mesa de regalos con cariño.',
+      giftButtonText: 'Ver Mesa de Regalos',
     },
     features: {
       multiEventSchedule: true,
-      godparentsBlock: true,
+      parentsAndGodparents: true,
     },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'event-schedule',
+      'parents-godparents',
+      'gift-registry',
+      'closing-card'
+    ],
   },
-  "gender-reveal-party": {
+    "gender-reveal-party": {
     name: "Revelación de Género - Clásica",
     thumbnail: "/branding/portadas/portada-gender.png",
     category: "Baby Shower",
@@ -475,18 +501,22 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Montserrat",
     fonts: ["Montserrat", "Poppins", "Lato", "Open Sans"],
     palettes: [
-      { name: "Blue & Pink", primary: "#3b82f6", text: "#ec4899" },
-      { name: "Pastel", primary: "#ffc0f7", text: "#a2cdf5" }, 
-      { name: "Sunshine", primary: "#f4df73", text: "#ff8262" },
+      { name: "Blue & Pink", primary: "#3b82f6", text: "#ec4899", background: "#ffffff" },
+      { name: "Pastel", primary: "#a2cdf5", text: "#fa82be", background: "#ffffff" },
+      { name: "Sunshine", primary: "#f4df73", text: "#ff8262", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#3b82f6",
       textColor: "#ec4899",
       backgroundColor: "#fef3f4",
-      family_image_url: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/gender-1.jpg",
+      family_image_url:
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/gender-1.jpg",
       heroTitle: "¡Niño o Niña?",
       heroNames: "Acompáñanos a descubrirlo",
-      parentsDescription: `"Nuestros corazones están atrapados entre suaves atardeceres rosados y cielos azules cristalinos. ¡No podemos esperar para compartir esta mágica revelación con las personas que más amamos!"`,
+      heroSubtitle:
+        "Acompañanos a celebrar la dulce espera de nuestro bebé con una divertida revelación de género. ¡Será un día lleno de amor, risas y sorpresas!",
+      parentsDescription: `"Nuestros corazones están atrapados entre suaves atardeceres rosados y cielos azules cristalinos. ¡No podemos esperar para compartir esta mágica
+        revelación con las personas que más amamos!"`,
       timelineTitle: "Detalles de la Fiesta",
       locationName: "Nuestra Casa",
       mainVenueAddress: "123 Calle Principal, Ciudad, MX",
@@ -496,16 +526,19 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
           time: "2 PM",
           title: "Llegada y Bienvenida",
           location: "Nuestra Casa",
+          mapLink: "",
         },
         {
           time: "3 PM",
           title: "¡La Gran Revelación!",
           location: "El Patio Trasero",
+          mapLink: "",
         },
         {
           time: "3:30 PM",
           title: "Celebraciones y Pastel",
           location: "Nuestra Casa",
+          mapLink: "",
         },
       ],
     },
@@ -514,6 +547,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       diaperRaffle: false,
       multiEventSchedule: true,
     },
+    formSections: ["main-details", "colors-and-style", "event-schedule"],
   },
   "graduation-celebration": {
     name: "Celebración de Graduación",
@@ -524,7 +558,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Great Vibes",
     fonts: ["Roboto Slab", "Oswald", "Anton", "Bebas Neue"],
     palettes: [
-      { name: "Muted Earth", primary: "#8B8682", text: "#4A4B4D" },
+      { name: "Muted Earth", primary: "#8B8682", text: "#4A4B4D", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#8B8682",
@@ -546,12 +580,28 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
         },
       ],
       tribute: "Un agradecimiento sincero a mi familia y amigos.",
+      futurePlansTitle: "Planes Futuros",
       futurePlans: "Próximo destino: Maestría!",
+      galleryImages: [
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/graduation-cover.jpg",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad1.jpg",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad2.jpg",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad3.jpg",
+        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Graduation/grad4.jpg",
+      ],
     },
     features: {
+      gallery: true,
       tributeSection: true,
       futurePlans: true,
     },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'event-schedule',
+      'tribute',
+      'future-plans'
+    ],
   },
   "corporate-summit": {
     name: "Evento Ejecutivo",
@@ -562,8 +612,8 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Inter",
     fonts: ["Inter", "Space Grotesk", "Lexend"],
     palettes: [
-      { name: "Midnight", primary: "#050505", text: "#ffffff" },
-      { name: "Electric", primary: "#2563eb", text: "#ffffff" },
+      { name: "Midnight", primary: "#050505", text: "#ffffff", background: "#ffffff" },
+      { name: "Electric", primary: "#2563eb", text: "#ffffff", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#050505",
@@ -605,8 +655,8 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Quicksand",
     fonts: ["Quicksand", "Nunito", "Comfortaa"],
     palettes: [
-      { name: "Pastel Blue", primary: "#81d4fa", text: "#01579b" },
-      { name: "Pastel Pink", primary: "#f8bbd0", text: "#880e4f" },
+      { name: "Pastel Blue", primary: "#81d4fa", text: "#01579b", background: "#ffffff" },
+      { name: "Pastel Pink", primary: "#f8bbd0", text: "#880e4f", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#81d4fa",
@@ -620,6 +670,9 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       rsvpDeadline: "10 de septiembre de 2026",
       rsvpContact: "rsvp@example.com",
       giftRegistryUrl: "https://www.babylist.com",
+      giftTitle: "Mesa de Regalos",
+      giftMessage: "Tu presencia es nuestro mayor regalo. Pero si deseas obsequiarnos algo, hemos preparado una mesa de regalos con cariño.",
+      giftButtonText: "Ver Opciones de Regalo",
       heroTitle: "Celebrando la próxima llegada de",
       heroNames: "Daniel",
       timelineTitle: "Detalles de la Fiesta",
@@ -628,6 +681,11 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     features: {
       // Features can be added here if needed
     },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'gift-registry',
+    ],
   },
   "gender-reveal-bees": {
     name: "Revelación de Género - Tema Abejas",
@@ -638,29 +696,37 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Quicksand",
     fonts: ["Quicksand", "Nunito", "Comfortaa"],
     palettes: [
-      { name: "Sunny Yellow", primary: "#facc15", text: "#44403c" },
+      { name: "Sunny Yellow", primary: "#facc15", text: "#44403c", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#facc15",
       textColor: "#44403c",
       backgroundColor: "#FEF9D1",
-      parentsNames: "Linda & Michael",
+      parentsNames: "Familia Alcaraz",
       heroTitle: "What will baby bee?",
-      heroNames: "Linda & Michael",
+      heroNames: "Bebe en camino",
       timelineTitle: "Party Details",
       heroSubtitle: "Acompáñanos a descubrir si tendremos un niño o una niña",
       event_date: "2026-06-12T14:00:00",
-      timeRange: "2:00 PM - 5:00 PM",
       timeSubtitle: "Bocadillos, juegos y mucha diversión",
       locationName: "Los Jardines",
       mainVenueAddress: "123 Calle Floral, Mx",
+      location: "",
       giftRegistryUrl: "https://www.amazon.com",
+      giftTitle: "Mesa de Regalos",
+      giftMessage: "Tu presencia es nuestro mayor regalo. Pero si deseas obsequiarnos algo, hemos preparado una mesa de regalos con cariño.",
+      giftButtonText: "Ver Opciones de Regalo",
       rsvpDeadline: "1ero de junio de 2026",
       timelineItems: [],
     },
     features: {
       genderBetting: true,
     },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'gift-registry',
+    ],
   },
   "scrapbook-graduation": {
     name: "Graduación - Moderno",
@@ -671,7 +737,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Permanent Marker",
     fonts: ["Permanent Marker", "Caveat", "Courier Prime"],
     palettes: [
-      { name: "Pink & Black", primary: "#FF1493", text: "#1A1A1A" },
+      { name: "Pink & Black", primary: "#FF1493", text: "#1A1A1A", background: "#ffffff" },
     ],
     defaultData: {
       primaryColor: "#FF1493",
@@ -693,6 +759,11 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     features: {
       multiEventSchedule: true,
     },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'event-schedule',
+    ],
   },
   "modern-event": {
     name: "Modern Event",
@@ -760,7 +831,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       partner1Parents: ["Efrain Albiter Hernández", "Rocio Esquivel Garcia"],
       partner2Parents: ["Lazaro Meneses Ramirez", "Ana Maria Vazquez Nieves"],
       godparents: [{ name: "Jorge Albiter Hernández & Janeth Benitez Rebollar", role: "Padrinos" }],
-      venueDividerText: "Después de la ceremonia religiosa agradecemos su presencia en",
+      venueDividerText: "~",
       timelineItems: [
         { time: "1:00 PM", title: "Ceremonia", location: "Parroquia de San Luis Obispo de Huamantla\nC. Hidalgo Manzana 031, San Luis Huexotla\n56220 San Luis Huexotla, Méx", mapLink: "" },
         { time: "3:30 PM", title: "Recepción", location: "Rancho Caballerizas\nAv. Aguilas 36, Lomas de San Esteban\n56257 Texcoco de Mora, Méx", mapLink: "" },
@@ -802,6 +873,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     font: "font-sans",
     defaultFont: "Inter",
     fonts: ["Inter", "Poppins", "Lexend", "Space Grotesk"],
+    palettes: [],
     defaultData: {
       heroTitle: "You're Invited!",
       timelineTitle: "Game Day Schedule",
@@ -825,7 +897,6 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     formSections: [
       'main-details',
       'colors-and-style',
-      'parental-notes',
     ]
   },
   'princess-birthday': {
@@ -837,18 +908,18 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     defaultFont: "Dancing Script",
     fonts: ["Playfair Display", "Lora", "Cormorant Garamond", "Dancing Script"],
     palettes: [
-      { name: "Blush & Gold", primary: "#FDF6F8", text: "#C28B96", secondary: "#B89766", dark: "#5A4A42" },
+      { name: "Blush & Gold", primary: "#FDF6F8", text: "#C28B96", secondary: "#B89766", dark: "#5A4A42", background: "#ffffff" },
     ],
     defaultData: {
-      heroTitle: "You're Invited to a",
-      timelineTitle: "Royal Celebration",
+      heroTitle: "Estas invitado a la celebración de cumpleaños de",
+      timelineTitle: "Celebración Real",
       timelineItems: [],
       heroNames: "Olivia",
       age: 4,
       event_date: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
       startTime: "12:00 PM",
       endTime: "2:00 PM",
-      location: "William's Residence\n876 Street Ln, Boulder CO",
+      location: "Residencia Aguacaliente",
       rsvpDateText: "15 de julio",
       parentalNotes: "Favor de traer calcetas extras y cambio de ropa",
       photoUrl: "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Kids-Bdy/princesa.png",
@@ -864,7 +935,6 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     formSections: [
       'main-details',
       'colors-and-style',
-      'parental-notes',
     ]
   },
 };

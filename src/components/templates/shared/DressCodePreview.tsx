@@ -1,5 +1,5 @@
 "use client";
-import { DressCode, DressCodeStyle } from "@/lib/custom_types";
+import { DressCode } from "@/lib/custom_types";
 
 type DressCodePreviewProps = {
   dressCode: DressCode;
@@ -7,7 +7,7 @@ type DressCodePreviewProps = {
   textColor?: string;
 };
 
-const illustrations: Record<DressCodeStyle, { male: string; female: string; }> = {
+const illustrations = {
   'Formal': {
     male: 'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Attire/blacktie-man.png',
     female: 'https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Attire/blacktie-female.png'
@@ -33,10 +33,6 @@ const illustrations: Record<DressCodeStyle, { male: string; female: string; }> =
     female: 'https://storage.googleapis.com/gemini-generative-ai/outfit-illustrations/black_tie_female.svg'
   }
 };
-
-const isValidDressCodeStyle = (style: string): style is DressCodeStyle => {
-    return style in illustrations;
-}
 
 export function DressCodePreview({ dressCode, primaryColor, textColor }: DressCodePreviewProps) {
   if (dressCode.pinterestUrlMan || dressCode.pinterestUrlWoman) {
@@ -81,32 +77,30 @@ export function DressCodePreview({ dressCode, primaryColor, textColor }: DressCo
   }
 
   if (dressCode.man && dressCode.woman) {
-    if (isValidDressCodeStyle(dressCode.man) && isValidDressCodeStyle(dressCode.woman)) {
-        const manIllustration = illustrations[dressCode.man];
-        const womanIllustration = illustrations[dressCode.woman];
+    const manIllustration = illustrations[dressCode.man as keyof typeof illustrations];
+    const womanIllustration = illustrations[dressCode.woman as keyof typeof illustrations];
 
-        if (manIllustration && womanIllustration) {
-        return (
-            <div className="text-center">
-            <div className="flex justify-center items-start gap-8 md:gap-16">
-                <div className="text-center flex-1">
-                <img src={manIllustration.male} alt="Male attire illustration" className="h-48 md:h-64 mx-auto mb-4" />
-                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>Hombres</h3>
-                <p className="text-md max-w-xs mx-auto" style={{ color: textColor, opacity: 0.8 }}>
-                    {dressCode.man}
-                </p>
-                </div>
-                <div className="text-center flex-1">
-                <img src={womanIllustration.female} alt="Female attire illustration" className="h-48 md:h-64 mx-auto mb-4" />
-                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>Mujeres</h3>
-                <p className="text-md max-w-xs mx-auto" style={{ color: textColor, opacity: 0.8 }}>
-                    {dressCode.woman}
-                </p>
-                </div>
-            </div>
-            </div>
-        );
-        }
+    if (manIllustration && womanIllustration) {
+      return (
+          <div className="text-center">
+          <div className="flex justify-center items-start gap-8 md:gap-16">
+              <div className="text-center flex-1">
+              <img src={manIllustration.male} alt="Male attire illustration" className="h-48 md:h-64 mx-auto mb-4" />
+              <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>Hombres</h3>
+              <p className="text-md max-w-xs mx-auto" style={{ color: textColor, opacity: 0.8 }}>
+                  {dressCode.man}
+              </p>
+              </div>
+              <div className="text-center flex-1">
+              <img src={womanIllustration.female} alt="Female attire illustration" className="h-48 md:h-64 mx-auto mb-4" />
+              <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryColor }}>Mujeres</h3>
+              <p className="text-md max-w-xs mx-auto" style={{ color: textColor, opacity: 0.8 }}>
+                  {dressCode.woman}
+              </p>
+              </div>
+          </div>
+          </div>
+      );
     }
   }
 

@@ -7,6 +7,15 @@ import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import { MapPin } from 'lucide-react';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
 
+function normalizeExternalUrl(value?: string): string {
+  if (!value) return '#';
+  const trimmed = value.trim();
+  if (!trimmed) return '#';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^www\./i.test(trimmed)) return `https://${trimmed}`;
+  return `https://maps.google.com/maps?q=${encodeURIComponent(trimmed)}`;
+}
+
 /**
  * Enhanced FadeIn for organic baby-themed entries.
  */
@@ -43,6 +52,7 @@ export default function GenderRevealTemplate({ template, data, onRsvpClick }: Ge
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(invitationData.mainVenueAddress || '')}`;
 
   const date = invitationData.event_date ? new Date(invitationData.event_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+  const time = invitationData.event_date ? new Date(invitationData.event_date).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true }) : '';
 
   // Floating animation configuration for the balloons
   const floatAnimation = (yValue: number, duration: number): TargetAndTransition => ({
@@ -139,14 +149,21 @@ export default function GenderRevealTemplate({ template, data, onRsvpClick }: Ge
 
           <div className="w-16 h-[2px] bg-gradient-to-r from-pink-300 via-amber-200 to-sky-300 my-6 rounded-full" />
 
-          <p className="text-sm sm:text-base font-medium opacity-70 max-w-xs sm:max-w-md italic px-4">
-            Acompañanos a celebrar la dulce espera de nuestro bebé con una divertida revelación de género. ¡Será un día lleno de amor, risas y sorpresas!
+          <p className="text-sm sm:text-base font-medium opacity-70 max-w-xs sm:max-w-md italic px-4" style={{ color: '#000' }}>
+            {invitationData.heroSubtitle || "Acompañanos a celebrar la dulce espera de nuestro bebé con una divertida revelación de género. ¡Será un día lleno de amor, risas y sorpresas!"}
           </p>
 
           {date && (
-            <p className="text-2xl sm:text-3xl font-serif font-bold mt-6 tracking-wider" style={{color: invitationData.textColor}}>
-              {date}
-            </p>
+            <div className="mt-6">
+              <p className="text-2xl sm:text-3xl font-serif font-bold tracking-wider" style={{color:  invitationData.primaryColor}}>
+                {date}
+              </p>
+              {time && (
+                <p className="text-xl sm:text-2xl font-serif font-semibold mt-1 tracking-widest" style={{color:  invitationData.primaryColor}}>
+                  {time}
+                </p>
+              )}
+            </div>
           )}
         </motion.div>
       </section>
@@ -172,7 +189,7 @@ export default function GenderRevealTemplate({ template, data, onRsvpClick }: Ge
             <FadeIn delay={0.1}>
               <div className="space-y-5 text-center md:text-left px-2">
                 <h2 className="text-3xl sm:text-4xl font-black italic" style={{color: invitationData.textColor}}>Los papás</h2>
-                <p className="text-base sm:text-lg leading-relaxed font-light opacity-90">
+                <p className="text-base sm:text-lg leading-relaxed font-light opacity-90" style={{ color: '#000' }}>
                   {invitationData.parentsDescription}
                 </p>
               </div>
@@ -185,7 +202,7 @@ export default function GenderRevealTemplate({ template, data, onRsvpClick }: Ge
       <section className="py-20 px-4 sm:px-6 rounded-t-[3rem] sm:rounded-t-[4rem] relative z-10 bg-gradient-to-b from-[#FFF2EC] to-[#FFF9F5]">
         <div className="max-w-3xl mx-auto text-center">
           <FadeIn>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-12" style={{color: invitationData.textColor}}>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-12" style={{color: '#000'}}>
               {invitationData.timelineTitle || "The Big Day Itinerary"}
             </h2>
             <div className="space-y-4 max-w-md mx-auto">
@@ -194,11 +211,22 @@ export default function GenderRevealTemplate({ template, data, onRsvpClick }: Ge
                   <div className="absolute top-3 right-4 text-3xl opacity-15">
                     {index % 2 === 0 ? '🎁' : '🎉'}
                   </div>
-                  <p className="font-bold text-xs sm:text-sm tracking-wider uppercase text-amber-700/80 mb-1">{item.time}</p>
-                  <h3 className="text-lg font-bold break-words [overflow-wrap:anywhere] whitespace-normal pr-6" style={{color: invitationData.textColor}}>
+                  <p className="font-bold text-xs sm:text-sm tracking-wider uppercase text-amber-700/80 mb-1" style={{ color: '#000' }}>{item.time}</p>
+                  <h3 className="text-lg font-bold break-words [overflow-wrap:anywhere] whitespace-normal pr-6" style={{color: invitationData.primaryColor}}>
                     {item.title}
                   </h3>
-                  <p className="text-xs sm:text-sm italic opacity-70 mt-1">{item.location}</p>
+                  <p className="text-xs sm:text-sm italic opacity-70 mt-1" style={{ color: '#000' }}>{item.location}</p>
+                  {item.mapLink && (
+                    <a
+                      href={normalizeExternalUrl(item.mapLink)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 text-xs font-bold uppercase tracking-widest text-amber-800/80 border-b border-amber-200/60 pb-0.5"
+                      style={{ color: invitationData.primaryColor }}
+                    >
+                      Ver en Mapa
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
@@ -226,11 +254,11 @@ export default function GenderRevealTemplate({ template, data, onRsvpClick }: Ge
                     <MapPin className="w-7 h-7 text-white drop-shadow-md" />
                   </div>
 
-                  <h3 className="text-3xl font-black mb-2" style={{color: invitationData.textColor}}>
+                  <h3 className="text-3xl font-black mb-2" style={{color: '#000'}}>
                     {invitationData.locationName || "Ubicación"}
                   </h3>
                   
-                  <p className="text-base font-medium mb-8 px-2 opacity-80" style={{color: invitationData.textColor}}>
+                  <p className="text-base font-medium mb-8 px-2 opacity-80" style={{color: '#000'}}>
                     {invitationData.mainVenueAddress}
                   </p>
 
@@ -274,8 +302,8 @@ export default function GenderRevealTemplate({ template, data, onRsvpClick }: Ge
         <section className="py-20 px-4 sm:px-6 bg-gradient-to-b from-[#FFF9F5] via-[#FFF0FA] to-[#F5FCFF] rounded-b-[3rem]">
           <FadeIn>
             <div className="text-center mb-10">
-              <h2 className="text-3xl sm:text-4xl font-black italic" style={{color: invitationData.textColor}}>¿Niño o Niña?</h2>
-              <p className="text-sm sm:text-base opacity-70 mt-2">¡Elige una opción y descubre tu misión especial en la fiesta!</p>
+              <h2 className="text-3xl sm:text-4xl font-black italic" style={{color: '#000'}}>¿Niño o Niña?</h2>
+              <p className="text-sm sm:text-base opacity-70 mt-2" style={{ color: '#000' }}>¡Elige una opción y descubre tu misión especial en la fiesta!</p>
             </div>
 
             <div className="max-w-2xl mx-auto">
@@ -294,7 +322,7 @@ export default function GenderRevealTemplate({ template, data, onRsvpClick }: Ge
                     >
                       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
                       <div className="relative z-10 flex flex-col items-center justify-center h-full p-3 text-center">
-                        <span className="text-4xl sm:text-5xl mb-2 drop-shadow-sm">🚗</span>
+                                                <Image src="/gender-boy.png" alt="Team Boy" width={128} height={128} className="w-24 h-24 sm:w-32 sm:h-32 object-contain mb-2" />
                         <span className="text-lg sm:text-xl font-bold tracking-tight">Equipo Niño</span>
                       </div>
                     </button>
@@ -307,7 +335,7 @@ export default function GenderRevealTemplate({ template, data, onRsvpClick }: Ge
                     >
                       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/hearts-of-love.png')] opacity-10" />
                       <div className="relative z-10 flex flex-col items-center justify-center h-full p-3 text-center">
-                        <span className="text-4xl sm:text-5xl mb-2 drop-shadow-sm">🌸</span>
+                                                <Image src="/gender-girl.png" alt="Team Girl" width={128} height={128} className="w-24 h-24 sm:w-32 sm:h-32 object-contain mb-2" />
                         <span className="text-lg sm:text-xl font-bold tracking-tight">Equipo Niña</span>
                       </div>
                     </button>

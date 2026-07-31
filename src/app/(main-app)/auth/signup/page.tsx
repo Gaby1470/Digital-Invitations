@@ -42,7 +42,7 @@ export default function SignupPage() {
     if (error) {
       setError(error.message);
     } else {
-      setMessage("Success! Please check your email for a confirmation link.");
+      setMessage("¡Éxito! Por favor revise su correo electrónico para obtener un enlace de confirmación.");
       setFirstName('');
       setLastName('');
       setEmail('');
@@ -55,12 +55,12 @@ export default function SignupPage() {
   return (
     <div className="flex-1 flex items-center justify-center py-12 px-4">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center">Create an Account</h1>
+        <h1 className="text-2xl font-bold text-center">Crear una cuenta</h1>
         <form className="space-y-6" onSubmit={handleSignUp}>
           <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
             <div>
               <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
-                First name
+                Nombre
               </label>
               <div className="mt-1">
                 <input
@@ -78,7 +78,7 @@ export default function SignupPage() {
 
             <div>
               <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">
-                Last name
+                Apellido
               </label>
               <div className="mt-1">
                 <input
@@ -97,7 +97,7 @@ export default function SignupPage() {
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email address
+              Correo electrónico
             </label>
             <div className="mt-1">
               <input
@@ -115,7 +115,7 @@ export default function SignupPage() {
 
           <div>
             <label htmlFor="password"className="block text-sm font-medium text-gray-700">
-              Password
+              Contraseña
             </label>
             <div className="mt-1">
               <input
@@ -133,7 +133,7 @@ export default function SignupPage() {
 
           <div>
             <label htmlFor="confirm-password"className="block text-sm font-medium text-gray-700">
-              Confirm Password
+              Confirmar contraseña
             </label>
             <div className="mt-1">
               <input
@@ -163,9 +163,9 @@ export default function SignupPage() {
           </div>
         </form>
         <p className="text-sm text-center text-gray-600">
-          Already have an account?{' '}
+          ¿Ya tienes una cuenta?{' '}
           <Link href="/auth/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-            Log in
+            Iniciar sesión
           </Link>
         </p>
       </div>

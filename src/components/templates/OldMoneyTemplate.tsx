@@ -35,6 +35,26 @@ type OldMoneyTemplateProps = {
   onRsvpClick?: () => void;
 };
 
+const formatUrl = (urlOrAddress: string | undefined): string => {
+    if (!urlOrAddress) return '';
+    const trimmed = urlOrAddress.trim();
+    if (!trimmed || trimmed === '#') return '';
+
+    // If it's already a valid, absolute URL, return it.
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+        return trimmed;
+    }
+
+    // If it looks like a domain name (e.g., www.google.com), prepend https.
+    if (trimmed.includes('.') && !trimmed.includes(' ')) {
+        return `https://${trimmed}`;
+    }
+
+    // Otherwise, assume it's a physical address and create a Google Maps search URL.
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
+};
+
+
 export default function OldMoneyTemplate({
   template,
   data,
@@ -81,7 +101,6 @@ export default function OldMoneyTemplate({
             alt="Couple"
           />
           {/* Subtle gradient overlay to ensure text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
         </motion.div>
 
         <div className="z-10 mt-auto mb-20 text-center text-white px-6 w-full max-w-md">
@@ -93,15 +112,9 @@ export default function OldMoneyTemplate({
             <p className="uppercase text-[10px] tracking-[0.3em] mb-4 opacity-90 font-medium">
               {invitationData.heroTitle || "Nuestra Boda"}
             </p>
-            <div className="flex flex-col items-center justify-center space-y-1">
-              <h1 className="text-5xl sm:text-6xl font-serif tracking-widest uppercase leading-none">
-                {invitationData.partner1Name || "Yoselin"}
-              </h1>
-              <span className="text-3xl font-serif italic font-light text-[#d4c5b0] my-2">y</span>
-              <h1 className="text-5xl sm:text-6xl font-serif tracking-widest uppercase leading-none">
-                {invitationData.partner2Name || "Ivan"}
-              </h1>
-            </div>
+            <h1 className="text-5xl sm:text-6xl font-serif tracking-widest uppercase leading-none">
+              {invitationData.heroNames || "Yoselin & Ivan"}
+            </h1>
           </motion.div>
         </div>
         <div className="absolute bottom-0 left-0 w-full z-20 leading-none translate-y-[1px]">
@@ -137,17 +150,20 @@ export default function OldMoneyTemplate({
           </p>
         </AnimatedSection>
 
-        {/* This block is intentionally left empty to remove the parents section */}
-
-        {(invitationData.godparents?.length || 0) > 0 && (
-          <AnimatedSection delay={0.3}>
-            <div className="space-y-6 pt-4">
-              <h3 className="font-serif italic text-2xl" style={{ color: accentColor }}>
-                y nuestros padrinos
-              </h3>
-              <div className="text-[10px] uppercase tracking-widest opacity-80">
-                {invitationData.godparents?.map((g: Godparent) => <p key={g.name}>{g.name}</p>)}
-              </div>
+        {((invitationData.partner1Parents && invitationData.partner1Parents.length > 0) || (invitationData.partner2Parents && invitationData.partner2Parents.length > 0)) && (
+          <AnimatedSection delay={0.2}>
+            <div className="space-y-6">
+                <h3 className="font-serif italic text-2xl" style={{ color: accentColor }}>
+                    {invitationData.parentsTitle || "Con la bendición de nuestros padres"}
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-center text-sm uppercase tracking-widest opacity-80 font-medium">
+                    <div>
+                        {invitationData.partner1Parents?.map((p: string) => <p key={p}>{p}</p>)}
+                    </div>
+                    <div>
+                        {invitationData.partner2Parents?.map((p: string) => <p key={p}>{p}</p>)}
+                    </div>
+                </div>
             </div>
           </AnimatedSection>
         )}
@@ -180,7 +196,9 @@ export default function OldMoneyTemplate({
 
       {/* 4. VENUES (Ceremony & Reception) */}
       <section className="px-6 max-w-md mx-auto space-y-12 pb-20">
-        {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
+        {invitationData.timelineItems?.map((item: TimelineItem, index: number) => {
+          const mapUrl = formatUrl(item.mapLink);
+          return (
           <React.Fragment key={index}>
             <AnimatedSection>
               <div className="text-center space-y-5">
@@ -191,20 +209,18 @@ export default function OldMoneyTemplate({
                   {item.location}
                 </p>
                 <p className="text-sm font-medium tracking-widest">{item.time}</p>
-                {item.mapLink?.trim() && item.mapLink.trim() !== "#" && (
+                {mapUrl && (
                   <>
                     <p className="text-[10px] uppercase tracking-widest opacity-60 mt-4 mb-2">
                       ¿Cómo llegar?
                     </p>
-                    <a
-                      href={item.mapLink.trim()}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => window.open(mapUrl, '_blank')}
                       className="inline-block px-10 py-3 rounded-full text-xs uppercase tracking-widest text-white transition-opacity hover:opacity-90"
                       style={{ backgroundColor: accentColor }}
                     >
                       Ubicación
-                    </a>
+                    </button>
                   </>
                 )}
               </div>
@@ -212,12 +228,12 @@ export default function OldMoneyTemplate({
             {invitationData.timelineItems && index < invitationData.timelineItems.length - 1 && (
               <AnimatedSection>
                 <p className="text-center text-[10px] uppercase tracking-widest opacity-60 max-w-[250px] mx-auto leading-relaxed">
-                  {invitationData.venueDividerText || 'Después de la ceremonia religiosa agradecemos su presencia en'}
+                  {invitationData.venueDividerText || '~'}
                 </p>
               </AnimatedSection>
             )}
           </React.Fragment>
-        ))}
+        )})}
       </section>
 
       {/* 5. DRESS CODE (Dark Theme Block) */}
@@ -231,7 +247,7 @@ export default function OldMoneyTemplate({
                 <div className="flex justify-center gap-4">
                   {dressCode.pinterestUrlMan && (
                     <a
-                      href={dressCode.pinterestUrlMan}
+                      href={formatUrl(dressCode.pinterestUrlMan)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block px-10 py-3 rounded-full text-xs uppercase tracking-widest text-white transition-opacity hover:opacity-90"
@@ -242,7 +258,7 @@ export default function OldMoneyTemplate({
                   )}
                   {dressCode.pinterestUrlWoman && (
                     <a
-                      href={dressCode.pinterestUrlWoman}
+                      href={formatUrl(dressCode.pinterestUrlWoman)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block px-10 py-3 rounded-full text-xs uppercase tracking-widest text-white transition-opacity hover:opacity-90"
@@ -288,50 +304,50 @@ export default function OldMoneyTemplate({
             </AnimatedSection>
 
             <div className="relative border-l border-[#d4c5b0] ml-8 space-y-12 py-4">
-              {invitationData.itineraryItems?.map((item: TimelineItem, index: number) => (
+              {invitationData.itineraryItems?.map((item: TimelineItem, index: number) => {
+                const mapUrl = formatUrl(item.mapLink);
+                return (
                 <AnimatedSection key={index} delay={index * 0.1}>
-                  <div className="relative pl-8 flex flex-col justify-center min-h-[40px]">
+                  <div className="relative pl-8 flex flex-col justify-center min-h-[40px] text-left">
                     {/* Timeline Node marker */}
                     <div 
                       className="absolute left-[-5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full"
                       style={{ backgroundColor: accentColor }}
                     />
 
-                    <div className="flex justify-between items-center w-full">
+                    <div className="flex justify-between items-start w-full">
                       <div className="flex flex-col">
                         <span className="text-sm font-medium tracking-widest">{item.time}</span>
                         <span className="text-xs uppercase tracking-wider opacity-70 mt-1">
                           {item.title}
                         </span>
-                      </div>
-                      {/* Optional Icon placeholder to match video's rings/church icons */}
-                      <div className="w-8 h-8 opacity-40">
-                         {/* Insert corresponding SVG icon here based on item.title */}
+                        {item.location && (
+                            <span className="text-xs opacity-60 mt-2 whitespace-pre-line">{item.location}</span>
+                        )}
                       </div>
                     </div>
+                    {mapUrl && (
+                      <button
+                      onClick={() => window.open(mapUrl, '_blank')}
+                      className="inline-block mt-4 px-6 py-2 rounded-full text-xs uppercase tracking-widest text-white transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: accentColor }}
+                    >
+                      Ubicación
+                    </button>
+                    )}
                   </div>
                 </AnimatedSection>
-              ))}
+              )})
+            }
             </div>
           </div>
         </section>
       )}
 
       {/* 8. RESERVED PLACES & RSVP */}
-      <section className="py-20 px-6 bg-white text-center">
+      <section className="py-10 px-6 bg-white text-center">
         <div className="max-w-md mx-auto space-y-12">
           <AnimatedSection>
-            <h2 className="font-serif italic text-3xl mb-4" style={{ color: accentColor }}>
-              Hemos reservado
-            </h2>
-            <div className="inline-block border-b border-t py-4 px-12" style={{ borderColor: `${primaryText}20` }}>
-              <p className="text-sm uppercase tracking-[0.3em] font-medium">
-                {invitationData.guestCount || "2"} Lugares
-              </p>
-            </div>
-            <p className="text-[10px] uppercase tracking-widest opacity-60 mt-6">
-              En tu honor
-            </p>
             <p className="text-xs uppercase tracking-wider opacity-80 mt-8 max-w-[250px] mx-auto leading-relaxed">
               Es muy importante para nosotros contar con tu presencia.
             </p>

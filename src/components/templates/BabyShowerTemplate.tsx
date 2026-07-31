@@ -7,7 +7,6 @@ import { motion, useInView } from "framer-motion";
 import { Calendar, MapPin, Baby, Heart, PartyPopper, Utensils, Clock } from "lucide-react";
 import GiftSection from './shared/GiftSection';
 import { RsvpTrigger } from './shared/RsvpTrigger';
-import { BrandingFooter } from './shared/BrandingFooter';
 
 function FadeIn({
   children,
@@ -38,6 +37,15 @@ type BabyShowerTemplateProps = {
   onRsvpClick?: () => void;
 };
 
+function normalizeExternalUrl(value?: string): string {
+  if (!value) return '#';
+  const trimmed = value.trim();
+  if (!trimmed) return '#';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^www\./i.test(trimmed)) return `https://${trimmed}`;
+  return `https://maps.google.com/maps?q=${encodeURIComponent(trimmed)}`;
+}
+
 export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
   template,
   data,
@@ -57,6 +65,9 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
     rsvpDeadline,
     rsvpContact,
     giftRegistryUrl,
+    giftTitle,
+    giftMessage,
+    giftButtonText,
     timelineItems,
     heroTitle,
     backgroundColor,
@@ -118,7 +129,7 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
             </p>
 
             <h2 className="mt-4 text-3xl sm:text-4xl font-black tracking-tight" style={{ color: textColor }}>
-              {babyName || "Little One"}
+              {babyName || "Bebe"}
             </h2>
 
             <p className="text-sm md:text-base font-medium mt-2 max-w-sm mx-auto">
@@ -185,12 +196,23 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
                 <div className="space-y-4">
                   {timelineItems.map((item: TimelineItem, index: number) => (
                     <div key={index} className="flex items-center gap-4">
-                      <div className="flex-shrink-0 bg-white/80 rounded-lg p-2">
-                         <Clock className="w-5 h-5" />
-                      </div>
+                      <div className="flex-shrink-0 rounded-lg p-2">
+                        <img src="/osito-babyshower.png" alt="Bear Baby Shower" className="w-12 h-12" />
+                       </div>
                       <div>
                         <p className="font-bold" style={{ color: textColor }}>{item.title}</p>
                         <p className="text-sm">{item.time} - {item.location}</p>
+                        {item.mapLink && (
+                          <a
+                            href={normalizeExternalUrl(item.mapLink)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-2 text-xs font-bold uppercase tracking-widest text-amber-800/80 border-b border-amber-200/60 pb-0.5"
+                            style={{ color: primaryColor }}
+                          >
+                            Ver en Mapa
+                          </a>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -223,7 +245,10 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
             {/* Removed the extra background, border, and padding wrapper to avoid the double box effect */}
             <div className="transition-all duration-300 hover:-translate-y-1">
               <GiftSection 
-                giftRegistryUrl={giftRegistryUrl}
+                giftUrl={giftRegistryUrl}
+                giftTitle={giftTitle}
+                giftMessage={giftMessage}
+                giftButtonText={giftButtonText}
                 primaryColor={primaryColor}
                 textColor={textColor}
               />
@@ -249,7 +274,6 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
           ¡No podemos esperar para celebrar contigo!
         </p>
       </footer>
-      <BrandingFooter />
     </div>
   );
 };

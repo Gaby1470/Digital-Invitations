@@ -3,11 +3,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from "framer-motion";
-import { TemplateConfig } from "@/lib/custom_types";
+import { TemplateConfig, TimelineItem } from "@/lib/custom_types";
 import { EditorData } from "@/lib/custom_types";
 import Lightbox from "./shared/Lightbox";
 import { RsvpTrigger } from './shared/RsvpTrigger';
-import { BrandingFooter } from './shared/BrandingFooter';
 
 // A utility for animations, similar to other templates
 function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number; }) {
@@ -63,7 +62,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
   const invitationData = { ...defaultData, ...data };
 
   const coupleNames = invitationData.heroNames || `${invitationData.partner1Name || "Alicia"} & ${invitationData.partner2Name || "Oliver"}`;
-  
+
   // Parse date for stylized display
   const dateObj = invitationData.event_date ? new Date(invitationData.event_date) : new Date(2026, 10, 7); // Nov 7, 2026 fallback
   const weddingDay = dateObj.toLocaleDateString('es-MX', { day: '2-digit' });
@@ -106,33 +105,33 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
 
   return (
     <div className="max-w-md mx-auto bg-[#Fdfbf5] min-h-screen shadow-2xl overflow-hidden font-sans" style={{ color: primaryText, backgroundColor: bgColor }}>
-      
+
       {/* 1. HERO / COVER SECTION */}
       <section className="relative w-full h-[800px] flex flex-col items-center justify-center p-6">
         {/* Full-section background image */}
         <div className="absolute inset-0 z-0">
-          <Image src="/garden-background.png" alt="Garden background" fill className="object-cover" />
+          <Image src={invitationData.heroImageUrl || "/garden-background.png"} alt="Garden background" fill className="object-cover" />
         </div>
 
         <div className="absolute top-0 left-80 w-58 h-58">
-          <Image src="/flores-blancas.png" alt="White flowers" layout="fill" objectFit="contain" />
+          <Image src={invitationData.heroDecorationUrl || "/flores-blancas.png"} alt="White flowers" layout="fill" objectFit="contain" />
         </div>
 
         {/* Main Invitation Card */}
         <div className="relative z-10 w-full h-[550px] p-8 text-center shadow-lg flex flex-col justify-center items-center rounded-sm" style={{backgroundColor: cardBgColor, color: invitationData.buttonTextColor || '#f0eee4'}}>
 
-          
+
           <p className="text-xs tracking-widest uppercase mb-8 z-10" dangerouslySetInnerHTML={{ __html: invitationData.heroTitle || "Join us for the<br />wedding of" }} />
-          
+
           <h1 className="text-6xl font-serif italic mb-4 z-10 leading-tight">
             {coupleNames}
           </h1>
-          
+
           <div className="mt-12 text-sm tracking-widest uppercase z-10 space-y-1">
             <p>{invitationData.locationName || "Villa Cantacuzino"}</p>
             <p>{invitationData.venue_city || "Tuscany, Italy"}</p>
           </div>
-          
+
           {/* Outstanding Date Display (Animated) */}
           <motion.div 
             className="mt-10 z-10 flex flex-col items-center"
@@ -160,7 +159,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
             >
               {weddingMonth}
             </motion.span>
-            
+
             {/* Day and lines fade and scale in */}
             <motion.div 
               variants={{ 
@@ -176,7 +175,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
               </span>
               <div className="w-12 h-[1px] bg-current opacity-40"></div>
             </motion.div>
-            
+
             {/* Year fades in and slides up slightly */}
             <motion.span 
               variants={{ 
@@ -192,17 +191,17 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
         </div>
 
         <div className="absolute bottom-16 left-4 w-32 h-32 z-20">
-          <Image src="/wax-seal.png" alt="Wax seal" layout="fill" objectFit="contain" />
+          <Image src={invitationData.waxSealUrl || "/wax-seal.png"} alt="Wax seal" layout="fill" objectFit="contain" />
         </div>
       </section>
 
       {/* 2. PROGRAM OF THE DAY */}
       {features.multiEventSchedule && invitationData.timelineItems && (
-        <section className="bg-[#fcfaf2] py-16 px-6">
+        <section className="py-16 px-6">
           <h2 className="text-4xl font-serif italic text-center mb-12" style={{ color: accentColor }}>
             {invitationData.timelineTitle || "Programa del Día"}
           </h2>
-          
+
           <div className="relative">
             {/* Vertical Timeline Line */}
             <div className="absolute left-1/4 top-0 bottom-0 w-px bg-gray-300"></div>
@@ -212,7 +211,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
             </div>
 
             <div className="space-y-12">
-              {invitationData.timelineItems.map((item: any, index: number) => (
+              {invitationData.timelineItems.map((item: TimelineItem, index: number) => (
                 <div className="flex items-center" key={index}>
                   <div className="w-1/4 flex justify-center z-10 bg-[#fcfaf2] py-2">
                     <div className="relative w-12 h-12">
@@ -227,7 +226,21 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
                   <div className="w-3/4 pl-6 text-center">
                     <h3 className="text-2xl font-serif italic" style={{ color: accentColor }}>{item.title}</h3>
                     <p className="text-xl mt-1">{item.time}</p>
-                    <p className="text-[15px] font-serif font-light text-gray-500 mt-1 leading-relaxed tracking-[0.04em]" dangerouslySetInnerHTML={{ __html: item.location.replace(/\n/g, '<br />') }} />
+                    {item.location && <p className="text-[15px] font-serif font-light text-gray-500 mt-1 leading-relaxed tracking-[0.04em]" dangerouslySetInnerHTML={{ __html: item.location.replace(/\n/g, '<br />') }} />}
+                    {item.mapLink && (
+                      <a
+                        href={normalizeExternalUrl(item.mapLink)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-block px-5 py-2 rounded-full text-xs font-semibold tracking-widest shadow-sm transition-transform hover:scale-105"
+                        style={{
+                          backgroundColor: invitationData.buttonTextColor || '#fcfaf2',
+                          color: accentColor
+                        }}
+                      >
+                        UBICACION
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -238,13 +251,13 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
 
       {/* 2.5. OUR STORY / GALLERY */}
       {features.gallery && galleryImages && (
-        <section className="bg-[#Fdfbf5] py-16 px-6">
+        <section className="py-16 px-6">
           <AnimatedSection>
             <h2 className="text-4xl font-serif italic text-center mb-12" style={{ color: accentColor }}>
               {invitationData.galleryTitle || "Our Story"}
             </h2>
             <div className="grid grid-cols-2 gap-4">
-              {galleryImages.map((src: any, index: number) => (
+              {galleryImages.map((src: string, index: number) => (
                 <motion.div
                   key={index}
                   className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-lg cursor-pointer"
@@ -277,14 +290,14 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
         >
           Mapa
         </a>
-        
+
         {/* Venue image */}
         <div
           className="w-full mt-8 relative overflow-hidden"
           style={{ height: `${venueImageHeight}px` }}
         >
           <Image
-            src="/wedding-venue2.png"
+            src={invitationData.venueImageUrl || "/wedding-venue2.png"}
             alt="Wedding venue"
             fill
             className="object-cover"
@@ -295,12 +308,12 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
 
       {/* 4. DRESS CODE */}
       {features.dressCode && (
-        <section className="bg-[#fcfaf2] pb-16">
+        <section className="pb-16">
           <div className="px-6 pt-10 text-center">
             <h2 className="text-4xl font-serif italic mb-6" style={{color: accentColor}}>
               {invitationData.dressCodeTitle || "Дресс-код"}
             </h2>
-            
+
             <p 
               className="text-[15px] font-serif font-light text-gray-600 mb-8 leading-8 tracking-[0.045em]" 
               dangerouslySetInnerHTML={{ __html: invitationData.dressCodeDetails || "Мы будем рады видеть вас в образах<br />в пастельных, мягких оттенках — это поможет<br />создать лёгкую и гармоничную атмосферу<br />праздника."}} 
@@ -320,7 +333,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
                   Ver inspiración
                 </a>
               </div>
-              
+
               <div className="flex flex-col items-center">
                 <p className="font-serif italic text-xl mb-3" style={{color: accentColor}}>Hombres</p>
                 <a
@@ -334,13 +347,13 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
                 </a>
               </div>
             </div>
-            
+
           </div>
         </section>
       )}
 
       {/* 5. WISHES & GIFTS */}
-      <section className="bg-[#f3f0e6] py-16 px-4 relative">
+      <section className="py-16 px-4 relative">
          <div className="absolute inset-0 opacity-30 pointer-events-none flex items-center justify-center border border-dashed border-gray-400">
             [Background Floral/Lilies Placeholder]
          </div>
@@ -349,7 +362,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
         <div className="bg-[#fcfaf2] rounded-lg p-8 shadow-md relative max-w-sm mx-auto mb-8 z-10 rotate-1">
           <div className="absolute -top-6 left-1/2 -translate-x-1/2">
             <Image
-              src="/green-gift.png"
+              src={invitationData.giftIconUrl || "/green-gift.png"}
               alt="Green gift icon"
               width={48}
               height={48}
@@ -358,7 +371,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
           </div>
 
           <h3 className="text-3xl font-serif italic text-center mb-4 mt-2" style={{color: accentColor}}>{invitationData.giftTitle || 'Mesa de Regalos'}</h3>
-          
+
           <div className="text-center text-[15px] font-serif font-light text-gray-600 space-y-6 leading-8 tracking-[0.04em]">
             <p dangerouslySetInnerHTML={{ __html: invitationData.giftMessage || ''}} />
           </div>
@@ -383,7 +396,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
       />
 
       {onRsvpClick && (
-        <section className="bg-[#fcfaf2] py-16 px-6 text-center">
+        <section className="py-16 px-6 text-center">
           <AnimatedSection>
             <div className="max-w-md mx-auto">
                 <RsvpTrigger onClick={onRsvpClick} primaryColor={accentColor} textColor={primaryText} />

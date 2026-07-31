@@ -88,6 +88,19 @@ export default function WeddingAquarrelTemplate({
 
   const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(invitationData.mainVenueAddress)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
 
+  const dateObj = new Date(invitationData.event_date);
+  const getDayWithSuffix = (day: number) => {
+    if (day > 3 && day < 21) return `${day}th`;
+    switch (day % 10) {
+      case 1:  return `${day}st`;
+      case 2:  return `${day}nd`;
+      case 3:  return `${day}rd`;
+      default: return `${day}th`;
+    }
+  };
+  const formattedDate = `${getDayWithSuffix(dateObj.getUTCDate())} ${dateObj.toLocaleString('en-US', { month: 'long', timeZone: 'UTC' })}, ${dateObj.getUTCFullYear()}`;
+
+
   return (
     <div
       className="w-full antialiased overflow-x-hidden selection:bg-stone-200"
@@ -138,9 +151,8 @@ export default function WeddingAquarrelTemplate({
             transition={{ duration: 0.9, delay: 0.8 }}
             className="mt-8 text-sm tracking-[0.2em] uppercase leading-loose text-stone-600"
           >
-            <p>21st July, 2025</p>
-            <p>Willow Chapel, 93 Street</p>
-            <p>Toronto, ON</p>
+            <p>{formattedDate}</p>
+            <p>{invitationData.locationName}</p>
           </motion.div>
 
           <motion.div

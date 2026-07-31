@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 import TemplateRenderer from '@/components/TemplateRenderer';
 import { templateConfig } from '@/lib/templateConfig';
@@ -12,8 +12,7 @@ import { CheckCircle, Loader, AlertTriangle, Users, Edit3, Send } from 'lucide-r
 import CustomSelect from '@/components/rsvp/shared/CustomSelect';
 
 
-// --- Data Fetching Functions ---
-
+// --- Type Definitions ---
 type RsvpData = {
     attending_count: number;
     guest_names: string[];
@@ -33,6 +32,14 @@ type InvitationDetails = {
     data: EditorData;
 };
 
+type RsvpSubmission = {
+    attending_count: number;
+    guest_names?: string[];
+    notes?: string;
+}
+
+// --- Data Fetching Functions ---
+
 async function fetchPartyDetails(slug: string): Promise<PartyDetails> {
   const res = await fetch(`/api/rsvps/${slug}`);
   if (!res.ok) {
@@ -51,22 +58,7 @@ async function fetchInvitationDetails(invitationId: string): Promise<InvitationD
     return res.json();
 }
 
-type RsvpSubmission = {
-    attending_count: number;
-    guest_names?: string[];
-    notes?: string;
-}
-
-type RsvpResponse = {
-    id: string;
-    guest_party_id: string;
-    attending_count: number;
-    guest_names: string[];
-    notes: string | null;
-    submitted_at: string;
-}
-
-async function submitRsvp(slug: string, submission: RsvpSubmission): Promise<RsvpResponse> {
+async function submitRsvp(slug: string, submission: RsvpSubmission): Promise<RsvpData> {
     const res = await fetch(`/api/rsvps/${slug}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -79,10 +71,9 @@ async function submitRsvp(slug: string, submission: RsvpSubmission): Promise<Rsv
     return res.json();
 }
 
+// --- RsvpForm Component ---
 
-// --- Components ---
-
-function RsvpForm({ slug, party, setIsModalOpen }: { slug: string, party: PartyDetails | undefined, setIsModalOpen: (isOpen: boolean) => void }) {
+const RsvpForm = ({ slug, party, setIsModalOpen }: { slug: string, party: PartyDetails, setIsModalOpen: (isOpen: boolean) => void }) => {
   const queryClient = useQueryClient();
   const [attendingCount, setAttendingCount] = useState(0);
   const [guestNames, setGuestNames] = useState<string[]>([]);
@@ -91,12 +82,14 @@ function RsvpForm({ slug, party, setIsModalOpen }: { slug: string, party: PartyD
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-      if (party?.rsvp) {
-          setAttendingCount(party.rsvp.attending_count);
-          setGuestNames(party.rsvp.guest_names || []);
-          setNotes(party.rsvp.notes || '');
+      if (party?.rsvp && !isEditing) {
+          setTimeout(() => {
+            setAttendingCount(party.rsvp!.attending_count);
+            setGuestNames(party.rsvp!.guest_names || []);
+            setNotes(party.rsvp!.notes || '');
+          }, 0);
       }
-  }, [party]);
+  }, [party, isEditing]);
 
   const rsvpMutation = useMutation({
       mutationFn: (submission: RsvpSubmission) => submitRsvp(slug, submission),
@@ -105,7 +98,7 @@ function RsvpForm({ slug, party, setIsModalOpen }: { slug: string, party: PartyD
           toast.success("RSVP Submitted Successfully!");
           
           queryClient.setQueryData(['partyDetails', slug], (oldData: PartyDetails | undefined) => {
-              if (!oldData) return undefined;
+              if (!oldData) return;
               return {
                   ...oldData,
                   rsvp: data
@@ -121,11 +114,11 @@ function RsvpForm({ slug, party, setIsModalOpen }: { slug: string, party: PartyD
       }
   });
 
-  const handleNameChange = (index: number, value: string) => {
+  const handleNameChange = useCallback((index: number, value: string) => {
     const newNames = [...guestNames];
     newNames[index] = value;
     setGuestNames(newNames);
-  };
+  }, [guestNames]);
 
   const nameInputs = useMemo(() => {
     return Array.from({ length: attendingCount }, (_, i) => (
@@ -144,7 +137,7 @@ function RsvpForm({ slug, party, setIsModalOpen }: { slug: string, party: PartyD
         />
       </div>
     ));
-  }, [attendingCount, guestNames]);
+  }, [attendingCount, guestNames, handleNameChange]);
 
   const attendingOptions = useMemo(() => {
       return Array.from({ length: (party?.allocated_seats ?? 0) + 1 }, (_, i) => ({
@@ -188,7 +181,7 @@ function RsvpForm({ slug, party, setIsModalOpen }: { slug: string, party: PartyD
   }
 
   return (
-      <div className="p-3">
+      <div className="p-6">
           <div className="text-center mb-8">
               <h1 className="text-2xl font-bold text-gray-900">
                   {party?.rsvp ? 'Actualizar tu asistencia' : 'Confirma tu asistencia'}
@@ -242,6 +235,7 @@ function RsvpForm({ slug, party, setIsModalOpen }: { slug: string, party: PartyD
     );
 }
 
+
 // --- Main Page Component ---
 
 export default function RsvpPage() {
@@ -293,7 +287,7 @@ export default function RsvpPage() {
 
   const templateConf = invitation ? templateConfig[invitation.template] : null;
 
-  if (!invitation || !templateConf) {
+  if (!invitation || !templateConf || !party) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 text-center border-t-4 border-yellow-400">
@@ -321,4 +315,3 @@ export default function RsvpPage() {
     </div>
   );
 }
-

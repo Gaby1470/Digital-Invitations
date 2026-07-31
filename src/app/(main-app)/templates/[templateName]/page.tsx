@@ -31,7 +31,10 @@ export default function TemplatePreviewPage() {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    setHasMounted(true);
+    setTimeout(() => setHasMounted(true), 0);
+  }, []);
+
+  useEffect(() => {
     const getSession = async () => {
       const { data: { session } }: { data: { session: Session | null } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);

@@ -15,7 +15,7 @@ export default function EventScheduleSection({ data, onFieldChange }: EventSched
   return (
     <div className="p-6">
       <ListEditor
-        title="Event Schedule"
+        title="Horario de Eventos"
         addItemText="+ Add Event"
         items={data.timelineItems || []}
         defaultItem={{ time: "", title: "", location: "" }}
@@ -25,7 +25,7 @@ export default function EventScheduleSection({ data, onFieldChange }: EventSched
             <TimePicker label="Horario" value={item.time} onChange={(val) => handleItemChange(index, 'time', val)} />
             <TextInput label="Título" value={item.title} onChange={(val) => handleItemChange(index, 'title', val)} />
             <TextInput label="Ubicación" value={item.location} onChange={(val) => handleItemChange(index, 'location', val)} />
-            <TextInput label="Enlace del Mapa (URL)" value={item.mapLink || ''} onChange={(val) => handleItemChange(index, 'mapLink', val)} placeholder="https://maps.google.com/..." />
+            <TextInput label="Enlace del Mapa (URL) opcional" value={item.mapLink || ''} onChange={(val) => handleItemChange(index, 'mapLink', val)} placeholder="https://maps.google.com/..." />
           </div>
         )}
       />

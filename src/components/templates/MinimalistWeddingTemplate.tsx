@@ -37,6 +37,15 @@ function FadeIn({
   );
 }
 
+function normalizeExternalUrl(value?: string): string {
+  if (!value) return '#';
+  const trimmed = value.trim();
+  if (!trimmed) return '#';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^www\./i.test(trimmed)) return `https://${trimmed}`;
+  return `https://maps.google.com/maps?q=${encodeURIComponent(trimmed)}`;
+}
+
 type MinimalistWeddingTemplateProps = {
   template: TemplateConfig;
   data: EditorData;
@@ -172,38 +181,79 @@ export default function MinimalistWeddingTemplate({
           </FadeIn>
         </div>
       </section>
-
-      {/* Timeline Section */}
+{/* Timeline Section */}
       {features.multiEventSchedule && (
-        <section className="py-16 md:py-28 px-6 border-b border-neutral-100">
+        <section className="py-20 md:py-32 px-6 border-b border-neutral-100 bg-white">
           <div className="max-w-4xl mx-auto">
             <FadeIn>
-              <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-neutral-400 mb-12 text-center">
+              <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-neutral-400 mb-16 text-center">
                 Itinerario
               </p>
             </FadeIn>
-            <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-12">
-              {invitationData.timelineItems?.map(
-                (item: TimelineItem, index: number) => (
-                  <FadeIn key={index} delay={index * 0.05}>
-                    <div className="relative pb-2 md:pb-0">
-                      <p
-                        className="text-2xl font-light mb-2 font-mono tracking-tight"
-                        style={{ color: invitationData.primaryColor || "#737373" }}
-                      >
-                        {item.time}
-                      </p>
-                      <div className="h-[1px] w-12 bg-neutral-200 mb-3" />
-                      <h3 className="text-base font-medium mb-1 tracking-tight">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-neutral-500 tracking-wide">
-                        {item.location}
-                      </p>
-                    </div>
-                  </FadeIn>
-                ),
-              )}
+
+            <div className="relative pl-4 md:pl-0">
+              {/* Continuous Vertical Connecting Line */}
+              <div className="absolute left-[21px] md:left-1/2 top-2 md:top-0 bottom-0 w-[1px] bg-neutral-200 md:-translate-x-1/2" />
+
+              <div className="space-y-20 md:space-y-0">
+                {invitationData.timelineItems?.map(
+                  (item: TimelineItem, index: number) => {
+                    return (
+                      <FadeIn key={index} delay={index * 0.1}>
+                        <div className="relative flex flex-col md:flex-row items-start md:items-center md:mb-24 last:mb-0">
+                          
+                          {/* Animated Timeline Node */}
+                          <motion.div
+                            initial={{ backgroundColor: "#ffffff", scale: 0.8 }}
+                            whileInView={{ 
+                              backgroundColor: invitationData.primaryColor || '#d27b00d7',
+                              scale: 1.25 
+                            }}
+                            viewport={{ once: false, margin: "-40% 0px -40% 0px" }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                            className="absolute left-[-2px] md:left-1/2 top-[10px] md:top-1/2 w-3 h-3 rounded-full border-[1.5px] md:-translate-x-1/2 md:-translate-y-1/2 z-10 shadow-sm"
+                            style={{ borderColor: invitationData.primaryColor || '#d27b00d7' }}
+                          />
+
+                          {/* Time Container */}
+                          <div className="w-full md:w-1/2 pl-10 md:pl-0 md:pr-12 md:text-right mb-1 md:mb-0">
+                             <p
+                               className="text-2xl md:text-2xl font-light font-mono tracking-tight"
+                               style={{ color: invitationData.primaryColor || "#737373" }}
+                             >
+                               {item.time}
+                             </p>
+                          </div>
+
+                          {/* Content Container */}
+                          <div className="w-full md:w-1/2 pl-10 md:pl-12 md:text-left pb-12 md:pb-0">
+                            <h3 className="text-lg md:text-xl font-medium mb-1 tracking-tight">
+                              {item.title}
+                            </h3>
+                            <p className="text-sm text-neutral-500 tracking-wide leading-relaxed">
+                              {item.location}
+                            </p>
+                            {item.mapLink && (
+                              <a
+                                href={normalizeExternalUrl(item.mapLink)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-3 inline-block text-[10px] font-bold tracking-widest uppercase border-b w-fit pb-0.5 transition-opacity hover:opacity-70"
+                                style={{
+                                  color: invitationData.primaryColor || "#d27b00d7",
+                                  borderColor: `${invitationData.primaryColor || "#171717"}40`,
+                                }}
+                              >
+                                Ver Ubicación
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </FadeIn>
+                    );
+                  }
+                )}
+              </div>
             </div>
           </div>
         </section>
@@ -308,7 +358,7 @@ export default function MinimalistWeddingTemplate({
             <div className="max-w-md mx-auto">
               <FadeIn>
                 <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-neutral-400 mb-10 text-center">
-                  Accommodations
+                  Hospedaje y Recomendaciones
                 </p>
               </FadeIn>
 
@@ -336,7 +386,7 @@ export default function MinimalistWeddingTemplate({
                               borderColor: `${invitationData.primaryColor || "#171717"}40`,
                             }}
                           >
-                            Explore Website
+                            Visitar Website
                           </a>
                         )}
                       </div>
@@ -350,7 +400,7 @@ export default function MinimalistWeddingTemplate({
 
       {/* Gift Section */}
       <GiftSection
-        giftRegistryUrl={invitationData.giftRegistryUrl}
+        giftUrl={invitationData.giftRegistryUrl}
         primaryColor={invitationData.primaryColor}
         textColor={invitationData.textColor}
       />
@@ -360,7 +410,7 @@ export default function MinimalistWeddingTemplate({
           <div className="max-w-md mx-auto">
               <FadeIn>
                   <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-neutral-400 mb-6">
-                      Reserved Seats
+                      Asientos reservados
                   </p>
                   <div className="inline-block border-y border-neutral-200 py-4 px-12">
                       <p className="text-lg uppercase tracking-[0.3em] font-light">

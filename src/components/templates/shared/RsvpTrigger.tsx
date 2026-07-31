@@ -12,7 +12,7 @@ export function RsvpTrigger({ primaryColor, textColor, onClick }: RsvpTriggerPro
   return (
     <div className="w-full text-center">
       <h2 
-        className="text-3xl md:text-4xl font-serif text-center mb-8 italic" 
+        className="text-3xl md:text-4xl text-center mb-8 italic" 
         style={{ color: textColor || '#171717' }}
       >
         Confirma tu asistencia

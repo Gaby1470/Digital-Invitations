@@ -14,16 +14,16 @@ export default function GenderBettingSection({ data, onFieldChange }: GenderBett
   return (
     <div className="p-6 space-y-4">
       <TextInput
-        label="Team Boy Product"
+        label="Regalo para Team Boy"
         value={data.teamBoyProduct || ''}
         onChange={(value) => onFieldChange('teamBoyProduct', value)}
-        placeholder="e.g., diapers"
+        placeholder="p. ej., pañales"
       />
       <TextInput
-        label="Team Girl Product"
+        label="Regalo para Team Girl"
         value={data.teamGirlProduct || ''}
         onChange={(value) => onFieldChange('teamGirlProduct', value)}
-        placeholder="e.g., baby wipes"
+        placeholder="p. ej., toallitas para bebé"
       />
     </div>
   );

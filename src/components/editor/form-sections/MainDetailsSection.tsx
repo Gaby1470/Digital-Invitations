@@ -19,7 +19,7 @@ type MainDetailsSectionProps = {
 export default function MainDetailsSection({ data, template, onFieldChange }: MainDetailsSectionProps) {
   const { features: templateFeatures, defaultData } = template;
   const isBabyShower = defaultData.babyName !== undefined;
-  const hasMap = templateFeatures.lodgingAndTravel || templateFeatures.multiEventSchedule;
+  const hasMap = templateFeatures.multiEventSchedule;
 
   return (
     <div className="p-6 space-y-6 bg-white">
@@ -52,13 +52,33 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
 
       {/* Names */}
       <div className="space-y-2">
-        <TextInput 
-          label="Nombre del Festjado(s)"
-          placeholder="p. ej., Alguien & Alguien"
-          value={data.heroNames} 
-          onChange={(val) => onFieldChange('heroNames', val)} 
-        />
+        {isBabyShower ? (
+          <TextInput
+            label="Nombre del Bebe"
+            placeholder="p. ej., Daniel"
+            value={data.babyName}
+            onChange={(val) => onFieldChange('babyName', val)}
+          />
+        ) : (
+          <TextInput
+            label="Nombre del Festjado(s)"
+            placeholder="p. ej., Alguien & Alguien"
+            value={data.heroNames}
+            onChange={(val) => onFieldChange('heroNames', val)}
+          />
+        )}
       </div>
+
+      {defaultData.heroSubtitle !== undefined && (
+        <div className="space-y-2">
+          <TextareaInput
+            label="Subtítulo del Hero"
+            placeholder="p. ej., Acompañanos a celebrar la dulce espera de nuestro bebé..."
+            value={data.heroSubtitle}
+            onChange={(val) => onFieldChange('heroSubtitle', val)}
+          />
+        </div>
+      )}
 
       {defaultData.parentsNames !== undefined && (
         <div className="space-y-2">
@@ -90,21 +110,6 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
           onChange={(val) => onFieldChange('event_date', val)}
         />
       </div>
-
-      {/* Guest Count */}
-      {templateFeatures.guestCount && (
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Número de Invitados</label>
-          <input
-            type="number"
-            value={data.guestCount?.toString() || ''}
-            onChange={(e) => onFieldChange('guestCount', e.target.value)}
-            placeholder="p. ej., 2"
-            min={0}
-            className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow text-slate-900"
-          />
-        </div>
-      )}
 
       {/* START TIME */}
       {defaultData.startTime !== undefined && (
@@ -141,7 +146,7 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
       )}
 
       {/* Generic Location - shown for non-map templates */}
-      {!hasMap && (
+      {!hasMap && !isBabyShower && (
         <div className="space-y-2">
           <TextInput
             label="Ubicación"
@@ -172,18 +177,6 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
             placeholder="p. ej., Licenciatura en Ingeniería Civil"
             value={data.degreeType} 
             onChange={(val) => onFieldChange('degreeType', val)} 
-          />
-        </div>
-      )}
-
-      {/* Birthday Age */}
-      {templateFeatures.ageSpecificThemes && (
-        <div className="space-y-2">
-          <TextInput 
-            label="Edad a Celebrar"
-            placeholder="p. ej., 5"
-            value={data.age?.toString()} 
-            onChange={(val) => onFieldChange('age', val)} 
           />
         </div>
       )}

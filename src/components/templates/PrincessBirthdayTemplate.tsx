@@ -142,7 +142,7 @@ export default function PrincessBirthdayTemplate({ template, data, onRsvpClick }
               Sera una fiesta real llena de magia y diversión!
             </p>
             <h1 className="text-5xl sm:text-6xl mt-2 italic drop-shadow-sm" style={{ color: theme.textPrimary, fontFamily: "'Dancing Script', cursive" }}>
-              {invitationData.heroNames ? `${invitationData.heroNames}'s Birthday` : "Olivia's Birthday"}
+              {invitationData.heroNames ? `Cumpleaños de ${invitationData.heroNames}` : "Cumpleaños de Olivia"}
             </h1>
           </div>
         </GentleFadeIn>
@@ -206,10 +206,10 @@ export default function PrincessBirthdayTemplate({ template, data, onRsvpClick }
                     Ubicación de la Fiesta
                   </p>
                   <p className="text-xl font-light leading-relaxed px-2 tracking-wide mb-4" style={{ color: theme.textDark }}>
-                    {invitationData.location || "William's Residence\n876 Street Ln, Boulder CO"}
+                    {invitationData.location || "Residencia Aguacaliente, 876 Calle Ln"}
                   </p>
                   <a 
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(invitationData.location || "William's Residence, 876 Street Ln, Boulder CO")}`}
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(invitationData.location || "Residencia Aguacaliente, 876 Calle Ln")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 py-2 px-6 rounded-full border border-white/60 bg-white/40 text-xs uppercase tracking-widest font-medium shadow-sm transition-all hover:bg-white/60"

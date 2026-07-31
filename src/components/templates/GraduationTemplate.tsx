@@ -35,10 +35,24 @@ export default function GraduationTemplate({ template, data, invitationId, onRsv
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
 
+  const finalGalleryImages = 
+    invitationData.galleryImages && invitationData.galleryImages.length > 0 
+    ? invitationData.galleryImages 
+    : defaultData.galleryImages;
+
+
 
   const eventDate = invitationData.event_date ? new Date(invitationData.event_date).toLocaleDateString('es-ES', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
   }) : '';
+
+  const mapSrc = invitationData.location
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(invitationData.location)}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+    : "";
+
+  const mapLink = invitationData.location
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(invitationData.location)}`
+    : "#";
 
   const colorPalette = {
     '--background': invitationData.backgroundColor || '#F9F8F6',
@@ -120,55 +134,115 @@ export default function GraduationTemplate({ template, data, invitationId, onRsv
         <div className="max-w-3xl mx-auto">
           <GentleFade>
             <h2 className="text-3xl md:text-4xl font-light text-center mb-20 tracking-wide">
-              Horario de la Ceremonia
+              {invitationData.timelineTitle || "Horario de la Ceremonia"}
             </h2>
           </GentleFade>
           
           <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 md:before:mx-auto before:-translate-x-px md:before:translate-x-0 before:h-full before:w-[1px] before:bg-gradient-to-b before:from-transparent before:via-[var(--border)] before:to-transparent">
-            {invitationData.timelineItems?.map((item: TimelineItem, index: number) => (
-              <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                
-                <div className="flex items-center justify-center w-10 h-10 rounded-full border border-[var(--selection)] bg-[var(--background)] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-                  <div className="w-2 h-2 bg-[var(--primary)] rounded-full" />
+            {invitationData.timelineItems?.map((item: TimelineItem, index: number) => {
+              const itemMapSrc = item.mapLink ? `https://maps.google.com/maps?q=${encodeURIComponent(item.mapLink)}&t=&z=13&ie=UTF8&iwloc=&output=embed` : "";
+              const itemMapLink = item.mapLink ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.mapLink)}` : "";
+              
+              return (
+                <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full border border-[var(--selection)] bg-[var(--background)] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                    <div className="w-2 h-2 bg-[var(--primary)] rounded-full" />
+                  </div>
+                  <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-4 rounded-xl transition-all">
+                    <GentleFade delay={index * 0.1}>
+                      <div className="flex flex-col md:group-odd:text-right">
+                        <span className="font-sans text-xl font-medium tracking-[0.15em] text-[var(--primary)] uppercase mb-2">
+                          {item.time}
+                        </span>
+                        <h3 className="text-2xl font-normal text-[var(--text)] mb-1">{item.title}</h3>
+                        <p className="text-base font-sans">{item.location}</p>
+                        {item.mapLink && (
+                          <div className="mt-2">
+                            <a
+                              href={itemMapLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm font-bold text-[var(--primary)] hover:opacity-80 transition-opacity"
+                            >
+                              Ver en Mapa
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </GentleFade>
+                  </div>
                 </div>
-
-                <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-4 rounded-xl transition-all">
-                  <GentleFade delay={index * 0.1}>
-                    <div className="flex flex-col md:group-odd:text-right">
-                      <span className="font-sans text-xl font-medium tracking-[0.15em] text-[var(--primary)] uppercase mb-2">
-                        {item.time}
-                      </span>
-                      <h3 className="text-2xl font-normal text-[var(--text)] mb-1">{item.title}</h3>
-                      <p className="text-base font-sans">{item.location}</p>
-                    </div>
-                  </GentleFade>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
       
-      {/* Photo Gallery - Horizontal Scroll for Mobile */}
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-6">
-          <GentleFade>
-            <h2 className="text-3xl md:text-4xl font-light text-center mb-4 tracking-wide">Captured Moments</h2>
-             <p className="text-center text-lg text-[var(--primary)] mb-12">{eventDate}</p>
-          </GentleFade>
-          <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-4 gap-6 pb-8 md:pb-0 hide-scrollbar">
-            {invitationData.galleryImages?.slice(0, 4).map((image: string, index: number) => (
-              <div key={index} className="min-w-[80vw] md:min-w-0 snap-center shrink-0">
-                <GentleFade delay={index * 0.15}>
-                  <div className="aspect-[4/5] relative rounded-lg overflow-hidden bg-[var(--selection)] shadow-sm">
-                    <Image src={image} alt={`Gallery image ${index + 1}`} layout="fill" objectFit="cover" className="hover:scale-105 transition-transform duration-700 ease-out" />
+      {/* Photo Gallery - Quilted Layout (No Fade for Debugging) */}
+      {features.gallery && (
+        <section className="py-24">
+          <div className="max-w-4xl mx-auto px-6">
+            <GentleFade>
+              <h2 className="text-3xl md:text-4xl font-light text-center mb-4 tracking-wide">Captured Moments</h2>
+              <p className="text-center text-lg text-[var(--primary)] mb-12">{eventDate}</p>
+            </GentleFade>
+            <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[200px] gap-4">
+              {finalGalleryImages?.slice(0, 4).map((image: string, index: number) => (
+                <div key={index} className={`
+                  ${index === 0 ? 'md:col-span-2 md:row-span-2' : ''}
+                  ${index === 3 ? 'md:col-span-2' : ''}
+                  rounded-lg overflow-hidden
+                `}>
+                  <div className="w-full h-full relative group bg-[var(--selection)] shadow-sm">
+                    <Image 
+                      src={image} 
+                      alt={`Gallery image ${index + 1}`} 
+                      layout="fill" 
+                      objectFit="cover" 
+                      className="group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
                   </div>
-                </GentleFade>
-              </div>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* Location Section */}
+      {mapSrc && (
+        <section className="py-24">
+          <div className="max-w-3xl mx-auto px-6">
+            <GentleFade>
+              <h2 className="text-3xl md:text-4xl font-light text-center mb-4 tracking-wide">Ubicación</h2>
+            </GentleFade>
+            <GentleFade delay={0.2}>
+              <div className="aspect-video rounded-lg overflow-hidden bg-[var(--selection)] shadow-sm mb-4">
+                <iframe
+                  src={mapSrc}
+                  width="100%"
+                  height="100%"
+                  className="grayscale"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+              <div className="text-center">
+                <a
+                  href={mapLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 text-sm font-bold text-[var(--primary)] hover:opacity-80 transition-opacity"
+                >
+                  Ver en Google Maps
+                </a>
+              </div>
+            </GentleFade>
+          </div>
+        </section>
+      )}
 
 
       
@@ -177,7 +251,7 @@ export default function GraduationTemplate({ template, data, invitationId, onRsv
         <section className="border-t border-[var(--border)]">
           <div className="max-w-3xl mx-auto px-6 py-24 text-center">
             <GentleFade>
-              <h2 className="text-xs uppercase tracking-[0.25em] text-[var(--primary)] mb-6 font-sans">Planes Futuros</h2>
+              <h2 className="text-xs uppercase tracking-[0.25em] text-[var(--primary)] mb-6 font-sans">{invitationData.futurePlansTitle || "Planes Futuros"}</h2>
               <p className="text-xl md:text-2xl font-light leading-relaxed italic text-[var(--text)] opacity-90">
                 &quot;{invitationData.futurePlans}&quot;
               </p>

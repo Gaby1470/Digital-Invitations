@@ -5,10 +5,9 @@ import React, { useRef, useState } from 'react';
 import { TemplateConfig } from "@/lib/custom_types";
 import { EditorData } from "@/lib/custom_types";
 import { motion, useInView } from "framer-motion";
-import { Calendar, MapPin, Gift, Clock, Sparkles, CheckCircle, XCircle, ExternalLink } from "lucide-react";
+import { Calendar, MapPin, Gift, Sparkles, CheckCircle, ExternalLink } from "lucide-react";
 import Image from 'next/image';
 import { RsvpTrigger } from './shared/RsvpTrigger';
-import { BrandingFooter } from './shared/BrandingFooter';
 
 function FadeIn({
   children,
@@ -123,14 +122,28 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
     locationName,
     mainVenueAddress,
     giftRegistryUrl,
+    giftTitle,
+    giftMessage,
+    giftButtonText,
     primaryColor,
     backgroundColor,
     textColor,
     heroTitle,
+    heroNames,
     heroSubtitle,
+    location,
   } = invitationData;
 
   const date = event_date ? new Date(event_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) : '';
+  const time = event_date ? new Date(event_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : '';
+
+  const mapQuery = location || mainVenueAddress;
+  const mapSrc = mapQuery
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+    : "";
+  const mapLink = mapQuery
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`
+    : "#";
 
   return (
     <div 
@@ -182,6 +195,9 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
             >
               {heroTitle}
             </h1>
+            <p className="mt-4 text-2xl font-bold" style={{ color: textColor }}>
+              {heroNames}
+            </p>
             <p className="mt-6 text-lg font-medium max-w-md mx-auto" style={{ color: textColor }}>
               {heroSubtitle}
             </p>
@@ -189,36 +205,60 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
         </FadeIn>
       </header>
 
-      {/* Details Grid */}
-      <main className="relative z-10 max-w-3xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 -mt-8 items-stretch">
+      {/* Details Stack (Changed from Grid to Flex Column) */}
+      <main className="relative z-10 max-w-md mx-auto px-4 flex flex-col gap-8 -mt-8">
 
         {/* Date & Time Card */}
         <FadeIn delay={0.1}>
-          <div className="h-full flex flex-col justify-center items-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-2 border-yellow-300/50 text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-            <div className="mx-auto w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center mb-6 border-4 border-white shadow-md">
+          <div className="flex flex-col items-center justify-center text-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-2 border-yellow-300/50 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+            <div className="flex-shrink-0 w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center border-4 border-white shadow-md mb-4">
               <Calendar className="w-8 h-8 text-yellow-800" />
             </div>
-            <h3 className="text-lg font-bold text-yellow-900 uppercase tracking-wider">{date}</h3>
-            <div className="w-24 h-px bg-yellow-300 mx-auto my-4"></div>
-            <p className="text-3xl font-extrabold" style={{ color: textColor }}>{timeRange}</p>
-            <p className="text-sm font-semibold text-yellow-800 mt-2">{timeSubtitle}</p>
+            <div>
+              <h3 className="text-lg font-bold text-yellow-900 uppercase tracking-wider">{date}</h3>
+              <p className="text-3xl font-extrabold mt-1" style={{ color: textColor }}>{time}</p>
+              <p className="text-sm font-semibold text-yellow-800 mt-2">{timeSubtitle}</p>
+            </div>
           </div>
         </FadeIn>
 
         {/* Location Card */}
         <FadeIn delay={0.2}>
-          <div className="h-full flex flex-col justify-center items-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-2 border-yellow-300/50 text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-            <div className="mx-auto w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center mb-6 border-4 border-white shadow-md">
+          <div className="flex flex-col items-center justify-center text-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-2 border-yellow-300/50 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+            <div className="flex-shrink-0 w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center border-4 border-white shadow-md mb-4">
               <MapPin className="w-8 h-8 text-yellow-800" />
             </div>
-            {/* Tag Name (Big) */}
-            <h3 className="text-3xl font-extrabold text-yellow-900 mb-3 leading-tight">
-              {locationName}
-            </h3>
-            {/* Full Address (Smaller) */}
-            <p className="text-sm md:text-base font-medium px-2 break-words leading-relaxed opacity-80" style={{ color: textColor }}>
-              {mainVenueAddress}
-            </p>
+            <div>
+              <h3 className="text-2xl font-extrabold text-yellow-900 leading-tight">
+                {locationName}
+              </h3>
+              <p className="text-sm md:text-base font-medium break-words leading-relaxed opacity-80 mt-2" style={{ color: textColor }}>
+                {mainVenueAddress}
+              </p>
+            </div>
+            {mapSrc && (
+              <div className="w-full mt-6">
+                <div className="aspect-video rounded-xl overflow-hidden border-2 border-yellow-300/50">
+                  <iframe
+                    src={mapSrc}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </div>
+                <a
+                  href={mapLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center justify-center gap-2 text-sm font-bold text-yellow-800 hover:text-yellow-900 transition-colors"
+                >
+                  Ver en Google Maps <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            )}
           </div>
         </FadeIn>
       </main>
@@ -230,7 +270,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
             <div className="text-center">
               <Sparkles className="mx-auto w-8 h-8 text-yellow-500 mb-4" />
               <h3 className="text-2xl font-bold tracking-tight mb-2" style={{ color: textColor }}>
-                ¿Equipo rosa o equipo azul?
+                ¿Equipo niña o equipo niño?
               </h3>
               <p className="text-sm font-medium max-w-md mx-auto opacity-80" style={{ color: textColor }}>
                 Vota y ayúdanos a revelar el gran secreto. ¡No olvides traer tu mejor consejo para los futuros padres!
@@ -289,9 +329,9 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
               <div className="mx-auto w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
                 <Gift className="w-7 h-7 text-yellow-600" />
               </div>
-              <h3 className="text-2xl font-bold text-yellow-900 mb-3">Mesa de Regalos</h3>
+              <h3 className="text-2xl font-bold text-yellow-900 mb-3">{giftTitle}</h3>
               <p className="text-sm md:text-base font-medium mb-6 opacity-80 max-w-md" style={{ color: textColor }}>
-                Tu presencia es nuestro mejor regalo, pero si deseas tener un detalle con nuestro bebé, puedes ver nuestras sugerencias aquí:
+                {giftMessage}
               </p>
               <a
                 href={giftRegistryUrl}
@@ -299,7 +339,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
               >
-                Ver Mesa de Regalos
+                {giftButtonText}
                 <ExternalLink className="w-4 h-4" />
               </a>
             </div>
@@ -323,7 +363,6 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
         <p className="font-bold text-2xl" style={{ color: textColor }}>¡Los esperamos!</p>
         <p className="text-base font-medium mt-2 opacity-80" style={{ color: textColor }}>Con cariño, {parentsNames}</p>
       </footer>
-      <BrandingFooter />
 
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;600;700&display=swap');

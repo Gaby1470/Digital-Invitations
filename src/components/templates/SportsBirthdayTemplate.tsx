@@ -39,6 +39,10 @@ export default function SportsBirthdayTemplate({ template, data, invitationId, o
   const invitationData = { ...defaultData, ...data };
   const [isRsvpModalOpen, setIsRsvpModalOpen] = useState(false);
   
+  const mapSrc = invitationData.location
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(invitationData.location)}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+    : "";
+
   const theme = {
     bg: '#FFFFFF',
     text: invitationData.textColor || '#111827',
@@ -109,7 +113,7 @@ export default function SportsBirthdayTemplate({ template, data, invitationId, o
         <BounceIn direction="up">
           <div className="mb-6 flex flex-col items-center">
             <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-widest drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]" style={{ color: '#FFF8E7' }}>
-              {invitationData.age ? `JUEGO ${invitationData.age}` : "GAME TIME"}
+              {invitationData.heroTitle || (invitationData.age ? `JUEGO ${invitationData.age}` : "GAME TIME")}
             </h2>
           </div>
         </BounceIn>
@@ -152,7 +156,7 @@ export default function SportsBirthdayTemplate({ template, data, invitationId, o
               {/* Ticket Header */}
               <div className="py-3" style={{ backgroundColor: "#111827" }}>
                 <h3 className="text-white text-sm font-black uppercase tracking-[0.3em]">
-                  El Partido
+                  {invitationData.playbookTitle || "El Partido"}
                 </h3>
               </div>
 
@@ -203,10 +207,18 @@ export default function SportsBirthdayTemplate({ template, data, invitationId, o
                 </h3>
               </div>
               
-              {/* Visual Map Placeholder (Can be replaced with actual static map image or iframe) */}
-              <div className="w-full h-24 bg-neutral-200 rounded-lg border-2 border-dashed border-neutral-400 flex items-center justify-center mb-4 overflow-hidden relative">
-                <span className="text-neutral-500 font-bold text-xs uppercase tracking-widest z-10">Mapa del Lugar</span>
-              </div>
+              {mapSrc && (
+                <div className="w-full aspect-video rounded-lg border-2 border-black mb-4 overflow-hidden">
+                  <iframe
+                    src={mapSrc}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </div>
+              )}
 
               <p className="text-base font-bold text-neutral-800 leading-tight mb-4">
                 {invitationData.location || "The Local Park"}
@@ -244,8 +256,8 @@ export default function SportsBirthdayTemplate({ template, data, invitationId, o
         )}
 
         {/* Action Buttons Section */}
-        <section className="w-full mt-2 flex flex-col gap-4">
-          <BounceIn direction="up" delay={0.35}>
+        {/* <section className="w-full mt-2 flex flex-col gap-4"> */}
+          {/* <BounceIn direction="up" delay={0.35}>
             <button 
               className="w-full bg-white hover:bg-gray-50 text-black font-black text-sm py-3 rounded-xl border-4 border-black shadow-[0_4px_0_0_#000000] active:shadow-[0_0px_0_0_#000000] active:translate-y-1 transition-all uppercase tracking-widest flex items-center justify-center gap-2"
               onClick={() => {
@@ -257,11 +269,11 @@ export default function SportsBirthdayTemplate({ template, data, invitationId, o
               Agregar al Calendario
             </button>
           </BounceIn>
-        </section>
+        {/* </section> */}
 
         {onRsvpClick && (
           <section className="py-20 px-6 text-center">
-            <RsvpTrigger onClick={onRsvpClick} primaryColor={invitationData.primaryColor} />
+            <RsvpTrigger onClick={onRsvpClick} primaryColor="#000" textColor="#FFF" />
           </section>
         )}
       </div>

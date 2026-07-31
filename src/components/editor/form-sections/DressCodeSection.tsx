@@ -10,7 +10,7 @@ type DressCodeSectionProps = {
 };
 
 export default function DressCodeSection({ data, onFieldChange }: DressCodeSectionProps) {
-  const currentDressCode: DressCode = data.dressCode || {};
+  const currentDressCode: DressCode = data.dressCode || { man: '', woman: '' };
 
   const handlePinterestChange = (field: 'pinterestUrlMan' | 'pinterestUrlWoman', url: string) => {
     onFieldChange('dressCode', { ...currentDressCode, [field]: url });

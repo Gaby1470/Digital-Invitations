@@ -90,10 +90,10 @@ function GeneralRsvpForm({ invitationId, onClose }: { invitationId: string, onCl
         return (
             <div className="text-center p-8 bg-green-50 rounded-xl">
                 <CheckCircle className="mx-auto text-green-500 mb-4" size={56} />
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">RSVP Received!</h2>
-                <p className="text-gray-600">Your response has been recorded. Thank you!</p>
+                <h2 className="text-3xl font-bold text-gray-800 mb-2">RSVP Recibido!</h2>
+                <p className="text-gray-600">Se ha guardado tu respuesta</p>
                 <button onClick={onClose} className="mt-8 inline-block px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all">
-                    Close
+                    Cerrar
                 </button>
             </div>
         );
@@ -102,29 +102,29 @@ function GeneralRsvpForm({ invitationId, onClose }: { invitationId: string, onCl
     return (
         <div className="p-6">
             <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Will you be attending?</h1>
-                <p className="text-base text-gray-600 mt-2">Please let us know if you can make it.</p>
+                <h1 className="text-3xl font-bold text-gray-900">¿Asistirás?</h1>
+                <p className="text-base text-gray-600 mt-2">Por favor, háznoslo saber si puedes asistir.</p>
             </div>
             
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                     <button type="button" onClick={() => setWillAttend(true)} className={`py-4 rounded-lg font-semibold border-2 transition-all ${willAttend === true ? 'bg-green-600 text-white border-green-700 scale-105' : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'}`}>
-                        Yes, I&apos;ll be there!
+                        ¡Sí, asistiré!
                     </button>
                     <button type="button" onClick={() => setWillAttend(false)} className={`py-4 rounded-lg font-semibold border-2 transition-all ${willAttend === false ? 'bg-red-600 text-white border-red-700 scale-105' : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'}`}>
-                        Sorry, I can&apos;t make it
+                        Lo siento, no puedo asistir
                     </button>
                 </div>
 
                 {willAttend && (
                     <div className="pt-4 border-t">
-                        <label htmlFor="guest_name" className="block text-sm font-semibold text-gray-600 mb-1">Your Name</label>
+                        <label htmlFor="guest_name" className="block text-sm font-semibold text-gray-600 mb-1">Tu Nombre</label>
                         <input
                             id="guest_name"
                             type="text"
                             value={guestName}
                             onChange={(e) => setGuestName(e.target.value)}
-                            placeholder="Full Name"
+                            placeholder="Nombre Completo"
                             required
                             className="w-full px-4 py-2 text-base bg-gray-50 rounded-lg border border-gray-300 shadow-inner focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                         />
@@ -132,14 +132,14 @@ function GeneralRsvpForm({ invitationId, onClose }: { invitationId: string, onCl
                 )}
                 
                 <div>
-                    <label htmlFor="notes" className="block text-sm font-semibold text-gray-600 mb-2">Leave a note (optional)</label>
+                    <label htmlFor="notes" className="block text-sm font-semibold text-gray-600 mb-2">Deja una nota (opcional)</label>
                     <textarea
                         id="notes"
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                         rows={3}
                         className="w-full px-4 py-2 text-base bg-gray-50 rounded-lg border border-gray-300 shadow-inner focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-                        placeholder="e.g., well wishes..."
+                        placeholder="p. ej., buenos deseos..."
                     ></textarea>
                 </div>
 
@@ -167,7 +167,7 @@ export default function InvitePage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="flex flex-col items-center">
           <Loader className="h-12 w-12 text-indigo-500 animate-spin" />
-          <p className="mt-4 text-lg text-gray-600 font-medium">Loading Invitation...</p>
+          <p className="mt-4 text-lg text-gray-600 font-medium">Cargando Invitación...</p>
         </div>
       </div>
     );

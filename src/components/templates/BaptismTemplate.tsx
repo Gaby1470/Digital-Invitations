@@ -4,7 +4,15 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Godparent, TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
-import { BrandingFooter } from './shared/BrandingFooter';
+
+function normalizeExternalUrl(value?: string): string {
+  if (!value) return '#';
+  const trimmed = value.trim();
+  if (!trimmed) return '#';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^www\./i.test(trimmed)) return `https://${trimmed}`;
+  return `https://maps.google.com/maps?q=${encodeURIComponent(trimmed)}`;
+}
 
 /**
  * Ethereal fade-in for sacred milestones, optimized for mobile performance.
@@ -141,26 +149,61 @@ export default function BaptismTemplate({ template, data, onRsvpClick }: Baptism
                 <p className="text-1xl font-light opacity-90 leading-relaxed">
                   {item.location}
                 </p>
+                {item.mapLink && (
+                  <a
+                    href={normalizeExternalUrl(item.mapLink)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 px-4 py-1 rounded-full font-sans text-xs tracking-widest uppercase border active:bg-stone-50 transition-colors shadow-sm inline-block"
+                    style={{ borderColor: invitationData.primaryColor, color: invitationData.primaryColor }}
+                  >
+                    Ver en Mapa
+                  </a>
+                )}
               </SacredFadeIn>
             </div>
           ))}
         </div>
       </section>
 
+      {/* Parents Section */}
+      {(invitationData.partner1Parents?.length > 0 || invitationData.partner2Parents?.length > 0) && (
+        <section className="px-6 text-center relative z-10">
+          <div className="max-w-md mx-auto py-16">
+            <SacredFadeIn>
+              <span className="text-xs uppercase tracking-[0.3em] font-sans font-medium block mb-2" style={{ color: invitationData.primaryColor }}>
+                {invitationData.parentsTitle || "Con la bendición de"}
+              </span>
+              <h3 className="text-3xl font-light mb-10" style={{ fontFamily: "'Sofia', 'Great Vibes', cursive, serif", color: invitationData.textColor }}>
+                {invitationData.parentsSectionTitle || 'Mis Padres'}
+              </h3>
+              <div className="text-2xl flex flex-col gap-2">
+                {invitationData.partner1Parents?.map((name: string, index: number) => (
+                  <p key={`p1-${index}`} className="text-1xl font-normal" style={{ color: invitationData.textColor }}>{name}</p>
+                ))}
+                {invitationData.partner2Parents?.map((name: string, index: number) => (
+                  <p key={`p2-${index}`} className="text-1xl font-normal" style={{ color: invitationData.textColor }}>{name}</p>
+                ))}
+              </div>
+            </SacredFadeIn>
+          </div>
+        </section>
+      )}
+
       {/* Godparents/Padrinos Section */}
       <section className="py-16 px-6 text-center bg-white rounded-t-[40px] shadow-[0_-10px_30px_rgba(162,123,92,0.04)] relative z-10">
         <div className="max-w-md mx-auto">
           <SacredFadeIn>
             <span className="text-xs uppercase tracking-[0.3em] font-sans font-medium block mb-2" style={{ color: invitationData.primaryColor }}>
-              Guías de Fe
+              {invitationData.godparentsSubtitle || 'Guías de Fe'}
             </span>
             <h3 className="text-3xl font-light mb-10" style={{ fontFamily: "'Sofia', 'Great Vibes', cursive, serif", color: invitationData.textColor }}>
-              Mis Padrinos
+              {invitationData.godparentsTitle || 'Mis Padrinos'}
             </h3>
 
             <div className="flex flex-col gap-8">
               {invitationData.godparents?.map((godparent: Godparent, index: number) => (
-                <div key={index} className="p-4 rounded-2xl bg-[#FCFBF7] border border-dashed" style={{ borderColor: `${invitationData.primaryColor}40` }}>
+                <div key={index} className="text-2xl p-4 rounded-2xl bg-[#FCFBF7] border border-dashed" style={{ borderColor: `${invitationData.primaryColor}40` }}>
                   <p className="text-[10px] uppercase tracking-widest font-sans font-semibold mb-1" style={{ color: invitationData.textColor }}>{godparent.role}</p>
                   <p className="text-1xl font-normal" style={{ color: invitationData.textColor }}>{godparent.name}</p>
                 </div>
@@ -228,19 +271,44 @@ export default function BaptismTemplate({ template, data, onRsvpClick }: Baptism
             <p className="text-lg font-light italic leading-relaxed mb-6 opacity-95">
               {invitationData.receptionText}
             </p>
-            <p className="text-sm font-sans font-medium tracking-wide" style={{ color: invitationData.textColor }}>
-              {invitationData.receptionPlace}
-            </p>
           </div>
         </SacredFadeIn>
       </section>
       
+      {/* Gift Registry Section */}
+      {invitationData.giftRegistryUrl && (
+        <section className="py-16 px-6 text-center relative z-10" style={{ backgroundColor: invitationData.backgroundColor }}>
+          <SacredFadeIn>
+            <div className="max-w-sm mx-auto p-8 rounded-3xl border relative bg-white shadow-sm" style={{ borderColor: `${invitationData.primaryColor}40` }}>
+              {/* Elegant corner accents */}
+              <div className="absolute top-3 left-3 w-3 h-3 border-t border-l" style={{ borderColor: invitationData.primaryColor }} />
+              <div className="absolute bottom-3 right-3 w-3 h-3 border-b border-r" style={{ borderColor: invitationData.primaryColor }} />
+
+              <h3 className="text-lg uppercase tracking-widest font-sans font-medium mb-4" style={{ color: invitationData.textColor }}>
+                {invitationData.giftTitle || 'Mesa de Regalos'}
+              </h3>
+              <p className="text-lg font-light italic leading-relaxed mb-6 opacity-95">
+                {invitationData.giftMessage || 'Tu presencia es nuestro mayor regalo, pero si deseas tener un detalle, puedes ver nuestras sugerencias aquí:'}
+              </p>
+              <a
+                href={invitationData.giftRegistryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 px-6 py-2 rounded-full font-sans text-xs tracking-widest uppercase border active:bg-stone-50 transition-colors shadow-sm inline-block"
+                style={{ borderColor: invitationData.primaryColor, color: invitationData.primaryColor }}
+              >
+                {invitationData.giftButtonText || 'Ver Mesa de Regalos'}
+              </a>
+            </div>
+          </SacredFadeIn>
+        </section>
+      )}
+
       {onRsvpClick && (
         <section className="py-20 px-6 text-center">
           <RsvpTrigger onClick={onRsvpClick} primaryColor={invitationData.primaryColor} />
         </section>
       )}
-      <BrandingFooter />
     </div>
   );
 }

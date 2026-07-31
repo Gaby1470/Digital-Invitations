@@ -13,6 +13,15 @@ interface ExtendedTimelineItem extends TimelineItem {
   imageSrc?: string;
 }
 
+function normalizeExternalUrl(value?: string): string {
+  if (!value) return '#';
+  const trimmed = value.trim();
+  if (!trimmed) return '#';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^www\./i.test(trimmed)) return `https://${trimmed}`;
+  return `https://maps.google.com/maps?q=${encodeURIComponent(trimmed)}`;
+}
+
 function AnimatedSection({
   children,
   delay = 0,
@@ -195,6 +204,20 @@ export default function TimelineTemplate({
                           >
                             {item.location}
                           </p>
+                          {item.mapLink && (
+                            <a
+                              href={normalizeExternalUrl(item.mapLink)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-3 inline-block px-4 py-1.5 rounded-full border text-[10px] font-semibold tracking-wider uppercase transition hover:bg-black/5"
+                              style={{
+                                borderColor: `${invitationData.primaryColor || invitationData.textColor}30`,
+                                color: invitationData.primaryColor || invitationData.textColor,
+                              }}
+                            >
+                              Ubicación
+                            </a>
+                          )}
                         </div>
                       </AnimatedSection>
                     </div>
@@ -204,7 +227,7 @@ export default function TimelineTemplate({
                       className="z-10 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-[3px] sm:border-4 border-white shadow-sm shrink-0"
                       style={{ backgroundColor: invitationData.primaryColor }}
                     />
-                    
+
                     {/* Images are now visible on all sizes (hidden class removed) */}
                     <div className="flex-1 min-w-0">
                       <AnimatedSection delay={index * 0.1}>
@@ -345,7 +368,7 @@ export default function TimelineTemplate({
                           className="text-[10px] uppercase tracking-widest font-bold border-b pb-0.5 w-fit mx-auto sm:mx-0 transition-opacity hover:opacity-60 py-2 inline-block"
                           style={{ color: invitationData.primaryColor, borderColor: `${invitationData.primaryColor}30` }}
                         >
-                          Visit Website
+                          Visitar Website
                         </a>
                       )}
                     </motion.div>
@@ -380,26 +403,12 @@ export default function TimelineTemplate({
 
       {/* Gift Section */}
       <GiftSection 
-        giftRegistryUrl={invitationData.giftRegistryUrl}
+        giftUrl={invitationData.giftRegistryUrl}
         primaryColor={invitationData.primaryColor}
         textColor={invitationData.textColor}
+        giftTitle={invitationData.giftTitle}
+        giftMessage={invitationData.giftMessage}
       />
-
-      {/* Guest Count Section */}
-      <section className="pb-16 px-6 text-center">
-        <div className="max-w-md mx-auto">
-          <AnimatedSection>
-              <h2 className="text-3xl font-serif text-center mb-8 italic" style={{ color: invitationData.textColor }}>
-                Pases de Acceso
-              </h2>
-              <div className="inline-block border-y py-4 px-12" style={{ borderColor: `${invitationData.textColor}1A` }}>
-                  <p className="text-sm uppercase tracking-[0.3em] font-medium">
-                      {invitationData.guestCount || "2"} Lugares
-                  </p>
-              </div>
-          </AnimatedSection>
-        </div>
-      </section>
 
       {onRsvpClick && (
         <section className="py-20 px-6 text-center">

@@ -10,15 +10,16 @@ import { EditorData } from '@/lib/custom_types';
 import MainDetailsSection from './form-sections/MainDetailsSection';
 import ColorsAndStyleSection from './form-sections/ColorsAndStyleSection';
 import DressCodeSection from './form-sections/DressCodeSection';
-import GallerySection from './form-sections/GallerySection';
+import GalleryEditor from './shared/GalleryEditor';
 import EventScheduleSection from './form-sections/EventScheduleSection';
 import GiftSection from './form-sections/GiftSection';
-import GodparentsSection from './form-sections/GodparentsSection';
+import GodparentsSection from './form-sections/ParentsAndGodparentsSection';
 import CourtOfHonorSection from './form-sections/CourtOfHonorSection';
 import ParentalNotesSection from './form-sections/ParentalNotesSection';
 import AllergyTrackerSection from './form-sections/AllergyTrackerSection';
 import GenderBettingSection from './form-sections/GenderBettingSection';
 import RecommendationsSection from './form-sections/RecommendationsSection';
+import FuturePlansSection from './form-sections/FuturePlansSection';
 import CollapsibleSection from './shared/CollapsibleSection';
 import Modal from './shared/Modal';
 import ImageUploader from './shared/ImageUploader';
@@ -155,16 +156,23 @@ export default function EditorForm({
           )}
 
           {(!template.formSections || template.formSections.includes('gallery')) && template.features.gallery && (
-            <CollapsibleSection 
-              title="Galería de Fotos" 
+            <CollapsibleSection
+              title="Galería de Fotos"
               isOpen={activeSection === "Gallery"}
               onToggle={() => setActiveSection(activeSection === "Gallery" ? null : "Gallery")}
             >
-              <GallerySection
-                data={data}
-                onFieldChange={handleFieldChange}
-                onOpenModal={() => setIsModalOpen(true)}
-              />
+              <div className="p-6 space-y-4">
+                <GalleryEditor
+                  images={data.galleryImages || []}
+                  onImagesChange={(newImages) => handleFieldChange('galleryImages', newImages)}
+                />
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="w-full text-center py-2 px-4 border-2 border-dashed border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:border-gray-400 hover:text-gray-800 transition"
+                >
+                  Añadir Imagen
+                </button>
+              </div>
             </CollapsibleSection>
           )}
 
@@ -214,11 +222,11 @@ export default function EditorForm({
             </CollapsibleSection>
           )}
 
-          {template.features.godparentsBlock && (
+          {template.features.parentsAndGodparents && (
             <CollapsibleSection
-              title="Padrinos"
-              isOpen={activeSection === "Godparents"}
-              onToggle={() => setActiveSection(activeSection === "Godparents" ? null : "Godparents")}
+              title="Padres"
+              isOpen={activeSection === "ParentsAndGodparents"}
+              onToggle={() => setActiveSection(activeSection === "ParentsAndGodparents" ? null : "ParentsAndGodparents")}
             >
               <GodparentsSection
                 data={data}
@@ -273,6 +281,19 @@ export default function EditorForm({
               onToggle={() => setActiveSection(activeSection === "GenderBetting" ? null : "GenderBetting")}
             >
               <GenderBettingSection
+                data={data}
+                onFieldChange={handleFieldChange}
+              />
+            </CollapsibleSection>
+          )}
+
+          {template.features.futurePlans && (
+            <CollapsibleSection
+              title="Planes a Futuro"
+              isOpen={activeSection === "FuturePlans"}
+              onToggle={() => setActiveSection(activeSection === "FuturePlans" ? null : "FuturePlans")}
+            >
+              <FuturePlansSection
                 data={data}
                 onFieldChange={handleFieldChange}
               />

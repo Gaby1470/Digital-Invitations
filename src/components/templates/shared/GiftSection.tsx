@@ -2,19 +2,35 @@
 import { Gift } from "lucide-react";
 
 type GiftSectionProps = {
-  giftRegistryUrl?: string;
+  giftUrl?: string;
+  giftTitle?: string;
+  giftMessage?: string;
+  giftButtonText?: string;
   primaryColor?: string;
   textColor?: string;
 };
 
+function normalizeExternalUrl(value?: string): string {
+  if (!value) return '#';
+  const trimmed = value.trim();
+  if (!trimmed) return '#';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  return `https://${trimmed}`;
+}
+
 export default function GiftSection({
-  giftRegistryUrl,
+  giftUrl,
+  giftTitle,
+  giftMessage,
+  giftButtonText,
   primaryColor,
   textColor,
 }: GiftSectionProps) {
-  if (!giftRegistryUrl) {
+  if (!giftUrl) {
     return null;
   }
+
+  const finalGiftUrl = normalizeExternalUrl(giftUrl);
 
   return (
     <section className="py-16 md:py-24 px-4">
@@ -29,16 +45,16 @@ export default function GiftSection({
           className="text-4xl font-bold"
           style={{ color: textColor }}
         >
-          Mesa de Regalos
+          {giftTitle || 'Mesa de Regalos'}
         </h2>
         <p
           className="text-lg text-gray-600 max-w-xl mx-auto"
           style={{ color: textColor ? `${textColor}B3` : '#4b5563' }}
         >
-          Tu presencia es nuestro mayor regalo. Pero si deseas obsequiarnos algo, hemos preparado una mesa de regalos con cariño.
+          {giftMessage || 'Tu presencia es nuestro mayor regalo. Pero si deseas obsequiarnos algo, hemos preparado una mesa de regalos con cariño.'}
         </p>
         <a
-          href={giftRegistryUrl}
+          href={finalGiftUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block px-10 py-4 text-lg font-semibold rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl"
@@ -48,7 +64,7 @@ export default function GiftSection({
             boxShadow: `0 4px 20px ${primaryColor ? `${primaryColor}40` : '#00000040'}`
           }}
         >
-          Ver Opciones de Regalo
+          {giftButtonText || 'Ver Opciones de Regalo'}
         </a>
       </div>
     </section>

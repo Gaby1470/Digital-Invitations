@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import confetti from 'canvas-confetti';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
-import { BrandingFooter } from './shared/BrandingFooter';
 
 function PopIn({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
   const ref = useRef(null);
@@ -61,6 +60,10 @@ export default function BirthdayTemplate({ template, data, onRsvpClick }: Birthd
   const { defaultData, features, font } = template;
   const invitationData = { ...defaultData, ...data };
   const theme = invitationData.theme || 'default';
+
+  const mapSrc = invitationData.location
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(invitationData.location)}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+    : "";
 
   useEffect(() => {
     // Left burst closer to top corner
@@ -140,9 +143,10 @@ export default function BirthdayTemplate({ template, data, onRsvpClick }: Birthd
 
       {/* Birthday Kid Photo Gallery: Structured Swipe Tray */}
       {gallery.length > 0 && (
-        <section className="py-4 px-4 relative z-10 max-w-md mx-auto -mt-8">
+        <section className="py-4 relative z-10 max-w-md mx-auto -mt-8">
           <PopIn>
-            <div className="flex justify-center gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-6 px-4">
+            {/* FIX: Removed 'justify-center' and added 'justify-start' to fix the scroll clipping */}
+            <div className="flex justify-start gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-6 px-4">
               {gallery.map((src: string, index: number) => (
                 <motion.div
                   key={index}
@@ -211,6 +215,20 @@ export default function BirthdayTemplate({ template, data, onRsvpClick }: Birthd
                   {invitationData.dateSubtitle}
                 </p>
               )}
+
+              {mapSrc && (
+                <div className="mt-4 rounded-xl overflow-hidden border border-white/20 aspect-video">
+                  <iframe
+                    src={mapSrc}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </div>
+              )}
             </div>
           </PopIn>
         </section>
@@ -273,7 +291,6 @@ export default function BirthdayTemplate({ template, data, onRsvpClick }: Birthd
           <RsvpTrigger onClick={onRsvpClick} primaryColor={currentTheme.accent} />
         </section>
       )}
-      <BrandingFooter />
     </div>
   );
 }

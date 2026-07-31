@@ -1,9 +1,1 @@
-export type EditorData = any;
-export type TemplateConfig = any;
-export type Rsvp = any;
-export type CourtMember = any;
-export type DressCode = any;
-export type TimelineItem = any;
-export type Godparent = any;
-export type RecommendationItem = any;
-export type DressCodeStyle = any;
+export * from './custom-types.d';
