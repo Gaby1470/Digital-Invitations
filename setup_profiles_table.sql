@@ -4,7 +4,6 @@ CREATE TABLE public.profiles (
   first_name TEXT,
   last_name TEXT,
   plan TEXT,
-  stripe_customer_id TEXT,
   template_credits INT DEFAULT 0,
   CONSTRAINT profiles_pkey PRIMARY KEY (id)
 );
