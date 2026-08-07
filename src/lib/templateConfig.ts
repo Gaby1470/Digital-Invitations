@@ -603,49 +603,6 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       'future-plans'
     ],
   },
-  "corporate-summit": {
-    name: "Evento Ejecutivo",
-    thumbnail: "/branding/portadas/portada-coorporate.png",
-    category: "Corporativo",
-    description: "Un diseño de alta gama en modo oscuro para eventos profesionales.",
-    font: "font-sans",
-    defaultFont: "Inter",
-    fonts: ["Inter", "Space Grotesk", "Lexend"],
-    palettes: [
-      { name: "Midnight", primary: "#050505", text: "#ffffff", background: "#ffffff" },
-      { name: "Electric", primary: "#2563eb", text: "#ffffff", background: "#ffffff" },
-    ],
-    defaultData: {
-      primaryColor: "#050505",
-      textColor: "#ffffff",
-      backgroundColor: "#0a0a0a",
-      hero_image_url:
-        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop",
-      heroTitle: "Professional Summit 2026",
-      heroNames: "Future of Tech",
-      venue_city: "San Francisco, CA",
-      timelineTitle: "Summit Agenda",
-      speakerImages: [
-        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Business/speaker-1.jpg",
-        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Business/speaker-2.jpg",
-        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Business/speaker-3.jpg",
-        "https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/Business/speaker-4.jpg",
-      ],
-      timelineItems: [
-        { time: "09:00 AM", title: "Keynote Speech", location: "Main Hall" },
-        { time: "11:00 AM", title: "How to Upgrade Your Skills", location: "Main Hall" },
-        {
-          time: "01:00 PM",
-          title: "Networking Lunch",
-          location: "Skyline Lounge",
-        },
-        { time: "03:00 PM", title: "Networking Session", location: "Main Hall" },
-      ],
-    },
-    features: {
-      multiEventSchedule: true,
-    },
-  },
   "baby-shower-whimsical": {
     name: "Baby Shower",
     thumbnail: "/branding/portadas/portada-babyShower.png",
@@ -784,14 +741,12 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
       backgroundColor: "#f8fafc",
       textColor: "#1e293b",
       buttonTextColor: "#ffffff",
-      mainTitle: "You're Invited To",
-      eventName: "A Celebration",
       heroTitle: "You're Invited To",
       heroNames: "A Celebration",
       timelineTitle: "Event Schedule",
       eventDescription: "Join us for a special get-together filled with joy, laughter, and unforgettable moments.",
-      eventDate: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
-      venueName: "The Central Loft",
+      event_date: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
+      locationName: "The Central Loft",
       mainVenueAddress: "123 Main Street, Downtown",
       rsvpDeadline: new Date(new Date().setDate(new Date().getDate() + 23)).toISOString(),
       hostNames: "The Hosts",
@@ -804,6 +759,11 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
     features: {
       multiEventSchedule: true,
     },
+    formSections: [
+      'main-details',
+      'colors-and-style',
+      'event-schedule',
+    ],
   },
   "old-money-wedding": {
     name: "Boda - Estilo Old Money",

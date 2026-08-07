@@ -248,7 +248,7 @@ export default function EditorForm({
             </CollapsibleSection>
           )}
 
-          {(!template.formSections || template.formSections.includes('parental-notes')) && (
+          {template.features.parentalNotes && (
             <CollapsibleSection 
               title={template.name === 'Sports Birthday' ? "Notas del Entrenador" : "Nota para los Padres"}
               isOpen={activeSection === "ParentalNotes"}

@@ -69,6 +69,17 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
         )}
       </div>
 
+      {defaultData.eventDescription !== undefined && (
+        <div className="space-y-2">
+          <TextareaInput
+            label="Descripción del Evento"
+            placeholder="p. ej., Acompáñanos a celebrar..."
+            value={data.eventDescription}
+            onChange={(val) => onFieldChange('eventDescription', val)}
+          />
+        </div>
+      )}
+
       {defaultData.heroSubtitle !== undefined && (
         <div className="space-y-2">
           <TextareaInput

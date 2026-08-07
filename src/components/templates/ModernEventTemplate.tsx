@@ -79,12 +79,12 @@ export default function ModernEventTemplate({
         <div className="relative z-10 max-w-3xl mx-auto">
           <FadeIn>
             <h2 className="text-lg font-semibold tracking-widest uppercase" style={{ color: primaryColor }}>
-              {invitationData.mainTitle || "You're Invited"}
+              {invitationData.heroTitle || "You're Invited"}
             </h2>
           </FadeIn>
           <FadeIn delay={0.1}>
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight my-6 text-slate-900">
-              {invitationData.eventName || "Modern Event Celebration"}
+              {invitationData.heroNames || "Modern Event Celebration"}
             </h1>
           </FadeIn>
           <FadeIn delay={0.2}>
@@ -92,11 +92,11 @@ export default function ModernEventTemplate({
               {invitationData.eventDescription || "Join us for a special celebration filled with joy, laughter, and unforgettable moments."}
             </p>
           </FadeIn>
-          {invitationData.eventDate && (
+          {invitationData.event_date && (
              <FadeIn delay={0.3}>
                 <div className="mt-12">
                     <Countdown
-                        targetDate={invitationData.eventDate}
+                        targetDate={invitationData.event_date}
                         className="flex justify-center gap-8"
                         numberClassName="text-4xl sm:text-5xl font-bold text-slate-900"
                         labelClassName="text-xs uppercase tracking-wider text-slate-500 block mt-2"
@@ -117,9 +117,9 @@ export default function ModernEventTemplate({
                             <CalendarIcon className="w-6 h-6" style={{color: primaryColor}}/>
                         </div>
                         <div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-1">When</h3>
+                            <h3 className="text-xl font-bold text-slate-900 mb-1">Cuando</h3>
                             <p className="text-slate-600 text-lg">
-                                {invitationData.eventDate ? new Date(invitationData.eventDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'TBD'}
+                                {invitationData.event_date ? new Date(invitationData.event_date).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'TBD'}
                             </p>
                         </div>
                     </div>
@@ -128,8 +128,8 @@ export default function ModernEventTemplate({
                             <MapPinIcon className="w-6 h-6" style={{color: primaryColor}}/>
                         </div>
                         <div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-1">Where</h3>
-                            <p className="text-slate-600 text-lg">{invitationData.venueName || 'Venue TBD'}</p>
+                            <h3 className="text-xl font-bold text-slate-900 mb-1">Donde</h3>
+                            <p className="text-slate-600 text-lg">{invitationData.locationName || 'My House'}</p>
                             <p className="text-slate-500">{invitationData.mainVenueAddress}</p>
                         </div>
                     </div>
@@ -173,6 +173,17 @@ export default function ModernEventTemplate({
                         <p className="text-slate-600">
                             {item.location}
                         </p>
+                        {item.mapLink && (
+                            <a
+                                href={item.mapLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block mt-2 px-4 py-2 text-sm font-medium rounded-md"
+                                style={{ backgroundColor: primaryColor, color: invitationData.buttonTextColor || 'white' }}
+                            >
+                                Ubicacion
+                            </a>
+                        )}
                     </div>
                   </FadeIn>
                 ),
@@ -195,13 +206,6 @@ export default function ModernEventTemplate({
             </div>
         </section>
       )}
-
-      {/* Footer */}
-      <footer className="text-center py-10 px-6">
-        <p className="text-sm text-slate-500">
-            Created with ❤️ by {invitationData.hostNames || 'The Host'}
-        </p>
-      </footer>
     </div>
   );
 }

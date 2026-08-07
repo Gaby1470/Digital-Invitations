@@ -6,7 +6,6 @@ import BirthdayTemplate from "./BirthdayTemplate";
 import GenderRevealTemplate from "./GenderRevealTemplate";
 import GraduationTemplate from "./GraduationTemplate";
 import BaptismTemplate from "./BaptismTemplate";
-import CorporateTemplate from "./CorporateTemplate";
 import TimelineTemplate from "./TimelineTemplate";
 import BabyShowerTemplate from "./BabyShowerTemplate";
 import GenderRevealBeesTemplate from "./GenderRevealBeesTemplate";
@@ -36,7 +35,6 @@ export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<TemplateC
   'baptism-ethereal': BaptismTemplate,
   'gender-reveal-party': GenderRevealTemplate,
   'graduation-celebration': GraduationTemplate,
-  'corporate-summit': CorporateTemplate,
   'baby-shower-whimsical': BabyShowerTemplate,
   'gender-reveal-bees': GenderRevealBeesTemplate,
   'scrapbook-graduation': ScrapbookGraduationTemplate,
