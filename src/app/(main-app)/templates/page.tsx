@@ -6,9 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { templateConfig } from '@/lib/templateConfig';
 import { TemplateConfig } from '@/lib/custom_types';
 import { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
+
 
 const groupTemplatesByNewCategories = (config: { [key: string]: TemplateConfig }) => {
   return Object.entries(config).reduce((acc, [id, template]) => {
@@ -106,16 +104,12 @@ export default function TemplatesPage() {
                     <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent dark:from-gray-800"></div>
                   </div>
 
-                  <Swiper
-                    slidesPerView={'auto'}
-                    spaceBetween={24}
-                    className="!py-2 !-mx-4 !px-4"
-                  >
+                  <div className="flex overflow-x-auto gap-6 py-2 -mx-4 px-4" style={{ scrollbarWidth: 'thin' }}>
                     {templates.map((template, idx) => {
                       const isPriorityCover = categoryIndex === 0 && idx < 3;
 
                       return (
-                      <SwiperSlide key={template.id} className="!w-56 md:!w-64">
+                      <div key={template.id} className="w-56 md:w-64 flex-shrink-0">
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -164,10 +158,10 @@ export default function TemplatesPage() {
                             </div>
                           </Link>
                         </motion.div>
-                      </SwiperSlide>
+                      </div>
                       );
                     })}
-                  </Swiper>
+                  </div>
                 </motion.div>
               ))}
             </AnimatePresence>
