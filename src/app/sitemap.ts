@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { templateConfig } from '@/lib/templateConfig';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://digital-invitations.com';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tap2invite.com';
 
   // Static pages
   const staticRoutes = [
