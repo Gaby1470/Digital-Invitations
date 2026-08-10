@@ -26,6 +26,8 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [selectedInvitationId, setSelectedInvitationId] = useState<string | null>(null);
   const [isGuestManagerOpen, setIsGuestManagerOpen] = useState(false);
+  const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
+  const [publishingInvitationId, setPublishingInvitationId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClient();
@@ -57,6 +59,19 @@ export default function DashboardPage() {
   const handleOpenGuestManager = (invitationId: string) => {
     setSelectedInvitationId(invitationId);
     setIsGuestManagerOpen(true);
+  };
+
+  const promptForPublish = (invitationId: string) => {
+    setPublishingInvitationId(invitationId);
+    setIsPublishModalOpen(true);
+  };
+
+  const confirmAndPublish = () => {
+    if (publishingInvitationId) {
+      handlePublish(publishingInvitationId);
+    }
+    setIsPublishModalOpen(false);
+    setPublishingInvitationId(null);
   };
 
   const handlePublish = async (invitationId: string) => {
@@ -217,7 +232,7 @@ export default function DashboardPage() {
                                 <span className="mt-1">Invitados</span>
                             </button>
                             {!inv.is_published && status !== 'Expired' && (
-                                <button onClick={() => handlePublish(inv.id)} className="flex flex-col items-center text-xs text-gray-500 hover:text-green-600 transition-colors group">
+                                <button onClick={() => promptForPublish(inv.id)} className="flex flex-col items-center text-xs text-gray-500 hover:text-green-600 transition-colors group">
                                     <div className="p-2 rounded-full bg-green-50 text-green-600 group-hover:bg-green-100 dark:bg-green-900/20 dark:text-green-400 dark:group-hover:bg-green-900/40">
                                         <CloudArrowUpIcon className="w-5 h-5" />
                                     </div>
@@ -226,12 +241,14 @@ export default function DashboardPage() {
                             )}
                           </div>
                           <div className="flex flex-wrap items-start gap-x-4 gap-y-2">
-                              <button onClick={() => handleCopyLink(inv.id, inv.slug ?? undefined)} disabled={!inv.is_published} className="flex flex-col items-center text-xs text-gray-500 hover:text-gray-900 disabled:text-gray-300 dark:hover:text-white dark:disabled:text-gray-600 transition-colors group">
-                                  <div className="p-2 rounded-full bg-gray-50 text-gray-400 group-hover:bg-gray-100 dark:bg-gray-800 dark:group-hover:bg-gray-700 disabled:bg-gray-100 dark:disabled:bg-gray-800">
-                                      <DocumentDuplicateIcon className={`w-5 h-5 ${copiedId === inv.id ? 'text-green-500' : ''}`} />
-                                  </div>
-                                  <span className="mt-1">{copiedId === inv.id ? 'Copiado!' : 'Copiar'}</span>
-                              </button>
+                              {inv.is_published && (
+                                <button onClick={() => handleCopyLink(inv.id, inv.slug ?? undefined)} className="flex flex-col items-center text-xs text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors group">
+                                    <div className="p-2 rounded-full bg-gray-50 text-gray-400 group-hover:bg-gray-100 dark:bg-gray-800 dark:group-hover:bg-gray-700">
+                                        <DocumentDuplicateIcon className={`w-5 h-5 ${copiedId === inv.id ? 'text-green-500' : ''}`} />
+                                    </div>
+                                    <span className="mt-1">{copiedId === inv.id ? 'Copiado!' : 'Copiar'}</span>
+                                </button>
+                              )}
                               {!inv.is_published && (
                                 <button onClick={() => handleDelete(inv.id)} className="flex flex-col items-center text-xs text-gray-500 hover:text-red-600 group transition-colors">
                                     <div className="p-2 rounded-full bg-gray-50 text-gray-400 group-hover:bg-red-50 group-hover:text-red-600 dark:group-hover:bg-red-900/20">
@@ -269,6 +286,51 @@ export default function DashboardPage() {
       </main>
       
       <AnimatePresence>
+        {isPublishModalOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={() => setIsPublishModalOpen(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-lg flex flex-col border border-gray-100 dark:border-gray-800"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-gray-100 dark:border-gray-800">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Confirmar Publicación</h2>
+                <p className="text-sm text-gray-500 mt-1">¿Estás listo para poner tu invitación en vivo?</p>
+              </div>
+              <div className="p-6 text-gray-600 dark:text-gray-400">
+                <p>
+                  Una vez que hagas clic en publicar, tu invitación estará <strong>"en vivo" durante 1 año.</strong>
+                </p>
+                <p className="mt-4">
+                  Si necesitas que la invitación esté activa por más tiempo una vez publicada, contáctanos para extender la duración.
+                </p>
+              </div>
+              <div className="p-6 bg-gray-50 dark:bg-gray-800/50 rounded-b-3xl flex justify-end items-center gap-4">
+                <button 
+                  onClick={() => setIsPublishModalOpen(false)}
+                  className="px-6 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-full shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all"
+                >
+                  Cancelar
+                </button>
+                <button 
+                  onClick={confirmAndPublish}
+                  className="px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-full shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 transition-all"
+                >
+                  Publicar Invitación
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
         {isGuestManagerOpen && selectedInvitationId && (
           <motion.div 
             initial={{ opacity: 0 }}
