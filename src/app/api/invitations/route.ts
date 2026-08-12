@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Error checking for existing drafts.' }, { status: 500 });
     }
 
-    if (draftCount > 0) {
+    if (draftCount !== null && draftCount > 0) {
       return NextResponse.json({ error: 'You already have an active draft. Please publish or delete it before creating a new one on this plan.' }, { status: 403 });
     }
   } else {
