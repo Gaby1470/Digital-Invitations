@@ -3,6 +3,8 @@ CREATE TABLE public.profiles (
   id uuid NOT NULL REFERENCES auth.users ON DELETE CASCADE,
   first_name TEXT,
   last_name TEXT,
+  full_name TEXT,
+  email TEXT,
   plan TEXT,
   template_credits INT DEFAULT 0,
   CONSTRAINT profiles_pkey PRIMARY KEY (id)
@@ -22,18 +24,38 @@ CREATE POLICY "Users can update own profile"
 ON public.profiles FOR UPDATE
 USING (auth.uid() = id);
 
--- 5. (Optional) A function to automatically create a profile when a new user signs up
--- This is a very common pattern and is highly recommended.
+-- 5. A function to automatically create a profile when a new user signs up
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
+DECLARE
+  user_full_name TEXT;
+  user_first_name TEXT;
+  user_last_name TEXT;
 BEGIN
-  INSERT INTO public.profiles (id, first_name, last_name)
-  VALUES (new.id, new.raw_user_meta_data->>'first_name', new.raw_user_meta_data->>'last_name');
+  -- Extract names from metadata
+  user_full_name := new.raw_user_meta_data->>'full_name';
+  user_first_name := new.raw_user_meta_data->>'first_name';
+  user_last_name := new.raw_user_meta_data->>'last_name';
+
+  -- If full_name is not present from OAuth, construct it from first/last name
+  IF user_full_name IS NULL OR user_full_name = ' ' THEN
+    user_full_name := CONCAT(user_first_name, ' ', user_last_name);
+  END IF;
+
+  -- Insert or update the profile
+  INSERT INTO public.profiles (id, email, full_name, first_name, last_name)
+  VALUES (new.id, new.email, user_full_name, user_first_name, user_last_name)
+  ON CONFLICT (id) DO UPDATE SET
+    email = EXCLUDED.email,
+    full_name = EXCLUDED.full_name,
+    first_name = EXCLUDED.first_name,
+    last_name = EXCLUDED.last_name;
+  
   RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- 6. (Optional) A trigger to call the function when a new user is created in auth.users
+-- 6. A trigger to call the function when a new user is created in auth.users
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
