@@ -45,7 +45,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   // Handle 'single_tier' plan logic
   if (profile.plan === 'single_tier') {
     if (profile.template_credits <= 0) {
-      return NextResponse.json({ error: 'You have no template credits left. Please purchase more to publish.' }, { status: 403 });
+      return NextResponse.json({ error: 'No tienes créditos disponibles. Favor de comprar uno para proceder con la edición.' }, { status: 403 });
     }
   }
 

@@ -125,7 +125,7 @@ export default function TemplatePreviewPage() {
       <Modal
         isOpen={isErrorModalOpen}
         onClose={() => setIsErrorModalOpen(false)}
-        title="Cannot Create New Invitation"
+        title="No se puede crear la invitación"
       >
         <div className="p-4">
           <p className="text-gray-700">{errorMessage}</p>
