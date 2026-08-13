@@ -35,6 +35,15 @@ type OldMoneyTemplateProps = {
   onRsvpClick?: () => void;
 };
 
+function normalizePinterestUrl(url?: string): string {
+  if (!url) return '#';
+  const trimmed = url.trim();
+  if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) {
+    return trimmed;
+  }
+  return `https://${trimmed}`;
+}
+
 const formatUrl = (urlOrAddress: string | undefined): string => {
     if (!urlOrAddress) return '';
     const trimmed = urlOrAddress.trim();
@@ -247,7 +256,7 @@ export default function OldMoneyTemplate({
                 <div className="flex justify-center gap-4">
                   {dressCode.pinterestUrlMan && (
                     <a
-                      href={formatUrl(dressCode.pinterestUrlMan)}
+                      href={normalizePinterestUrl(dressCode.pinterestUrlMan)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block px-10 py-3 rounded-full text-xs uppercase tracking-widest text-white transition-opacity hover:opacity-90"
@@ -258,7 +267,7 @@ export default function OldMoneyTemplate({
                   )}
                   {dressCode.pinterestUrlWoman && (
                     <a
-                      href={formatUrl(dressCode.pinterestUrlWoman)}
+                      href={normalizePinterestUrl(dressCode.pinterestUrlWoman)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block px-10 py-3 rounded-full text-xs uppercase tracking-widest text-white transition-opacity hover:opacity-90"

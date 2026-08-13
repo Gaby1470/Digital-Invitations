@@ -57,6 +57,15 @@ function normalizeExternalUrl(value?: string): string {
   return `https://maps.google.com/maps?q=${encodeURIComponent(trimmed)}`;
 }
 
+function normalizePinterestUrl(url?: string): string {
+  if (!url) return '#';
+  const trimmed = url.trim();
+  if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) {
+    return trimmed;
+  }
+  return `https://${trimmed}`;
+}
+
 export default function GardenWeddingTemplate({ template, data, invitationId, onRsvpClick }: GardenWeddingTemplateProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
@@ -100,8 +109,8 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
 
   const giftRegistryLink = normalizeLink(invitationData.giftRegistryUrl);
   const mapsLink = normalizeExternalUrl(invitationData.mainVenueAddress);
-  const dressCodeWomenLink = normalizeExternalUrl(invitationData.dressCode?.pinterestUrlWoman);
-  const dressCodeMenLink = normalizeExternalUrl(invitationData.dressCode?.pinterestUrlMan);
+  const dressCodeWomenLink = normalizePinterestUrl(invitationData.dressCode?.pinterestUrlWoman);
+  const dressCodeMenLink = normalizePinterestUrl(invitationData.dressCode?.pinterestUrlMan);
 
   return (
     <div className="max-w-md mx-auto bg-[#Fdfbf5] min-h-screen shadow-2xl overflow-hidden font-sans" style={{ color: primaryText, backgroundColor: bgColor }}>
