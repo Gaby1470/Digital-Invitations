@@ -37,16 +37,16 @@ export async function POST(request: Request) {
       .eq('is_published', false);
 
     if (draftError) {
-      return NextResponse.json({ error: 'Error checking for existing drafts.' }, { status: 500 });
+      return NextResponse.json({ error: 'Error al revisar los borradores existentes.' }, { status: 500 });
     }
 
     if (draftCount !== null && draftCount > 0) {
-      return NextResponse.json({ error: 'You already have an active draft. Please publish or delete it before creating a new one on this plan.' }, { status: 403 });
+      return NextResponse.json({ error: 'Ya cuentas con un borrador activo. Por favor publícalo o elimínalo antes de crear uno nuevo con este plan.' }, { status: 403 });
     }
   } else {
     // For all other plans (including NULL for new users), require credits.
     if (!profile.template_credits || profile.template_credits <= 0) {
-      return NextResponse.json({ error: 'You have no template credits to create a new invitation. Please purchase more to continue.' }, { status: 403 });
+      return NextResponse.json({ error: 'No tienes créditos disponibles. Favor de comprar uno para proceder con la edición.' }, { status: 403 });
     }
   }
 

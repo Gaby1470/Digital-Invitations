@@ -98,8 +98,8 @@ export default function TemplatePreviewPage() {
   if (!template) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <h1 className="text-4xl font-bold">Template Not Found</h1>
-        <Link href="/templates" className="mt-4 text-blue-600 underline">Back to Templates</Link>
+        <h1 className="text-4xl font-bold">No se encontró la plantilla</h1>
+        <Link href="/templates" className="mt-4 text-blue-600 underline">Volver a Plantillas</Link>
       </div>
     );
   }
@@ -112,7 +112,7 @@ export default function TemplatePreviewPage() {
           disabled={loading}
           className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105 disabled:opacity-50"
         >
-          {loading ? 'Processing...' : 'Personalize this Template'}
+          {loading ? 'Procesando...' : 'Personalizar'}
         </button>
       </div>
       
@@ -125,7 +125,7 @@ export default function TemplatePreviewPage() {
       <Modal
         isOpen={isErrorModalOpen}
         onClose={() => setIsErrorModalOpen(false)}
-        title="No se puede crear la invitación"
+        title="No tienes créditos disponibles"
       >
         <div className="p-4">
           <p className="text-gray-700">{errorMessage}</p>
@@ -134,10 +134,10 @@ export default function TemplatePreviewPage() {
                   onClick={() => setIsErrorModalOpen(false)}
                   className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
               >
-                  Close
+                  Cerrar
               </button>
               <Link href="/dashboard" className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                  Go to Dashboard
+                  Comprar Créditos
               </Link>
           </div>
         </div>
