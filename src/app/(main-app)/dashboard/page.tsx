@@ -96,7 +96,7 @@ export default function DashboardPage() {
   };
 
   const handleCopyLink = (invitationId: string, slug?: string) => {
-    const link = `${window.location.origin}/invite/${slug || invitationId}`;
+    const link = `${window.location.origin}/${slug || invitationId}`;
     navigator.clipboard.writeText(link).then(() => {
       setCopiedId(invitationId);
       setTimeout(() => setCopiedId(null), 2000);

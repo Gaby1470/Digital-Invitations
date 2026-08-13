@@ -109,7 +109,7 @@ export default function EditorForm({
               />
               <p className="text-sm text-gray-500">
                 Personaliza el enlace de tu invitación. Usa solo letras minúsculas, números y guiones.
-                Ejemplo: <strong>{`https://yourapp.com/invite/sarah-and-toms-wedding`}</strong>
+                Ejemplo: <strong>{`https://tap2invite.com/la-boda-de-ana-y-juan`}</strong>
               </p>
             </div>
           </CollapsibleSection>
