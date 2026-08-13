@@ -69,6 +69,17 @@ export async function POST(request: Request) {
 
   if (slug) {
     sanitizedSlug = sanitizeSlug(slug);
+
+    const RESERVED_SLUGS = [
+        'contact', 'dashboard', 'how-it-works', 'pricing', 'templates', 'editor',
+        'api', 'auth', 'rsvp', 'invite', 'print', 'sitemap.xml', 'viewer', 'public',
+        '_next', 'favicon.ico', 'sw.js'
+    ];
+
+    if (RESERVED_SLUGS.includes(sanitizedSlug)) {
+        return NextResponse.json({ error: 'This is a reserved name and cannot be used as an invitation link.' }, { status: 409 });
+    }
+
     const { data: slugConflict, error: slugError } = await supabase
       .from('invitations')
       .select('id')

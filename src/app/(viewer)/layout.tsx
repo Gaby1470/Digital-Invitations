@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function InviteViewerLayout({
+export default function ViewerLayout({
   children,
 }: {
   children: React.ReactNode;
