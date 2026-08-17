@@ -5,63 +5,69 @@ export default function TermsAndConditionsPage() {
   return (
     <div className="bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-extrabold text-gray-900 text-center mb-6">Terms and Conditions</h1>
+        <h1 className="text-3xl font-extrabold text-gray-900 text-center mb-6">Términos y Condiciones</h1>
         
         <div className="prose prose-indigo mx-auto mt-6">
-          <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400">
-            <p className="font-bold">Disclaimer:</p>
-            <p className="text-sm">This is a template for Terms and Conditions and not legal advice. You should consult with a legal professional to ensure this policy is complete and compliant with all applicable laws for your jurisdiction and business.</p>
-          </div>
+          <p><strong>Última actualización:</strong> 17 de Agosto de 2026</p>
 
-          <h2>1. Introduction</h2>
           <p>
-            Welcome to Digital Invitations ("we", "our", "us"). These Terms and Conditions govern your use of our website located at tap2invite.com (the "Service") and form a binding contractual agreement between you, the user of the Service, and us.
+            Bienvenido a Digital Invitations (en adelante, el "Sitio"), operado por Digital Invitations (en adelante, "nosotros"). Al acceder, navegar o utilizar este Sitio, usted (en adelante, el "Usuario") acepta cumplir y estar sujeto a los siguientes Términos y Condiciones de Uso (en adelante, los "Términos").
           </p>
 
-          <h2>2. Your Responsibilities</h2>
+          <h2>1. Aceptación de los Términos</h2>
           <p>
-            You agree to use the Service only for lawful purposes. You are responsible for all content you create, upload, or share on the Service. You must not create content that is defamatory, obscene, pornographic, or otherwise illegal.
+            El acceso y uso del Sitio atribuye la condición de Usuario e implica la aceptación plena y sin reservas de todas y cada una de las disposiciones incluidas en estos Términos.
           </p>
 
-          <h2>3. Intellectual Property</h2>
+          <h2>2. Capacidad Legal</h2>
           <p>
-            All intellectual property rights in the templates, designs, and content available on the Service are owned by us or our licensors. We grant you a limited, non-exclusive license to use our templates for the purpose of creating and sharing digital invitations for personal use.
+            El Sitio está dirigido únicamente a personas que tengan la capacidad legal para contratar conforme a las leyes de los Estados Unidos Mexicanos. Al utilizar este Sitio, el Usuario manifiesta ser mayor de 18 años.
           </p>
 
-          <h2>4. User-Generated Content</h2>
+          <h2>3. Uso del Sitio y Cuentas de Usuario</h2>
           <p>
-            You retain ownership of the content you upload to the Service. By uploading content, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, and display such content solely for the purpose of operating and providing the Service.
+            Para acceder a ciertos servicios, el Usuario podría requerir crear una cuenta. El Usuario es responsable de mantener la confidencialidad de sus credenciales de acceso y de todas las actividades que ocurran bajo su cuenta. Nos reservamos el derecho de cancelar cuentas o restringir el acceso a discreción.
           </p>
 
-          <h2>5. Termination</h2>
+          <h2>4. Propiedad Intelectual</h2>
           <p>
-            We may terminate or suspend your access to the Service at any time, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms and Conditions.
+            Todo el contenido del Sitio, incluyendo textos, gráficos, logotipos, e imágenes, es propiedad de Digital Invitations y está protegido por la Ley Federal del Derecho de Autor.
           </p>
 
-          <h2>6. Disclaimer of Warranties</h2>
+          <h2>5. Contenido Generado por el Usuario</h2>
           <p>
-            The Service is provided on an "AS IS" and "AS AVAILABLE" basis. We make no warranties, expressed or implied, regarding the operation or availability of the Service.
+            Usted retiene la propiedad del contenido que carga en el Servicio. Al cargar contenido, nos otorga una licencia mundial, no exclusiva y libre de regalías para usar, reproducir y mostrar dicho contenido únicamente con el fin de operar y proporcionar el Servicio.
           </p>
 
-          <h2>7. Limitation of Liability</h2>
+          <h2>6. Privacidad y Protección de Datos</h2>
           <p>
-            In no event shall we be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.
+            Los datos personales proporcionados por el Usuario serán tratados de conformidad con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares. Para más detalles, consulte nuestro <a href="/privacy">Aviso de Privacidad</a>.
           </p>
 
-          <h2>8. Governing Law</h2>
+          <h2>7. Limitación de Responsabilidad</h2>
           <p>
-            These Terms shall be governed and construed in accordance with the laws of the jurisdiction in which our company is established, without regard to its conflict of law provisions.
+            No seremos responsables por daños directos, indirectos, incidentales o consecuentes que resulten del uso o la imposibilidad de uso del Sitio.
+          </p>
+          
+          <h2>8. Modificaciones a los Términos</h2>
+          <p>
+            Nos reservamos el derecho de modificar estos Términos en cualquier momento. Las modificaciones serán efectivas inmediatamente después de su publicación en el Sitio.
           </p>
 
-          <h2>9. Changes to These Terms</h2>
+          <h2>9. Legislación Aplicable y Jurisdicción</h2>
           <p>
-            We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide notice of any changes by posting the new Terms and Conditions on this page.
+            Estos Términos se regirán por las leyes de los Estados Unidos Mexicanos. Para la resolución de cualquier controversia, las partes se someten a la jurisdicción de los tribunales de la Ciudad de México.
           </p>
 
-          <h2>10. Contact Us</h2>
+          <h2>10. Contacto</h2>
           <p>
-            If you have any questions about these Terms, please contact us.
+            Para cualquier duda, puede contactarnos a través de:
           </p>
+          <ul>
+            <li>Correo electrónico: contacto@digital-invitations.com</li>
+            <li>Teléfono: 55-1234-5678</li>
+            <li>Dirección: Calle Ficticia 123, Colonia Centro, Ciudad de México, 06000, México</li>
+          </ul>
         </div>
       </div>
     </div>

@@ -46,6 +46,7 @@ export interface TemplateConfig {
     diaperRaffle?: boolean;
     futurePlans?: boolean;
     tributeSection?: boolean;
+    audio?: boolean;
   };
   formSections?: string[];
 }

@@ -14,7 +14,7 @@ import {
   Shirt, 
   Clock 
 } from "lucide-react";
-import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { RsvpTrigger } from "@/components/templates/shared/RsvpTrigger";
 
 function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef(null);
@@ -70,14 +70,19 @@ function Countdown({ targetDate, color }: { targetDate: string; color: string })
   );
 }
 
-type QuinceaneraTemplateProps = {
+type EditorFormProps = {
   template: TemplateConfig;
   data: EditorData;
   invitationId?: string;
   onRsvpClick?: () => void;
+  onDataChange: React.Dispatch<React.SetStateAction<EditorData | null>>;
+  onSave: () => Promise<void>;
+  viewMode: 'editor' | 'preview';
+  onViewModeChange: React.Dispatch<React.SetStateAction<'editor' | 'preview'>>;
+  isSaving: boolean;
 };
 
-export default function QuinceaneraTemplate({ template, data, invitationId, onRsvpClick }: QuinceaneraTemplateProps) {
+export default function EditorForm({ template, data, invitationId, onRsvpClick, onDataChange, onSave, viewMode, onViewModeChange, isSaving }: EditorFormProps) {
   const { defaultData, features } = template;
   const invitationData = { ...defaultData, ...data };
   const [isPlaying, setIsPlaying] = useState(false);
