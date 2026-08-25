@@ -105,7 +105,8 @@ export default function MasqueradeXvTemplate({
               src="/corner-black.png"
               alt=""
               fill
-              className="object-contain object-right-top transform scale-x-[-1]"
+              className="object-contain object-right-top"
+              style={{ transform: "scaleX(-1)" }}
             />
           </div>
 
@@ -125,7 +126,8 @@ export default function MasqueradeXvTemplate({
               src="/corner-black.png"
               alt=""
               fill
-              className="object-contain object-right-bottom transform scale-x-[-1] scale-y-[-1]"
+              className="object-contain object-right-bottom"
+              style={{ transform: "scale(-1, -1)" }}
             />
           </div>
 
@@ -135,7 +137,8 @@ export default function MasqueradeXvTemplate({
               src="/corner-black.png"
               alt=""
               fill
-              className="object-contain object-right-top transform scale-y-[-1]"
+              className="object-contain object-right-top"
+              style={{ transform: "scaleY(-1)" }}
             />
           </div>
         </div>
