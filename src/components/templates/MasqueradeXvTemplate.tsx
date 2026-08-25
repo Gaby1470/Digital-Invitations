@@ -106,7 +106,6 @@ export default function MasqueradeXvTemplate({
               alt=""
               fill
               className="object-contain object-right-top"
-              style={{ transform: "scaleX(-1)" }}
             />
           </div>
 
@@ -117,6 +116,7 @@ export default function MasqueradeXvTemplate({
               alt=""
               fill
               className="object-contain object-right-top"
+              style={{ transform: "scaleX(-1)" }}
             />
           </div>
 
@@ -127,7 +127,7 @@ export default function MasqueradeXvTemplate({
               alt=""
               fill
               className="object-contain object-right-bottom"
-              style={{ transform: "scale(-1, -1)" }}
+              style={{ transform: "scaleY(-1)" }}
             />
           </div>
 
@@ -138,7 +138,7 @@ export default function MasqueradeXvTemplate({
               alt=""
               fill
               className="object-contain object-right-top"
-              style={{ transform: "scaleY(-1)" }}
+              style={{ transform: "scale(-1, -1)" }}
             />
           </div>
         </div>
