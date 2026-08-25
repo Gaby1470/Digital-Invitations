@@ -22,7 +22,7 @@ export default function MainDetailsSection({ data, template, onFieldChange }: Ma
   const hasMap = templateFeatures.multiEventSchedule;
 
   return (
-    <div className="p-6 space-y-6 bg-white">
+    <div className="p-8 space-y-6 bg-white">
       {(defaultData.hero_image_url !== undefined || defaultData.family_image_url !== undefined) && (
         <HeroImageUploader
           label={defaultData.family_image_url ? "Family Image" : "Hero Image"}

@@ -146,7 +146,7 @@ export default function TemplatesPage() {
                               />
                               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                 <span className="px-4 py-2 bg-white text-gray-900 rounded-full font-semibold text-xs md:text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                  Personalize
+                                  Personalizar
                                 </span>
                               </div>
                             </div>

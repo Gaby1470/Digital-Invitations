@@ -17,6 +17,7 @@ import PrincessBirthdayTemplate from "./PrincessBirthdayTemplate";
 import GardenWeddingTemplate from "./GardenWeddingTemplate";
 
 import ScrapbookGraduationTemplate from "./ScrapbookGraduationTemplate";
+import MasqueradeXvTemplate from "./MasqueradeXvTemplate";
 import { TemplateConfig } from "@/lib/custom_types";
 import { EditorData } from "@/lib/custom_types";
 interface TemplateComponentProps {
@@ -44,4 +45,5 @@ export const TEMPLATE_COMPONENTS: { [key: string]: React.ComponentType<TemplateC
   'sports-birthday': SportsBirthdayTemplate,
   'princess-birthday': PrincessBirthdayTemplate,
   'garden-wedding': GardenWeddingTemplate,
+  'masquerade-xv': MasqueradeXvTemplate,
 };
