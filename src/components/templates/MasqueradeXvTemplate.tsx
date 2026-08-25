@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { TimelineItem, DressCode, TemplateConfig, EditorData } from "@/lib/custom_types";
 import { DressCodePreview } from "./shared/DressCodePreview";
@@ -54,6 +54,38 @@ export default function MasqueradeXvTemplate({
 }: MasqueradeXvTemplateProps) {
   const { features, defaultData } = template;
   const invitationData = { ...defaultData, ...data };
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const imagesToPreload = [
+      '/beige-vintage.jpg',
+      '/corner-black.png',
+      '/mascara-logo.png',
+      '/black-separator-good.png',
+      '/black-separator-2.png'
+    ];
+
+    let loadedImages = 0;
+    const totalImages = imagesToPreload.length;
+
+    if (totalImages === 0) {
+      setIsLoaded(true);
+      return;
+    }
+
+    imagesToPreload.forEach(src => {
+      const img = new window.Image();
+      img.src = src;
+      const handleLoad = () => {
+        loadedImages++;
+        if (loadedImages === totalImages) {
+          setIsLoaded(true);
+        }
+      };
+      img.onload = handleLoad;
+      img.onerror = handleLoad; 
+    });
+  }, []);
 
   const mapSrc = invitationData.mainVenueAddress
     ? `https://maps.google.com/maps?q=${encodeURIComponent(invitationData.mainVenueAddress)}&t=&z=13&ie=UTF8&iwloc=&output=embed`
@@ -68,6 +100,8 @@ export default function MasqueradeXvTemplate({
         color: invitationData.textColor || "#3a2d23",
         fontFamily: 'var(--font-playfair-display), serif',
         backgroundColor: "#e9c690",
+        opacity: isLoaded ? 1 : 0,
+        transition: 'opacity 0.5s ease-in-out',
       }}
     >
       {/* Background Textures */}
@@ -106,6 +140,7 @@ export default function MasqueradeXvTemplate({
               alt=""
               fill
               className="object-contain object-right-top"
+              priority
             />
           </div>
 
@@ -117,6 +152,7 @@ export default function MasqueradeXvTemplate({
               fill
               className="object-contain object-right-top"
               style={{ transform: "scaleX(-1)" }}
+              priority
             />
           </div>
 
@@ -128,6 +164,7 @@ export default function MasqueradeXvTemplate({
               fill
               className="object-contain object-right-bottom"
               style={{ transform: "scaleY(-1)" }}
+              priority
             />
           </div>
 
@@ -139,6 +176,7 @@ export default function MasqueradeXvTemplate({
               fill
               className="object-contain object-right-top"
               style={{ transform: "scale(-1, -1)" }}
+              priority
             />
           </div>
         </div>
@@ -160,6 +198,7 @@ export default function MasqueradeXvTemplate({
                 width={250} 
                 height={200}
                 className="mx-auto"
+                priority
               />
             </motion.div>
 
@@ -171,7 +210,7 @@ export default function MasqueradeXvTemplate({
             >
               {invitationData.heroTitle || "Save the Date"}
             </motion.p>
-            
+
             <motion.h1
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
