@@ -30,6 +30,7 @@ interface Invitation {
   profiles?: {
     email: string;
     full_name: string | null;
+    is_admin: boolean;
   } | null;
 }
 
@@ -300,7 +301,7 @@ export default function AdminDashboardPage() {
                     <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
                       {invitations.map((inv) => {
                         const invitationLink = `${window.location.origin}/${inv.slug || inv.id}`;
-                        const isClaimed = inv.profiles?.email !== undefined;
+                        const isClaimed = inv.profiles?.email !== undefined && !inv.profiles?.is_admin;
 
                         return (
                           <tr key={inv.id} className="hover:bg-slate-50 dark:hover:bg-gray-900/50">

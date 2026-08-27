@@ -46,7 +46,8 @@ export async function GET() {
       *,
       profiles:user_id (
         email,
-        full_name
+        full_name,
+        is_admin
       )
     `)
     .order('created_at', { ascending: false });
