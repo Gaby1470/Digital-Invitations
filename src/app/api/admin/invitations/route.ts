@@ -53,8 +53,13 @@ export async function GET() {
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Admin API: Error fetching invitations:', error);
-    return NextResponse.json({ error: 'Failed to fetch invitations.' }, { status: 500 });
+    console.error('Admin API: Error fetching invitations:', error.message, error.details);
+    return NextResponse.json({ 
+      error: 'Failed to fetch invitations.', 
+      debugMessage: error.message, 
+      debugDetails: error.details,
+      hasServiceRoleKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY
+    }, { status: 500 });
   }
 
   return NextResponse.json(data);
