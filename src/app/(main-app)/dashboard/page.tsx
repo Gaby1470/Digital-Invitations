@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase-client';
 import { EditorData } from '@/lib/custom_types';
 import { templateConfig } from '@/lib/templateConfig';
-import { TrashIcon, DocumentDuplicateIcon, UserGroupIcon, PencilIcon, PlusIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import { TrashIcon, DocumentDuplicateIcon, UserGroupIcon, PencilIcon, PlusIcon, CloudArrowUpIcon, KeyIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 import GuestManager from '@/components/dashboard/GuestManager';
 
@@ -29,6 +29,14 @@ export default function DashboardPage() {
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
   const [publishingInvitationId, setPublishingInvitationId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  
+  // Claim invitation states
+  const [isClaimModalOpen, setIsClaimModalOpen] = useState(false);
+  const [claimCode, setClaimCode] = useState('');
+  const [claimLoading, setClaimLoading] = useState(false);
+  const [claimError, setClaimError] = useState('');
+  const [claimSuccess, setClaimSuccess] = useState('');
+
   const router = useRouter();
   const supabase = createClient();
 
@@ -55,6 +63,56 @@ export default function DashboardPage() {
 
     fetchUserData();
   }, [router, supabase]);
+
+  const handleClaim = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!claimCode.trim()) return;
+    setClaimLoading(true);
+    setClaimError('');
+    setClaimSuccess('');
+    try {
+      const response = await fetch('/api/invitations/claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ claimCode }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Código de reclamo inválido.');
+      }
+      setClaimSuccess(data.message || '¡Invitación reclamada con éxito!');
+      setClaimCode('');
+      
+      // Refresh the invitations list
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: refreshedInvs, error } = await supabase
+          .from('invitations')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (!error && refreshedInvs) {
+          setInvitations(refreshedInvs);
+        }
+      }
+      
+      // Keep success message visible for 2 seconds then close modal
+      setTimeout(() => {
+        setIsClaimModalOpen(false);
+        setClaimSuccess('');
+      }, 2000);
+
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setClaimError(err.message);
+      } else {
+        setClaimError('Ocurrió un error inesperado al reclamar la invitación.');
+      }
+    } finally {
+      setClaimLoading(false);
+    }
+  };
 
   const handleOpenGuestManager = (invitationId: string) => {
     setSelectedInvitationId(invitationId);
@@ -164,13 +222,22 @@ export default function DashboardPage() {
               </h1>
               <p className="mt-2 text-gray-600 dark:text-gray-400">Gestiona tus eventos, realiza un seguimiento de los RSVPs y actualiza los detalles.</p>
             </div>
-            <Link
-              href="/templates"
-              className="inline-flex h-12 items-center justify-center rounded-full bg-indigo-600 px-6 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/50 hover:-translate-y-0.5"
-            >
-              <PlusIcon className="w-5 h-5 mr-2" />
-              Nueva Invitación
-            </Link>
+            <div className="flex flex-wrap gap-3 w-full sm:w-auto">
+              <button
+                onClick={() => setIsClaimModalOpen(true)}
+                className="inline-flex h-12 items-center justify-center rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 px-6 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 shadow-sm transition-all hover:-translate-y-0.5"
+              >
+                <KeyIcon className="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" />
+                Reclamar Diseño
+              </button>
+              <Link
+                href="/templates"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-indigo-600 px-6 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/50 hover:-translate-y-0.5"
+              >
+                <PlusIcon className="w-5 h-5 mr-2" />
+                Nueva Invitación
+              </Link>
+            </div>
           </div>
 
           {invitations.length > 0 ? (
@@ -307,7 +374,7 @@ export default function DashboardPage() {
               </div>
               <div className="p-6 text-gray-600 dark:text-gray-400">
                 <p>
-                  Una vez que hagas clic en publicar, tu invitación estará <strong>"en vivo" durante 1 año.</strong>
+                  Una vez que hagas clic en publicar, tu invitación estará <strong>&quot;en vivo&quot; durante 1 año.</strong>
                 </p>
                 <p className="mt-4">
                   Si necesitas que la invitación esté activa por más tiempo una vez publicada, contáctanos para extender la duración.
@@ -327,6 +394,95 @@ export default function DashboardPage() {
                   Publicar Invitación
                 </button>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {isClaimModalOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={() => {
+              if (!claimLoading && !claimSuccess) {
+                setIsClaimModalOpen(false);
+                setClaimError('');
+              }
+            }}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-md flex flex-col border border-gray-100 dark:border-gray-800"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-gray-100 dark:border-gray-800">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                  <KeyIcon className="w-6 h-6 text-indigo-600" />
+                  Reclamar Invitación
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">Ingresa el código que te proporcionó el diseñador.</p>
+              </div>
+              
+              <form onSubmit={handleClaim}>
+                <div className="p-6 space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Código de Reclamo
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="CLAIM-XXXXXX"
+                      value={claimCode}
+                      onChange={(e) => setClaimCode(e.target.value)}
+                      disabled={claimLoading || !!claimSuccess}
+                      className="w-full text-center font-mono font-bold tracking-wider rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 px-4 py-3 text-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 uppercase"
+                      required
+                    />
+                  </div>
+
+                  {claimError && (
+                    <div className="bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 p-3 rounded-xl text-sm flex items-start gap-2">
+                      <span className="font-semibold">Error:</span>
+                      <span>{claimError}</span>
+                    </div>
+                  )}
+
+                  {claimSuccess && (
+                    <div className="bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400 p-3 rounded-xl text-sm flex items-start gap-2">
+                      <span className="font-semibold">¡Éxito!</span>
+                      <span>{claimSuccess}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-6 bg-gray-50 dark:bg-gray-800/50 rounded-b-3xl flex justify-end items-center gap-4">
+                  <button 
+                    type="button"
+                    disabled={claimLoading || !!claimSuccess}
+                    onClick={() => {
+                      setIsClaimModalOpen(false);
+                      setClaimError('');
+                    }}
+                    className="px-6 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-full shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all disabled:opacity-50"
+                  >
+                    Cerrar
+                  </button>
+                  <button 
+                    type="submit"
+                    disabled={claimLoading || !!claimSuccess || !claimCode.trim()}
+                    className="px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-full shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center min-w-[120px]"
+                  >
+                    {claimLoading ? (
+                      <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
+                      "Reclamar"
+                    )}
+                  </button>
+                </div>
+              </form>
             </motion.div>
           </motion.div>
         )}

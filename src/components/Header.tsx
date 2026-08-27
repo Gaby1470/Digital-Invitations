@@ -27,6 +27,7 @@ const NavLinks = ({ onLinkClick }: { onLinkClick?: () => void }) => (
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
@@ -35,15 +36,39 @@ export default function Header() {
   useEffect(() => {
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      
+      if (currentUser) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('id', currentUser.id)
+          .single();
+        setIsAdmin(!!profile?.is_admin);
+      } else {
+        setIsAdmin(false);
+      }
       setLoading(false);
     };
 
     getSession();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
+      async (event, session) => {
+        const currentUser = session?.user ?? null;
+        setUser(currentUser);
+        
+        if (currentUser) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('is_admin')
+            .eq('id', currentUser.id)
+            .single();
+          setIsAdmin(!!profile?.is_admin);
+        } else {
+          setIsAdmin(false);
+        }
         setLoading(false);
         router.refresh();
       }
@@ -95,6 +120,14 @@ export default function Header() {
                 <div className="h-10 w-24 animate-pulse bg-gray-100 dark:bg-gray-800 rounded-full"></div>
               ) : user ? (
                 <>
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      className="hidden sm:inline-flex h-11 items-center justify-center rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-950 px-6 text-sm font-semibold shadow-lg shadow-slate-900/10 dark:shadow-white/10 transition-all hover:-translate-y-0.5"
+                    >
+                      Administrador
+                    </Link>
+                  )}
                   <Link
                     href="/dashboard"
                     className="hidden sm:inline-flex h-11 items-center justify-center rounded-full bg-indigo-600 px-6 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/30 hover:-translate-y-0.5 active:translate-y-0"
@@ -154,6 +187,15 @@ export default function Header() {
                 <div className="h-14 w-full animate-pulse bg-gray-100 dark:bg-gray-800 rounded-full"></div>
               ) : user ? (
                 <>
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      onClick={closeMenu}
+                      className="w-full inline-flex h-14 items-center justify-center rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-950 px-6 text-lg font-semibold shadow-lg transition-all"
+                    >
+                      Panel de Administrador
+                    </Link>
+                  )}
                   <Link
                     href="/dashboard"
                     onClick={closeMenu}

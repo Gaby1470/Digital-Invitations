@@ -73,6 +73,10 @@ export type Database = {
           timeline_items: Json | null
           title: string | null
           user_id: string | null
+          claim_code: string | null
+          is_custom_design: boolean
+          is_expired: boolean
+          expires_at: string | null
         }
         Insert: {
           created_at?: string
@@ -94,6 +98,10 @@ export type Database = {
           timeline_items?: Json | null
           title?: string | null
           user_id?: string | null
+          claim_code?: string | null
+          is_custom_design?: boolean
+          is_expired?: boolean
+          expires_at?: string | null
         }
         Update: {
           created_at?: string
@@ -115,6 +123,10 @@ export type Database = {
           timeline_items?: Json | null
           title?: string | null
           user_id?: string | null
+          claim_code?: string | null
+          is_custom_design?: boolean
+          is_expired?: boolean
+          expires_at?: string | null
         }
         Relationships: []
       }
@@ -123,16 +135,19 @@ export type Database = {
           id: string
           plan: string | null
           stripe_customer_id: string | null
+          is_admin: boolean
         }
         Insert: {
           id: string
           plan?: string | null
           stripe_customer_id?: string | null
+          is_admin?: boolean
         }
         Update: {
           id?: string
           plan?: string | null
           stripe_customer_id?: string | null
+          is_admin?: boolean
         }
         Relationships: []
       }
