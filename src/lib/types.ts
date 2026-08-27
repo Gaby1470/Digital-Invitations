@@ -136,18 +136,33 @@ export type Database = {
           plan: string | null
           stripe_customer_id: string | null
           is_admin: boolean
+          email: string | null
+          full_name: string | null
+          first_name: string | null
+          last_name: string | null
+          template_credits: number | null
         }
         Insert: {
           id: string
           plan?: string | null
           stripe_customer_id?: string | null
           is_admin?: boolean
+          email?: string | null
+          full_name?: string | null
+          first_name?: string | null
+          last_name?: string | null
+          template_credits?: number | null
         }
         Update: {
           id?: string
           plan?: string | null
           stripe_customer_id?: string | null
           is_admin?: boolean
+          email?: string | null
+          full_name?: string | null
+          first_name?: string | null
+          last_name?: string | null
+          template_credits?: number | null
         }
         Relationships: []
       }

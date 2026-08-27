@@ -40,29 +40,56 @@ export async function GET() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const { data, error } = await supabaseAdmin
+  // Fetch invitations
+  const { data: invitations, error: invsError } = await supabaseAdmin
     .from('invitations')
-    .select(`
-      *,
-      profiles:user_id (
-        email,
-        full_name,
-        is_admin
-      )
-    `)
+    .select('*')
     .order('created_at', { ascending: false });
 
-  if (error) {
-    console.error('Admin API: Error fetching invitations:', error.message, error.details);
+  if (invsError) {
+    console.error('Admin API: Error fetching invitations:', invsError.message);
     return NextResponse.json({ 
       error: 'Failed to fetch invitations.', 
-      debugMessage: error.message, 
-      debugDetails: error.details,
+      debugMessage: invsError.message,
       hasServiceRoleKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY
     }, { status: 500 });
   }
 
-  return NextResponse.json(data);
+  if (!invitations || invitations.length === 0) {
+    return NextResponse.json([]);
+  }
+
+  // Fetch profiles for these invitations separately to bypass any stale PostgREST relationship cache bugs
+  const userIds = Array.from(new Set(invitations.map(inv => inv.user_id).filter(Boolean))) as string[];
+  
+  const profilesMap: Record<string, { email: string; full_name: string | null; is_admin: boolean }> = {};
+  
+  if (userIds.length > 0) {
+    const { data: profiles, error: profilesError } = await supabaseAdmin
+      .from('profiles')
+      .select('id, email, full_name, is_admin')
+      .in('id', userIds);
+
+    if (profilesError) {
+      console.error('Admin API: Error fetching profiles:', profilesError.message);
+    } else if (profiles) {
+      profiles.forEach(p => {
+        profilesMap[p.id] = {
+          email: p.email || '',
+          full_name: p.full_name || null,
+          is_admin: !!p.is_admin
+        };
+      });
+    }
+  }
+
+  // Map profiles back to invitations
+  const result = invitations.map(inv => ({
+    ...inv,
+    profiles: inv.user_id ? (profilesMap[inv.user_id] || null) : null
+  }));
+
+  return NextResponse.json(result);
 }
 
 // POST create a custom invitation (Admin only)
