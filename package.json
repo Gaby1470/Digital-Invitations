@@ -16,6 +16,7 @@
     "@tanstack/react-query-devtools": "^5.100.14",
     "@types/canvas-confetti": "^1.9.0",
     "@types/nodemailer": "^8.0.1",
+    "@vercel/analytics": "^2.0.1",
     "canvas-confetti": "^1.9.4",
     "framer-motion": "^12.38.0",
     "html2canvas-pro": "^2.2.4",

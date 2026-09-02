@@ -6,6 +6,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { templateConfig } from '@/lib/templateConfig';
 import { TemplateConfig } from '@/lib/custom_types';
 import { useState } from 'react';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Plantillas de Invitaciones Digitales | Tap 2 Invite",
+  description: "Explora nuestra colección de plantillas de invitaciones digitales para bodas, cumpleaños, baby showers y más. Encuentra el diseño perfecto para tu evento.",
+};
 
 
 const groupTemplatesByNewCategories = (config: { [key: string]: TemplateConfig }) => {

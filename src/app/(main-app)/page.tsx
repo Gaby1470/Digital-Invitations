@@ -1,6 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { categories } from '@/lib/categoryConfig';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Crea Invitaciones Digitales Animadas y Unicas | Tap 2 Invite",
+  description: "Diseña y comparte invitaciones digitales personalizadas para bodas, cumpleaños, baby showers y más. Haz que cada evento sea especial con nuestras plantillas elegantes y fáciles de usar.",
+};
 
 export default function Home() {
   return (
