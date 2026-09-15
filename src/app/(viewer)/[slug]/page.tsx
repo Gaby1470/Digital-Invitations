@@ -62,28 +62,50 @@ async function getInvitationDataServer(slug: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const { invitation } = await getInvitationDataServer(slug);
-
-  if (!invitation) {
-    return {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tap2invite.com';
+  const defaultMetadata = {
+    title: 'Invitación | Tap 2 Invite',
+    description: 'Crea y comparte invitaciones digitales animadas para cualquier ocasión.',
+    openGraph: {
       title: 'Invitación | Tap 2 Invite',
       description: 'Crea y comparte invitaciones digitales animadas para cualquier ocasión.',
-    };
+      images: [{
+        url: `${appUrl}/branding/portadas/general.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Tap 2 Invite Logo'
+      }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Invitación | Tap 2 Invite',
+      description: 'Crea y comparte invitaciones digitales animadas para cualquier ocasión.',
+      images: [`${appUrl}/branding/portadas/general.png`],
+    }
+  };
+
+  if (!invitation) {
+    return defaultMetadata;
   }
 
   const invitationData = invitation.data || {};
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tap2invite.com';
 
   const title = invitationData.heroNames || 'Nuestra Invitación';
   const description = invitationData.heroSubtitle || invitationData.heroTitle || 'Acompáñanos a celebrar este día tan especial.';
-  const imageUrl = invitationData.hero_image_url || '/branding/share-image.jpg';
+  
+  let imageUrl = invitationData.hero_image_url || '/branding/portadas/general.png';
+  if (imageUrl.startsWith('/')) {
+    imageUrl = `${appUrl}${imageUrl}`;
+  }
 
   return {
+    metadataBase: new URL(appUrl),
     title: `${title} | Tap 2 Invite`,
     description,
     openGraph: {
       title,
       description,
-      url: `${appUrl}/invitation/${slug}`,
+      url: `/${slug}`,
       siteName: 'Tap 2 Invite',
       images: [
         {
