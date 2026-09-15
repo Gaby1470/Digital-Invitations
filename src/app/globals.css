@@ -25,3 +25,13 @@ body {
   color: var(--foreground);
   font-family: theme(font.sans);
 }
+
+/* Force light mode variables regardless of system dark-mode preferences */
+.forced-light,
+html.forced-light,
+body.forced-light {
+  --background: #ffffff !important;
+  --foreground: #171717 !important;
+  background-color: #ffffff !important;
+  color: #171717 !important;
+}

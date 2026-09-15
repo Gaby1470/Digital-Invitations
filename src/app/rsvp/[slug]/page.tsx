@@ -244,6 +244,15 @@ export default function RsvpPage() {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  useEffect(() => {
+    document.documentElement.classList.add('forced-light');
+    document.body.classList.add('forced-light');
+    return () => {
+      document.documentElement.classList.remove('forced-light');
+      document.body.classList.remove('forced-light');
+    };
+  }, []);
+
   // Query 1: Fetch the guest party details
   const { data: party, isLoading: isLoadingParty, error: partyError } = useQuery({
     queryKey: ['partyDetails', slug],

@@ -1,180 +1,115 @@
-'use client';
-
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
-import { useState } from 'react';
-import { toast } from 'react-hot-toast';
-import TemplateRenderer from '@/components/TemplateRenderer';
-import { templateConfig } from '@/lib/templateConfig';
-import { EditorData } from '@/lib/custom_types';
-import Modal from '@/components/editor/shared/Modal';
-import { CheckCircle, Loader, AlertTriangle, Send } from 'lucide-react';
+// src/app/(viewer)/[slug]/page.tsx
+import { cookies } from 'next/headers';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase-server';
+import { templateConfig } from '@/lib/templateConfig';
+import InviteClientPage from './client-page';
+import { AlertTriangle } from 'lucide-react';
+import type { Metadata } from 'next';
 
-// --- Data Fetching ---
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
-class HttpError extends Error {
-    status: number;
-    constructor(message: string, status: number) {
-        super(message);
-        this.status = status;
-    }
-}
+// --- Server-Side Data Fetcher Helper (cached or deduplicated) ---
+async function getInvitationDataServer(slug: string) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
-async function getInvitation(slug: string) {
-  const res = await fetch(`/api/invitations/by-slug/${slug}`);
-  if (!res.ok) {
-    const errorBody = await res.json().catch(() => ({}));
-    throw new HttpError(errorBody.error || `Error: ${res.status}`, res.status);
+  // Get current user if logged in
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Fetch the invitation by slug
+  const { data, error } = await supabase
+    .from('invitations')
+    .select('*')
+    .eq('slug', slug)
+    .single();
+
+  if (error || !data) {
+    return { error: 'Invitation not found.', status: 404, invitation: null };
   }
-  return res.json();
-}
 
-type RsvpSubmission = {
-    attending_count: number;
-    guest_names?: string[];
-    notes?: string;
-}
-
-type RsvpResponse = {
-    id: string;
-    guest_party_id: string;
-    attending_count: number;
-    guest_names: string[];
-    notes: string | null;
-    submitted_at: string;
-}
-
-async function submitGeneralRsvp(submission: RsvpSubmission & { invitationId: string }): Promise<RsvpResponse> {
-    const res = await fetch(`/api/general-rsvp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submission),
-    });
-    if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || 'Failed to submit RSVP.');
-    }
-    return res.json();
-}
-
-// --- Components ---
-
-function GeneralRsvpForm({ invitationId, onClose }: { invitationId: string, onClose: () => void }) {
-    const queryClient = useQueryClient();
-    const [willAttend, setWillAttend] = useState<boolean | null>(null);
-    const [guestName, setGuestName] = useState('');
-    const [notes, setNotes] = useState('');
-    const [isSubmitted, setIsSubmitted] = useState(false);
-
-    const rsvpMutation = useMutation({
-        mutationFn: (submission: RsvpSubmission & { invitationId: string }) => submitGeneralRsvp(submission),
-        onSuccess: () => {
-            setIsSubmitted(true);
-            toast.success("Thank you for your response!");
-            queryClient.invalidateQueries({ queryKey: ['guestParties', invitationId] });
-        },
-        onError: (err: Error) => {
-            toast.error(err.message);
+  // Check if the invitation is expired
+  const now = new Date();
+  const expiresAt = data.expires_at ? new Date(data.expires_at) : null;
+  
+  if (expiresAt && expiresAt < now) {
+    // Optionally update the is_expired flag in the database
+    if (!data.is_expired) {
+      // Async background update, no await to speed up rendering
+      supabase.from('invitations').update({ is_expired: true }).eq('id', data.id).then(({ error: updateError }) => {
+        if (updateError) {
+          console.error(`Failed to update is_expired flag for invitation ${data.id}:`, updateError);
         }
-    });
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const attending_count = willAttend ? 1 : 0;
-        const guest_names = willAttend && guestName ? [guestName] : [];
-        rsvpMutation.mutate({ invitationId, attending_count, guest_names, notes });
-    };
-
-    if (isSubmitted) {
-        return (
-            <div className="text-center p-8 bg-green-50 rounded-xl">
-                <CheckCircle className="mx-auto text-green-500 mb-4" size={56} />
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">RSVP Recibido!</h2>
-                <p className="text-gray-600">Se ha guardado tu respuesta</p>
-                <button onClick={onClose} className="mt-8 inline-block px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all">
-                    Cerrar
-                </button>
-            </div>
-        );
+      });
     }
-
-    return (
-        <div className="p-6">
-            <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">¿Asistirás?</h1>
-                <p className="text-base text-gray-600 mt-2">Por favor, háznoslo saber si puedes asistir.</p>
-            </div>
-            
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                    <button type="button" onClick={() => setWillAttend(true)} className={`py-4 rounded-lg font-semibold border-2 transition-all ${willAttend === true ? 'bg-green-600 text-white border-green-700 scale-105' : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'}`}>
-                        ¡Sí, asistiré!
-                    </button>
-                    <button type="button" onClick={() => setWillAttend(false)} className={`py-4 rounded-lg font-semibold border-2 transition-all ${willAttend === false ? 'bg-red-600 text-white border-red-700 scale-105' : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'}`}>
-                        Lo siento, no puedo asistir
-                    </button>
-                </div>
-
-                {willAttend && (
-                    <div className="pt-4 border-t">
-                        <label htmlFor="guest_name" className="block text-sm font-semibold text-gray-600 mb-1">Tu Nombre</label>
-                        <input
-                            id="guest_name"
-                            type="text"
-                            value={guestName}
-                            onChange={(e) => setGuestName(e.target.value)}
-                            placeholder="Nombre Completo"
-                            required
-                            className="w-full px-4 py-2 text-base bg-gray-50 rounded-lg border border-gray-300 shadow-inner focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-                        />
-                    </div>
-                )}
-                
-                <div>
-                    <label htmlFor="notes" className="block text-sm font-semibold text-gray-600 mb-2">Deja una nota (opcional)</label>
-                    <textarea
-                        id="notes"
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                        rows={3}
-                        className="w-full px-4 py-2 text-base bg-gray-50 rounded-lg border border-gray-300 shadow-inner focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-                        placeholder="p. ej., buenos deseos..."
-                    ></textarea>
-                </div>
-
-                <button type="submit" disabled={rsvpMutation.isPending || willAttend === null} className="w-full flex items-center justify-center px-6 py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:bg-indigo-400 transition-all text-lg shadow-md">
-                    {rsvpMutation.isPending ? <><Loader className="animate-spin mr-2"/> Submitting...</> : <><Send className="mr-2"/> Submit RSVP</>}
-                </button>
-            </form>
-        </div>
-    );
-}
-
-export default function InvitePage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { data: invitation, isLoading, error } = useQuery({
-    queryKey: ['invitation', slug],
-    queryFn: () => getInvitation(slug),
-    enabled: !!slug,
-  });
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="flex flex-col items-center">
-          <Loader className="h-12 w-12 text-indigo-500 animate-spin" />
-          <p className="mt-4 text-lg text-gray-600 font-medium">Cargando Invitación...</p>
-        </div>
-      </div>
-    );
+    return { error: 'This invitation has expired.', status: 410, invitation: null };
   }
 
-  if (error) {
-    const status = (error as HttpError).status;
+  // If the invitation isn't published, only the owner can see it
+  if (!data.is_published) {
+    if (!user || user.id !== data.user_id) {
+      console.error(`Unauthorized access attempt for unpublished invitation with slug ${slug}`);
+      return { error: 'This invitation has not been published yet.', status: 403, invitation: null };
+    }
+  }
+
+  return { invitation: data, status: 200, error: null };
+}
+
+// --- Dynamic Metadata Generation (OpenGraph Cards) ---
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const { invitation } = await getInvitationDataServer(slug);
+
+  if (!invitation) {
+    return {
+      title: 'Invitación | Tap 2 Invite',
+      description: 'Crea y comparte invitaciones digitales animadas para cualquier ocasión.',
+    };
+  }
+
+  const invitationData = invitation.data || {};
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tap2invite.com';
+
+  const title = invitationData.heroNames || 'Nuestra Invitación';
+  const description = invitationData.heroSubtitle || invitationData.heroTitle || 'Acompáñanos a celebrar este día tan especial.';
+  const imageUrl = invitationData.hero_image_url || '/branding/share-image.jpg';
+
+  return {
+    title: `${title} | Tap 2 Invite`,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${appUrl}/invitation/${slug}`,
+      siteName: 'Tap 2 Invite',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `Invitación de ${title}`,
+        },
+      ],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
+
+// --- Server-Rendered Page ---
+export default async function InvitePage({ params }: Props) {
+  const { slug } = await params;
+  const { invitation, status } = await getInvitationDataServer(slug);
+
+  if (!invitation) {
     let title = "Invitation Not Found";
     let message = "The invitation link is either invalid or has been removed.";
     if (status === 403) {
@@ -201,7 +136,7 @@ export default function InvitePage() {
     );
   }
   
-  const template = invitation ? templateConfig[invitation.template] : null;
+  const template = templateConfig[invitation.template];
 
   if (!template) {
      return (
@@ -212,18 +147,5 @@ export default function InvitePage() {
     );
   }
 
-  return (
-    <>
-      <TemplateRenderer 
-        templateId={invitation.template} 
-        template={template} 
-        data={invitation.data} 
-        invitationId={invitation.id}
-        onRsvpClick={() => setIsModalOpen(true)}
-      />
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title=" ">
-        <GeneralRsvpForm invitationId={invitation.id} onClose={() => setIsModalOpen(false)} />
-      </Modal>
-    </>
-  );
+  return <InviteClientPage invitation={invitation} />;
 }
