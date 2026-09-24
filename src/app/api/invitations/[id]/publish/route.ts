@@ -26,7 +26,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     { data: profile, error: profileError },
     { data: invitation, error: invitationError }
   ] = await Promise.all([
-    supabase.from('profiles').select('plan, template_credits').eq('id', user.id).single(),
+    supabase.from('profiles').select('plan, template_credits, is_admin').eq('id', user.id).single(),
     supabase.from('invitations').select('user_id, template, data').eq('id', id).single()
   ]);
 
@@ -37,13 +37,13 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (invitation.user_id !== user.id) {
     return NextResponse.json({ error: 'You do not have permission to publish this invitation.' }, { status: 403 });
   }
-  
+
   if (profileError || !profile) {
     return NextResponse.json({ error: 'Could not retrieve user profile.' }, { status: 500 });
   }
 
-  // Handle 'single_tier' plan logic
-  if (profile.plan === 'single_tier') {
+  // Handle 'single_tier' plan logic, but not for admins
+  if (!profile.is_admin && profile.plan === 'single_tier') {
     if (profile.template_credits <= 0) {
       return NextResponse.json({ error: 'No tienes créditos disponibles. Favor de comprar uno para proceder con la edición.' }, { status: 403 });
     }
@@ -74,7 +74,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     p_invitation_id: id,
     p_user_id: user.id,
     p_expires_at: expires_at,
-    p_decrement: profile.plan === 'single_tier',
+    p_decrement: !profile.is_admin && profile.plan === 'single_tier',
   });
 
   if (publishError) {
