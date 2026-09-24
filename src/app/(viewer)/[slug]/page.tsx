@@ -89,11 +89,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const invitationData = invitation.data || {};
+  const templateDetails = templateConfig[invitation.template];
 
   const title = invitationData.heroNames || 'Nuestra Invitación';
   const description = invitationData.heroSubtitle || invitationData.heroTitle || 'Acompáñanos a celebrar este día tan especial.';
   
-  let imageUrl = invitationData.hero_image_url || '/branding/portadas/general.png';
+  let imageUrl = invitationData.hero_image_url;
+
+  if (!imageUrl && templateDetails) {
+    imageUrl = templateDetails.thumbnail;
+  }
+
+  if (!imageUrl) {
+    imageUrl = '/branding/portadas/general.png';
+  }
+  
   if (imageUrl.startsWith('/')) {
     imageUrl = `${appUrl}${imageUrl}`;
   }
