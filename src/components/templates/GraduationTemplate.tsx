@@ -132,7 +132,7 @@ export default function GraduationTemplate({ template, data, invitationId, onRsv
               event={getCalendarEventFromData(invitationData)}
               primaryColor={colorPalette['--primary']}
               textColor="#ffffff"
-              variant="outline"
+              variant="solid"
             />
           </motion.div>
           

@@ -3,6 +3,7 @@
 import { Tables, Json } from './types';
 
 export type EditorData = Partial<Tables<'invitations'>['Row']['data']> & {
+  audioUrl?: string;
   [key: string]: Json | undefined;
 };
 

@@ -4,6 +4,7 @@
 import { TemplateConfig } from "@/lib/custom_types";
 import { EditorData } from "@/lib/custom_types";
 import { TEMPLATE_COMPONENTS } from "./templates";
+import { AmbientAudioPlayer } from "./shared/AmbientAudioPlayer";
 
 type TemplateRendererProps = {
   templateId: string;
@@ -37,8 +38,25 @@ export default function TemplateRenderer({ templateId, template, data, invitatio
     );
   }
 
+  const audioUrl = 
+    (typeof data?.audioUrl === 'string' && data.audioUrl) || 
+    (typeof template?.defaultData?.audioUrl === 'string' && template.defaultData.audioUrl) || 
+    '';
+
+  const primaryColor = 
+    (typeof data?.primaryColor === 'string' && data.primaryColor) || 
+    (typeof template?.defaultData?.primaryColor === 'string' && template.defaultData.primaryColor) || 
+    undefined;
+
   return (
-    <div>
+    <div className="relative">
+      {audioUrl && (
+        <AmbientAudioPlayer
+          audioUrl={audioUrl}
+          title={typeof data?.heroNames === 'string' ? `Música de ${data.heroNames}` : "Música Ambiental"}
+          primaryColor={primaryColor}
+        />
+      )}
       <SelectedComponent template={template} data={data} invitationId={invitationId} onRsvpClick={onRsvpClick} />
     </div>
   );

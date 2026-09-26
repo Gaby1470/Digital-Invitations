@@ -202,8 +202,8 @@ export default function PrincessBirthdayTemplate({ template, data, onRsvpClick }
                     <AddToCalendar
                       event={getCalendarEventFromData(invitationData)}
                       primaryColor={theme.textGold}
-                      textColor={theme.textDark}
-                      variant="glass"
+                      textColor="#ffffff"
+                      variant="pill"
                     />
                   </div>
                 </div>

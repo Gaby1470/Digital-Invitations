@@ -143,7 +143,7 @@ export function AddToCalendar({
     
     switch (variant) {
       case 'glass':
-        return `${base} px-5 py-2.5 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 text-white shadow-md hover:shadow-lg active:scale-95 text-xs sm:text-sm tracking-wider uppercase`;
+        return `${base} px-5 py-2.5 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 shadow-md hover:shadow-lg active:scale-95 text-xs sm:text-sm tracking-wider uppercase`;
       case 'outline':
         return `${base} px-6 py-3 rounded-xl border-2 hover:scale-[1.02] active:scale-95 text-sm font-semibold shadow-sm`;
       case 'pill':
@@ -173,7 +173,9 @@ export function AddToCalendar({
           color: textColor || primaryColor,
         };
       case 'glass':
-        return {};
+        return {
+          color: textColor || '#ffffff',
+        };
       case 'solid':
       case 'pill':
       case 'compact':
