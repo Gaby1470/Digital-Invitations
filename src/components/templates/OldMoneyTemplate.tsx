@@ -5,6 +5,9 @@ import React, { useRef } from "react";
 import { TimelineItem, DressCode, Godparent, TemplateConfig, EditorData } from "@/lib/custom_types";
 import Image from "next/image";
 import { RsvpTrigger } from './shared/RsvpTrigger';
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
+import { Calendar } from 'lucide-react';
 
 function AnimatedSection({
   children,
@@ -356,6 +359,36 @@ export default function OldMoneyTemplate({
       {/* 8. RESERVED PLACES & RSVP */}
       <section className="py-10 px-6 bg-white text-center">
         <div className="max-w-md mx-auto space-y-12">
+          {/* Dedicated Add to Calendar Block */}
+          {invitationData.event_date && (
+            <AnimatedSection>
+              <div className="p-8 rounded-2xl border border-stone-200/80 bg-[#fcfbf9] shadow-sm flex flex-col items-center">
+                <div 
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-sm"
+                  style={{ backgroundColor: `${accentColor}18`, color: accentColor }}
+                >
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <p className="text-[10px] uppercase tracking-[0.3em] font-medium opacity-60 mb-2">
+                  Agenda la Fecha
+                </p>
+                <h3 className="font-serif italic text-3xl mb-3" style={{ color: accentColor }}>
+                  Añadir a mi Calendario
+                </h3>
+                <p className="text-xs uppercase tracking-wider opacity-70 mb-8 max-w-xs leading-relaxed">
+                  Será un honor contar con tu presencia. Guarda este gran día en tu dispositivo móvil.
+                </p>
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor={accentColor}
+                  textColor="#ffffff"
+                  variant="pill"
+                  buttonText="Añadir al Calendario"
+                />
+              </div>
+            </AnimatedSection>
+          )}
+
           <AnimatedSection>
             <p className="text-xs uppercase tracking-wider opacity-80 mt-8 max-w-[250px] mx-auto leading-relaxed">
               Es muy importante para nosotros contar con tu presencia.

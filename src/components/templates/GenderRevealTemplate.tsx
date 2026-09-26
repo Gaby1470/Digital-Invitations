@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import { MapPin } from 'lucide-react';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
 
 function normalizeExternalUrl(value?: string): string {
   if (!value) return '#';
@@ -163,6 +165,14 @@ export default function GenderRevealTemplate({ template, data, onRsvpClick }: Ge
                   {time}
                 </p>
               )}
+              <div className="mt-5 flex justify-center">
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor={invitationData.primaryColor}
+                  textColor="#ffffff"
+                  variant="solid"
+                />
+              </div>
             </div>
           )}
         </motion.div>

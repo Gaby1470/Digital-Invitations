@@ -6,6 +6,8 @@ import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import { Feather } from 'lucide-react';
 import Image from 'next/image';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
 
 // Smooth, organic fade-in utility
 function GentleFade({ children, delay = 0, yOffset = 20 }: { children: React.ReactNode, delay?: number, yOffset?: number }) {
@@ -119,6 +121,20 @@ export default function GraduationTemplate({ template, data, invitationId, onRsv
           >
             {invitationData.degreeType || "Clase de 2026"}
           </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.4, duration: 1 }}
+            className="mt-6"
+          >
+            <AddToCalendar
+              event={getCalendarEventFromData(invitationData)}
+              primaryColor={colorPalette['--primary']}
+              textColor="#ffffff"
+              variant="outline"
+            />
+          </motion.div>
           
           <motion.div 
             initial={{ height: 0 }}

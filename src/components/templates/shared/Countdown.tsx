@@ -2,6 +2,8 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import { AddToCalendar, AddToCalendarProps } from './AddToCalendar';
+import { CalendarEvent } from '@/lib/calendar';
 
 type CountdownProps = {
   targetDate: string;
@@ -9,6 +11,9 @@ type CountdownProps = {
   itemClassName?: string;
   numberClassName?: string;
   labelClassName?: string;
+  showAddToCalendar?: boolean;
+  event?: CalendarEvent;
+  calendarProps?: Partial<AddToCalendarProps>;
 };
 
 const calculateTimeLeft = (targetDate: string) => {
@@ -39,7 +44,10 @@ export default function Countdown({
   className, 
   itemClassName,
   numberClassName,
-  labelClassName
+  labelClassName,
+  showAddToCalendar = false,
+  event,
+  calendarProps
 }: CountdownProps) {
   const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
 
@@ -62,32 +70,49 @@ export default function Countdown({
     return null;
   }
 
+  const calendarEvent: CalendarEvent = event || {
+    title: 'Evento Especial',
+    startDate: targetDate,
+  };
+
   return (
-    <div className={className || "flex justify-center gap-4 md:gap-8"}>
-      <div className={itemClassName || "text-center"}>
-        <span className={numberClassName || "text-4xl md:text-6xl font-bold"}>
-          {addLeadingZero(timeLeft.days)}
-        </span>
-        <span className={labelClassName || "block text-xs md:text-sm uppercase"}>Days</span>
+    <div className="flex flex-col items-center">
+      <div className={className || "flex justify-center gap-4 md:gap-8"}>
+        <div className={itemClassName || "text-center"}>
+          <span className={numberClassName || "text-4xl md:text-6xl font-bold"}>
+            {addLeadingZero(timeLeft.days)}
+          </span>
+          <span className={labelClassName || "block text-xs md:text-sm uppercase"}>Días</span>
+        </div>
+        <div className={itemClassName || "text-center"}>
+          <span className={numberClassName || "text-4xl md:text-6xl font-bold"}>
+            {addLeadingZero(timeLeft.hours)}
+          </span>
+          <span className={labelClassName || "block text-xs md:text-sm uppercase"}>Horas</span>
+        </div>
+        <div className={itemClassName || "text-center"}>
+          <span className={numberClassName || "text-4xl md:text-6xl font-bold"}>
+            {addLeadingZero(timeLeft.minutes)}
+          </span>
+          <span className={labelClassName || "block text-xs md:text-sm uppercase"}>Minutos</span>
+        </div>
+        <div className={itemClassName || "text-center"}>
+          <span className={numberClassName || "text-4xl md:text-6xl font-bold"}>
+            {addLeadingZero(timeLeft.seconds)}
+          </span>
+          <span className={labelClassName || "block text-xs md:text-sm uppercase"}>Segundos</span>
+        </div>
       </div>
-      <div className={itemClassName || "text-center"}>
-        <span className={numberClassName || "text-4xl md:text-6xl font-bold"}>
-          {addLeadingZero(timeLeft.hours)}
-        </span>
-        <span className={labelClassName || "block text-xs md:text-sm uppercase"}>Hours</span>
-      </div>
-      <div className={itemClassName || "text-center"}>
-        <span className={numberClassName || "text-4xl md:text-6xl font-bold"}>
-          {addLeadingZero(timeLeft.minutes)}
-        </span>
-        <span className={labelClassName || "block text-xs md:text-sm uppercase"}>Minutes</span>
-      </div>
-      <div className={itemClassName || "text-center"}>
-        <span className={numberClassName || "text-4xl md:text-6xl font-bold"}>
-          {addLeadingZero(timeLeft.seconds)}
-        </span>
-        <span className={labelClassName || "block text-xs md:text-sm uppercase"}>Seconds</span>
-      </div>
+
+      {showAddToCalendar && (
+        <div className="mt-6 flex justify-center">
+          <AddToCalendar 
+            event={calendarEvent} 
+            variant="glass"
+            {...calendarProps}
+          />
+        </div>
+      )}
     </div>
   );
 }

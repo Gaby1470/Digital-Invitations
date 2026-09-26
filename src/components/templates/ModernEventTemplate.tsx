@@ -6,6 +6,8 @@ import { TimelineItem, TemplateConfig, EditorData } from "@/lib/custom_types";
 import Countdown from "./shared/Countdown";
 import { MapPinIcon, CalendarIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { RsvpTrigger } from './shared/RsvpTrigger';
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
 
 // A reusable fade-in component for modern animations
 function FadeIn({
@@ -94,13 +96,21 @@ export default function ModernEventTemplate({
           </FadeIn>
           {invitationData.event_date && (
              <FadeIn delay={0.3}>
-                <div className="mt-12">
+                <div className="mt-12 flex flex-col items-center">
                     <Countdown
                         targetDate={invitationData.event_date}
                         className="flex justify-center gap-8"
                         numberClassName="text-4xl sm:text-5xl font-bold text-slate-900"
                         labelClassName="text-xs uppercase tracking-wider text-slate-500 block mt-2"
                     />
+                    <div className="mt-8">
+                      <AddToCalendar
+                        event={getCalendarEventFromData(invitationData)}
+                        primaryColor={primaryColor}
+                        textColor="#ffffff"
+                        variant="solid"
+                      />
+                    </div>
                 </div>
             </FadeIn>
           )}

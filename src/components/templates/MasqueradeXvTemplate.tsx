@@ -7,6 +7,8 @@ import { TimelineItem, DressCode, TemplateConfig, EditorData } from "@/lib/custo
 import { DressCodePreview } from "./shared/DressCodePreview";
 import Countdown from "./shared/Countdown";
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from "./shared/AddToCalendar";
+import { getCalendarEventFromData } from "@/lib/calendar";
 
 function normalizeExternalUrl(value?: string): string {
   if (!value) return '#';
@@ -256,6 +258,17 @@ export default function MasqueradeXvTemplate({
                 numberClassName="block text-3xl sm:text-4xl"
                 labelClassName="block text-xs uppercase tracking-widest"
               />
+            )}
+
+            {invitationData.event_date && (
+              <div className="mt-8 flex justify-center">
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor={invitationData.primaryColor}
+                  textColor="#ffffff"
+                  variant="glass"
+                />
+              </div>
             )}
           </div>
         </section>

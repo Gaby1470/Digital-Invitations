@@ -9,6 +9,9 @@ import GiftSection from "./shared/GiftSection";
 import Countdown from "./shared/Countdown";
 import Lightbox from "./shared/Lightbox";
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from "./shared/AddToCalendar";
+import { getCalendarEventFromData } from "@/lib/calendar";
+import { Calendar } from "lucide-react";
 
 function FadeIn({
   children,
@@ -420,6 +423,40 @@ export default function MinimalistWeddingTemplate({
               </FadeIn>
           </div>
       </section>
+
+      {/* Dedicated Add To Calendar Section before RSVP */}
+      {invitationData.event_date && (
+        <section className="py-20 px-6 bg-neutral-50/80 border-t border-neutral-200/60 text-center">
+          <div className="max-w-md mx-auto">
+            <FadeIn>
+              <div className="flex flex-col items-center">
+                <div 
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-sm"
+                  style={{ backgroundColor: `${invitationData.primaryColor || '#171717'}12`, color: invitationData.primaryColor || '#171717' }}
+                >
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-neutral-400 mb-2">
+                  Guarda la Fecha
+                </p>
+                <h3 className="text-2xl md:text-3xl font-light uppercase tracking-widest text-neutral-900 mb-3">
+                  Agendar Nuestra Boda
+                </h3>
+                <p className="text-xs uppercase tracking-wider text-neutral-500 mb-8 max-w-xs leading-relaxed">
+                  Para nosotros es un honor contar con tu presencia. Añade la fecha a tu calendario móvil.
+                </p>
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor={invitationData.primaryColor || "#171717"}
+                  textColor="#ffffff"
+                  variant="solid"
+                  buttonText="Añadir al Calendario"
+                />
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+      )}
 
       {onRsvpClick && (
         <section className="py-20 px-6 bg-neutral-50 border-t border-neutral-100">

@@ -6,6 +6,8 @@ import { TemplateConfig } from '@/lib/custom_types';
 import { EditorData } from "@/lib/custom_types";
 import Image from 'next/image';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
 
 // Soft, elegant fade-in animation suitable for a princess theme
 function GentleFadeIn({ children, delay = 0, direction = "up" }: { children: React.ReactNode, delay?: number, direction?: "up" | "none" }) {
@@ -196,6 +198,14 @@ export default function PrincessBirthdayTemplate({ template, data, onRsvpClick }
                   <p className="text-sm font-medium tracking-[0.15em]" style={{ color: theme.textGold }}>
                     {invitationData.startTime && invitationData.endTime ? `${invitationData.startTime} - ${invitationData.endTime}` : (invitationData.time || "12:00 PM - 2:00 PM")}
                   </p>
+                  <div className="mt-4 flex justify-center">
+                    <AddToCalendar
+                      event={getCalendarEventFromData(invitationData)}
+                      primaryColor={theme.textGold}
+                      textColor={theme.textDark}
+                      variant="glass"
+                    />
+                  </div>
                 </div>
 
                 <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-[#C28B96] to-transparent mx-auto opacity-40" />

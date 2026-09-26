@@ -7,6 +7,8 @@ import { motion, useInView } from "framer-motion";
 import { Calendar, MapPin, Baby, Heart, PartyPopper, Utensils, Clock } from "lucide-react";
 import GiftSection from './shared/GiftSection';
 import { RsvpTrigger } from './shared/RsvpTrigger';
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
 
 function FadeIn({
   children,
@@ -176,6 +178,14 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
                   </div>
                   <div className="text-xl font-bold" style={{ color: textColor }}>{date}</div>
                   <div className="text-md font-medium mt-0.5">{time}</div>
+                  <div className="mt-4 flex justify-center">
+                    <AddToCalendar
+                      event={getCalendarEventFromData(invitationData)}
+                      primaryColor={primaryColor}
+                      textColor="#ffffff"
+                      variant="pill"
+                    />
+                  </div>
                 </div>
               </FadeIn>
             </>
@@ -216,6 +226,14 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
                       </div>
                     </div>
                   ))}
+                </div>
+                <div className="mt-6 pt-4 border-t border-white/60 flex justify-center">
+                  <AddToCalendar
+                    event={getCalendarEventFromData(invitationData)}
+                    primaryColor={primaryColor}
+                    textColor="#ffffff"
+                    variant="pill"
+                  />
                 </div>
               </div>
             </FadeIn>

@@ -6,6 +6,8 @@ import { TemplateConfig } from '@/lib/custom_types';
 import { EditorData } from "@/lib/custom_types";
 import Image from 'next/image';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
 
 function BounceIn({ children, delay = 0, direction = "up" }: { children: React.ReactNode, delay?: number, direction?: "up" | "left" | "right" }) {
   const ref = useRef(null);
@@ -188,6 +190,18 @@ export default function SportsBirthdayTemplate({ template, data, invitationId, o
                       {formattedTime(invitationData.event_date)}
                     </p>
                   </div>
+                </div>
+
+                <div className="w-full border-t-2 border-dashed border-neutral-200" />
+
+                <div className="flex justify-center pt-1">
+                  <AddToCalendar
+                    event={getCalendarEventFromData(invitationData)}
+                    primaryColor={invitationData.primaryColor}
+                    textColor="#ffffff"
+                    variant="solid"
+                    buttonText="Agendar Partido"
+                  />
                 </div>
               </div>
             </div>

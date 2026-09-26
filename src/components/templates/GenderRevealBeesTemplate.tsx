@@ -8,6 +8,8 @@ import { motion, useInView } from "framer-motion";
 import { Calendar, MapPin, Gift, Sparkles, CheckCircle, ExternalLink } from "lucide-react";
 import Image from 'next/image';
 import { RsvpTrigger } from './shared/RsvpTrigger';
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
 
 function FadeIn({
   children,
@@ -218,6 +220,14 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
               <h3 className="text-lg font-bold text-yellow-900 uppercase tracking-wider">{date}</h3>
               <p className="text-3xl font-extrabold mt-1" style={{ color: textColor }}>{time}</p>
               <p className="text-sm font-semibold text-yellow-800 mt-2">{timeSubtitle}</p>
+              <div className="mt-5 flex justify-center">
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor="#ca8a04"
+                  textColor="#ffffff"
+                  variant="solid"
+                />
+              </div>
             </div>
           </div>
         </FadeIn>

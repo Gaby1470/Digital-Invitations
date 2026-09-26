@@ -6,6 +6,8 @@ import { TimelineItem, CourtMember, TemplateConfig, EditorData } from "@/lib/cus
 import Image from "next/image";
 
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from "./shared/AddToCalendar";
+import { getCalendarEventFromData } from "@/lib/calendar";
 
 // Helper for smooth scroll animations
 function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -125,9 +127,17 @@ export default function QuinceaneraTemplate({ template, data, invitationId, onRs
               <p className="text-2xl" style={{ color: invitationData.textColor, fontFamily: 'var(--font-playfair-display), serif' }}>
                 {new Date(invitationData.event_date).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
-              <p className="text-lg mt-2" style={{ color: invitationData.textColor, opacity: 0.8 }}>
+              <p className="text-lg mt-2 mb-6" style={{ color: invitationData.textColor, opacity: 0.8 }}>
                 {new Date(invitationData.event_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
               </p>
+              <div className="flex justify-center">
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor={invitationData.primaryColor}
+                  textColor="#ffffff"
+                  variant="solid"
+                />
+              </div>
             </div>
           )}
         </AnimatedSection>

@@ -4,6 +4,8 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Godparent, TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
 
 function normalizeExternalUrl(value?: string): string {
   if (!value) return '#';
@@ -105,7 +107,13 @@ export default function BaptismTemplate({ template, data, onRsvpClick }: Baptism
               <p className="text-xl sm:text-2xl tracking-wide font-light" style={{ color: invitationData.textColor }}>
                 {date}
               </p>
-              <div className="h-px w-16 mt-4" style={{ backgroundColor: invitationData.primaryColor, opacity: 0.5 }} />
+              <div className="h-px w-16 mt-4 mb-6" style={{ backgroundColor: invitationData.primaryColor, opacity: 0.5 }} />
+              <AddToCalendar
+                event={getCalendarEventFromData(invitationData)}
+                primaryColor={invitationData.primaryColor}
+                textColor={invitationData.textColor}
+                variant="outline"
+              />
             </div>
           </SacredFadeIn>
 

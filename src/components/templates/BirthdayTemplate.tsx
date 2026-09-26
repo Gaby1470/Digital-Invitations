@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import confetti from 'canvas-confetti';
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
 
 function PopIn({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
   const ref = useRef(null);
@@ -215,6 +217,15 @@ export default function BirthdayTemplate({ template, data, onRsvpClick }: Birthd
                   {invitationData.dateSubtitle}
                 </p>
               )}
+
+              <div className="mt-5 flex justify-center">
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor={currentTheme.accent}
+                  textColor="#ffffff"
+                  variant="glass"
+                />
+              </div>
 
               {mapSrc && (
                 <div className="mt-4 rounded-xl overflow-hidden border border-white/20 aspect-video">

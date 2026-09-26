@@ -5,6 +5,8 @@ import { useRef, useState } from "react";
 import { TimelineItem, TemplateConfig, EditorData } from "@/lib/custom_types";
 import Image from "next/image";
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from "./shared/AddToCalendar";
+import { getCalendarEventFromData } from "@/lib/calendar";
 
 // Floating animation utility for stickers/elements
 function FloatingSticker({
@@ -200,6 +202,14 @@ export default function ScrapbookGraduationTemplate({
               <p className="text-3xl md:text-4xl text-[var(--primary-color)] tracking-widest">
                 {formattedTime(invitationData.event_date)}
               </p>
+              <div className="pt-2">
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor="var(--primary-color)"
+                  textColor="#ffffff"
+                  variant="solid"
+                />
+              </div>
             </div>
           </PopIn>
         </div>

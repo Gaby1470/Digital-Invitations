@@ -5,6 +5,8 @@ import { motion, useInView } from 'framer-motion';
 import { TimelineItem, TemplateConfig, EditorData } from '@/lib/custom_types';
 import React, { useRef } from 'react';
 import { RsvpTrigger } from './shared/RsvpTrigger';
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
 
 /**
  * Clean, sharp transition for professional blocks.
@@ -113,6 +115,15 @@ export default function CorporateTemplate({ template, data, invitationId, onRsvp
                   </div>
                   <p className="text-lg sm:text-xl md:text-2xl font-medium opacity-90 break-words">{invitationData.venue_city || "San Francisco, CA"}</p>
                 </div>
+              </div>
+
+              <div className="mt-8 flex justify-center">
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor={highlightTextColor}
+                  textColor={invitationData.textColor}
+                  variant="outline"
+                />
               </div>
             </SectionReveal>
           </div>

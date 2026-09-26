@@ -7,6 +7,9 @@ import { TemplateConfig, TimelineItem } from "@/lib/custom_types";
 import { EditorData } from "@/lib/custom_types";
 import Lightbox from "./shared/Lightbox";
 import { RsvpTrigger } from './shared/RsvpTrigger';
+import { AddToCalendar } from './shared/AddToCalendar';
+import { getCalendarEventFromData } from '@/lib/calendar';
+import { Calendar } from 'lucide-react';
 
 // A utility for animations, similar to other templates
 function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number; }) {
@@ -403,6 +406,40 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
         onClose={() => setLightboxOpen(false)}
         imageUrl={selectedImage}
       />
+
+      {/* Dedicated Add To Calendar Section before RSVP */}
+      {invitationData.event_date && (
+        <section className="py-20 px-6 text-center">
+          <AnimatedSection>
+            <div className="max-w-md mx-auto">
+              <div className="flex flex-col items-center">
+                <div 
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-sm"
+                  style={{ backgroundColor: `${accentColor}18`, color: accentColor }}
+                >
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <p className="text-[10px] tracking-[0.35em] uppercase font-serif mb-2" style={{ color: accentColor }}>
+                  Acompáñanos
+                </p>
+                <h3 className="text-3xl font-serif italic mb-3" style={{ color: accentColor }}>
+                  Agendar Nuestra Boda
+                </h3>
+                <p className="text-xs uppercase tracking-widest text-stone-600 mb-8 max-w-xs leading-relaxed font-light">
+                  Añade este día tan especial a tu calendario móvil para celebrar juntos nuestro amor.
+                </p>
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor={accentColor}
+                  textColor="#ffffff"
+                  variant="pill"
+                  buttonText="Añadir al Calendario"
+                />
+              </div>
+            </div>
+          </AnimatedSection>
+        </section>
+      )}
 
       {onRsvpClick && (
         <section className="py-16 px-6 text-center">

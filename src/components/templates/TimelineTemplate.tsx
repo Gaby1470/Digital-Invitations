@@ -8,6 +8,9 @@ import { DressCodePreview } from "./shared/DressCodePreview";
 import GiftSection from "./shared/GiftSection";
 import Countdown from "./shared/Countdown";
 import { RsvpTrigger } from "./shared/RsvpTrigger";
+import { AddToCalendar } from "./shared/AddToCalendar";
+import { getCalendarEventFromData } from "@/lib/calendar";
+import { Calendar } from "lucide-react";
 
 interface ExtendedTimelineItem extends TimelineItem {
   imageSrc?: string;
@@ -409,6 +412,43 @@ export default function TimelineTemplate({
         giftTitle={invitationData.giftTitle}
         giftMessage={invitationData.giftMessage}
       />
+
+      {/* Dedicated Add To Calendar Section before RSVP */}
+      {invitationData.event_date && (
+        <section className="py-20 px-6 bg-stone-50 border-t border-stone-200/60 text-center">
+          <div className="max-w-md mx-auto">
+            <AnimatedSection>
+              <div className="flex flex-col items-center">
+                <div 
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-sm"
+                  style={{ backgroundColor: `${invitationData.primaryColor}15`, color: invitationData.primaryColor }}
+                >
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-stone-400 mb-2 font-sans">
+                  Guarda la Fecha
+                </p>
+                <h3 
+                  className="text-2xl md:text-3xl font-serif italic mb-3"
+                  style={{ color: invitationData.textColor }}
+                >
+                  Agendar Nuestro Gran Día
+                </h3>
+                <p className="text-xs tracking-wider text-stone-500 mb-8 max-w-xs leading-relaxed font-sans">
+                  Nos encantaría que nos acompañes. Agrega la celebración a tu calendario para no perderte ningún momento.
+                </p>
+                <AddToCalendar
+                  event={getCalendarEventFromData(invitationData)}
+                  primaryColor={invitationData.primaryColor}
+                  textColor="#ffffff"
+                  variant="solid"
+                  buttonText="Añadir a mi Calendario"
+                />
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
 
       {onRsvpClick && (
         <section className="py-20 px-6 text-center">
