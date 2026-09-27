@@ -6,6 +6,7 @@ import Link from 'next/link';
 import ColorInput from '../shared/ColorInput';
 import FontSelection from '../shared/FontSelection';
 import PaletteSelection from '../shared/PaletteSelection';
+import AudioUploader from '../shared/AudioUploader';
 import { TemplateConfig } from '@/lib/custom_types';
 import { EditorData } from '@/lib/custom_types';
 import { useIsAdmin } from '@/hooks/use-is-admin';
@@ -13,14 +14,15 @@ import {
   Music, 
   Crown, 
   Sparkles, 
-  Lock, 
   Play, 
   Pause, 
   Volume2, 
   CheckCircle2, 
   ExternalLink,
   Trash2,
-  HelpCircle
+  AlertCircle,
+  FileAudio,
+  Link as LinkIcon
 } from 'lucide-react';
 
 type ColorsAndStyleSectionProps = {
@@ -37,18 +39,21 @@ const SUGGESTED_TRACKS = [
     url: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-wedding-piano-113262.mp3",
   },
   {
-    name: "Guitarra Suave & Cálida",
-    url: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=acoustic-guitars-ambient-14197.mp3",
+    name: "Celebración Boda (Andrii G)",
+    url: "/audio/wedding-music.mp3",
   },
   {
-    name: "Celebración Alegre",
-    url: "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3?filename=happy-acoustic-guitar-122744.mp3",
+    name: "Guitarra Suave & Cálida",
+    url: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=acoustic-guitars-ambient-14197.mp3",
   },
 ];
 
 export default function ColorsAndStyleSection({ data, template, onFieldChange, onMultipleFieldsChange }: ColorsAndStyleSectionProps) {
   const { isAdmin, isLoading: loadingAdmin } = useIsAdmin();
   const [isPlayingPreview, setIsPlayingPreview] = useState(false);
+  const [audioError, setAudioError] = useState('');
+  const [urlWarning, setUrlWarning] = useState('');
+  const [activeTab, setActiveTab] = useState<'upload' | 'url'>('upload');
   const audioPreviewRef = useRef<HTMLAudioElement | null>(null);
 
   const currentAudioUrl = typeof data.audioUrl === 'string' ? data.audioUrl : '';
@@ -69,8 +74,26 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
     }
   };
 
+  const handleUrlChange = (val: string) => {
+    setAudioError('');
+    onFieldChange('audioUrl', val);
+
+    // Validación inteligente de URLs comunes que NO son archivos de audio directo
+    if (val.includes('pixabay.com/music/') && !val.includes('.mp3')) {
+      setUrlWarning('⚠️ Este enlace es la página web de Pixabay, no el archivo MP3. Para usarlo, pulsa el botón "Descargar" en Pixabay y sube el archivo descargado en la pestaña "Subir Archivo".');
+    } else if (val.includes('youtube.com') || val.includes('youtu.be')) {
+      setUrlWarning('⚠️ YouTube no permite reproducción de audio de fondo directo. Descarga la pista en formato MP3 y súbela desde tu computadora.');
+    } else if (val.includes('spotify.com')) {
+      setUrlWarning('⚠️ Spotify no permite reproducción externa directa de MP3. Utiliza un archivo de audio descargado.');
+    } else {
+      setUrlWarning('');
+    }
+  };
+
   const togglePreview = () => {
     if (!audioPreviewRef.current) return;
+    setAudioError('');
+
     if (isPlayingPreview) {
       audioPreviewRef.current.pause();
       setIsPlayingPreview(false);
@@ -79,6 +102,8 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
         setIsPlayingPreview(true);
       }).catch((e) => {
         console.warn("Could not play preview:", e);
+        setIsPlayingPreview(false);
+        setAudioError('No se pudo reproducir este audio. Verifica que sea un enlace directo a un archivo MP3/WAV o sube un archivo desde tu computadora.');
       });
     }
   };
@@ -118,6 +143,10 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
             onEnded={() => setIsPlayingPreview(false)}
             onPause={() => setIsPlayingPreview(false)}
             onPlay={() => setIsPlayingPreview(true)}
+            onError={() => {
+              setIsPlayingPreview(false);
+              setAudioError('El archivo de audio no pudo ser decodificado. Asegúrate de que sea un archivo de audio directo (.mp3, .wav, .m4a).');
+            }}
           />
         )}
 
@@ -131,7 +160,7 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
                 </span>
                 <div>
                   <h4 className="text-sm font-bold text-amber-950">Música de Fondo (Admin)</h4>
-                  <p className="text-xs text-amber-800/80">Configura el audio ambiental de esta invitación</p>
+                  <p className="text-xs text-amber-800/80">Sube un archivo de audio o configura la URL ambiental</p>
                 </div>
               </div>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-200 text-amber-900 uppercase tracking-wider">
@@ -139,23 +168,67 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
               </span>
             </div>
 
-            <div className="space-y-3 pt-1">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  URL del archivo de audio (MP3 / WAV / M4A)
+            {/* Pestañas para elegir método: Subir Archivo vs Pegar Enlace */}
+            <div className="flex gap-2 p-1 bg-amber-100/60 rounded-xl border border-amber-200/60 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setActiveTab('upload')}
+                className={`flex-1 py-1.5 px-3 rounded-lg flex items-center justify-center gap-1.5 transition ${
+                  activeTab === 'upload' 
+                    ? 'bg-white text-amber-900 shadow-sm' 
+                    : 'text-amber-800 hover:text-amber-950'
+                }`}
+              >
+                <FileAudio className="w-3.5 h-3.5" />
+                <span>Subir Archivo (.mp3)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('url')}
+                className={`flex-1 py-1.5 px-3 rounded-lg flex items-center justify-center gap-1.5 transition ${
+                  activeTab === 'url' 
+                    ? 'bg-white text-amber-900 shadow-sm' 
+                    : 'text-amber-800 hover:text-amber-950'
+                }`}
+              >
+                <LinkIcon className="w-3.5 h-3.5" />
+                <span>Pegar Enlace Directo</span>
+              </button>
+            </div>
+
+            {/* Contenido según pestaña */}
+            {activeTab === 'upload' ? (
+              <div className="space-y-2">
+                <AudioUploader
+                  onAudioUploaded={(url, fileName) => {
+                    onFieldChange('audioUrl', url);
+                    setAudioError('');
+                    setUrlWarning('');
+                  }}
+                />
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <label className="block text-xs font-semibold text-slate-700">
+                  Enlace directo al archivo (.mp3 / .wav / .m4a)
                 </label>
                 <div className="flex gap-2">
                   <input
                     type="url"
                     value={currentAudioUrl}
-                    onChange={(e) => onFieldChange('audioUrl', e.target.value)}
+                    onChange={(e) => handleUrlChange(e.target.value)}
                     placeholder="https://ejemplo.com/cancion.mp3"
                     className="flex-1 px-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
                   />
                   {currentAudioUrl && (
                     <button
                       type="button"
-                      onClick={() => onFieldChange('audioUrl', '')}
+                      onClick={() => {
+                        onFieldChange('audioUrl', '');
+                        setAudioError('');
+                        setUrlWarning('');
+                      }}
                       className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
                       title="Eliminar música"
                     >
@@ -163,19 +236,46 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
                     </button>
                   )}
                 </div>
-              </div>
 
-              {/* Botón de reproducción de prueba si hay URL */}
-              {currentAudioUrl && (
-                <div className="flex items-center justify-between bg-white/80 p-2.5 rounded-xl border border-amber-200/80">
-                  <div className="flex items-center gap-2 text-xs font-medium text-slate-700 truncate max-w-[210px]">
-                    <Volume2 className="w-4 h-4 text-amber-600 shrink-0" />
-                    <span className="truncate">{currentAudioUrl.split('/').pop() || 'Pista de audio'}</span>
+                {urlWarning && (
+                  <div className="flex items-start gap-2 p-2.5 rounded-lg bg-amber-100 border border-amber-300 text-amber-900 text-xs">
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-700" />
+                    <span>{urlWarning}</span>
                   </div>
+                )}
+              </div>
+            )}
+
+            {/* Error de audio si falla la reproducción */}
+            {audioError && (
+              <div className="flex items-start gap-2 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{audioError}</span>
+              </div>
+            )}
+
+            {/* Tarjeta de pista activa con prueba de audio */}
+            {currentAudioUrl && (
+              <div className="flex items-center justify-between bg-white/90 p-3 rounded-xl border border-amber-200 shadow-sm">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-800 truncate max-w-[200px]">
+                  <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                    <Volume2 className="w-4 h-4" />
+                  </div>
+                  <div className="truncate">
+                    <p className="font-semibold truncate">
+                      {decodeURIComponent(currentAudioUrl.split('/').pop() || 'Pista de audio')}
+                    </p>
+                    <p className="text-[10px] text-emerald-600 flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3" /> Lista para sonar
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5">
                   <button
                     type="button"
                     onClick={togglePreview}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-sm transition"
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-sm transition"
                   >
                     {isPlayingPreview ? (
                       <>
@@ -183,30 +283,47 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
                       </>
                     ) : (
                       <>
-                        <Play className="w-3.5 h-3.5" /> Escuchar
+                        <Play className="w-3.5 h-3.5" /> Probar
                       </>
                     )}
                   </button>
-                </div>
-              )}
 
-              {/* Pistas sugeridas para selección rápida */}
-              <div className="pt-2">
-                <span className="text-[11px] font-semibold text-slate-500 block mb-1.5">
-                  Sugerencias rápidas sin copyright:
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {SUGGESTED_TRACKS.map((track, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => onFieldChange('audioUrl', track.url)}
-                      className="text-[10px] px-2.5 py-1 bg-white hover:bg-amber-100 text-slate-700 hover:text-amber-900 border border-slate-200 rounded-md transition"
-                    >
-                      {track.name}
-                    </button>
-                  ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onFieldChange('audioUrl', '');
+                      setAudioError('');
+                      setUrlWarning('');
+                    }}
+                    className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition"
+                    title="Quitar audio"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
+              </div>
+            )}
+
+            {/* Pistas sugeridas para selección rápida */}
+            <div className="pt-2 border-t border-amber-200/60">
+              <span className="text-[11px] font-semibold text-slate-600 block mb-1.5">
+                O selecciona una de nuestras pistas curadas:
+              </span>
+              <div className="flex flex-wrap gap-1.5">
+                {SUGGESTED_TRACKS.map((track, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => {
+                      onFieldChange('audioUrl', track.url);
+                      setAudioError('');
+                      setUrlWarning('');
+                    }}
+                    className="text-[10px] px-2.5 py-1 bg-white hover:bg-amber-100 text-slate-700 hover:text-amber-900 border border-slate-200 rounded-md transition shadow-xs"
+                  >
+                    {track.name}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -239,7 +356,7 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
               </div>
 
               <p className="text-xs text-slate-300 leading-relaxed">
-                Haz que tu invitación cobre vida con tu canción favorita sonando de fondo mientras tus invitados la abren en sus teléfonos.
+                Haz que tu invitación cobre vida con tu canción favorita sonando suavemente de fondo mientras tus invitados la abren en sus teléfonos.
               </p>
 
               {/* Si ya tiene música asignada por el admin */}
@@ -272,7 +389,7 @@ export default function ColorsAndStyleSection({ data, template, onFieldChange, o
                       <span>¿Quieres incluir tu canción?</span>
                     </div>
                     <p className="text-[11px] text-slate-300 leading-snug">
-                      Las canciones de fondo son configuradas y optimizadas a medida por nuestro equipo para garantizar que no sean bloqueadas por los navegadores móviles.
+                      Las canciones de fondo son configuradas y optimizadas a medida por nuestro equipo para garantizar que se reproduzcan sin anuncios ni bloqueos en dispositivos móviles.
                     </p>
                   </div>
 

@@ -152,6 +152,31 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
       className="relative w-full min-h-screen antialiased font-sans overflow-hidden pb-20"
       style={{ backgroundColor: backgroundColor, color: textColor }}
     >
+      <Image
+        src="/colmena.png"
+        alt=""
+        aria-hidden="true"
+        width={246}
+        height={366}
+        className="pointer-events-none absolute left-0 top-0 z-0 h-auto w-40 opacity-90 sm:w-64"
+      />
+      <Image
+        src="/colmena.png"
+        alt=""
+        aria-hidden="true"
+        width={246}
+        height={366}
+        className="pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-40 rotate-180 opacity-90 sm:w-64"
+      />
+      <Image
+        src="/branding/portadas/panel-abeja.png"
+        alt=""
+        aria-hidden="true"
+        width={484}
+        height={329}
+        className="pointer-events-none absolute right-0 top-0 z-0 h-auto w-56 opacity-90 sm:w-80"
+      />
+
       {/* Decorative Bee Elements */}
       <div className="absolute top-1/4 left-4 w-8 h-8 opacity-80 animate-fly">
         <Image src="https://ykgyfxtzjedgastsuuaj.supabase.co/storage/v1/object/public/invitation-images/public/gender-reveal/bee.png" alt="Bee" width={32} height={32} />
@@ -180,9 +205,6 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
 
       {/* Header Section */}
       <header className="relative z-10 text-center pt-24 pb-16 px-4 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-48 bg-yellow-300/80" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%)' }}></div>
-        <div className="absolute top-0 left-0 w-full h-48 bg-yellow-400/80" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%)', transform: 'translateY(10px) scale(1.02)' }}></div>
-
         <FadeIn>
           <div className="relative max-w-2xl mx-auto">
             <h2 className="text-xl font-bold tracking-widest uppercase text-yellow-900/80" style={{ color: textColor }}>
