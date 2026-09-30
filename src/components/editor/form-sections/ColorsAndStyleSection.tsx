@@ -39,12 +39,8 @@ const SUGGESTED_TRACKS = [
     url: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-wedding-piano-113262.mp3",
   },
   {
-    name: "Celebración Boda (Andrii G)",
+    name: "Guitarra Suave",
     url: "/audio/wedding-music.mp3",
-  },
-  {
-    name: "Guitarra Suave & Cálida",
-    url: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=acoustic-guitars-ambient-14197.mp3",
   },
 ];
 
