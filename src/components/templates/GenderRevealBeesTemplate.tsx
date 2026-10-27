@@ -169,7 +169,7 @@ const GenderRevealBeesTemplate: React.FC<GenderRevealBeesTemplateProps> = ({
         className="pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-40 rotate-180 opacity-90 sm:w-64"
       />
       <Image
-        src="/branding/portadas/panel-abeja.png"
+        src="/branding/portadas/panel-abeja.webp"
         alt=""
         aria-hidden="true"
         width={484}

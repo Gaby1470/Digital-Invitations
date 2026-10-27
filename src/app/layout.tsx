@@ -1,21 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { Inter, Dancing_Script, Playfair_Display, Montserrat } from "next/font/google";
 import QueryProvider from "@/components/QueryProvider";
 import { APP_URL } from "@/lib/seo";
 import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const inter = Inter({
   variable: "--font-inter",
@@ -71,7 +60,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${montserrat.variable} h-full antialiased`}
+      className={`${inter.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${montserrat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-gray-50">
         <QueryProvider>

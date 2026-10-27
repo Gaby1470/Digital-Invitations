@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { enforceRateLimit } from '@/lib/rate-limit';
 
 const EMAIL_RE = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/;
 
@@ -18,6 +19,9 @@ function singleLine(value: string, max: number): string {
 }
 
 export async function POST(request: Request) {
+  const rateLimitResponse = await enforceRateLimit(request, 'contact', 5, 60 * 60);
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const body = await request.json().catch(() => null);
     if (!body || typeof body !== 'object') {

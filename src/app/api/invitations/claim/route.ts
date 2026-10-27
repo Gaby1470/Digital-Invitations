@@ -4,8 +4,12 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase-server';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { Database } from '@/lib/types';
+import { enforceRateLimit } from '@/lib/rate-limit';
 
 export async function POST(request: Request) {
+  const rateLimitResponse = await enforceRateLimit(request, 'claim', 5, 15 * 60);
+  if (rateLimitResponse) return rateLimitResponse;
+
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
@@ -32,47 +36,25 @@ export async function POST(request: Request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // Fetch the invitation with the matching claim code
-  const { data: invitation, error: fetchError } = await supabaseAdmin
-    .from('invitations')
-    .select('id, user_id, is_custom_design')
-    .eq('claim_code', cleanCode)
-    .single();
+  const { data: invitation, error: claimError } = await supabaseAdmin
+    .rpc('claim_invitation_by_code', { p_code: cleanCode, p_user_id: user.id });
 
-  if (fetchError || !invitation) {
+  if (claimError) {
+    console.error('Claim API: Error redeeming invitation code:', claimError);
+    return NextResponse.json({ error: 'No se pudo reclamar la invitación.' }, { status: 500 });
+  }
+
+  if (!invitation) {
     return NextResponse.json({ error: 'Código de reclamo inválido o la invitación ya ha sido reclamada.' }, { status: 404 });
   }
 
-  // Prevent claiming an invitation you already own
-  if (invitation.user_id === user.id) {
+  if (typeof invitation === 'object' && invitation !== null && 'error' in invitation && invitation.error === 'already_owned') {
     return NextResponse.json({ error: 'Ya eres dueño de esta invitación.' }, { status: 400 });
-  }
-
-  // Update the invitation: assign it to the user, and clear the claim code
-  const { data: updatedInvitation, error: updateError } = await supabaseAdmin
-    .from('invitations')
-    .update({
-      user_id: user.id,
-      claim_code: null, // Clear code so it can only be redeemed once
-      is_custom_design: true, // Mark it as custom designed
-    })
-    .eq('id', invitation.id)
-    .eq('claim_code', cleanCode) // guards against two concurrent claims of the same code
-    .select()
-    .maybeSingle();
-
-  if (updateError) {
-    console.error('Claim API: Error transferring invitation ownership:', updateError);
-    return NextResponse.json({ error: 'Error al transferir la invitación. Por favor inténtalo de nuevo.' }, { status: 500 });
-  }
-
-  if (!updatedInvitation) {
-    return NextResponse.json({ error: 'Código de reclamo inválido o la invitación ya ha sido reclamada.' }, { status: 404 });
   }
 
   return NextResponse.json({
     success: true,
     message: '¡Invitación reclamada con éxito!',
-    invitation: updatedInvitation,
+    invitation,
   });
 }

@@ -65,7 +65,7 @@ export default function SportsBirthdayTemplate({ template, data, invitationId, o
       {/* Textured Grass Background */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/soccer-grass.jpg)' }}
+        style={{ backgroundImage: 'url(/soccer-grass.webp)' }}
       />
       <div className="absolute inset-0 z-0 bg-white opacity-10" />
       

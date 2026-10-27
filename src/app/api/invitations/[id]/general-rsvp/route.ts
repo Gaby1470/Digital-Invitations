@@ -14,5 +14,5 @@ export async function POST(
   if (!body || typeof body !== 'object') {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
   }
-  return handleGeneralRsvp(invitationId, body);
+  return handleGeneralRsvp(request, invitationId, body);
 }

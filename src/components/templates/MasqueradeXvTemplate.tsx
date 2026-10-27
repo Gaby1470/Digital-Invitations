@@ -60,20 +60,15 @@ export default function MasqueradeXvTemplate({
 
   useEffect(() => {
     const imagesToPreload = [
-      '/beige-vintage.jpg',
-      '/corner-black.png',
-      '/mascara-logo.png',
+      '/beige-vintage.webp',
+      '/corner-black.webp',
+      '/mascara-logo.webp',
       '/black-separator-good.png',
       '/black-separator-2.png'
     ];
 
     let loadedImages = 0;
     const totalImages = imagesToPreload.length;
-
-    if (totalImages === 0) {
-      setIsLoaded(true);
-      return;
-    }
 
     imagesToPreload.forEach(src => {
       const img = new window.Image();
@@ -110,7 +105,7 @@ export default function MasqueradeXvTemplate({
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/beige-vintage.jpg')" }}
+          style={{ backgroundImage: "url('/beige-vintage.webp')" }}
         />
         <div
           className="absolute inset-0"
@@ -138,7 +133,7 @@ export default function MasqueradeXvTemplate({
           {/* Top Left Corner */}
           <div className="absolute top-0 left-0 w-28 h-28 sm:w-50 sm:h-50">
             <Image
-              src="/corner-black.png"
+              src="/corner-black.webp"
               alt=""
               fill
               className="object-contain object-right-top"
@@ -149,7 +144,7 @@ export default function MasqueradeXvTemplate({
           {/* Top Right Corner */}
           <div className="absolute top-0 right-0 w-28 h-28 sm:w-50 sm:h-50">
             <Image
-              src="/corner-black.png"
+              src="/corner-black.webp"
               alt=""
               fill
               className="object-contain object-right-top"
@@ -161,7 +156,7 @@ export default function MasqueradeXvTemplate({
           {/* Bottom Left Corner */}
           <div className="absolute bottom-0 left-0 w-28 h-28 sm:w-50 sm:h-50">
             <Image
-              src="/corner-black.png"
+              src="/corner-black.webp"
               alt=""
               fill
               className="object-contain object-right-bottom"
@@ -173,7 +168,7 @@ export default function MasqueradeXvTemplate({
           {/* Bottom Right Corner */}
           <div className="absolute bottom-0 right-0 w-28 h-28 sm:w-50 sm:h-50">
             <Image
-              src="/corner-black.png"
+              src="/corner-black.webp"
               alt=""
               fill
               className="object-contain object-right-top"
@@ -195,7 +190,7 @@ export default function MasqueradeXvTemplate({
               className="mt-8 sm:mt-16 mb-8"
             >
               <Image 
-                src="/mascara-logo.png"
+                src="/mascara-logo.webp"
                 alt="Masquerade Mask" 
                 width={250} 
                 height={200}

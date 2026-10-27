@@ -94,7 +94,7 @@ export default function PrincessBirthdayTemplate({ template, data, onRsvpClick }
       {/* Background Image Layer */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/pinkBackground.jpg)' }}
+        style={{ backgroundImage: 'url(/pinkBackground.webp)' }}
       />
       {/* Subtle overlay to ensure the text and cards remain readable over the image */}
       <div className="absolute inset-0 z-0 bg-white/30 pointer-events-none" />

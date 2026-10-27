@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import { Database } from '@/lib/types';
+import { enforceRateLimit } from '@/lib/rate-limit';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const MAX_NAME_LENGTH = 120;
@@ -8,7 +9,10 @@ const MAX_NOTES_LENGTH = 1000;
 
 type RawBody = { attending_count?: unknown; guest_names?: unknown; notes?: unknown };
 
-export async function handleGeneralRsvp(invitationId: unknown, body: RawBody) {
+export async function handleGeneralRsvp(request: Request, invitationId: unknown, body: RawBody) {
+  const rateLimitResponse = await enforceRateLimit(request, 'rsvp', 30, 60 * 60);
+  if (rateLimitResponse) return rateLimitResponse;
+
   if (typeof invitationId !== 'string' || !UUID_RE.test(invitationId)) {
     return NextResponse.json({ error: 'A valid invitation ID is required.' }, { status: 400 });
   }

@@ -73,7 +73,6 @@ export type Database = {
           timeline_items: Json | null
           title: string | null
           user_id: string | null
-          claim_code: string | null
           is_custom_design: boolean
           is_expired: boolean
           expires_at: string | null
@@ -98,7 +97,6 @@ export type Database = {
           timeline_items?: Json | null
           title?: string | null
           user_id?: string | null
-          claim_code?: string | null
           is_custom_design?: boolean
           is_expired?: boolean
           expires_at?: string | null
@@ -123,12 +121,37 @@ export type Database = {
           timeline_items?: Json | null
           title?: string | null
           user_id?: string | null
-          claim_code?: string | null
           is_custom_design?: boolean
           is_expired?: boolean
           expires_at?: string | null
         }
         Relationships: []
+      }
+      invitation_claims: {
+        Row: {
+          claim_code: string
+          created_at: string
+          invitation_id: string
+        }
+        Insert: {
+          claim_code: string
+          created_at?: string
+          invitation_id: string
+        }
+        Update: {
+          claim_code?: string
+          created_at?: string
+          invitation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invitation_claims_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: true
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -266,6 +289,11 @@ export type Database = {
     }
     Functions: {
       generate_unique_rsvp_slug: { Args: never; Returns: string }
+      claim_invitation_by_code: { Args: { p_code: string; p_user_id: string }; Returns: Json }
+      consume_api_rate_limit: {
+        Args: { p_bucket_key: string; p_limit: number; p_window_seconds: number }
+        Returns: { allowed: boolean; retry_after: number }[]
+      }
     }
     Enums: {
       rsvp_status: "ATTENDING" | "DECLINED" | "PENDING"

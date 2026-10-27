@@ -102,7 +102,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
 
   const galleryImages = invitationData.galleryImages && invitationData.galleryImages.length > 0
     ? invitationData.galleryImages
-    : ['/acuarela1.jpg', '/acuarela2.jpg', '/save-date-acuarela.jpg', '/garden-background.png'];
+    : ['/acuarela1.webp', '/acuarela2.webp', '/save-date-acuarela.jpg', '/garden-background.webp'];
 
   const normalizeLink = (value?: string) => {
     if (!value?.trim()) return '#';
@@ -123,11 +123,11 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
       <section className="relative w-full h-[800px] flex flex-col items-center justify-center p-6">
         {/* Full-section background image */}
         <div className="absolute inset-0 z-0">
-          <Image src={invitationData.heroImageUrl || "/garden-background.png"} alt="Garden background" fill priority sizes="100vw" className="object-cover" />
+          <Image src={invitationData.heroImageUrl || "/garden-background.webp"} alt="Garden background" fill priority sizes="100vw" className="object-cover" />
         </div>
 
         <div className="absolute top-0 left-80 w-58 h-58">
-          <Image src={invitationData.heroDecorationUrl || "/flores-blancas.png"} alt="White flowers" layout="fill" objectFit="contain" />
+          <Image src={invitationData.heroDecorationUrl || "/flores-blancas.webp"} alt="White flowers" layout="fill" objectFit="contain" />
         </div>
 
         {/* Main Invitation Card */}
@@ -310,7 +310,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
           style={{ height: `${venueImageHeight}px` }}
         >
           <Image
-            src={invitationData.venueImageUrl || "/wedding-venue2.png"}
+            src={invitationData.venueImageUrl || "/wedding-venue2.webp"}
             alt="Wedding venue"
             fill
             className="object-cover"

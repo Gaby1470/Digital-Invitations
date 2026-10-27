@@ -59,6 +59,16 @@ export async function GET() {
     return NextResponse.json([]);
   }
 
+  const { data: claimRows, error: claimsError } = await supabaseAdmin
+    .from('invitation_claims')
+    .select('invitation_id, claim_code');
+
+  if (claimsError) {
+    console.error('Admin API: Error fetching invitation claim codes:', claimsError.message);
+    return NextResponse.json({ error: 'Failed to fetch invitation claim codes.' }, { status: 500 });
+  }
+  const claimCodes = new Map((claimRows || []).map((row) => [row.invitation_id, row.claim_code]));
+
   // Fetch profiles for these invitations separately to bypass any stale PostgREST relationship cache bugs
   const userIds = Array.from(new Set(invitations.map(inv => inv.user_id).filter(Boolean))) as string[];
   
@@ -86,6 +96,7 @@ export async function GET() {
   // Map profiles back to invitations
   const result = invitations.map(inv => ({
     ...inv,
+    claim_code: claimCodes.get(inv.id) || null,
     profiles: inv.user_id ? (profilesMap[inv.user_id] || null) : null
   }));
 

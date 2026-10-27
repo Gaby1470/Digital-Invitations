@@ -56,9 +56,7 @@ const getInvitationDataServer = cache(async (slug: string) => {
     }
   }
 
-  // claim_code must never reach the public page payload
-  const publicInvitation = { ...data, claim_code: null };
-  return { invitation: publicInvitation, status: 200, error: null };
+  return { invitation: data, status: 200, error: null };
 });
 
 // --- Dynamic Metadata Generation (OpenGraph Cards) ---

@@ -51,31 +51,28 @@ export async function POST(
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // Generate a unique claim code
-  let claimCode = '';
-  while (true) {
-    claimCode = generateClaimCode();
-    const { data: codeConflict } = await supabaseAdmin
-      .from('invitations')
-      .select('id')
-      .eq('claim_code', claimCode)
-      .single();
-
-    if (!codeConflict) break;
-  }
-
-  // Update the invitation with the new claim code
-  const { data, error } = await supabaseAdmin
+  const { data: invitation, error: invitationError } = await supabaseAdmin
     .from('invitations')
-    .update({ claim_code: claimCode })
+    .select('id')
     .eq('id', invitationId)
-    .select()
-    .single();
+    .maybeSingle();
 
-  if (error) {
-    console.error('Admin API: Error generating claim code:', error);
-    return NextResponse.json({ error: 'Failed to generate claim code.' }, { status: 500 });
+  if (invitationError || !invitation) {
+    return NextResponse.json({ error: 'Invitation not found.' }, { status: 404 });
   }
 
-  return NextResponse.json({ success: true, claimCode: data.claim_code });
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const claimCode = generateClaimCode();
+    const { error } = await supabaseAdmin
+      .from('invitation_claims')
+      .upsert({ invitation_id: invitationId, claim_code: claimCode }, { onConflict: 'invitation_id' });
+
+    if (!error) return NextResponse.json({ success: true, claimCode });
+    if (error.code !== '23505') {
+      console.error('Admin API: Error generating claim code:', error);
+      return NextResponse.json({ error: 'Failed to generate claim code.' }, { status: 500 });
+    }
+  }
+
+  return NextResponse.json({ error: 'Could not generate a unique claim code.' }, { status: 500 });
 }

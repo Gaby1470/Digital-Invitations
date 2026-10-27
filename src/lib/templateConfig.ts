@@ -4,7 +4,7 @@ import { TemplateConfig } from "./custom_types";
 export const templateConfig: { [key: string]: TemplateConfig } = {
   'garden-wedding': {
     name: 'Boda en el Jardín',
-    thumbnail: '/branding/portadas/portada-garden.png',
+    thumbnail: '/branding/portadas/portada-garden.webp',
     category: 'Boda',
     description: 'A romantic and elegant template for a garden wedding, with a classic, sophisticated feel.',
     font: 'font-serif',
@@ -77,7 +77,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "timeline-wedding": {
     name: "Boda - Estilo Elegante",
-    thumbnail: "/branding/portadas/portada-elegante.png",
+    thumbnail: "/branding/portadas/portada-elegante.webp",
     category: "Boda",
     description: "A beautiful, scrolling story of your special day.",
     font: "font-serif",
@@ -209,14 +209,14 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
           title: "The Ceremony",
           time: "3:00 PM",
           location: "Willow Chapel, 93 Street, Toronto, ON",
-          imageSrc: "/acuarela1.jpg",
+          imageSrc: "/acuarela1.webp",
           imageAlt: "Watercolor Church Ceremony",
         },
         {
           title: "The Reception",
           time: "5:00 PM (Cocktails) | 6:30 PM (Dinner)",
           location: "The Great Hall, 95 Street, Toronto, ON",
-          imageSrc: "/acuarela2.jpg",
+          imageSrc: "/acuarela2.webp",
           imageAlt: "Watercolor Dinner Reception",
         },
       ],
@@ -238,7 +238,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "minimalist-wedding": {
     name: "Boda - Estilo Blanco & Negro",
-    thumbnail: "/branding/portadas/portada-bnw.png",
+    thumbnail: "/branding/portadas/portada-bnw.webp",
     category: "Boda",
     description: "Clean, modern, and elegant. For the minimalist couple.",
     font: "font-sans",
@@ -306,7 +306,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
 
   "quinceanera-dream": {
     name: "XV Años",
-    thumbnail: "/branding/portadas/portada-quince.png",
+    thumbnail: "/branding/portadas/portada-quince.webp",
     category: "XV Años",
     description:
       "Tu celebración de XV años hecha realidad en una invitación digital.",
@@ -372,7 +372,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "kids-birthday-bash": {
     name: "Fiesta de Cumpleaños Infantil",
-    thumbnail: "/branding/portadas/portada-bdy2.png",
+    thumbnail: "/branding/portadas/portada-bdy2.webp",
     category: "Cumpleaños Infantil",
     description: "Una fiesta divertida y temática para los más pequeños.",
     font: "font-sans",
@@ -426,7 +426,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "baptism-ethereal": {
     name: "Bautizo",
-    thumbnail: "/branding/portadas/portada-bautizo.png",
+    thumbnail: "/branding/portadas/portada-bautizo.webp",
     category: "Baby Shower",
     description: "Un diseño sereno y etéreo para bautizos.",
     font: "font-serif",
@@ -493,7 +493,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
     "gender-reveal-party": {
     name: "Revelación de Género - Clásica",
-    thumbnail: "/branding/portadas/portada-gender.png",
+    thumbnail: "/branding/portadas/portada-gender.webp",
     category: "Baby Shower",
     description:
       "¿Niño o Niña? ¡Ven y descúbrelo! Una fiesta divertida para revelar el género de nuestro bebé.",
@@ -551,7 +551,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "graduation-celebration": {
     name: "Celebración de Graduación",
-    thumbnail: "/branding/portadas/portada-graduation-formal.png",
+    thumbnail: "/branding/portadas/portada-graduation-formal.webp",
     category: "Graduación",
     description: "Una celebración de logros y nuevos comienzos.",
     font: "font-serif",
@@ -605,7 +605,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "baby-shower-whimsical": {
     name: "Baby Shower",
-    thumbnail: "/branding/portadas/portada-babyShower.png",
+    thumbnail: "/branding/portadas/portada-babyShower.webp",
     category: "Baby Shower",
     description: "Fiesta de baby shower",
     font: "font-sans",
@@ -646,7 +646,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "gender-reveal-bees": {
     name: "Revelación de Género - Tema Abejas",
-    thumbnail: "/branding/portadas/portada-gender-bee.png",
+    thumbnail: "/branding/portadas/portada-gender-bee.webp",
     category: "Baby Shower",
     description: "Invitación de revelación de género con tema de abejas.",
     font: "font-sans",
@@ -687,7 +687,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "scrapbook-graduation": {
     name: "Graduación - Moderno",
-    thumbnail: "/branding/portadas/portada-grad-cool.png",
+    thumbnail: "/branding/portadas/portada-grad-cool.webp",
     category: "Graduación",
     description: "A fun, scrapbook-style invitation for graduates.",
     font: "font-mono",
@@ -724,7 +724,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "modern-event": {
     name: "Modern Event",
-    thumbnail: "/branding/portadas/general.png", 
+    thumbnail: "/branding/portadas/general.webp",
     category: "General",
     description: "A clean and modern design for any occasion, from parties to get-togethers.",
     font: "font-sans",
@@ -767,7 +767,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   "old-money-wedding": {
     name: "Boda - Estilo Old Money",
-    thumbnail: "/branding/portadas/portada-oldMoney.png",
+    thumbnail: "/branding/portadas/portada-oldMoney.webp",
     category: "Boda",
     description: "An elegant and timeless wedding invitation with a classic, sophisticated feel.",
     font: "font-serif",
@@ -827,7 +827,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   'sports-birthday': {
     name: "Sports Birthday",
-    thumbnail: "/branding/portadas/portada-soccer.png",
+    thumbnail: "/branding/portadas/portada-soccer.webp",
     category: "Cumpleaños Infantil",
     description: "A high-energy, modern template for a sports-themed birthday.",
     font: "font-sans",
@@ -861,7 +861,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   'princess-birthday': {
     name: "Princess Birthday",
-    thumbnail: "/branding/portadas/portada-princesa.png",
+    thumbnail: "/branding/portadas/portada-princesa.webp",
     category: "Cumpleaños Infantil",
     description: "A magical and elegant birthday invitation for a little princess.",
     font: "font-serif",
@@ -899,7 +899,7 @@ export const templateConfig: { [key: string]: TemplateConfig } = {
   },
   'masquerade-xv': {
     name: 'XV Años - Baile de Máscaras',
-    thumbnail: '/branding/portadas/portada-antifaz.png',
+    thumbnail: '/branding/portadas/portada-antifaz.webp',
     category: 'XV Años',
     description: 'Una elegante y misteriosa invitación para un baile de máscaras de XV años.',
     font: 'font-serif',
