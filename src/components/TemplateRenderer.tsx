@@ -5,6 +5,7 @@ import { TemplateConfig } from "@/lib/custom_types";
 import { EditorData } from "@/lib/custom_types";
 import { TEMPLATE_COMPONENTS } from "./templates";
 import { AmbientAudioPlayer } from "./shared/AmbientAudioPlayer";
+import EnvelopeGate from "./shared/EnvelopeGate";
 
 type TemplateRendererProps = {
   templateId: string;
@@ -12,10 +13,11 @@ type TemplateRendererProps = {
   data: EditorData;
   invitationId?: string;
   onRsvpClick?: () => void;
+  // Only the public viewer shows the opening envelope; editor previews don't
+  envelope?: boolean;
 };
 
-export default function TemplateRenderer({ templateId, template, data, invitationId, onRsvpClick }: TemplateRendererProps) {
-  console.log('TemplateRenderer onRsvpClick:', typeof onRsvpClick);
+export default function TemplateRenderer({ templateId, template, data, invitationId, onRsvpClick, envelope = false }: TemplateRendererProps) {
   const rawId = templateId || "";
   const normalizedId = rawId
     .toLowerCase()
@@ -48,7 +50,7 @@ export default function TemplateRenderer({ templateId, template, data, invitatio
     (typeof template?.defaultData?.primaryColor === 'string' && template.defaultData.primaryColor) || 
     undefined;
 
-  return (
+  const content = (
     <div className="relative">
       {audioUrl && (
         <AmbientAudioPlayer
@@ -59,5 +61,16 @@ export default function TemplateRenderer({ templateId, template, data, invitatio
       )}
       <SelectedComponent template={template} data={data} invitationId={invitationId} onRsvpClick={onRsvpClick} />
     </div>
+  );
+
+  if (!envelope) return content;
+
+  return (
+    <EnvelopeGate
+      names={typeof data?.heroNames === 'string' ? data.heroNames : undefined}
+      accentColor={primaryColor}
+    >
+      {content}
+    </EnvelopeGate>
   );
 }

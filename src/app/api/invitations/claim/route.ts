@@ -57,12 +57,17 @@ export async function POST(request: Request) {
       is_custom_design: true, // Mark it as custom designed
     })
     .eq('id', invitation.id)
+    .eq('claim_code', cleanCode) // guards against two concurrent claims of the same code
     .select()
-    .single();
+    .maybeSingle();
 
   if (updateError) {
     console.error('Claim API: Error transferring invitation ownership:', updateError);
     return NextResponse.json({ error: 'Error al transferir la invitación. Por favor inténtalo de nuevo.' }, { status: 500 });
+  }
+
+  if (!updatedInvitation) {
+    return NextResponse.json({ error: 'Código de reclamo inválido o la invitación ya ha sido reclamada.' }, { status: 404 });
   }
 
   return NextResponse.json({

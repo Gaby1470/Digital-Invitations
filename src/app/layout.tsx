@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Inter, Dancing_Script, Playfair_Display, Montserrat } from "next/font/google";
 import QueryProvider from "@/components/QueryProvider";
+import { APP_URL } from "@/lib/seo";
 import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
@@ -39,6 +40,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(APP_URL),
   title: "Tap 2 Invite",
   description: "Crea y comparte invitaciones digitales animadas para cualquier ocasión.",
   openGraph: {
@@ -68,7 +70,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${montserrat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-gray-50">

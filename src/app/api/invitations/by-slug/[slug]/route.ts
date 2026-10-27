@@ -51,5 +51,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     }
   }
 
-  return NextResponse.json(data);
+  // claim_code must never be exposed through the public endpoint
+  const publicInvitation = { ...data, claim_code: null };
+  return NextResponse.json(publicInvitation);
 }

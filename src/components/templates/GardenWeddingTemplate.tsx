@@ -6,6 +6,7 @@ import { motion, useInView } from "framer-motion";
 import { TemplateConfig, TimelineItem } from "@/lib/custom_types";
 import { EditorData } from "@/lib/custom_types";
 import Lightbox from "./shared/Lightbox";
+import { TextWithBreaks } from './shared/TextWithBreaks';
 import { RsvpTrigger } from './shared/RsvpTrigger';
 import { AddToCalendar } from './shared/AddToCalendar';
 import { getCalendarEventFromData } from '@/lib/calendar';
@@ -122,7 +123,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
       <section className="relative w-full h-[800px] flex flex-col items-center justify-center p-6">
         {/* Full-section background image */}
         <div className="absolute inset-0 z-0">
-          <Image src={invitationData.heroImageUrl || "/garden-background.png"} alt="Garden background" fill className="object-cover" />
+          <Image src={invitationData.heroImageUrl || "/garden-background.png"} alt="Garden background" fill priority sizes="100vw" className="object-cover" />
         </div>
 
         <div className="absolute top-0 left-80 w-58 h-58">
@@ -133,7 +134,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
         <div className="relative z-10 w-full h-[550px] p-8 text-center shadow-lg flex flex-col justify-center items-center rounded-sm" style={{backgroundColor: cardBgColor, color: invitationData.buttonTextColor || '#f0eee4'}}>
 
 
-          <p className="text-xs tracking-widest uppercase mb-8 z-10" dangerouslySetInnerHTML={{ __html: invitationData.heroTitle || "Join us for the<br />wedding of" }} />
+          <p className="text-xs tracking-widest uppercase mb-8 z-10"><TextWithBreaks text={invitationData.heroTitle || "Join us for the<br />wedding of"} /></p>
 
           <h1 className="text-6xl font-serif italic mb-4 z-10 leading-tight">
             {coupleNames}
@@ -238,7 +239,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
                   <div className="w-3/4 pl-6 text-center">
                     <h3 className="text-2xl font-serif italic" style={{ color: accentColor }}>{item.title}</h3>
                     <p className="text-xl mt-1">{item.time}</p>
-                    {item.location && <p className="text-[15px] font-serif font-light text-gray-500 mt-1 leading-relaxed tracking-[0.04em]" dangerouslySetInnerHTML={{ __html: item.location.replace(/\n/g, '<br />') }} />}
+                    {item.location && <p className="text-[15px] font-serif font-light text-gray-500 mt-1 leading-relaxed tracking-[0.04em]"><TextWithBreaks text={item.location} /></p>}
                     {item.mapLink && (
                       <a
                         href={normalizeExternalUrl(item.mapLink)}
@@ -293,7 +294,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
       {/* 3. VENUE SECTION */}
       <section className="text-center pt-12 pb-0 flex flex-col items-center relative overflow-hidden" style={{backgroundColor: accentColor, color: invitationData.buttonTextColor || '#fcfaf2'}}>
         <h2 className="text-5xl font-serif italic mb-6">{invitationData.locationName || "Ubicación"}</h2>
-        <p className="px-8 text-sm leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: invitationData.receptionText || "Nuestra boda se llevará a cabo en:<br />Villa Cantacuzino,<br />Valle de Guadalupe, Baja California, México.<br />¡Esperamos verlos allí para celebrar juntos!" }} />
+        <p className="px-8 text-sm leading-relaxed mb-8"><TextWithBreaks text={invitationData.receptionText || "Nuestra boda se llevará a cabo en:<br />Villa Cantacuzino,<br />Valle de Guadalupe, Baja California, México.<br />¡Esperamos verlos allí para celebrar juntos!"} /></p>
         <a
           href={mapsLink}
           target="_blank"
@@ -328,8 +329,9 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
 
             <p 
               className="text-[15px] font-serif font-light text-gray-600 mb-8 leading-8 tracking-[0.045em]" 
-              dangerouslySetInnerHTML={{ __html: invitationData.dressCodeDetails || "Мы будем рады видеть вас в образах<br />в пастельных, мягких оттенках — это поможет<br />создать лёгкую и гармоничную атмосферу<br />праздника."}} 
-            />
+            >
+              <TextWithBreaks text={invitationData.dressCodeDetails || "Мы будем рады видеть вас в образах<br />в пастельных, мягких оттенках — это поможет<br />создать лёгкую и гармоничную атмосферу<br />праздника."} />
+            </p>
 
             {/* Redesigned Attire Buttons */}
             <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-10 mt-8">
@@ -385,7 +387,7 @@ export default function GardenWeddingTemplate({ template, data, invitationId, on
           <h3 className="text-3xl font-serif italic text-center mb-4 mt-2" style={{color: accentColor}}>{invitationData.giftTitle || 'Mesa de Regalos'}</h3>
 
           <div className="text-center text-[15px] font-serif font-light text-gray-600 space-y-6 leading-8 tracking-[0.04em]">
-            <p dangerouslySetInnerHTML={{ __html: invitationData.giftMessage || ''}} />
+            <p><TextWithBreaks text={invitationData.giftMessage || ''} /></p>
           </div>
 
           <a

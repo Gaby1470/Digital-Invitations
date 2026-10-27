@@ -64,6 +64,8 @@ export default function QuinceaneraTemplate({ template, data, invitationId, onRs
             <Image 
               src={heroImageUrl} 
               fill
+              priority
+              sizes="100vw"
               className="object-cover object-center"
               alt="Celebration background"
             />

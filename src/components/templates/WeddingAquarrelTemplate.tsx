@@ -126,6 +126,8 @@ export default function WeddingAquarrelTemplate({
               src="/save-date-acuarela.jpg"
               alt="Save the Date Sketch"
               fill
+              priority
+              sizes="(max-width: 448px) 100vw, 448px"
               className="object-contain mix-blend-multiply"
             />
           </motion.div>

@@ -1,11 +1,21 @@
 // src/app/api/cron/expire-invitations/route.ts
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { timingSafeEqual } from 'crypto';
+
+function isAuthorized(request: Request): boolean {
+  const secret = process.env.CRON_SECRET;
+  // Fail closed when the secret isn't configured
+  if (!secret) return false;
+  const provided = request.headers.get('authorization') || '';
+  const expected = `Bearer ${secret}`;
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
 
 export async function POST(request: Request) {
-  const authToken = (request.headers.get('authorization') || '').split('Bearer ')[1];
-
-  if (authToken !== process.env.CRON_SECRET) {
+  if (!isAuthorized(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -47,3 +57,6 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ success: true, expiredCount: idsToExpire.length });
 }
+
+// Vercel Cron invokes routes with GET
+export const GET = POST;

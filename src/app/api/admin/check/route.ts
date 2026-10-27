@@ -22,8 +22,6 @@ export async function GET() {
     return NextResponse.json({ isAdmin: false, debugError: "No active session. Please log in." });
   }
 
-  console.log(`Admin check: Active session found for user ID: ${user.id}, Email: ${user.email}`);
-
   const { data: profile, error } = await supabase
     .from('profiles')
     .select('is_admin')
@@ -40,6 +38,5 @@ export async function GET() {
     return NextResponse.json({ isAdmin: false, debugError: 'No profile found' });
   }
 
-  console.log(`Admin check success for user ID ${user.id}: is_admin =`, profile.is_admin);
   return NextResponse.json({ isAdmin: !!profile.is_admin });
 }

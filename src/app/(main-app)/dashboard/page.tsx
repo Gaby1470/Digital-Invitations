@@ -434,7 +434,7 @@ export default function DashboardPage() {
                     </label>
                     <input
                       type="text"
-                      placeholder="CLAIM-XXXXXX"
+                      placeholder="CLAIM-XXXXXXXX"
                       value={claimCode}
                       onChange={(e) => setClaimCode(e.target.value)}
                       disabled={claimLoading || !!claimSuccess}

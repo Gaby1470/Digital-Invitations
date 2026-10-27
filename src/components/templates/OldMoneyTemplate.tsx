@@ -109,6 +109,8 @@ export default function OldMoneyTemplate({
               "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80"
             }
             fill
+            priority
+            sizes="100vw"
             className="object-cover object-top"
             alt="Couple"
           />

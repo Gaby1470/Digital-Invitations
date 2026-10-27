@@ -1,8 +1,11 @@
 // src/app/(viewer)/[slug]/page.tsx
+import { cache } from 'react';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase-server';
 import { templateConfig } from '@/lib/templateConfig';
+import { APP_URL, DEFAULT_SHARE_IMAGE, absoluteUrl, resizedShareImage, templateShareImage } from '@/lib/seo';
 import InviteClientPage from './client-page';
 import { AlertTriangle } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -11,13 +14,10 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-// --- Server-Side Data Fetcher Helper (cached or deduplicated) ---
-async function getInvitationDataServer(slug: string) {
+// Deduplicated per request: generateMetadata and the page share one fetch
+const getInvitationDataServer = cache(async (slug: string) => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-
-  // Get current user if logged in
-  const { data: { user } } = await supabase.auth.getUser();
 
   // Fetch the invitation by slug
   const { data, error } = await supabase
@@ -47,22 +47,25 @@ async function getInvitationDataServer(slug: string) {
     return { error: 'This invitation has expired.', status: 410, invitation: null };
   }
 
-  // If the invitation isn't published, only the owner can see it
+  // Only unpublished invitations need to know who is asking
   if (!data.is_published) {
+    const { data: { user } } = await supabase.auth.getUser();
     if (!user || user.id !== data.user_id) {
       console.error(`Unauthorized access attempt for unpublished invitation with slug ${slug}`);
       return { error: 'This invitation has not been published yet.', status: 403, invitation: null };
     }
   }
 
-  return { invitation: data, status: 200, error: null };
-}
+  // claim_code must never reach the public page payload
+  const publicInvitation = { ...data, claim_code: null };
+  return { invitation: publicInvitation, status: 200, error: null };
+});
 
 // --- Dynamic Metadata Generation (OpenGraph Cards) ---
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const { invitation } = await getInvitationDataServer(slug);
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tap2invite.com';
+  const appUrl = APP_URL;
   const defaultMetadata = {
     title: 'Invitación | Tap 2 Invite',
     description: 'Crea y comparte invitaciones digitales animadas para cualquier ocasión.',
@@ -70,17 +73,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: 'Invitación | Tap 2 Invite',
       description: 'Crea y comparte invitaciones digitales animadas para cualquier ocasión.',
       images: [{
-        url: `${appUrl}/branding/portadas/general.png`,
+        url: absoluteUrl(DEFAULT_SHARE_IMAGE),
         width: 1200,
         height: 630,
-        alt: 'Tap 2 Invite Logo'
+        alt: 'Tap 2 Invite'
       }]
     },
     twitter: {
       card: 'summary_large_image',
       title: 'Invitación | Tap 2 Invite',
       description: 'Crea y comparte invitaciones digitales animadas para cualquier ocasión.',
-      images: [`${appUrl}/branding/portadas/general.png`],
+      images: [absoluteUrl(DEFAULT_SHARE_IMAGE)],
     }
   };
 
@@ -94,19 +97,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = invitationData.heroNames || 'Nuestra Invitación';
   const description = invitationData.heroSubtitle || invitationData.heroTitle || 'Acompáñanos a celebrar este día tan especial.';
   
-  let imageUrl = invitationData.hero_image_url;
-
-  if (!imageUrl && templateDetails) {
-    imageUrl = templateDetails.thumbnail;
-  }
-
-  if (!imageUrl) {
-    imageUrl = '/branding/portadas/general.png';
-  }
-  
-  if (imageUrl.startsWith('/')) {
-    imageUrl = `${appUrl}${imageUrl}`;
-  }
+  // Static covers have a pre-sized JPG; uploaded photos go through the image optimizer
+  const heroUrl: string | undefined = invitationData.hero_image_url || undefined;
+  const isCustomImage = Boolean(heroUrl);
+  const imageUrl = absoluteUrl(
+    heroUrl ? resizedShareImage(heroUrl) : templateShareImage(templateDetails?.thumbnail)
+  );
+  const imageSize = isCustomImage ? {} : { width: 1200, height: 630 };
 
   return {
     metadataBase: new URL(appUrl),
@@ -120,8 +117,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [
         {
           url: imageUrl,
-          width: 1200,
-          height: 630,
+          ...imageSize,
           alt: `Invitación de ${title}`,
         },
       ],
@@ -142,14 +138,16 @@ export default async function InvitePage({ params }: Props) {
   const { invitation, status } = await getInvitationDataServer(slug);
 
   if (!invitation) {
-    let title = "Invitation Not Found";
-    let message = "The invitation link is either invalid or has been removed.";
+    if (status === 404) notFound();
+
+    let title = "Invitación no disponible";
+    let message = "Esta invitación no está disponible.";
     if (status === 403) {
-      title = "Invitation Not Published";
-      message = "This invitation is not yet available to the public.";
+      title = "Invitación no publicada";
+      message = "Esta invitación aún no está disponible al público.";
     } else if (status === 410) {
-      title = "Invitation Expired";
-      message = "We're sorry, but this invitation is no longer active.";
+      title = "Invitación expirada";
+      message = "Lo sentimos, esta invitación ya no está activa.";
     }
     
     return (
@@ -161,7 +159,7 @@ export default async function InvitePage({ params }: Props) {
           <h1 className="text-2xl font-bold text-gray-800 mb-2">{title}</h1>
           <p className="text-gray-600 mb-8">{message}</p>
           <Link href="/" className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-800">
-            Go to Homepage
+            Ir al inicio
           </Link>
         </div>
       </div>
@@ -174,7 +172,7 @@ export default async function InvitePage({ params }: Props) {
      return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <h1 className="text-4xl font-bold mb-4">Error</h1>
-        <p className="text-gray-600">Could not load the invitation template.</p>
+        <p className="text-gray-600">No se pudo cargar la plantilla de la invitación.</p>
       </div>
     );
   }

@@ -54,7 +54,6 @@ export const BabyShowerTemplate: React.FC<BabyShowerTemplateProps> = ({
   invitationId,
   onRsvpClick,
 }) => {
-  console.log('BabyShowerTemplate onRsvpClick:', typeof onRsvpClick);
   const { defaultData } = template;
   const invitationData = { ...defaultData, ...data };
 

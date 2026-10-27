@@ -109,7 +109,7 @@ export function AmbientAudioPlayer({
         ref={audioRef}
         src={audioUrl}
         loop
-        preload="auto"
+        preload="none"
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />

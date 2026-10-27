@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase-server';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+import { randomInt } from 'crypto';
 import { Database } from '@/lib/types';
 
 // Helper to check if a user is an admin
@@ -23,11 +24,11 @@ async function checkAdmin(supabase: ReturnType<typeof createClient>) {
 }
 
 // Generate a random uppercase alphanumeric string
-function generateClaimCode(length = 6): string {
+function generateClaimCode(length = 8): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Avoid ambiguous chars like O, 0, I, 1
   let result = '';
   for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+    result += chars.charAt(randomInt(chars.length));
   }
   return `CLAIM-${result}`;
 }

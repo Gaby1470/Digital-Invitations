@@ -1,9 +1,37 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
+const EMAIL_RE = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/;
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Strip CR/LF to prevent header injection
+function singleLine(value: string, max: number): string {
+  return value.replace(/[\r\n]+/g, ' ').trim().slice(0, max);
+}
+
 export async function POST(request: Request) {
   try {
-    const { name, email, subject, message } = await request.json();
+    const body = await request.json().catch(() => null);
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
+    }
+
+    const name = typeof body.name === 'string' ? singleLine(body.name, 100) : '';
+    const email = typeof body.email === 'string' ? singleLine(body.email, 254) : '';
+    const subject = typeof body.subject === 'string' ? singleLine(body.subject, 150) : '';
+    const message = typeof body.message === 'string' ? body.message.trim().slice(0, 5000) : '';
+
+    if (!name || !subject || !message || !EMAIL_RE.test(email)) {
+      return NextResponse.json({ error: 'Please fill in all fields with valid values.' }, { status: 400 });
+    }
 
     // Create a transporter object using the default SMTP transport
     // You need to set up your environment variables for this to work.
@@ -23,18 +51,18 @@ export async function POST(request: Request) {
     });
 
     const mailOptions = {
-      from: `"${subject}" <tap2invite@gmail.com>`, // sender address
+      from: `"Tap 2 Invite Contact" <tap2invite@gmail.com>`, // sender address
       replyTo: email,
       to: 'tap2invite@gmail.com', // list of receivers
       subject: `Contact Form: ${subject}`, // Subject line
       text: message, // plain text body
       html: `
         <h1>New Contact Form Submission</h1>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
+        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Subject:</strong> ${escapeHtml(subject)}</p>
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p>${escapeHtml(message).replace(/\n/g, '<br />')}</p>
       `, // html body
     };
 

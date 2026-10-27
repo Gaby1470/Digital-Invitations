@@ -170,6 +170,7 @@ export default function InviteClientPage({ invitation }: { invitation: Invitatio
         data={invitation.data} 
         invitationId={invitation.id}
         onRsvpClick={() => setIsModalOpen(true)}
+        envelope
       />
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title=" ">
         <GeneralRsvpForm invitationId={invitation.id} onClose={() => setIsModalOpen(false)} />

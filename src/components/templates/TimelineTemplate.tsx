@@ -103,6 +103,8 @@ export default function TimelineTemplate({
               "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80"
             }
             fill
+            priority
+            sizes="100vw"
             className="object-cover"
             alt="Wedding Hero"
           />
